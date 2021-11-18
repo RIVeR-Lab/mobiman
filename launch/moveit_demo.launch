@@ -1,0 +1,54 @@
+<launch>
+    <!-- By default, we do not start a database (it can be large) -->
+    <arg name="db" default="false" />
+    <!-- Allow user to specify database location -->
+    <arg name="db_path" default="$(find stretch_moveit_config)/default_warehouse_mongo_db" />
+
+    <!-- By default, we are not in debug mode -->
+    <arg name="debug" default="false" />
+
+    <!--
+  By default, hide joint_state_publisher's GUI
+
+  MoveIt's "demo" mode replaces the real robot driver with the joint_state_publisher.
+  The latter one maintains and publishes the current joint configuration of the simulated robot.
+  It also provides a GUI to move the simulated robot around "manually".
+  This corresponds to moving around the real robot without the use of MoveIt.
+  -->
+    <arg name="use_gui" default="false" />
+
+    <!-- Gazebo specific options -->
+    <arg name="gazebo_gui" default="true" />
+    <arg name="paused" default="false" />
+    <!-- By default, use the urdf location provided from the package -->
+    <arg name="urdf_path" default="$(find stretch_description)/urdf/stretch_description.xacro" />
+
+    <include file="$(find stretch_gazebo)/launch/gazebo.launch">
+        <arg name="rviz" value="false" />
+    </include>
+
+    <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+    <include file="$(find stretch_moveit_config)/launch/planning_context.launch">
+        <arg name="load_robot_description" value="false" />
+    </include>
+
+    <!-- If needed, broadcast static tf for robot root -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 map base_link" />
+
+    <include file="$(find mobiman)/launch/move_group.launch">
+        <arg name="allow_trajectory_execution" value="true" />
+        <arg name="info" value="true" />
+        <arg name="debug" value="$(arg debug)" />
+    </include>
+
+
+    <!-- Run Rviz and load the default config to see the state of the move_group node -->
+    <include file="$(find stretch_moveit_config)/launch/moveit_rviz.launch">
+        <arg name="rviz_config" value="$(find stretch_moveit_config)/launch/moveit.rviz" />
+        <arg name="debug" value="$(arg debug)" />
+    </include>
+
+    <!-- include python script to do motion planning-->
+    <node pkg="mobiman" name="moveit.py" type="moveit.py" output="screen" />
+
+</launch>
