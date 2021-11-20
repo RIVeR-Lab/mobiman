@@ -1,4 +1,5 @@
 <launch>
+
     <!-- By default, we do not start a database (it can be large) -->
     <arg name="db" default="false" />
     <!-- Allow user to specify database location -->
@@ -49,6 +50,8 @@
     </include>
 
     <!-- include python script to do motion planning-->
-    <node pkg="mobiman" name="moveit.py" type="moveit.py" output="screen" />
+    <node pkg="mobiman" name="moveit" type="moveit.py" output="screen">
+        <param name="target_pose" value="[-5 0 0.5]" />
+    </node>
 
 </launch>
