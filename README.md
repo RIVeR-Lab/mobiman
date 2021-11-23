@@ -9,7 +9,7 @@ Ubuntu 20.04 + ROS Noetic
 
 * [move_base](https://github.com/ros-planning/navigation) package
 * [stretch_ros](https://github.com/hello-robot/stretch_ros.git) package
-* [gmapping]() package
+* [gmapping](http://wiki.ros.org/gmapping) package
 
 ### Install Moveit 1 for Noetic:
 ```bash
@@ -32,9 +32,15 @@ To run the move_base with SLAM demo:
 roslaunch mobiman navigation_with_map.launch 
 ```
 
-Moveit demo shows motion planning using Moveit planner for the stretch arm.
+Moveit demo shows motion planning using Moveit planner for the stretch arm and the moving base.
 
-To run the Moveit Demo:
+To run the Moveit Demo with default target:
 ```bash
 roslaunch mobiman moveit_demo.launch
 ```
+
+Or setting the target position
+```bash
+roslaunch mobiman moveit_demo.launch target_pose_x:=3 target_pose_y:=2 target_pose_z:=1
+```
+note that ``` target_pose_z ``` should not exceeds 1.9 which is the height limit of the robot

@@ -104,8 +104,8 @@ catkin_install_python(PROGRAMS
 )
 
 
-add_executable(move_group_interface src/move_group_interface.cpp)
-target_link_libraries(move_group_interface ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-install(TARGETS move_group_interface DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+add_executable(moveit_demo src/moveit_demo.cpp)
+target_link_libraries(moveit_demo ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+install(TARGETS moveit_demo DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
