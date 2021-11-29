@@ -1,9 +1,5 @@
 <launch>
 
-    <arg name="target_pose_x" default="1" />
-    <arg name="target_pose_y" default="1" />
-    <arg name="target_pose_z" default="1" />
-
     <!-- By default, we do not start a database (it can be large) -->
     <arg name="db" default="false" />
     <!-- Allow user to specify database location -->
@@ -61,9 +57,6 @@
 
     <!-- include c++ script to do motion planning-->
     <node pkg="mobiman" name="moveit_demo" type="moveit_demo" output="screen">
-        <param name="target_pose_x" value="$(arg target_pose_x)" />
-        <param name="target_pose_y" value="$(arg target_pose_y)" />
-        <param name="target_pose_z" value="$(arg target_pose_z)" />
     </node>
 
 </launch>

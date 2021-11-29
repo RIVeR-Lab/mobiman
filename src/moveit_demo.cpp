@@ -18,206 +18,224 @@
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
-/**
+class moveit_demo
+{
+private:
+  ros::NodeHandle nh_;
+  ros::Publisher vis_pub_;
+  moveit::planning_interface::MoveGroupInterface arm_move_group_interface_;
+  moveit::planning_interface::MoveGroupInterface whole_body_move_group_interface_;
+  moveit::core::RobotModelPtr kinematic_model_;
+  std::vector<std::string> arm_joint_names_;
+  std::vector<std::string> whole_body_joint_names_;
+
+public:
+  moveit_demo(ros::NodeHandle n) : nh_(n), arm_move_group_interface_("stretch_arm"), whole_body_move_group_interface_("stretch_whole_body")
+  {
+
+    // init marker publisher
+    this->vis_pub_ = this->nh_.advertise<visualization_msgs::Marker>("visualization_marker", 0);
+
+    robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+    this->kinematic_model_ = robot_model_loader.getModel();
+    moveit::core::RobotStatePtr kinematic_state(new moveit::core::RobotState(this->kinematic_model_));
+    kinematic_state->setToDefaultValues();
+
+    // We can print the name of the reference frame for this robot.
+    ROS_INFO("Model frame: %s", this->kinematic_model_->getModelFrame().c_str());
+    ROS_INFO("Arm Planning frame: %s", this->arm_move_group_interface_.getPlanningFrame().c_str());
+    ROS_INFO("whole_body Planning frame: %s", this->whole_body_move_group_interface_.getPlanningFrame().c_str());
+
+    // We can get a list of all the groups in the robot:
+    ROS_INFO("Available Planning Groups:");
+    std::copy(this->arm_move_group_interface_.getJointModelGroupNames().begin(),
+              this->arm_move_group_interface_.getJointModelGroupNames().end(), std::ostream_iterator<std::string>(std::cout, ", "));
+
+    ROS_INFO_STREAM("link_grasp_center pose: " << this->arm_move_group_interface_.getCurrentPose("link_grasp_center") << '\n');
+
+    const moveit::core::JointModelGroup *arm_joint_model_group = this->kinematic_model_->getJointModelGroup("stretch_arm");
+    const moveit::core::JointModelGroup *whole_body_joint_model_group = this->kinematic_model_->getJointModelGroup("stretch_whole_body");
+
+    arm_joint_names_ = arm_joint_model_group->getVariableNames();
+    whole_body_joint_names_ = whole_body_joint_model_group->getVariableNames();
+
+    std::vector<double> arm_joint_values;
+    std::vector<double> whole_body_joint_values;
+    kinematic_state->copyJointGroupPositions(arm_joint_model_group, arm_joint_values);
+    kinematic_state->copyJointGroupPositions(whole_body_joint_model_group, whole_body_joint_values);
+    for (std::size_t i = 0; i < this->arm_joint_names_.size(); ++i)
+    {
+      ROS_INFO("#1.1 Joint %s: %f", this->arm_joint_names_[i].c_str(), arm_joint_values[i]);
+    }
+    for (std::size_t i = 0; i < this->whole_body_joint_names_.size(); ++i)
+    {
+      ROS_INFO("#1.2 Joint %s: %f", this->whole_body_joint_names_[i].c_str(), whole_body_joint_values[i]);
+    }
+
+    arm_move_group_interface_.setPoseReferenceFrame("map");
+    arm_move_group_interface_.setEndEffectorLink("link_grasp_center");
+    whole_body_move_group_interface_.setPoseReferenceFrame("map");
+    whole_body_move_group_interface_.setEndEffectorLink("link_grasp_center");
+    ROS_INFO("Pose Reference Frame is: %s", whole_body_move_group_interface_.getPoseReferenceFrame().c_str());
+  };
+
+  /**
  * @brief move_base module to stretch robot, moving to x y with orientation of theta
  * 
  * @param x the x coordinate
  * @param y the y coordinate
  * @param theta the orientation
  */
-void move_base(float x, float y, float theta)
-{
-  theta = 0;
-  //tell the action client that we want to spin a thread by default
-  MoveBaseClient ac("move_base", true);
-
-  //wait for the action server to come up
-  while (!ac.waitForServer(ros::Duration(5.0)))
+  void move_base(float x, float y, float theta)
   {
-    ROS_INFO("Waiting for the move_base action server to come up");
+    //tell the action client that we want to spin a thread by default
+    MoveBaseClient ac("move_base", true);
+
+    //wait for the action server to come up
+    while (!ac.waitForServer(ros::Duration(5.0)))
+    {
+      ROS_INFO("Waiting for the move_base action server to come up");
+    }
+
+    move_base_msgs::MoveBaseGoal goal;
+
+    //we'll send a goal to the robot to move 1 meter forward
+    goal.target_pose.header.frame_id = "map";
+    goal.target_pose.header.stamp = ros::Time::now();
+
+    tf2::Quaternion myQuaternion;
+    myQuaternion.setRPY(0, 0, theta);
+    myQuaternion.normalize();
+
+    goal.target_pose.pose.position.x = x;
+    goal.target_pose.pose.position.y = y;
+    goal.target_pose.pose.orientation.x = myQuaternion.getX();
+    goal.target_pose.pose.orientation.y = myQuaternion.getY();
+    goal.target_pose.pose.orientation.z = myQuaternion.getZ();
+    goal.target_pose.pose.orientation.w = myQuaternion.getW();
+
+    ROS_INFO("Sending goal: \nX: %f\nY: %f\nX: %f\nY: %f\nZ: %f\nOmega: %f\n", x, y, myQuaternion.getX(), myQuaternion.getY(), myQuaternion.getZ(), myQuaternion.getW());
+    ac.sendGoal(goal);
+
+    ac.waitForResult();
+
+    if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+      ROS_INFO("Hooray, the base moved");
+    else
+      ROS_INFO("The base failed to move");
   }
 
-  move_base_msgs::MoveBaseGoal goal;
-
-  //we'll send a goal to the robot to move 1 meter forward
-  goal.target_pose.header.frame_id = "map";
-  goal.target_pose.header.stamp = ros::Time::now();
-
-  tf2::Quaternion myQuaternion;
-  myQuaternion.setRPY(0, 0, theta);
-  myQuaternion.normalize();
-
-  goal.target_pose.pose.position.x = x;
-  goal.target_pose.pose.position.y = y;
-  goal.target_pose.pose.orientation.w = myQuaternion.getW();
-
-  ROS_INFO("Sending goal: \nX: %f\nY: %f\nOmega: %f\n", x, y, theta);
-  ac.sendGoal(goal);
-
-  ac.waitForResult();
-
-  if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    ROS_INFO("Hooray, the base moved");
-  else
-    ROS_INFO("The base failed to move");
-}
-
-/**
+  /**
  * @brief publish rviz marker at the target position
  * 
  * @param x x coordinate
  * @param y y coordinate
  * @param z z coordinate
  */
-void publish_marker(ros::Publisher &vis_pub, double x, double y, double z)
-{
-  visualization_msgs::Marker marker;
-  marker.header.frame_id = "map";
-  marker.header.stamp = ros::Time();
-  marker.id = 0;
-  marker.ns = "visual_markers";
-  marker.type = visualization_msgs::Marker::SPHERE;
-  marker.action = visualization_msgs::Marker::ADD;
-  marker.pose.position.x = x;
-  marker.pose.position.y = y;
-  marker.pose.position.z = z;
-  marker.pose.orientation.x = 0.0;
-  marker.pose.orientation.y = 0.0;
-  marker.pose.orientation.z = 0.0;
-  marker.pose.orientation.w = 1.0;
-  marker.scale.x = 0.1;
-  marker.scale.y = 0.1;
-  marker.scale.z = 0.1;
-  marker.color.a = 1.0; // Don't forget to set the alpha!
-  marker.color.r = 0.0;
-  marker.color.g = 1.0;
-  marker.color.b = 0.0;
-
-  // Publish the marker
-  while (vis_pub.getNumSubscribers() < 1)
+  void publish_marker(double x, double y, double z)
   {
-    ROS_ERROR("Please create a subscriber to the marker");
-    sleep(1);
+    visualization_msgs::Marker marker;
+    marker.header.frame_id = "map";
+    marker.header.stamp = ros::Time();
+    marker.id = 0;
+    marker.ns = "visual_markers";
+    marker.type = visualization_msgs::Marker::SPHERE;
+    marker.action = visualization_msgs::Marker::ADD;
+    marker.pose.position.x = x;
+    marker.pose.position.y = y;
+    marker.pose.position.z = z;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+    marker.scale.x = 0.1;
+    marker.scale.y = 0.1;
+    marker.scale.z = 0.1;
+    marker.color.a = 1.0; // Don't forget to set the alpha!
+    marker.color.r = 0.0;
+    marker.color.g = 1.0;
+    marker.color.b = 0.0;
+
+    // Publish the marker
+    while (this->vis_pub_.getNumSubscribers() < 1)
+    {
+      ROS_ERROR("Please create a subscriber to the marker");
+      sleep(1);
+    }
+    this->vis_pub_.publish(marker);
+    ROS_INFO("marker published");
   }
-  vis_pub.publish(marker);
-  ROS_INFO("marker published");
-}
+  /**
+ * @brief the main function for navi to a goal pose
+ *        this is a callback function listening at the goal topic
+ * 
+ * @param x x coordinate
+ * @param y y coordinate
+ * @param z z coordinate
+ */
+  void nav_to_goal(const geometry_msgs::Point &point)
+  {
+    ROS_INFO("goal received");
+    std::vector<double> arm_joint_values;
+    std::vector<double> whole_body_joint_values;
+
+    geometry_msgs::Pose target_pose;
+    target_pose.position.x = point.x;
+    target_pose.position.y = point.y;
+    target_pose.position.z = point.z;
+
+    // set the target market in rviz
+    this->publish_marker(target_pose.position.x, target_pose.position.y, target_pose.position.z);
+
+    bool success;
+    success = this->whole_body_move_group_interface_.setJointValueTarget(target_pose, "link_grasp_center");
+    ROS_INFO("Whole Body IK Planner %s\n", success ? "SUCCEED" : "FAILED");
+    this->whole_body_move_group_interface_.getJointValueTarget(whole_body_joint_values);
+
+    for (std::size_t i = 0; i < this->whole_body_joint_names_.size(); ++i)
+    {
+      ROS_INFO("#2.1 Joint %s: %f", this->whole_body_joint_names_[i].c_str(), whole_body_joint_values[i]);
+    }
+
+    double x_axis = whole_body_joint_values[0];
+    double y_axis = whole_body_joint_values[1];
+    double theta = whole_body_joint_values[2];
+
+    this->move_base(x_axis, y_axis, theta);
+    ROS_INFO("base finish moving");
+
+    success = this->arm_move_group_interface_.setApproximateJointValueTarget(target_pose, "link_grasp_center");
+    ROS_INFO("Arm Pose Target %s\n", success ? "SUCCEED" : "FAILED");
+
+    this->arm_move_group_interface_.getJointValueTarget(arm_joint_values);
+
+    for (std::size_t i = 0; i < this->arm_joint_names_.size(); ++i)
+    {
+      ROS_INFO("#3.1 Joint %s: %f", this->arm_joint_names_[i].c_str(), arm_joint_values[i]);
+    }
+
+    this->arm_move_group_interface_.setMaxVelocityScalingFactor(0.50);
+    this->arm_move_group_interface_.setMaxAccelerationScalingFactor(0.50);
+
+    this->arm_move_group_interface_.move();
+    ROS_INFO("arm moving");
+  }
+};
 
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "move_group_interface");
   ros::NodeHandle node_handle("~");
 
-  // init marker publisher
-  ros::Publisher vis_pub = node_handle.advertise<visualization_msgs::Marker>("visualization_marker", 0);
-
-  ros::AsyncSpinner spinner(1);
+  ros::AsyncSpinner spinner(4);
   spinner.start();
 
-  static const std::string ARM_PLANNING_GROUP = "stretch_arm";
-  static const std::string whole_body_PLANNING_GROUP = "stretch_whole_body";
+  moveit_demo demo(node_handle);
 
-  moveit::planning_interface::MoveGroupInterface arm_move_group_interface(ARM_PLANNING_GROUP);
-  moveit::planning_interface::MoveGroupInterface whole_body_move_group_interface(whole_body_PLANNING_GROUP);
-
-  robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
-  const moveit::core::RobotModelPtr &kinematic_model = robot_model_loader.getModel();
-  moveit::core::RobotStatePtr kinematic_state(new moveit::core::RobotState(kinematic_model));
-  kinematic_state->setToDefaultValues();
-
-  // We can print the name of the reference frame for this robot.
-  ROS_INFO("Model frame: %s", kinematic_model->getModelFrame().c_str());
-  ROS_INFO("Arm Planning frame: %s", arm_move_group_interface.getPlanningFrame().c_str());
-  ROS_INFO("whole_body Planning frame: %s", whole_body_move_group_interface.getPlanningFrame().c_str());
-
-  // We can also print the name of the end-effector link for this group.
-  ROS_INFO("Arm End effector link: %s", arm_move_group_interface.getEndEffectorLink().c_str());
-  ROS_INFO("whole_body End effector link: %s", whole_body_move_group_interface.getEndEffectorLink().c_str());
-
-  // We can get a list of all the groups in the robot:
-  ROS_INFO("Available Planning Groups:");
-  std::copy(arm_move_group_interface.getJointModelGroupNames().begin(),
-            arm_move_group_interface.getJointModelGroupNames().end(), std::ostream_iterator<std::string>(std::cout, ", "));
-
-  ROS_INFO_STREAM("link_grasp_center pose: " << arm_move_group_interface.getCurrentPose("link_grasp_center") << '\n');
-
-  const moveit::core::JointModelGroup *arm_joint_model_group = kinematic_model->getJointModelGroup("stretch_arm");
-  const moveit::core::JointModelGroup *whole_body_joint_model_group = kinematic_model->getJointModelGroup("stretch_whole_body");
-
-  const std::vector<std::string> &arm_joint_names = arm_joint_model_group->getVariableNames();
-  const std::vector<std::string> &whole_body_joint_names = whole_body_joint_model_group->getVariableNames();
-
-  std::vector<double> arm_joint_values;
-  std::vector<double> whole_body_joint_values;
-  kinematic_state->copyJointGroupPositions(arm_joint_model_group, arm_joint_values);
-  kinematic_state->copyJointGroupPositions(whole_body_joint_model_group, whole_body_joint_values);
-  for (std::size_t i = 0; i < arm_joint_names.size(); ++i)
-  {
-    ROS_INFO("#1.1 Joint %s: %f", arm_joint_names[i].c_str(), arm_joint_values[i]);
-  }
-  for (std::size_t i = 0; i < whole_body_joint_names.size(); ++i)
-  {
-    ROS_INFO("#1.2 Joint %s: %f", whole_body_joint_names[i].c_str(), whole_body_joint_values[i]);
-  }
-
-  arm_move_group_interface.setPoseReferenceFrame("map");
-  arm_move_group_interface.setEndEffectorLink("link_grasp_center");
-  whole_body_move_group_interface.setPoseReferenceFrame("map");
-  whole_body_move_group_interface.setEndEffectorLink("link_grasp_center");
-  ROS_INFO("Pose Reference Frame is: %s", whole_body_move_group_interface.getPoseReferenceFrame());
-
-  geometry_msgs::Pose target_pose;
-  node_handle.getParam("target_pose_x", target_pose.position.x);
-  node_handle.getParam("target_pose_y", target_pose.position.y);
-  node_handle.getParam("target_pose_z", target_pose.position.z);
-  // target_pose.position.x = 3.0;
-  // target_pose.position.y = 2.0;
-  // target_pose.position.z = 1.0;
-
-  bool success;
-  success = whole_body_move_group_interface.setJointValueTarget(target_pose, "link_grasp_center");
-  ROS_INFO("IK Planner %s\n", success ? "SUCCEED" : "FAILED");
-
-  whole_body_move_group_interface.getJointValueTarget(whole_body_joint_values);
-
-  for (std::size_t i = 0; i < arm_joint_names.size(); ++i)
-  {
-    ROS_INFO("#2.1 Joint %s: %f", arm_joint_names[i].c_str(), arm_joint_values[i]);
-  }
-  for (std::size_t i = 0; i < whole_body_joint_names.size(); ++i)
-  {
-    ROS_INFO("#2.2 Joint %s: %f", whole_body_joint_names[i].c_str(), whole_body_joint_values[i]);
-  }
-
-  double x_axis = whole_body_joint_values[0];
-  double y_axis = whole_body_joint_values[1];
-  double theta = whole_body_joint_values[2];
-  arm_joint_values[0] = whole_body_joint_values[3];
-  arm_joint_values[1] = whole_body_joint_values[4];
-  arm_joint_values[2] = whole_body_joint_values[5];
-  arm_joint_values[3] = whole_body_joint_values[6];
-  arm_joint_values[4] = whole_body_joint_values[7];
-  arm_joint_values[5] = whole_body_joint_values[8];
-
-  success = arm_move_group_interface.setJointValueTarget(arm_joint_values);
-  ROS_INFO("Joint Value Target Set %s\n", success ? "SUCCEED" : "FAILED");
-
-  moveit::planning_interface::MoveGroupInterface::Plan my_plan;
-  success = (arm_move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  ROS_INFO("Arm Planning %s\n", success ? "SUCCEED" : "FAILED");
-
-  arm_move_group_interface.setMaxVelocityScalingFactor(0.50);
-  arm_move_group_interface.setMaxAccelerationScalingFactor(0.50);
-
-  arm_move_group_interface.asyncExecute(my_plan);
-  ROS_INFO("arm moving");
-
-  // set the target market in rviz
-  publish_marker(vis_pub, target_pose.position.x, target_pose.position.y, target_pose.position.z);
-
-  move_base(x_axis, y_axis, theta);
-  ROS_INFO("base finish moving");
-
-  ros::shutdown();
+  ROS_INFO("Listen to gripper_goal_pose");
+  // listen to the input pose
+  ros::Subscriber sub = node_handle.subscribe("gripper_goal_pose", 1, &moveit_demo::nav_to_goal, &demo);
+  
+  ros::waitForShutdown();
   return 0;
 }

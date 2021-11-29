@@ -16,6 +16,11 @@ Ubuntu 20.04 + ROS Noetic
 sudo apt install ros-noetic-moveit
 ```
 
+### Install teb local planner:
+```
+sudo apt install ros-noetic-teb-local-planner
+```
+
 ## How to run
 
 ### move_base demo
@@ -39,8 +44,5 @@ To run the Moveit Demo with default target:
 roslaunch mobiman moveit_demo.launch
 ```
 
-Or setting the target position
-```bash
-roslaunch mobiman moveit_demo.launch target_pose_x:=3 target_pose_y:=2 target_pose_z:=1
-```
-note that ``` target_pose_z ``` should not exceeds 1.9 which is the height limit of the robot
+To set the target position, publish to the topic ``` /moveit_demo/gripper_goal_pose ``` using tool like rqt
+note that ``` z ``` should not exceeds 1.9 which is the height limit of the robot

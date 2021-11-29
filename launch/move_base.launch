@@ -8,6 +8,7 @@
         <rosparam file="$(find mobiman)/config/local_costmap_params.yaml" command="load" />
         <rosparam file="$(find mobiman)/config/global_costmap_params_withmap.yaml" command="load" />
         <rosparam file="$(find mobiman)/config/base_local_planner_params.yaml" command="load" />
+        <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
         <remap from="/cmd_vel" to="/stretch_diff_drive_controller/cmd_vel" />
     </node>
 </launch>
