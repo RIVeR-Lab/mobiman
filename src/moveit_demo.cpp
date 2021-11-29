@@ -31,7 +31,7 @@ void move_base(float x, float y, float theta)
   move_base_msgs::MoveBaseGoal goal;
 
   //we'll send a goal to the robot to move 1 meter forward
-  goal.target_pose.header.frame_id = "odom";
+  goal.target_pose.header.frame_id = "map";
   goal.target_pose.header.stamp = ros::Time::now();
 
   tf2::Quaternion myQuaternion;
@@ -107,6 +107,12 @@ int main(int argc, char **argv)
     ROS_INFO("#1.2 Joint %s: %f", whole_body_joint_names[i].c_str(), whole_body_joint_values[i]);
   }
 
+  arm_move_group_interface.setPoseReferenceFrame("map");
+  arm_move_group_interface.setEndEffectorLink("link_grasp_center");
+  whole_body_move_group_interface.setPoseReferenceFrame("map");
+  whole_body_move_group_interface.setEndEffectorLink("link_grasp_center");
+  ROS_INFO("Pose Reference Frame is: %s", whole_body_move_group_interface.getPoseReferenceFrame());
+
   geometry_msgs::Pose target_pose;
   node_handle.getParam("target_pose_x", target_pose.position.x);
   node_handle.getParam("target_pose_y", target_pose.position.y);
@@ -146,10 +152,10 @@ int main(int argc, char **argv)
   success = (arm_move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
   ROS_INFO("Arm Planning %s\n", success ? "SUCCEED" : "FAILED");
 
-  arm_move_group_interface.setMaxVelocityScalingFactor(0.20);
-  arm_move_group_interface.setMaxAccelerationScalingFactor(0.20);
+  arm_move_group_interface.setMaxVelocityScalingFactor(0.50);
+  arm_move_group_interface.setMaxAccelerationScalingFactor(0.50);
 
-  arm_move_group_interface.execute(my_plan);
+  arm_move_group_interface.asyncExecute(my_plan);
 
   ROS_INFO("arm moving");
 

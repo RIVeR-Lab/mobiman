@@ -4,9 +4,12 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /MotionPlanning1
+        - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 351
+    Tree Height: 395
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -139,6 +142,11 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          dummy_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           laser:
             Alpha: 1
             Show Axes: false
@@ -264,6 +272,25 @@ Visualization Manager:
             Show Trail: false
             Value: true
           respeaker_base:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          theta_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          virtual_world_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          x_axis_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          y_axis_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -380,6 +407,11 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          dummy_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           laser:
             Alpha: 1
             Show Axes: false
@@ -509,16 +541,216 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          theta_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          virtual_world_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          x_axis_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          y_axis_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         Robot Alpha: 0.5
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 1
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        base_link:
+          Value: true
+        camera_accel_frame:
+          Value: false
+        camera_accel_optical_frame:
+          Value: false
+        camera_bottom_screw_frame:
+          Value: false
+        camera_color_frame:
+          Value: false
+        camera_color_optical_frame:
+          Value: false
+        camera_depth_frame:
+          Value: false
+        camera_depth_optical_frame:
+          Value: false
+        camera_gyro_frame:
+          Value: false
+        camera_gyro_optical_frame:
+          Value: false
+        camera_infra1_frame:
+          Value: false
+        camera_infra1_optical_frame:
+          Value: false
+        camera_infra2_frame:
+          Value: false
+        camera_infra2_optical_frame:
+          Value: false
+        camera_link:
+          Value: false
+        caster_link:
+          Value: false
+        dummy_link:
+          Value: false
+        laser:
+          Value: false
+        link_arm_l0:
+          Value: false
+        link_arm_l1:
+          Value: false
+        link_arm_l2:
+          Value: false
+        link_arm_l3:
+          Value: false
+        link_arm_l4:
+          Value: false
+        link_aruco_inner_wrist:
+          Value: false
+        link_aruco_left_base:
+          Value: false
+        link_aruco_right_base:
+          Value: false
+        link_aruco_shoulder:
+          Value: false
+        link_aruco_top_wrist:
+          Value: false
+        link_grasp_center:
+          Value: true
+        link_gripper:
+          Value: false
+        link_gripper_finger_left:
+          Value: false
+        link_gripper_finger_right:
+          Value: false
+        link_gripper_fingertip_left:
+          Value: false
+        link_gripper_fingertip_right:
+          Value: false
+        link_head:
+          Value: false
+        link_head_pan:
+          Value: false
+        link_head_tilt:
+          Value: false
+        link_left_wheel:
+          Value: false
+        link_lift:
+          Value: false
+        link_mast:
+          Value: false
+        link_right_wheel:
+          Value: false
+        link_wrist_yaw:
+          Value: false
+        map:
+          Value: true
+        odom:
+          Value: false
+        respeaker_base:
+          Value: false
+        theta_link:
+          Value: false
+        virtual_world_link:
+          Value: false
+        x_axis_link:
+          Value: false
+        y_axis_link:
+          Value: false
+      Marker Alpha: 1
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        map:
+          odom:
+            base_link:
+              caster_link:
+                {}
+              laser:
+                {}
+              link_aruco_left_base:
+                {}
+              link_aruco_right_base:
+                {}
+              link_left_wheel:
+                {}
+              link_mast:
+                link_head:
+                  link_head_pan:
+                    link_head_tilt:
+                      camera_bottom_screw_frame:
+                        camera_link:
+                          camera_accel_frame:
+                            camera_accel_optical_frame:
+                              {}
+                          camera_color_frame:
+                            camera_color_optical_frame:
+                              {}
+                          camera_depth_frame:
+                            camera_depth_optical_frame:
+                              {}
+                          camera_gyro_frame:
+                            camera_gyro_optical_frame:
+                              {}
+                          camera_infra1_frame:
+                            camera_infra1_optical_frame:
+                              {}
+                          camera_infra2_frame:
+                            camera_infra2_optical_frame:
+                              {}
+                link_lift:
+                  link_arm_l4:
+                    link_arm_l3:
+                      link_arm_l2:
+                        link_arm_l1:
+                          link_arm_l0:
+                            link_aruco_inner_wrist:
+                              {}
+                            link_aruco_top_wrist:
+                              {}
+                            link_wrist_yaw:
+                              link_gripper:
+                                link_grasp_center:
+                                  {}
+                                link_gripper_finger_left:
+                                  link_gripper_fingertip_left:
+                                    {}
+                                link_gripper_finger_right:
+                                  link_gripper_fingertip_right:
+                                    {}
+                  link_aruco_shoulder:
+                    {}
+                respeaker_base:
+                  {}
+              link_right_wheel:
+                {}
+              virtual_world_link:
+                dummy_link:
+                  x_axis_link:
+                    y_axis_link:
+                      theta_link:
+                        {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -530,30 +762,30 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.5615234375
+      Distance: 6.756478786468506
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
+      Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.11356700211763382
-        Y: 0.10592000186443329
-        Z: 2.2351800055275817e-7
+        X: -2.832277774810791
+        Y: -1.4470884799957275
+        Z: -7.301563300643465e-07
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5697969794273376
+      Pitch: 1.5697963237762451
       Target Frame: base_link
-      Value: XYOrbit (rviz)
-      Yaw: 5.364950656890869
+      Yaw: 3.1349453926086426
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1052
+  Height: 1136
   Help:
     collapsed: false
   Hide Left Dock: false
@@ -562,9 +794,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002a2000003c2fc0200000007fb000000100044006900730070006c006100790073010000003d000001f0000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000233000001cc0000017d00ffffff000004d8000003c200000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002a200000416fc0200000007fb000000100044006900730070006c006100790073010000003d0000021c000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000025f000001f40000017d00ffffff000004900000041600000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 1920
-  X: 1920
-  Y: 0
+  Width: 1848
+  X: 72
+  Y: 27

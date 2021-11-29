@@ -58,7 +58,7 @@
     </include>
 
 
-    <!-- include python script to do motion planning-->
+    <!-- include c++ script to do motion planning-->
     <node pkg="mobiman" name="moveit_demo" type="moveit_demo" output="screen">
         <param name="target_pose_x" value="$(arg target_pose_x)" />
         <param name="target_pose_y" value="$(arg target_pose_y)" />
