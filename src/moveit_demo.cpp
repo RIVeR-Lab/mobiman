@@ -14,8 +14,17 @@
 #include <actionlib/client/simple_action_client.h>
 #include <tf2/LinearMath/Quaternion.h>
 
+#include <visualization_msgs/Marker.h>
+
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
+/**
+ * @brief move_base module to stretch robot, moving to x y with orientation of theta
+ * 
+ * @param x the x coordinate
+ * @param y the y coordinate
+ * @param theta the orientation
+ */
 void move_base(float x, float y, float theta)
 {
   theta = 0;
@@ -53,13 +62,57 @@ void move_base(float x, float y, float theta)
     ROS_INFO("The base failed to move");
 }
 
+/**
+ * @brief publish rviz marker at the target position
+ * 
+ * @param x x coordinate
+ * @param y y coordinate
+ * @param z z coordinate
+ */
+void publish_marker(ros::Publisher &vis_pub, double x, double y, double z)
+{
+  visualization_msgs::Marker marker;
+  marker.header.frame_id = "map";
+  marker.header.stamp = ros::Time();
+  marker.id = 0;
+  marker.ns = "visual_markers";
+  marker.type = visualization_msgs::Marker::SPHERE;
+  marker.action = visualization_msgs::Marker::ADD;
+  marker.pose.position.x = x;
+  marker.pose.position.y = y;
+  marker.pose.position.z = z;
+  marker.pose.orientation.x = 0.0;
+  marker.pose.orientation.y = 0.0;
+  marker.pose.orientation.z = 0.0;
+  marker.pose.orientation.w = 1.0;
+  marker.scale.x = 0.1;
+  marker.scale.y = 0.1;
+  marker.scale.z = 0.1;
+  marker.color.a = 1.0; // Don't forget to set the alpha!
+  marker.color.r = 0.0;
+  marker.color.g = 1.0;
+  marker.color.b = 0.0;
+
+  // Publish the marker
+  while (vis_pub.getNumSubscribers() < 1)
+  {
+    ROS_ERROR("Please create a subscriber to the marker");
+    sleep(1);
+  }
+  vis_pub.publish(marker);
+  ROS_INFO("marker published");
+}
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "move_group_interface");
   ros::NodeHandle node_handle("~");
+
+  // init marker publisher
+  ros::Publisher vis_pub = node_handle.advertise<visualization_msgs::Marker>("visualization_marker", 0);
+
   ros::AsyncSpinner spinner(1);
   spinner.start();
-  ros::Rate loop_rate(0.1);
 
   static const std::string ARM_PLANNING_GROUP = "stretch_arm";
   static const std::string whole_body_PLANNING_GROUP = "stretch_whole_body";
@@ -120,6 +173,7 @@ int main(int argc, char **argv)
   // target_pose.position.x = 3.0;
   // target_pose.position.y = 2.0;
   // target_pose.position.z = 1.0;
+
   bool success;
   success = whole_body_move_group_interface.setJointValueTarget(target_pose, "link_grasp_center");
   ROS_INFO("IK Planner %s\n", success ? "SUCCEED" : "FAILED");
@@ -156,10 +210,13 @@ int main(int argc, char **argv)
   arm_move_group_interface.setMaxAccelerationScalingFactor(0.50);
 
   arm_move_group_interface.asyncExecute(my_plan);
-
   ROS_INFO("arm moving");
 
+  // set the target market in rviz
+  publish_marker(vis_pub, target_pose.position.x, target_pose.position.y, target_pose.position.z);
+
   move_base(x_axis, y_axis, theta);
+  ROS_INFO("base finish moving");
 
   ros::shutdown();
   return 0;

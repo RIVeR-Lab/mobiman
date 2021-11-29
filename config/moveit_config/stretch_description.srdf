@@ -51,9 +51,6 @@
         <joint name="joint_arm_l3" value="0"/>
         <joint name="joint_lift" value="0.0912"/>
         <joint name="joint_wrist_yaw" value="0"/>
-        <joint name="theta_joint" value="0"/>
-        <joint name="x_axis_joint" value="0"/>
-        <joint name="y_axis_joint" value="0"/>
     </group_state>
     <group_state name="extended" group="stretch_arm">
         <joint name="joint_arm_l0" value="0.13"/>
