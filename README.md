@@ -37,12 +37,15 @@ To run the move_base with SLAM demo:
 roslaunch mobiman navigation_with_map.launch 
 ```
 
-Moveit demo shows motion planning using Moveit planner for the stretch arm and the moving base.
+### Moveit demo 
 
-To run the Moveit Demo with default target:
+This demo shows motion planning using Moveit planner for the stretch arm and the moving base.
+
+Run the Moveit Demo launch file:
 ```bash
 roslaunch mobiman moveit_demo.launch
 ```
 
-To set the target position, publish to the topic ``` /moveit_demo/gripper_goal_pose ``` using tool like rqt
+To set the target position, publish to the topic ``` /moveit_demo/gripper_goal_pose ``` using tool like ```rqt```
+
 note that ``` z ``` should not exceeds 1.9 which is the height limit of the robot
