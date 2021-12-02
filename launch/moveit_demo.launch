@@ -27,9 +27,14 @@
     <include file="$(find stretch_gazebo)/launch/gazebo.launch">
         <arg name="rviz" value="false" />
         <arg name="model" value="$(find mobiman)/urdf/stretch_gazebo.urdf.xacro"/>\
-        <arg name="world" value="$(find stretch_gazebo)/worlds/random_objects.world" />
+        <!-- <arg name="world" value="$(find stretch_gazebo)/worlds/random_objects.world" /> -->
+        <arg name="world" value="$(find mobiman)/config/test.world" />
+
     </include>
 
+    <!-- Move Base -->
+    <include file="$(find mobiman)/launch/move_base.launch" />
+    
     <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
     <include file="$(find mobiman)/launch//moveit_config/planning_context.launch">
         <arg name="load_robot_description" value="false" />
@@ -50,13 +55,13 @@
         <arg name="rviz_config" value="$(find mobiman)/launch/moveit_config/moveit.rviz" />
         <arg name="debug" value="$(arg debug)" />
     </include>
-    
-    <include file="$(find mobiman)/launch/move_base.launch">
-    </include>
+
 
 
     <!-- include c++ script to do motion planning-->
     <node pkg="mobiman" name="moveit_demo" type="moveit_demo" output="screen">
     </node>
+
+    <include file="$(find mobiman)/launch/map_server.launch" />
 
 </launch>

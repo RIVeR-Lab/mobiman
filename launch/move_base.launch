@@ -1,6 +1,6 @@
 <launch>
     <!-- MAPPING -->
-    <node pkg="gmapping" type="slam_gmapping" name="gmapping_record_map" output="log" />
+    <node pkg="gmapping" type="slam_gmapping" name="gmapping_record_map" output="screen" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <rosparam file="$(find mobiman)/config/common_costmap_params.yaml" command="load" ns="global_costmap" />
@@ -10,5 +10,6 @@
         <rosparam file="$(find mobiman)/config/base_local_planner_params.yaml" command="load" />
         <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
         <remap from="/cmd_vel" to="/stretch_diff_drive_controller/cmd_vel" />
+        <remap from="/odom" to="/stretch_diff_drive_controller/odom" />
     </node>
 </launch>
