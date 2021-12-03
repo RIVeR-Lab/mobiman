@@ -20,7 +20,7 @@
 #include <visualization_msgs/Marker.h>
 #include <math.h>
 
-#define GOAL_THRESHOLD_ 0.05
+#define GOAL_THRESHOLD_ 0.025
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
@@ -29,6 +29,7 @@ class moveit_demo
 private:
   ros::NodeHandle nh_;
   ros::Publisher vis_pub_;
+  moveit::planning_interface::PlanningSceneInterface planning_scene_interface_;
   moveit::planning_interface::MoveGroupInterface arm_move_group_interface_;
   moveit::planning_interface::MoveGroupInterface whole_body_move_group_interface_;
   moveit::core::RobotModelPtr kinematic_model_;
@@ -86,6 +87,7 @@ public:
     arm_move_group_interface_.setNumPlanningAttempts(10);
     arm_move_group_interface_.setMaxVelocityScalingFactor(0.25);
     arm_move_group_interface_.setMaxAccelerationScalingFactor(0.25);
+    arm_move_group_interface_.setPlanningTime(10);
     whole_body_move_group_interface_.setPoseReferenceFrame("map");
     whole_body_move_group_interface_.setEndEffectorLink("link_grasp_center");
     whole_body_move_group_interface_.setNumPlanningAttempts(10);
@@ -200,7 +202,6 @@ public:
     // set the target market in rviz
     this->publish_marker(target_pose.position.x, target_pose.position.y, target_pose.position.z);
 
-    ros::Rate loop_rate(0.1);
     while (true)
     {
       geometry_msgs::PoseStamped gripper_pose = arm_move_group_interface_.getCurrentPose("link_grasp_center");
@@ -249,9 +250,83 @@ public:
       ROS_INFO("Arm Joint Values Set %s\n", success ? "SUCCEED" : "FAILED");
       this->arm_move_group_interface_.move();
       ROS_INFO("arm moving");
-
-      loop_rate.sleep();
+      
     }
+  }
+
+  void addCollisionObjects()
+  {
+    std::vector<moveit_msgs::CollisionObject> collision_objects;
+    collision_objects.resize(3);
+
+    // Add the first table where the cube will originally be kept.
+    collision_objects[0].id = "table1";
+    collision_objects[0].header.frame_id = "map";
+
+    /* Define the primitive and its dimensions. */
+    collision_objects[0].primitives.resize(1);
+    collision_objects[0].primitives[0].type = collision_objects[0].primitives[0].BOX;
+    collision_objects[0].primitives[0].dimensions.resize(3);
+    collision_objects[0].primitives[0].dimensions[0] = 0.2;
+    collision_objects[0].primitives[0].dimensions[1] = 0.4;
+    collision_objects[0].primitives[0].dimensions[2] = 0.4;
+
+    /* Define the pose of the table. */
+    collision_objects[0].primitive_poses.resize(1);
+    collision_objects[0].primitive_poses[0].position.x = 0.5;
+    collision_objects[0].primitive_poses[0].position.y = 0;
+    collision_objects[0].primitive_poses[0].position.z = 0.2;
+    collision_objects[0].primitive_poses[0].orientation.w = 1.0;
+    // END_SUB_TUTORIAL
+
+    collision_objects[0].operation = collision_objects[0].ADD;
+
+    // BEGIN_SUB_TUTORIAL table2
+    // Add the second table where we will be placing the cube.
+    collision_objects[1].id = "table2";
+    collision_objects[1].header.frame_id = "map";
+
+    /* Define the primitive and its dimensions. */
+    collision_objects[1].primitives.resize(1);
+    collision_objects[1].primitives[0].type = collision_objects[1].primitives[0].BOX;
+    collision_objects[1].primitives[0].dimensions.resize(3);
+    collision_objects[1].primitives[0].dimensions[0] = 0.4;
+    collision_objects[1].primitives[0].dimensions[1] = 0.2;
+    collision_objects[1].primitives[0].dimensions[2] = 0.4;
+
+    /* Define the pose of the table. */
+    collision_objects[1].primitive_poses.resize(1);
+    collision_objects[1].primitive_poses[0].position.x = 0;
+    collision_objects[1].primitive_poses[0].position.y = 0.5;
+    collision_objects[1].primitive_poses[0].position.z = 0.2;
+    collision_objects[1].primitive_poses[0].orientation.w = 1.0;
+    // END_SUB_TUTORIAL
+
+    collision_objects[1].operation = collision_objects[1].ADD;
+
+    // BEGIN_SUB_TUTORIAL object
+    // Define the object that we will be manipulating
+    collision_objects[2].header.frame_id = "map";
+    collision_objects[2].id = "object";
+
+    /* Define the primitive and its dimensions. */
+    collision_objects[2].primitives.resize(1);
+    collision_objects[2].primitives[0].type = collision_objects[1].primitives[0].BOX;
+    collision_objects[2].primitives[0].dimensions.resize(3);
+    collision_objects[2].primitives[0].dimensions[0] = 0.02;
+    collision_objects[2].primitives[0].dimensions[1] = 0.02;
+    collision_objects[2].primitives[0].dimensions[2] = 0.2;
+
+    /* Define the pose of the object. */
+    collision_objects[2].primitive_poses.resize(1);
+    collision_objects[2].primitive_poses[0].position.x = 0.5;
+    collision_objects[2].primitive_poses[0].position.y = 0;
+    collision_objects[2].primitive_poses[0].position.z = 0.5;
+    collision_objects[2].primitive_poses[0].orientation.w = 1.0;
+    // END_SUB_TUTORIAL
+
+    collision_objects[2].operation = collision_objects[2].ADD;
+    planning_scene_interface_.applyCollisionObjects(collision_objects);
   }
 };
 
@@ -268,6 +343,9 @@ int main(int argc, char **argv)
   ROS_INFO("Listen to gripper_goal_pose");
   // listen to the input pose
   ros::Subscriber sub = node_handle.subscribe("gripper_goal_pose", 1, &moveit_demo::nav_to_goal, &demo);
+
+  ros::WallDuration(1.0).sleep();
+  demo.addCollisionObjects();
 
   ros::waitForShutdown();
   return 0;

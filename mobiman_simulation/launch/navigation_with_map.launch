@@ -20,15 +20,15 @@
 
   <!-- NAVIGATION -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find mobiman)/config/common_costmap_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find mobiman)/config/common_costmap_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find mobiman)/config/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find mobiman)/config/global_costmap_params_withmap.yaml" command="load" />
-    <rosparam file="$(find mobiman)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find mobiman_simulation)/config/common_costmap_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find mobiman_simulation)/config/common_costmap_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find mobiman_simulation)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find mobiman_simulation)/config/global_costmap_params_withmap.yaml" command="load" />
+    <rosparam file="$(find mobiman_simulation)/config/base_local_planner_params.yaml" command="load" />
     <remap from="/cmd_vel" to="/stretch_diff_drive_controller/cmd_vel" />
   </node>
 
   <!-- VISUALIZE -->
-  <node name="rviz" pkg="rviz" type="rviz" output="log" args="-d $(find mobiman)/rviz/navigation.rviz" if="$(arg rviz)" />
+  <node name="rviz" pkg="rviz" type="rviz" output="log" args="-d $(find mobiman_simulation)/rviz/navigation.rviz" if="$(arg rviz)" />
 
 </launch>

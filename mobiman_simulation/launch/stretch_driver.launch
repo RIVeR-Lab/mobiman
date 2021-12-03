@@ -1,6 +1,6 @@
 <launch>
   
-    <param name="robot_description" textfile="$(find mobiman)/urdf/stretch_gazebo.urdf.xacro" />
+    <param name="robot_description" textfile="$(find mobiman_simulation)/urdf/stretch_gazebo.urdf.xacro" />
     <arg name="calibrated_controller_yaml_file" value="$(find stretch_core)/config/controller_calibration_head.yaml"/>
   
     <node
