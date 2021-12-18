@@ -21,6 +21,12 @@ sudo apt install ros-noetic-moveit
 sudo apt install ros-noetic-teb-local-planner
 ```
 
+### Install Gazebo Models (Optional)
+```
+cd ~/.gazebo/models
+git clone https://github.com/osrf/gazebo_models.git
+```
+
 ## How to run
 
 ### move_base demo
@@ -28,13 +34,13 @@ sudo apt install ros-noetic-teb-local-planner
 To run the move_base without SLAM demo:
 
 ```bash
-roslaunch mobiman navigation_no_map.launch
+roslaunch mobiman_simulation navigation_no_map.launch
 ```
 
 To run the move_base with SLAM demo:
 
 ```bash
-roslaunch mobiman navigation_with_map.launch 
+roslaunch mobiman_simulation navigation_with_map.launch 
 ```
 
 ### Moveit demo 
@@ -43,7 +49,7 @@ This demo shows motion planning using Moveit planner for the stretch arm and the
 
 Run the Moveit Demo launch file:
 ```bash
-roslaunch mobiman moveit_demo.launch
+roslaunch mobiman_simulation moveit_demo.launch
 ```
 
 To set the target position, publish to the topic ``` /moveit_demo/gripper_goal_pose ``` using tool like ```rqt```

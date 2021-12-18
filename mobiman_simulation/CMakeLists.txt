@@ -108,4 +108,8 @@ add_executable(moveit_demo src/moveit_demo.cpp)
 target_link_libraries(moveit_demo ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 install(TARGETS moveit_demo DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
+add_executable(pick_n_place src/pick_n_place.cpp)
+target_link_libraries(pick_n_place ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+install(TARGETS pick_n_place DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

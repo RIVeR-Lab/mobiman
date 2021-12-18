@@ -1143,17 +1143,17 @@
       <pose>-4.52818 0.7433 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>215 890000000</sim_time>
-      <real_time>117 732206494</real_time>
-      <wall_time>1638397616 615208989</wall_time>
-      <iterations>68294</iterations>
+      <sim_time>268 169000000</sim_time>
+      <real_time>96 355280491</real_time>
+      <wall_time>1638567804 671921303</wall_time>
+      <iterations>52279</iterations>
       <model name='Dumpster'>
         <pose>-4.50879 -4.28224 0.001377 0 -0 1.5708</pose>
         <scale>1 1 1</scale>
         <link name='link'>
           <pose>-4.50879 -4.28224 0.001377 0 -0 1.5708</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-8e-06 0.013529 9.81173 2.75679 -0.007303 -6e-06</acceleration>
+          <acceleration>-8e-06 0.013529 9.81173 2.75679 -0.007302 -6e-06</acceleration>
           <wrench>-8e-06 0.013529 9.81173 0 -0 0</wrench>
         </link>
       </model>
@@ -1165,6 +1165,26 @@
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='cafe_table'>
+        <pose>2 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>2 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='coke_can'>
+        <pose>1.65001 4e-06 0.772423 -0.00954 0.000604 -0.001127</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>1.65001 4e-06 0.772423 -0.00954 0.000604 -0.001127</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0.000236 -8.9e-05 -1.4e-05 0.001556 0.004109 0.000283</acceleration>
+          <wrench>9.2e-05 -3.5e-05 -6e-06 0 -0 0</wrench>
         </link>
       </model>
       <model name='drc_practice_angled_barrier_45'>
@@ -1242,200 +1262,200 @@
         </link>
       </model>
       <model name='robot'>
-        <pose>0.018008 0.030039 0.009811 -0.00036 0.000777 0.068318</pose>
+        <pose>0.033038 0.048238 0.009758 -8.4e-05 0.000986 0.119272</pose>
         <scale>1 1 1</scale>
         <link name='link_arm_l0'>
-          <pose>-0.083897 -0.119346 0.393809 1.57052 0.00078 0.044159</pose>
-          <velocity>0.000483 0.002608 -0.000885 0.011418 3.7e-05 0.00858</velocity>
-          <acceleration>-0.248912 2.13396 -0.672507 0.173839 -0.468764 0.720263</acceleration>
-          <wrench>-0.0252 0.216045 -0.068085 0 -0 0</wrench>
+          <pose>-0.06554 -0.104422 0.393747 1.57071 0.000999 0.074515</pose>
+          <velocity>0.000618 0.000286 0.000467 -0.005722 0.000526 -0.000591</velocity>
+          <acceleration>-0.033301 0.519266 -0.34188 -0.328886 -0.314937 -0.745948</acceleration>
+          <wrench>-0.003371 0.052571 -0.034612 0 -0 0</wrench>
         </link>
         <link name='link_arm_l1'>
-          <pose>-0.08329 -0.133082 0.393812 1.57051 0.000775 0.044146</pose>
-          <velocity>0.000571 0.002687 -0.00101 0.009386 -0.000709 0.00636</velocity>
-          <acceleration>-0.60592 1.84818 -0.056045 -2.89892 -1.41591 -2.32239</acceleration>
-          <wrench>-0.031009 0.094583 -0.002868 0 -0 0</wrench>
+          <pose>-0.064517 -0.118133 0.393748 1.57071 0.000996 0.07451</pose>
+          <velocity>0.000605 0.000295 0.000527 -0.004572 0.0005 -0.000414</velocity>
+          <acceleration>-0.143669 0.414774 -0.135127 -0.95396 -0.864175 -2.49227</acceleration>
+          <wrench>-0.007352 0.021227 -0.006915 0 -0 0</wrench>
         </link>
         <link name='link_arm_l2'>
-          <pose>-0.083865 -0.120096 0.39381 1.57049 0.000768 0.044129</pose>
-          <velocity>0.000403 0.002051 -0.000717 0.007163 -0.00151 0.003615</velocity>
-          <acceleration>-0.500378 1.38111 0.054483 -3.01886 -0.767326 -2.94187</acceleration>
-          <wrench>-0.028475 0.078595 0.0031 0 -0 0</wrench>
+          <pose>-0.065485 -0.105169 0.393748 1.57071 0.00099 0.074504</pose>
+          <velocity>0.000598 0.000288 0.000381 -0.003295 0.000448 -0.000171</velocity>
+          <acceleration>-0.142613 0.290075 -0.029703 -1.77494 -1.55811 1.47765</acceleration>
+          <wrench>-0.008116 0.016507 -0.00169 0 -0 0</wrench>
         </link>
         <link name='link_arm_l3'>
-          <pose>-0.084439 -0.107109 0.393808 1.57048 0.000761 0.044112</pose>
-          <velocity>0.00026 0.001419 -0.000447 0.004824 -0.002345 0.000737</velocity>
-          <acceleration>-0.338965 0.908518 0.112128 -0.150558 0.231015 -0.581951</acceleration>
-          <wrench>-0.02125 0.056957 0.00703 0 -0 0</wrench>
+          <pose>-0.066453 -0.092205 0.393748 1.5707 0.000985 0.074498</pose>
+          <velocity>0.000582 0.000287 0.000241 -0.001904 0.000378 3.1e-05</velocity>
+          <acceleration>-0.109971 0.169869 0.060993 0.496575 -0.846619 2.07908</acceleration>
+          <wrench>-0.006894 0.010649 0.003824 0 -0 0</wrench>
         </link>
         <link name='link_gripper_finger_left'>
-          <pose>-0.01319 -0.068952 0.3162 0.000902 0.523876 1.61383</pose>
-          <velocity>-0.000103 0.00375 -0.000107 0.011065 -0.000199 0.008034</velocity>
-          <acceleration>-1.68781 4.46116 1.48606 -0.570677 -0.675704 0.389511</acceleration>
-          <wrench>-0.086825 0.229493 0.076447 0 -0 0</wrench>
+          <pose>0.003587 -0.051889 0.316131 0.00116 0.52368 1.64431</pose>
+          <velocity>0.000615 -0.000136 4.7e-05 -0.00553 0.000469 -0.000696</velocity>
+          <acceleration>-0.664726 1.18678 0.345762 -0.528646 -0.38707 -0.932897</acceleration>
+          <wrench>-0.034195 0.061051 0.017787 0 -0 0</wrench>
         </link>
         <link name='link_gripper_finger_right'>
-          <pose>0.006992 -0.068092 0.316185 3.1407 -0.523878 -1.52778</pose>
-          <velocity>-6e-05 0.003876 -0.000121 0.010599 -0.000661 0.007066</velocity>
-          <acceleration>-1.57617 4.93072 1.44332 -1.29758 -0.941332 -0.243813</acceleration>
-          <wrench>-0.081082 0.253648 0.074248 0 -0 0</wrench>
+          <pose>0.023734 -0.050418 0.316111 3.14045 -0.523681 -1.49731</pose>
+          <velocity>0.000615 -0.000128 4.8e-05 -0.005172 0.000323 -0.000979</velocity>
+          <acceleration>-0.605047 1.40214 0.376236 -0.603205 -0.483952 -1.34245</acceleration>
+          <wrench>-0.031125 0.072129 0.019354 0 -0 0</wrench>
         </link>
         <link name='link_head_pan'>
-          <pose>0.020343 0.030716 1.35521 -0.000379 0.000755 0.044037</pose>
-          <velocity>-0.001256 0.001796 0.000446 -0.00207 -0.001839 -0.003937</velocity>
-          <acceleration>-2.19291 -0.668134 0.605818 2.87312 -1.01734 -1.75434</acceleration>
-          <wrench>-0.078634 -0.023958 0.021724 0 -0 0</wrench>
+          <pose>0.034313 0.048517 1.35516 -0.000127 0.000968 0.074447</pose>
+          <velocity>-0.000959 -0.00092 0.000369 0.001383 -0.001585 0.001077</velocity>
+          <acceleration>-2.07577 -0.874879 0.579681 2.7496 -0.702883 2.9813</acceleration>
+          <wrench>-0.074434 -0.031372 0.020786 0 -0 0</wrench>
         </link>
         <link name='link_head_tilt'>
-          <pose>0.017793 0.058117 1.30189 1.57042 0.000754 0.044036</pose>
-          <velocity>-0.001066 0.001716 0.000393 -0.001987 -0.002025 -0.003824</velocity>
-          <acceleration>-2.10654 -0.764767 0.657945 -0.260967 -0.657618 -2.40394</acceleration>
-          <wrench>-0.29939 -0.108692 0.09351 0 -0 0</wrench>
+          <pose>0.030919 0.07584 1.30184 1.57067 0.000966 0.074445</pose>
+          <velocity>-0.000928 -0.000861 0.00041 0.001368 -0.001793 0.000971</velocity>
+          <acceleration>-2.04983 -1.02096 0.663476 -0.576089 -0.787273 -1.94504</acceleration>
+          <wrench>-0.29133 -0.145103 0.094296 0 -0 0</wrench>
         </link>
         <link name='link_left_wheel'>
-          <pose>0.006321 0.187398 0.05065 -1.57116 0.074058 0.044053</pose>
-          <velocity>7.3e-05 1.5e-05 0.005203 -5.8e-05 0.000625 -0.00397</velocity>
-          <acceleration>-0.146489 -0.033009 0.089335 0.161627 -1.42927 2.20814</acceleration>
-          <wrench>-0.001465 -0.00033 0.000893 0 -0 0</wrench>
+          <pose>0.015234 0.205006 0.050646 -1.5709 0.08712 0.074478</pose>
+          <velocity>-3.2e-05 -8.4e-05 0.005533 0.002429 -0.001204 0.000312</velocity>
+          <acceleration>-0.193794 -0.002885 0.134656 0.136086 -1.53585 0.471766</acceleration>
+          <wrench>-0.001938 -2.9e-05 0.001347 0 -0 0</wrench>
         </link>
         <link name='link_lift'>
-          <pose>-0.096239 0.16034 0.393715 0.000764 0.000355 1.61489</pose>
-          <velocity>0.000963 0.000785 6.9e-05 0.00091 -0.002015 -0.002838</velocity>
-          <acceleration>0.266516 0.377013 0.226563 0.660568 1.45169 2.18838</acceleration>
-          <wrench>0.136582 0.193209 0.116108 0 -0 0</wrench>
+          <pose>-0.086377 0.174762 0.393719 0.000985 0.000116 1.64529</pose>
+          <velocity>0.00045 0.000337 0.000102 -0.000344 0.00032 0.000181</velocity>
+          <acceleration>0.397725 0.193676 0.195418 -2.85715 -0.128426 1.25495</acceleration>
+          <wrench>0.203823 0.099254 0.100147 0 -0 0</wrench>
         </link>
         <link name='link_right_wheel'>
-          <pose>0.020214 -0.127589 0.050736 -1.5712 0.051162 0.044051</pose>
-          <velocity>-7e-06 0.000108 0.003301 -0.002332 -0.000652 -0.004893</velocity>
-          <acceleration>0.007579 -0.039705 0.037576 -2.64423 -0.983906 -1.62478</acceleration>
-          <wrench>7.6e-05 -0.000397 0.000376 0 -0 0</wrench>
+          <pose>0.038698 -0.109409 0.050631 -1.57094 0.08547 0.074469</pose>
+          <velocity>-3.3e-05 -0 0.00257 0.000182 -0.001146 -0.000378</velocity>
+          <acceleration>-1.99895 -1.5191 14.115 -1.50325 -0.806296 1.90177</acceleration>
+          <wrench>-0.019989 -0.015191 0.14115 0 -0 0</wrench>
         </link>
         <link name='link_wrist_yaw'>
-          <pose>-0.001002 -0.115694 0.362995 -3.14132 -0.000779 -3.09903</pose>
-          <velocity>0.000302 0.003347 -0.000646 0.011252 -4e-06 0.00846</velocity>
-          <acceleration>-0.147631 3.76557 -0.750924 -0.063273 -0.52279 0.640449</acceleration>
-          <wrench>-0.021029 0.536379 -0.106964 0 -0 0</wrench>
+          <pose>0.017199 -0.098248 0.362915 -3.14151 -0.000999 -3.06867</pose>
+          <velocity>0.000617 0.000116 0.000312 -0.005681 0.000535 -0.000573</velocity>
+          <acceleration>-0.028197 1.03755 -0.343704 -0.436023 -0.336142 -0.761099</acceleration>
+          <wrench>-0.004016 0.147792 -0.048958 0 -0 0</wrench>
         </link>
         <link name='theta_link'>
-          <pose>0.016242 0.030027 0.009812 -0.000379 0.000766 0.044075</pose>
-          <velocity>0.001212 -0.000612 0.000441 -0.001801 -0.001891 -0.004549</velocity>
-          <acceleration>0.078525 -0.06605 0.392295 -2.98704 -0.86875 -1.67109</acceleration>
-          <wrench>0.160714 -0.135183 0.802899 0 -0 0</wrench>
+          <pose>0.029924 0.048019 0.00976 -0.000128 0.000979 0.074484</pose>
+          <velocity>0.000998 0.000752 0.000384 0.001284 -0.001549 -6e-06</velocity>
+          <acceleration>0.152766 -0.381524 0.33103 2.97768 -0.675182 2.5524</acceleration>
+          <wrench>0.312663 -0.780855 0.67751 0 -0 0</wrench>
         </link>
         <link name='virtual_world_link'>
-          <pose>0.018008 0.030039 0.009811 -0.00036 0.000777 0.068318</pose>
-          <velocity>0.001219 -0.000665 0.000481 -0.001847 -0.001829 -0.004347</velocity>
-          <acceleration>0.828145 -0.463573 0.585522 -3.03357 -0.8655 -1.71193</acceleration>
-          <wrench>0.000828 -0.000464 0.000586 0 -0 0</wrench>
+          <pose>0.033038 0.048238 0.009758 -8.4e-05 0.000986 0.119272</pose>
+          <velocity>0.000999 0.000778 0.000417 0.001282 -0.001439 0.000635</velocity>
+          <acceleration>0.839398 -1.03109 0.609343 2.97153 -0.922153 3.10756</acceleration>
+          <wrench>0.000839 -0.001031 0.000609 0 -0 0</wrench>
         </link>
         <link name='x_axis_link'>
-          <pose>0.016248 0.029918 0.009813 -0.00036 0.000777 0.068318</pose>
-          <velocity>0.001189 -0.000686 0.000476 -0.001867 -0.001822 -0.004459</velocity>
-          <acceleration>0.83157 -0.4903 0.585242 -3.05519 -0.845411 -1.87919</acceleration>
-          <wrench>0.000832 -0.00049 0.000585 0 -0 0</wrench>
+          <pose>0.029942 0.047867 0.009761 -8.4e-05 0.000986 0.119272</pose>
+          <velocity>0.000967 0.00078 0.000408 0.001283 -0.001414 0.000678</velocity>
+          <acceleration>0.827628 -1.00975 0.596917 2.98579 -0.958707 3.09166</acceleration>
+          <wrench>0.000828 -0.00101 0.000597 0 -0 0</wrench>
         </link>
         <link name='y_axis_link'>
-          <pose>0.016241 0.030027 0.009813 -0.00036 0.000777 0.068318</pose>
-          <velocity>0.00119 -0.000681 0.000476 -0.001863 -0.001826 -0.004403</velocity>
-          <acceleration>0.831238 -0.485317 0.584644 -3.05266 -0.858143 -1.79995</acceleration>
-          <wrench>0.000831 -0.000485 0.000585 0 -0 0</wrench>
+          <pose>0.029924 0.048019 0.009761 -8.4e-05 0.000986 0.119272</pose>
+          <velocity>0.000968 0.00078 0.000409 0.001286 -0.001435 0.000648</velocity>
+          <acceleration>0.830232 -1.01025 0.597852 2.98753 -0.927804 3.08336</acceleration>
+          <wrench>0.00083 -0.00101 0.000598 0 -0 0</wrench>
         </link>
       </model>
       <model name='table_short'>
-        <pose>-4.52818 0.7433 -6e-06 2e-06 -4e-06 1.5708</pose>
+        <pose>-4.52818 0.7433 -4e-06 -2e-06 4e-06 1.5708</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-4.52818 0.7433 -6e-06 2e-06 -4e-06 1.5708</pose>
+          <pose>-4.52818 0.7433 -4e-06 -2e-06 4e-06 1.5708</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box'>
-        <pose>-5.35116 -0.620161 0.499995 0 1e-05 0</pose>
+        <pose>-5.35116 -0.620156 0.499995 -1e-05 0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-5.35116 -0.620161 0.499995 0 1e-05 0</pose>
+          <pose>-5.35116 -0.620156 0.499995 -1e-05 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.010615 -0.006191 -9.78231 0.012424 0.021225 1.8e-05</acceleration>
-          <wrench>0.010615 -0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>-0.004709 0.011055 -9.78158 -0.022108 -0.009414 -1e-06</acceleration>
+          <wrench>-0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box_0'>
-        <pose>-2.93253 -4.82625 0.499995 -1e-05 -0 -0</pose>
+        <pose>-2.93254 -4.82625 0.499995 0 -1e-05 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-2.93253 -4.82625 0.499995 -1e-05 -0 -0</pose>
+          <pose>-2.93254 -4.82625 0.499995 0 -1e-05 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.004709 0.011055 -9.78158 -0.022108 0.009414 1e-06</acceleration>
-          <wrench>0.004709 0.011055 -9.78158 0 -0 0</wrench>
+          <acceleration>-0.010615 -0.006191 -9.78231 0.012424 -0.021225 -1.8e-05</acceleration>
+          <wrench>-0.010615 -0.006191 -9.78231 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box_1'>
-        <pose>0.302174 -3.65914 0.499995 0 1e-05 0</pose>
+        <pose>0.302169 -3.65914 0.499995 -1e-05 0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>0.302174 -3.65914 0.499995 0 1e-05 0</pose>
+          <pose>0.302169 -3.65914 0.499995 -1e-05 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.010615 -0.006191 -9.78231 0.012424 0.021225 1.8e-05</acceleration>
-          <wrench>0.010615 -0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>-0.004709 0.011055 -9.78158 -0.022108 -0.009414 -1e-06</acceleration>
+          <wrench>-0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_box_2'>
-        <pose>3.17808 -3.86364 0.499995 0 1e-05 0</pose>
+        <pose>3.17808 -3.86363 0.499995 -1e-05 0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>3.17808 -3.86364 0.499995 0 1e-05 0</pose>
+          <pose>3.17808 -3.86363 0.499995 -1e-05 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0.010615 -0.006191 -9.78231 0.012424 0.021225 1.8e-05</acceleration>
-          <wrench>0.010615 -0.006191 -9.78231 0 -0 0</wrench>
+          <acceleration>-0.004709 0.011055 -9.78158 -0.022108 -0.009414 -1e-06</acceleration>
+          <wrench>-0.004709 0.011055 -9.78158 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_cylinder'>
-        <pose>-5.25503 2.84097 0.499992 -3e-06 3e-06 0</pose>
+        <pose>-5.25503 2.84097 0.499998 3e-06 -2e-06 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-5.25503 2.84097 0.499992 -3e-06 3e-06 0</pose>
+          <pose>-5.25503 2.84097 0.499998 3e-06 -2e-06 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_cylinder_0'>
-        <pose>-5.08552 -1.69688 0.499998 3e-06 -4e-06 0</pose>
+        <pose>-5.08552 -1.69688 0.499997 4e-06 3e-06 -0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-5.08552 -1.69688 0.499998 3e-06 -4e-06 0</pose>
+          <pose>-5.08552 -1.69688 0.499997 4e-06 3e-06 -0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_cylinder_1'>
-        <pose>-1.60028 -4.59641 0.499992 -3e-06 -4e-06 -0</pose>
+        <pose>-1.60028 -4.59641 0.499993 -0 -0 -0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-1.60028 -4.59641 0.499992 -3e-06 -4e-06 -0</pose>
+          <pose>-1.60028 -4.59641 0.499993 -0 -0 -0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_cylinder_2'>
-        <pose>2.01714 -4.27494 0.499993 -3e-06 -4e-06 -0</pose>
+        <pose>2.01714 -4.27494 0.499992 -3e-06 3e-06 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>2.01714 -4.27494 0.499993 -3e-06 -4e-06 -0</pose>
+          <pose>2.01714 -4.27494 0.499992 -3e-06 3e-06 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
       <model name='unit_cylinder_3'>
-        <pose>5.88414 -3.79176 0.499997 3e-06 4e-06 -0</pose>
+        <pose>5.88414 -3.79176 0.499998 3e-06 -3e-06 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>5.88414 -3.79176 0.499997 3e-06 4e-06 -0</pose>
+          <pose>5.88414 -3.79176 0.499998 3e-06 -3e-06 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 -9.8 0 -0 0</acceleration>
           <wrench>0 0 -9.8 0 -0 0</wrench>
@@ -1487,7 +1507,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>0.236966 -7.50471 14.8983 0 1.22364 1.5602</pose>
+        <pose>1.06621 0.171537 1.27054 0 0.78364 -0.023801</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -4317,6 +4337,142 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
+    </model>
+    <model name='cafe_table'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='surface'>
+          <pose>0 0 0.755 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.913 0.913 0.04</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='column'>
+          <pose>0 0 0.37 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.042 0.042 0.74</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='base'>
+          <pose>0 0 0.02 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.56 0.56 0.04</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://cafe_table/meshes/cafe_table.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>2.02736 0.058809 0 0 -0 0</pose>
+    </model>
+    <model name='coke_can'>
+      <link name='link'>
+        <inertial>
+          <pose>0 0 0.06 0 -0 0</pose>
+          <mass>0.39</mass>
+          <inertia>
+            <ixx>0.00055575</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00055575</iyy>
+            <iyz>0</iyz>
+            <izz>0.0001755</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+          <pose>0.003937 0.004724 -0.18 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://coke_can/meshes/coke_can.dae</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>1e+07</kp>
+                <kd>1</kd>
+                <min_depth>0.001</min_depth>
+                <max_vel>0.1</max_vel>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <pose>0.003937 0.004724 -0.18 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://coke_can/meshes/coke_can.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>1.39236 1.00268 0 0 -0 0</pose>
     </model>
   </world>
 </sdf>

@@ -1,7 +1,7 @@
 moveit_setup_assistant_config:
   URDF:
-    package: stretch_description
-    relative_path: urdf/stretch_description.xacro
+    package: mobiman_simulation
+    relative_path: urdf/stretch_gazebo.urdf.xacro
     xacro_args: ""
   SRDF:
     relative_path: config/stretch_description.srdf

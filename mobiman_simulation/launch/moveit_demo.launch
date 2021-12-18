@@ -32,6 +32,9 @@
 
     </include>
 
+    <!-- GMAPPING -->
+    <node pkg="gmapping" type="slam_gmapping" name="gmapping_record_map" output="screen" />
+
     <!-- Move Base -->
     <include file="$(find mobiman_simulation)/launch/move_base.launch" />
     
@@ -57,6 +60,6 @@
     <node pkg="mobiman_simulation" name="moveit_demo" type="moveit_demo" output="screen">
     </node>
 
-    <include file="$(find mobiman_simulation)/launch/map_server.launch" />
+    <!-- <include file="$(find mobiman_simulation)/launch/map_server.launch" /> -->
 
 </launch>

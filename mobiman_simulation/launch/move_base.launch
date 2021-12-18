@@ -1,6 +1,4 @@
 <launch>
-    <!-- MAPPING -->
-    <node pkg="gmapping" type="slam_gmapping" name="gmapping_record_map" output="screen" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <rosparam file="$(find mobiman_simulation)/config/common_costmap_params.yaml" command="load" ns="global_costmap" />
