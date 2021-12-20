@@ -30,7 +30,7 @@
     <include file="$(find stretch_gazebo)/launch/gazebo.launch">
         <arg name="rviz" value="false" />
         <arg name="model" value="$(find mobiman_simulation)/urdf/stretch_gazebo.urdf.xacro" />
-        <arg name="world" value="$(find mobiman_simulation)/config/test.world" />
+        <!-- <arg name="world" value="$(find mobiman_simulation)/config/test.world" /> -->
     </include>
 
     <!-- LOCALIZATION -->
