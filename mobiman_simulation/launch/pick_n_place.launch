@@ -59,8 +59,8 @@
 
 
     <!-- include c++ script to do motion planning-->
-    <!-- <node pkg="mobiman_simulation" name="pick_n_place" type="pick_n_place" output="screen">
-    </node> -->
+    <node pkg="mobiman_simulation" name="pick_n_place" type="pick_n_place" output="screen">
+    </node>
 
 
 </launch>

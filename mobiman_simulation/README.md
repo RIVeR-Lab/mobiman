@@ -56,14 +56,9 @@ To set the target position, publish to the topic ``` /moveit_demo/gripper_goal_p
 
 note that ``` z ``` should not exceeds 1.9 which is the height limit of the robot
 
-### Moveit Pick and Place demo (Errors exist)
+### Moveit Pick and Place demo
 
 Run the launch file:
 ```bash
 roslaunch mobiman_simulation pick_n_place.launch
-```
-
-Run the node:
-```bash
-rosrun mobiman_simulation pick_n_place
 ```

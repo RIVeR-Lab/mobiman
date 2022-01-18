@@ -89,7 +89,7 @@ public:
     arm_move_group_interface_.setNumPlanningAttempts(10);
     arm_move_group_interface_.setMaxVelocityScalingFactor(0.25);
     arm_move_group_interface_.setMaxAccelerationScalingFactor(0.25);
-    arm_move_group_interface_.setPlanningTime(10);
+    arm_move_group_interface_.setPlanningTime(60);
     whole_body_move_group_interface_.setPoseReferenceFrame("map");
     whole_body_move_group_interface_.setEndEffectorLink("link_grasp_center");
     whole_body_move_group_interface_.setNumPlanningAttempts(10);
@@ -191,6 +191,18 @@ public:
     gripper_interface.move();
   }
 
+  void attachObject()
+  {
+    moveit::planning_interface::MoveGroupInterface gripper_interface("stretch_gripper");
+    gripper_interface.attachObject("object");
+  }
+
+  void detachObject()
+  {
+    moveit::planning_interface::MoveGroupInterface gripper_interface("stretch_gripper");
+    gripper_interface.detachObject("object");
+  }
+
   void pick()
   {
     std::vector<moveit_msgs::Grasp> grasps;
@@ -209,6 +221,13 @@ public:
 
     arm_move_group_interface_.setPlanningTime(45.0);
     arm_move_group_interface_.setSupportSurfaceName("table1");
+
+    arm_move_group_interface_.setGoalTolerance(1);
+    arm_move_group_interface_.setGoalPositionTolerance(1);
+    arm_move_group_interface_.setGoalOrientationTolerance(1);
+    ROS_INFO("Position Goal Tolerance %f\n", arm_move_group_interface_.getGoalPositionTolerance());
+    ROS_INFO("Orientation Goal Tolerance %f\n", arm_move_group_interface_.getGoalOrientationTolerance());
+
     // Call pick to pick up the object using the grasps given
     arm_move_group_interface_.pick("object", grasps);
     // END_SUB_TUTORIAL
@@ -230,6 +249,32 @@ public:
       arm_move_group_interface_.move();
     }
   }
+
+  void another_pick()
+  {
+    geometry_msgs::Pose target_pose;
+    target_pose.position.x = 0.187;
+    target_pose.position.y = -0.146;
+    target_pose.position.z = 0.50;
+    target_pose.orientation.w = 1.0;
+    this->arm_move_group_interface_.setPoseReferenceFrame("base_link");
+    bool success = this->arm_move_group_interface_.setApproximateJointValueTarget(target_pose, "link_grasp_center");
+    ROS_INFO("Arm Planner %s\n", success ? "SUCCEED" : "FAILED");
+    this->arm_move_group_interface_.move();
+  }
+
+  void another_place()
+  {
+    geometry_msgs::Pose target_pose;
+    target_pose.position.x = 0.50;
+    target_pose.position.y = -0.146;
+    target_pose.position.z = 0.52;
+    target_pose.orientation.w = 1.0;
+    this->arm_move_group_interface_.setPoseReferenceFrame("base_link");
+    bool success = this->arm_move_group_interface_.setApproximateJointValueTarget(target_pose, "link_grasp_center");
+    ROS_INFO("Arm Planner %s\n", success ? "SUCCEED" : "FAILED");
+    this->arm_move_group_interface_.move();
+  }
 };
 
 int main(int argc, char **argv)
@@ -247,9 +292,11 @@ int main(int argc, char **argv)
   ros::WallDuration(1.0).sleep();
 
   demo.openGripper();
-  demo.pick();
-  // demo.fake_pick();
-
+  demo.another_pick();
+  demo.attachObject();
+  demo.another_place();
+  demo.detachObject();
+  demo.another_pick();
   ros::waitForShutdown();
   return 0;
 }
