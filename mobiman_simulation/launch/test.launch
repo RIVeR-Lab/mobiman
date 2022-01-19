@@ -1,5 +1,0 @@
-<launch>
-    <node pkg="mobiman" name="moveit" type="moveit.py" output="screen">
-        <param name="target_pose" value="[-5 0 0.5]" />
-    </node>
-</launch>

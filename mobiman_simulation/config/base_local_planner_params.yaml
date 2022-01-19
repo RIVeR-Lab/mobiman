@@ -11,3 +11,5 @@ TebLocalPlannerROS:
     xy_goal_tolerance: 0.01
 
     holonomic_robot: false
+
+    global_plan_viapoint_sep: 0.1
