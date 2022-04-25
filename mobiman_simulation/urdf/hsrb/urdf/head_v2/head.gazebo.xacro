@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="hsrb_head_gazebo" params="prefix">
+        <xacro:gazebo_link name="${prefix}_pan_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_tilt_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_l_stereo_camera_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_r_stereo_camera_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_center_camera_frame" gravity="false" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_rgbd_sensor_link" gravity="true" collide="false" friction="0.9"/>
+
+        <xacro:gazebo_joint name="${prefix}_pan_joint"/>
+        <xacro:gazebo_joint name="${prefix}_tilt_joint"/>
+    </xacro:macro>
+</robot>

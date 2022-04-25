@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot name="torso" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find hsrb_description)/urdf/torso_v0/torso.gazebo.xacro"/>
+
+    <!-- torso -->
+    <xacro:macro name="hsrb_torso" params="prefix parent mimic_joint *origin">
+        <joint name="${prefix}_lift_joint" type="prismatic">
+            <xacro:insert_block name="origin" />
+            <!-- <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0" /> -->
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="300.0" velocity="0.1" lower="0.0" upper="0.345" />
+            <parent link="${parent}" />
+            <child link="${prefix}_lift_link" />
+            <mimic joint="${mimic_joint}" multiplier="0.5" />
+            <dynamics damping="500.0"/>
+        </joint>
+
+        <link name="${prefix}_lift_link">
+            <inertial>
+                <mass value="3.420779"/>
+                <origin xyz="-0.051142 0.003454 -0.2905"/>
+                <inertia ixx="0.1045" ixy="-0.000460884801" ixz="0.000101130383"
+                    iyy="0.105" iyz="0.002941" izz="0.01284"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsrb_description/meshes/torso_v0/torso_light.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsrb_description/meshes/torso_v0/torso.stl" />
+                </geometry>
+            </collision>
+        </link>
+        <xacro:hsrb_torso_gazebo prefix="${prefix}" mimic_joint="${mimic_joint}"/>
+    </xacro:macro>
+</robot>

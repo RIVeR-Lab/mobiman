@@ -1,0 +1,16 @@
+<launch>
+  <!-- send urdf to param server -->
+  <arg name="personal_name" default="" />
+  <arg name="robot_model" default="hsrb4s" />
+  <arg name="visualization" default="true" />
+  <arg name="implicit_damping" default="false" />
+  <arg name="ground_truth_xyz_offset" default="0.0\ 0.0\ 0.0" />
+  <arg name="ground_truth_rpy_offset" default="0.0\ 0.0\ 0.0" />
+
+  <group ns="/$(arg personal_name)">
+    <param name="tf_prefix" value="$(arg personal_name)" />
+    <param name="robot_description"
+           command="$(find xacro)/xacro --inorder $(find hsrb_description)/robots/$(arg robot_model).urdf.xacro gazebo_visualization_enabled:=$(arg visualization) implicit_damping:=$(arg implicit_damping) personal_name:=$(arg personal_name) ground_truth_xyz_offset:=$(arg ground_truth_xyz_offset) ground_truth_rpy_offset:=$(arg ground_truth_rpy_offset)" />
+    <param name="robot_collision_pair" textfile="$(find hsrb_description)/robots/collision_pair_hsrb.xml" />
+  </group>
+</launch>

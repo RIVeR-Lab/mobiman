@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  ocs2_mobile_manipulator_ros
+  #ocs2_mobile_manipulator_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,7 +107,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES mobiman_simulation
   CATKIN_DEPENDS roscpp rospy std_msgs
-  DEPENDS system_lib
+  #DEPENDS system_lib
 )
 
 ###########
@@ -152,16 +152,16 @@ include_directories(
 # )
 
 # MPC node Stretch
-add_executable(mobile_manipulator_mpc_node_stretch
-  src/MobileManipulatorMpcNode_stretch.cpp
-)
-add_dependencies(mobile_manipulator_mpc_node_stretch
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(mobile_manipulator_mpc_node_stretch
-  ${catkin_LIBRARIES}
-)
-target_compile_options(mobile_manipulator_mpc_node_stretch PUBLIC ${FLAGS})
+#add_executable(mobile_manipulator_mpc_node_stretch
+#  src/MobileManipulatorMpcNode_stretch.cpp
+#)
+#add_dependencies(mobile_manipulator_mpc_node_stretch
+#  ${catkin_EXPORTED_TARGETS}
+#)
+#target_link_libraries(mobile_manipulator_mpc_node_stretch
+#  ${catkin_LIBRARIES}
+#)
+#target_compile_options(mobile_manipulator_mpc_node_stretch PUBLIC ${FLAGS})
 
 #############
 ## Install ##

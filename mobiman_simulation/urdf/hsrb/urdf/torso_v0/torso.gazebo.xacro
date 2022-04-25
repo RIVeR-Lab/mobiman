@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="hsrb_torso_gazebo" params="prefix mimic_joint">
+        <xacro:gazebo_link name="${prefix}_lift_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_joint_mimic name="${prefix}_lift_joint"/>
+
+        <gazebo>
+            <plugin name="torso_mimic_plugin" filename="libtmc_gazebo_mimic_plugin.so">
+                <joint>${prefix}_lift_joint</joint>
+                <mimicJoint>${mimic_joint}</mimicJoint>
+                <multiplier>0.5</multiplier>
+            </plugin>
+        </gazebo>
+    </xacro:macro>
+</robot>

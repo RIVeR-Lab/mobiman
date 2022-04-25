@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="hsrb_wrist_gazebo" params="prefix">
+        <xacro:gazebo_link name="${prefix}_flex_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_roll_link" gravity="true" collide="false" friction="0.9"/>
+        <xacro:gazebo_link name="${prefix}_ft_sensor_frame" gravity="true" collide="false" friction="0.9"/>
+
+        <xacro:gazebo_joint name="${prefix}_flex_joint"/>
+        <xacro:gazebo_joint name="${prefix}_roll_joint"/>
+    </xacro:macro>
+</robot>
