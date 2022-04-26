@@ -8,7 +8,7 @@
   </node>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find mobiman_control)/config/mobiman_control.yaml" command="load"/>
+  <rosparam file="$(find mobiman_control)/config/jackal_ur5/control.yaml" command="load"/>
 
   <!-- load the controllers -->
   <node name="controller_spawner" 
@@ -39,7 +39,7 @@
         type="ekf_localization_node" 
         name="ekf_localization">
     <rosparam command="load" 
-              file="$(find mobiman_control)/config/localization.yaml" />
+              file="$(find mobiman_control)/config/jackal_ur5/localization.yaml" />
   </node>
 
   <node pkg="interactive_marker_twist_server" 
@@ -51,7 +51,7 @@
         type="twist_mux" 
         name="twist_mux">
     <rosparam command="load" 
-              file="$(find mobiman_control)/config/twist_mux.yaml" />
+              file="$(find mobiman_control)/config/jackal_ur5/twist_mux.yaml" />
     <remap from="cmd_vel_out" to="jackal_velocity_controller/cmd_vel"/>
   </node>
 

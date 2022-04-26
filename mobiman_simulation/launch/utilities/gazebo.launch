@@ -45,7 +45,7 @@
   <group ns="$(arg robot_namespace)">
     <!-- Load the URDF into the ROS Parameter Server -->
     <param  name="robot_description"
-            command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf.xacro'" />
+            command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" />
 
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
     <node name="urdf_spawner" 
@@ -75,10 +75,10 @@
     <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
 
     <!-- Run the sensor processes -->
-    <include file="$(find mobiman_simulation)/launch/camera_process.launch" />
+    <include file="$(find mobiman_simulation)/launch/utilities/camera_process.launch" />
 
     <!-- Run robot control on the gazebo master -->
-    <include file="$(find mobiman_control)/launch/mobiman_control.launch" />
+    <include file="$(find mobiman_control)/launch/control_jackal_ur5.launch" />
   
     <!-- Spawn marker on the robot -->
     <!--node if="$(arg has_marker)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" /-->

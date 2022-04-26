@@ -59,7 +59,7 @@
       <fdir1 value="1 0 0"/>
     </gazebo>
 
-    <joint name="${prefix}_wheel" type="continuous">
+    <joint name="${prefix}_wheel" type="fixed">
       <parent link="chassis_link"/>
       <child link="${prefix}_wheel_link" />
       <xacro:insert_block name="joint_pose" />
