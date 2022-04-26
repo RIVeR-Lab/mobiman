@@ -1,0 +1,87 @@
+<launch>
+
+  <!-- General Parameters -->
+  <!-- Custom -->
+  <arg name="gazebo" default="true"/>
+  <arg name="has_marker" default="true"/>
+
+  <!-- Gazebo -->
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="false"/>
+  <arg name="robot_namespace" default="/"/>
+
+  <!-- Task Parameters -->
+  <!-- Initial Robot Pose -->
+  <arg name="robot0_init_pos_x" default="0.0"/>
+  <arg name="robot0_init_pos_y" default="0.0"/>
+  <arg name="robot0_init_pos_z" default="0.1"/>
+  <arg name="robot0_init_roll" default="0.0"/>
+  <arg name="robot0_init_pitch" default="0.0"/>
+  <arg name="robot0_init_yaw" default="0.0"/>
+
+  <arg name="init_ur5_shoulder_pan_joint" default="0.0"/>
+  <arg name="init_ur5_shoulder_lift_joint" default="-1.2"/>
+  <arg name="init_ur5_elbow_joint" default="-2.0"/>
+  <arg name="init_ur5_wrist_1_joint" default="0.0"/>
+  <arg name="init_ur5_wrist_2_joint" default="0.0"/>
+  <arg name="init_ur5_wrist_3_joint" default="0.0"/>
+
+  <!-- Launch the Gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!--arg name="world_name" value="$(find mobiman_simulation)/worlds/northeastern_warehouse.world"/-->
+    <!--arg name="world_name" value="$(find mobiman_simulation)/worlds/willow_garage.world"/-->
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="verbose" value="$(arg verbose)" />
+  </include>
+
+  <group ns="$(arg robot_namespace)">
+    <!-- Load the URDF into the ROS Parameter Server -->
+    <param  name="robot_description"
+            command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf.xacro'" />
+
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <node name="urdf_spawner" 
+          pkg="gazebo_ros" 
+          type="spawn_model" 
+          respawn="false" 
+          output="screen"
+          args="-urdf 
+                -model mobiman 
+                -param robot_description 
+                -robot_namespace $(arg robot_namespace)
+                -x $(arg robot0_init_pos_x)
+                -y $(arg robot0_init_pos_y)
+                -z $(arg robot0_init_pos_z)
+                -R $(arg robot0_init_roll)
+                -P $(arg robot0_init_pitch)  
+                -Y $(arg robot0_init_yaw)
+                -J ur5_shoulder_pan_joint $(arg init_ur5_shoulder_pan_joint)
+                -J ur5_shoulder_lift_joint $(arg init_ur5_shoulder_lift_joint)
+                -J ur5_elbow_joint $(arg init_ur5_elbow_joint)
+                -J ur5_wrist_1_joint $(arg init_ur5_wrist_1_joint)
+                -J ur5_wrist_2_joint $(arg init_ur5_wrist_2_joint)
+                -J ur5_wrist_3_joint $(arg init_ur5_wrist_3_joint)
+                -unpause"/>
+
+    <!-- Load Robot Semantic -->
+    <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
+
+    <!-- Run the sensor processes -->
+    <include file="$(find mobiman_simulation)/launch/camera_process.launch" />
+
+    <!-- Run robot control on the gazebo master -->
+    <include file="$(find mobiman_control)/launch/mobiman_control.launch" />
+  
+    <!-- Spawn marker on the robot -->
+    <!--node if="$(arg has_marker)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" /-->
+  </group>
+
+</launch>

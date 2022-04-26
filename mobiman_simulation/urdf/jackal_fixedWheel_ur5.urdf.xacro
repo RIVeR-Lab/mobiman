@@ -1,66 +1,250 @@
 <?xml version="1.0" ?>
-<robot name="jackal_ur5" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="mobiman" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:arg name="ns" default=""/>
-    <xacro:arg name="model" default=""/>
-
-    <!--xacro:property name="ns" value="$(arg ns)"/-->
-    <!--xacro:property name="arm_prefix" value="ur_arm_" /-->
-    <!--xacro:property name="path_meshes" value="package://tentabot/meshes" /-->
+    <xacro:arg name="robot_namespace" default="/"/>
+    <xacro:property name="arm_prefix" value="ur5_" />
+    <xacro:property name="path_meshes" value="package://mobiman_simulation/meshes" />
     <xacro:property name="M_PI" value="3.1415926535897931" />
     <xacro:property name="M_PI_2" value="1.570796327" />
     
-    <!-- Import macro for materials-->
-    <!--xacro:include filename="$(find tentabot)/urdf/materials.xacro" /-->
+    <xacro:include filename="$(find mobiman_simulation)/urdf/materials.xacro" />
 
     <!-- Import mobile base -->
-    <!--xacro:include filename="$(find turtlebot3_description)/urdf/turtlebot3_$(arg model)_with_ns.urdf.xacro"/-->
-    <!--xacro:include filename="$(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro"/-->
     <!--xacro:include filename="$(find husky_description)/urdf/husky.urdf.xacro"/-->
     <xacro:include filename="$(find mobiman_simulation)/urdf/jackal_fixedWheel.urdf.xacro"/>
 
-    <!-- Import arm: UR5 -->
-    <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro"/>
-    <xacro:ur5_robot prefix="ur5_" joint_limited="true"/>
+    <!-- Import robotic arm -->
+    <xacro:include filename="$(find ur_description)/urdf/inc/ur5_macro.xacro"/>
+    <xacro:ur5_robot prefix="${arm_prefix}" />
 
-    <!-- Create UR5 instance -->
+    <!-- Import lidar-->
+    <!--xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx_mount.urdf.xacro" /-->
+
+    <!-- Import camera-->
+    <!--xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/-->
+    <xacro:include filename="$(find mobiman_simulation)/urdf/realsense-d435.macro.xacro" />
+
+    <!-- Attach robotic arm to the mobile base -->
     <joint name="ur5_to_jackal" type="fixed">
         <parent link="base_link"/>
         <child link="ur5_base_link"/>
         <origin xyz="0 0 0.2" rpy="0 0 0" />
     </joint>
 
-    <!-- Import macro for lidar-->
-    <xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx_mount.urdf.xacro" />
-
     <!-- Create lidar instance -->
-  <!--xacro:sick_lms1xx_mount prefix="jackal"
-      parent_link="base_link"
-      topic="jackal/scan"
-      min_range="0.2"
-      max_range="4.0">
-      <origin xyz="0 0 0.18" rpy="0 0 0" />
-  </xacro:sick_lms1xx_mount-->
-
-    <!-- Import macro for camera-->
-    <!--xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/-->
-    <!--xacro:include filename="$(find tentabot)/urdf/r200.urdf.xacro"/-->
-    <!--xacro:include filename="$(find tentabot)/urdf/realsense-d435.macro.xacro" /-->
-
-    <!-- Instantiate sensors-->
+    <!--xacro:sick_lms1xx_mount prefix="jackal"
+        parent_link="base_link"
+        topic="jackal/scan"
+        min_range="0.2"
+        max_range="4.0">
+        <origin xyz="0 0 0.18" rpy="0 0 0" />
+    </xacro:sick_lms1xx_mount-->
 
     <!-- Create camera instance -->
     <!--xacro:realsense-rs200 
         prefix="rs200_cam1" 
-        parent="$(arg ns)/base_link">
-        <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0" />   
+        parent="top_plate_front_link">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />   
     </xacro:realsense-rs200-->
 
-    <!-- Create camera instance 1.570796327 (turtlebot3 burger)-->
-    <!--xacro:realsense-d435
+    <!-- Create camera instance -1.570796327 -->
+    <!--xacro:realsense-rs200 
+        prefix="rs200_cam2" 
+        parent="${arm_prefix}ee_link">
+        <origin xyz="0.0 0.0 -0.05" rpy="0.0 0.0 0.0" />   
+    </xacro:realsense-rs200-->
+
+    <!-- Create camera instance -->
+    <xacro:realsense-d435 
         prefix="d435_cam1" 
         parent="base_link">
         <origin xyz="0.2 0.0 0.2" rpy="0.0 0.0 0.0" />   
+    </xacro:realsense-d435>
+
+    <!-- Create camera instance -1.570796327 -->
+    <!--xacro:realsense-d435 
+        prefix="d435_cam2" 
+        parent="${arm_prefix}ee_link">
+        <origin xyz="0.0 0.0 -0.05" rpy="0.0 0.0 0.0" />   
     </xacro:realsense-d435-->
+
+    <!-- Create holonomic virtual links and joints -->
+    <!--link name="virtual_world_link"/>
+
+    <link name="dummy_link">
+ 	    <inertial>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="7.58333333333e-07" ixy="0.0" ixz="0.0" iyy="7.58333333333e-07" iyz="0.0" izz="1.25e-06"/>
+        </inertial>
+        <collision>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+	</link>
+
+    <gazebo reference="dummy_link">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="fixed" type="fixed">
+        <parent link="virtual_world_link"/>
+        <child link="dummy_link"/>
+    </joint>
+
+    <link name="x_axis_link">
+ 	    <inertial>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="7.58333333333e-07" ixy="0.0" ixz="0.0" iyy="7.58333333333e-07" iyz="0.0" izz="1.25e-06"/>
+        </inertial>
+        <collision>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+	</link>
+
+    <gazebo reference="x_axis_link">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+    <joint name="x_axis_joint" type="prismatic">
+        <origin xyz="0 0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="dummy_link" />
+        <child link="x_axis_link" />
+        <axis xyz="1 0 0" />
+        <limit effort="0.0001" lower="-20" upper="20" velocity="1" />
+        <dynamics damping="0.00001" friction="1000"/>
+    </joint>
+
+    <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="x_axis_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <link name="y_axis_link">
+ 	    <inertial>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="7.58333333333e-07" ixy="0.0" ixz="0.0" iyy="7.58333333333e-07" iyz="0.0" izz="1.25e-06"/>
+        </inertial>
+        <collision>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+	</link>
+
+    <gazebo reference="y_axis_link">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <joint name="y_axis_joint" type="prismatic">
+        <origin xyz="0 0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="x_axis_link" />
+        <child link="y_axis_link" />
+        <axis xyz="0 1 0" />
+        <limit effort="0.0001" lower="-20" upper="20" velocity="1" />
+        <dynamics damping="0.00001" friction="1000"/>
+    </joint>
+
+    <transmission name="tran2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="y_axis_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <link name="theta_link">
+ 	    <inertial>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <mass value="0.001" />
+            <inertia ixx="7.58333333333e-07" ixy="0.0" ixz="0.0" iyy="7.58333333333e-07" iyz="0.0" izz="1.25e-06"/>
+        </inertial>
+        <collision>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="0.0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+	</link>
+
+    <gazebo reference="theta_link">
+        <mu1>10.0</mu1>
+        <mu2>10.0</mu2>
+        <material>Gazebo/Blue</material>
+        <self_collide>0</self_collide>
+    </gazebo>
+
+    <joint name="theta_joint" type="continuous">
+        <origin xyz="0 0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="y_axis_link" />
+        <child link="theta_link" />
+        <axis xyz="0 0 1" />
+        <limit effort="0.001" lower="-3.14" upper="3.14" velocity="0.01" />
+        <dynamics damping="0.00001" friction="1000"/>
+    </joint>
+
+    <transmission name="tran3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="theta_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <joint name="entity_link_joint" type="fixed">
+        <parent link="theta_link"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0.025" rpy="0 0 0"/>
+    </joint-->
 
 </robot>
