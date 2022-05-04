@@ -28,7 +28,7 @@ ddp
 
   maxNumIterations                1
   minRelCost                      0.1
-  constraintTolerance             1e-3
+  constraintTolerance             1e-2  ; NUA EDIT: def: 1e-3
 
   displayInfo                     false
   displayShortSummary             false
@@ -79,8 +79,8 @@ mpc
   
   debugPrint                      false
 
-  mpcDesiredFrequency             100   ; [Hz]
-  mrtDesiredFrequency             400   ; [Hz]
+  mpcDesiredFrequency             -100   ; [Hz] NUA EDIT: def: 100
+  mrtDesiredFrequency             400   ; [Hz] NUA EDIT: def: 400
 }
 
 ; initial state
@@ -124,11 +124,11 @@ initialState
   ; initial state for the arm DOFs
   arm
   {
-    (0,0)  2.5  ; ur5_shoulder_pan_joint
-    (1,0) -1.0  ; ur5_shoulder_lift_joint
-    (2,0)  1.5  ; ur5_elbow_joint
+    (0,0)  0.0  ; ur5_shoulder_pan_joint
+    (1,0)  -1.2  ; ur5_shoulder_lift_joint
+    (2,0)  -2.0  ; ur5_elbow_joint
     (3,0)  0.0  ; ur5_wrist_1_joint
-    (4,0)  1.0  ; ur5_wrist_2_joint
+    (4,0)  0.0  ; ur5_wrist_2_joint
     (5,0)  0.0  ; ur5_wrist_3_joint
   }
 }
@@ -165,8 +165,8 @@ inputCost
       {
         scaling 1e-2
 
-        (0,0)  2.5  ; forward velocity
-        (1,1)  2.5  ; turning velocity
+        (0,0)  10.0  ; forward velocity    NUA EDIT: def: 2.5
+        (1,1)  10.0  ; turning velocity    NUA EDIT: def: 2.5
       }
     }
 
@@ -252,8 +252,8 @@ jointVelocityLimits
 
       wheelBasedMobileManipulator
       {
-        (0,0)  -0.5 ; forward velocity
-        (1,0)  -1.0 ; turning velocity
+        (0,0)  -0.5 ; forward velocity NUA EDIT: def: -0.5
+        (1,0)  -1.0 ; turning velocity NUA EDIT: def: -1.0
       }
     }
 

@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ros/init.h>
 #include <ros/package.h>
 
-#include <ocs2_mpc/MPC_DDP.h>
+#include <ocs2_ddp/GaussNewtonDDP_MPC.h>
 #include <ocs2_ros_interfaces/mpc/MPC_ROS_Interface.h>
 #include <ocs2_ros_interfaces/synchronized_module/RosReferenceManager.h>
 
@@ -40,7 +40,8 @@ using namespace ocs2;
 using namespace mobile_manipulator;
 
 int main(int argc, char** argv) 
-{  
+{
+  std::cout << "ocs2_mobile_manipulator_mpc_node::main -> START" << std::endl; 
   const std::string robotName = "mobile_manipulator";
 
   // Initialize ros node
@@ -55,25 +56,28 @@ int main(int argc, char** argv)
   std::cerr << "Loading task file: " << taskFile << std::endl;
   std::cerr << "Loading library folder: " << libFolder << std::endl;
   std::cerr << "Loading urdf file: " << urdfFile << std::endl;
-
+  
   // Robot interface
   MobileManipulatorInterface interface(taskFile, libFolder, urdfFile);
+
   // ROS ReferenceManager
   std::shared_ptr<ocs2::RosReferenceManager> rosReferenceManagerPtr(
       new ocs2::RosReferenceManager(robotName, interface.getReferenceManagerPtr()));
   rosReferenceManagerPtr->subscribe(nodeHandle);
 
   // MPC
-  ocs2::MPC_DDP mpc(interface.mpcSettings(), interface.ddpSettings(), interface.getRollout(), interface.getOptimalControlProblem(),
-                    interface.getInitializer());
+  ocs2::GaussNewtonDDP_MPC mpc(interface.mpcSettings(), 
+                               interface.ddpSettings(), 
+                               interface.getRollout(),
+                               interface.getOptimalControlProblem(), 
+                               interface.getInitializer());
   mpc.getSolverPtr()->setReferenceManager(rosReferenceManagerPtr);
-
-  std::cout << "MobileManipulatorMpcNode_stretch::main -> CUKUBIK END" << std::endl;
 
   // Launch MPC ROS node
   MPC_ROS_Interface mpcNode(mpc, robotName);
   mpcNode.launchNodes(nodeHandle);
 
   // Successful exit
+  std::cout << "ocs2_mobile_manipulator_mpc_node::main -> END" << std::endl;
   return 0;
 }

@@ -24,8 +24,8 @@
   <arg name="robot0_init_yaw" default="0.0"/>
 
   <arg name="init_ur5_shoulder_pan_joint" default="0.0"/>
-  <arg name="init_ur5_shoulder_lift_joint" default="-1.2"/>
-  <arg name="init_ur5_elbow_joint" default="-2.0"/>
+  <arg name="init_ur5_shoulder_lift_joint" default="-1.2"/> <!-- -1.2 -->
+  <arg name="init_ur5_elbow_joint" default="-2.0"/> <!-- -2.0 -->
   <arg name="init_ur5_wrist_1_joint" default="0.0"/>
   <arg name="init_ur5_wrist_2_joint" default="0.0"/>
   <arg name="init_ur5_wrist_3_joint" default="0.0"/>
@@ -71,6 +71,8 @@
                 -J ur5_wrist_3_joint $(arg init_ur5_wrist_3_joint)
                 -unpause"/>
 
+    <node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world odom 100" />
+    
     <!-- Load Robot Semantic -->
     <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
 
@@ -80,6 +82,9 @@
     <!-- Run robot control on the gazebo master -->
     <include file="$(find mobiman_control)/launch/control_jackal_ur5.launch" />
   
+    <!-- Run visualization -->
+    <include file="$(find mobiman_simulation)/launch/utilities/display.launch" />
+
     <!-- Spawn marker on the robot -->
     <!--node if="$(arg has_marker)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" /-->
   </group>

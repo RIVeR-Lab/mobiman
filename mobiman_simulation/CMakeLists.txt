@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  #ocs2_mobile_manipulator_ros
+  ocs2_mobile_manipulator_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -117,14 +117,12 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/mobiman_simulation.cpp
-# )
+add_library(ocs2_mrt_loop src/ocs2_mrt_loop.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -151,17 +149,31 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-# MPC node Stretch
-#add_executable(mobile_manipulator_mpc_node_stretch
-#  src/MobileManipulatorMpcNode_stretch.cpp
-#)
-#add_dependencies(mobile_manipulator_mpc_node_stretch
-#  ${catkin_EXPORTED_TARGETS}
-#)
-#target_link_libraries(mobile_manipulator_mpc_node_stretch
-#  ${catkin_LIBRARIES}
-#)
-#target_compile_options(mobile_manipulator_mpc_node_stretch PUBLIC ${FLAGS})
+# MPC node
+add_executable(ocs2_mobile_manipulator_mpc_node
+  src/ocs2_mobile_manipulator_mpc_node.cpp
+)
+add_dependencies(ocs2_mobile_manipulator_mpc_node
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(ocs2_mobile_manipulator_mpc_node
+  ${catkin_LIBRARIES}
+)
+target_compile_options(ocs2_mobile_manipulator_mpc_node PUBLIC ${FLAGS})
+
+# MRT node
+add_executable(ocs2_mobile_manipulator_mrt_gazebo_node
+  src/ocs2_mobile_manipulator_mrt_gazebo.cpp
+  src/ocs2_mobile_manipulator_visualization.cpp
+)
+add_dependencies(ocs2_mobile_manipulator_mrt_gazebo_node
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(ocs2_mobile_manipulator_mrt_gazebo_node
+  ${catkin_LIBRARIES}
+  ocs2_mrt_loop
+)
+target_compile_options(ocs2_mobile_manipulator_mrt_gazebo_node PUBLIC ${FLAGS})
 
 #############
 ## Install ##
