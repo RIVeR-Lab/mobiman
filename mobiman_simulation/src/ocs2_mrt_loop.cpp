@@ -48,8 +48,11 @@ OCS2_MRT_Loop::OCS2_MRT_Loop(ros::NodeHandle& nh,
 
   setStateIndexMap();
 
-  // SUBSCRIBE TO THE JOINT STATE INFO (sensor_msgs/JointState)
-  odometrySub_ = nh.subscribe("/jackal_velocity_controller/odom", 10, &OCS2_MRT_Loop::odometryCallback, this);
+  // SUBSCRIBE TO STATE INFO (sensor_msgs/JointState)
+  
+  // NUA TODO: Consider localization error
+  //odometrySub_ = nh.subscribe("/jackal_velocity_controller/odom", 10, &OCS2_MRT_Loop::odometryCallback, this);
+  linkStateSub_ = nh.subscribe("/gazebo/link_states", 10, &OCS2_MRT_Loop::linkStateCallback, this);
   //jointStateSub_ = nh.subscribe("/joint_states", 10, &OCS2_MRT_Loop::jointStateCallback, this);
   jointTrajectoryPControllerStateSub_ = nh.subscribe("/arm_controller/state", 10, &OCS2_MRT_Loop::jointTrajectoryControllerStateCallback, this);
   
@@ -87,8 +90,8 @@ void OCS2_MRT_Loop::run(const TargetTrajectories& initTargetTrajectories)
     tfListener_.waitForTransform("/world", "/base_link", ros::Time::now(), ros::Duration(1.0));
     initObservation = getCurrentObservation(true);
 
-    std::cout << "OCS2_MRT_Loop::run -> initObservation:" << std::endl;
-    std::cout << initObservation << std::endl;
+    //std::cout << "OCS2_MRT_Loop::run -> initObservation:" << std::endl;
+    //std::cout << initObservation << std::endl;
 
     mrt_.setCurrentObservation(initObservation);
     ros::Rate(mrtDesiredFrequency_).sleep();
@@ -102,7 +105,7 @@ void OCS2_MRT_Loop::run(const TargetTrajectories& initTargetTrajectories)
   } 
   else 
   {
-    std::cout << "OCS2_MRT_Loop::run -> mrtLoop" << std::endl;
+    //std::cout << "OCS2_MRT_Loop::run -> mrtLoop" << std::endl;
     //realtimeDummyLoop(initObservation, initTargetTrajectories);
     mrtLoop();
   }
@@ -243,6 +246,7 @@ void OCS2_MRT_Loop::mrtLoop()
   // Loop variables
   SystemObservation currentObservation;
   SystemObservation targetObservation;
+  PrimalSolution currentPolicy;
 
   // Update the policy
   mrt_.updatePolicy();
@@ -250,22 +254,46 @@ void OCS2_MRT_Loop::mrtLoop()
   ros::Rate simRate(mrtDesiredFrequency_);
   while (ros::ok() && ros::master::check()) 
   {
-    currentObservation = getCurrentObservation();
+    //std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 0" << std::endl;
+    mrt_.reset();
 
+    while (!mrt_.initialPolicyReceived() && ros::ok() && ros::master::check()) 
+    {
+      mrt_.spinMRT();
+
+      // Get initial observation
+      currentObservation = getCurrentObservation(true);
+
+      //std::cout << "OCS2_MRT_Loop::run -> initObservation:" << std::endl;
+      //std::cout << initObservation << std::endl;
+
+      mrt_.setCurrentObservation(currentObservation);
+    }
+
+    /*
+    std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 1" << std::endl;
+    currentObservation = getCurrentObservation(true);
+
+    std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 2" << std::endl;
     // Publish observation
     mrt_.setCurrentObservation(currentObservation);
 
+    std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 3" << std::endl;
+    // Trigger MRT callbacks
+    mrt_.spinMRT();
+    */
+
+    //std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 4" << std::endl;
+    // Update the policy if a new on was received
+    mrt_.updatePolicy();
+    
+
+    //std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 5" << std::endl;
     // Update observers
     for (auto& observer : observers_) 
     {
       observer -> update(currentObservation, mrt_.getPolicy(), mrt_.getCommand());
     }
-
-    // Trigger MRT callbacks
-    mrt_.spinMRT();
-
-    // Update the policy if a new on was received
-    mrt_.updatePolicy();
 
     //currentObservation = getCurrentObservation();
 
@@ -275,6 +303,7 @@ void OCS2_MRT_Loop::mrtLoop()
     // Publish observation
     //mrt_.setCurrentObservation(currentObservation);
 
+    //std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 6" << std::endl;
     //std::cout << "OCS2_MRT_Loop::mrtLoop -> publishCommand" << std::endl;
     publishCommand(currentObservation);
 
@@ -282,6 +311,7 @@ void OCS2_MRT_Loop::mrtLoop()
 
     ros::spinOnce();
     simRate.sleep();
+    //std::cout << "OCS2_MRT_Loop::mrtLoop -> HUGO 7" << std::endl;
   }
 }
 
@@ -386,9 +416,9 @@ void OCS2_MRT_Loop::setStateIndexMap()
   
   for (int i = 0; i < n_joints; ++i)
   {
-    std::cout << "OCS2_MRT_Loop::setStateIndexMap -> jointTrajectoryControllerStatePtrMsg " << i << ": " << current_jointTrajectoryControllerStatePtrMsg -> joint_names[i] << std::endl;
-    std::cout << "OCS2_MRT_Loop::setStateIndexMap -> manipulatorModelInfo_ " << i << ": " << manipulatorModelInfo_.dofNames[i] << std::endl;
-    std::cout << "" << std::endl;
+    //std::cout << "OCS2_MRT_Loop::setStateIndexMap -> jointTrajectoryControllerStatePtrMsg " << i << ": " << current_jointTrajectoryControllerStatePtrMsg -> joint_names[i] << std::endl;
+    //std::cout << "OCS2_MRT_Loop::setStateIndexMap -> manipulatorModelInfo_ " << i << ": " << manipulatorModelInfo_.dofNames[i] << std::endl;
+    //std::cout << "" << std::endl;
 
     c = 0;
     while (current_jointTrajectoryControllerStatePtrMsg -> joint_names[c] != manipulatorModelInfo_.dofNames[i] && c < n_joints)
@@ -402,11 +432,11 @@ void OCS2_MRT_Loop::setStateIndexMap()
     }
   }
 
-  std::cout << "manipulatorModelInfo_ -> jointTrajectoryControllerStatePtrMsg" << std::endl;
-  for (int i = 0; i < stateIndexMap.size(); ++i)
-  {
-    std::cout << i << " -> " << stateIndexMap[i] << std::endl;
-  }
+  //std::cout << "manipulatorModelInfo_ -> jointTrajectoryControllerStatePtrMsg" << std::endl;
+  //for (int i = 0; i < stateIndexMap.size(); ++i)
+  //{
+  //  std::cout << i << " -> " << stateIndexMap[i] << std::endl;
+  //}
 }
 
 /******************************************************************************************************/
@@ -427,10 +457,28 @@ void OCS2_MRT_Loop::odometryCallback(const nav_msgs::Odometry::ConstPtr& msg)
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
+void OCS2_MRT_Loop::linkStateCallback(const gazebo_msgs::LinkStates::ConstPtr& msg)
+{
+  //std::cout << "OCS2_MRT_Loop::linkStateCallback" << std::endl;
+  for (int i = 0; i < msg -> name.size(); ++i)
+  {
+    //std::cout << i << ": " << msg -> name[i] << std::endl;
+
+    if (msg -> name[i] == "mobiman::base_link")
+    {
+      robotBasePoseMsg_ = msg -> pose[i];
+    }
+  }
+  //std::cout << "" << std::endl;
+}
+
+/******************************************************************************************************/
+/******************************************************************************************************/
+/******************************************************************************************************/
 void OCS2_MRT_Loop::jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)
 {
   jointStateMsg_ = *msg;
-  std::cout << "OCS2_MRT_Loop::jointStateCallback -> frame_id: " << jointStateMsg_.header.frame_id << std::endl;
+  //std::cout << "OCS2_MRT_Loop::jointStateCallback -> frame_id: " << jointStateMsg_.header.frame_id << std::endl;
   /*
   for (int i = 0; i < msg -> name.size(); ++i)
   {
@@ -461,7 +509,7 @@ void OCS2_MRT_Loop::jointTrajectoryControllerStateCallback(const control_msgs::J
 /******************************************************************************************************/
 SystemObservation OCS2_MRT_Loop::getCurrentObservation(bool initFlag)
 {
-  nav_msgs::Odometry current_odometryMsg = odometryMsg_;
+  geometry_msgs::Pose current_robotBasePoseMsg = robotBasePoseMsg_;
   control_msgs::JointTrajectoryControllerState current_jointTrajectoryControllerStateMsg = jointTrajectoryControllerStateMsg_;
 
   SystemObservation currentObservation;
@@ -500,8 +548,8 @@ SystemObservation OCS2_MRT_Loop::getCurrentObservation(bool initFlag)
   matrix_robot_wrt_world.getRPY(roll_robot_wrt_world, pitch_robot_wrt_world, yaw_robot_wrt_world);
 
   // Set mobile base states
-  currentObservation.state[0] = current_odometryMsg.pose.pose.position.x;
-  currentObservation.state[1] = current_odometryMsg.pose.pose.position.y;
+  currentObservation.state[0] = current_robotBasePoseMsg.position.x;
+  currentObservation.state[1] = current_robotBasePoseMsg.position.y;
   currentObservation.state[2] = yaw_robot_wrt_world;
 
   //std::cout << "OCS2_MRT_Loop::getCurrentObservation -> current_jointTrajectoryControllerStateMsg frame_id: " << current_jointTrajectoryControllerStateMsg.header.frame_id << std::endl;

@@ -71,7 +71,9 @@
                 -J ur5_wrist_3_joint $(arg init_ur5_wrist_3_joint)
                 -unpause"/>
 
-    <node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world odom 100" />
+    <node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" />
+
+    <!--node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world odom 100" /-->
     
     <!-- Load Robot Semantic -->
     <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->

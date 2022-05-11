@@ -175,6 +175,18 @@ target_link_libraries(ocs2_mobile_manipulator_mrt_gazebo_node
 )
 target_compile_options(ocs2_mobile_manipulator_mrt_gazebo_node PUBLIC ${FLAGS})
 
+# Target node
+add_executable(ocs2_mobile_manipulator_target
+  src/ocs2_mobile_manipulator_target.cpp
+)
+add_dependencies(ocs2_mobile_manipulator_target
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(ocs2_mobile_manipulator_target
+  ${catkin_LIBRARIES}
+)
+target_compile_options(ocs2_mobile_manipulator_target PUBLIC ${FLAGS})
+
 #############
 ## Install ##
 #############

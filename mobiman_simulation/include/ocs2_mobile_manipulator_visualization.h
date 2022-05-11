@@ -47,7 +47,6 @@ class OCS2_Mobile_Manipulator_Visualization final : public DummyObserver
     OCS2_Mobile_Manipulator_Visualization(ros::NodeHandle& nodeHandle, const MobileManipulatorInterface& interface)
       : pinocchioInterface_(interface.getPinocchioInterface()), modelInfo_(interface.getManipulatorModelInfo()) 
     {
-      std::cout << "OCS2_Mobile_Manipulator_Visualization::OCS2_Mobile_Manipulator_Visualization -> ARE WE READY?" << std::endl;
       launchVisualizerNode(nodeHandle);
     }
 

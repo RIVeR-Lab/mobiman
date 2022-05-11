@@ -95,8 +95,6 @@ void OCS2_Mobile_Manipulator_Visualization::launchVisualizerNode(ros::NodeHandle
     ROS_ERROR("Failed to extract kdl tree from xml robot description");
   }
 
-  std::cout << "OCS2_Mobile_Manipulator_Visualization::launchVisualizerNode -> MANIC ATTACK" << std::endl;
-
   robotStatePublisherPtr_.reset(new robot_state_publisher::RobotStatePublisher(tree));
   robotStatePublisherPtr_->publishFixedTransforms(true);
 
@@ -144,7 +142,7 @@ void OCS2_Mobile_Manipulator_Visualization::update(const SystemObservation& obse
   const ros::Time timeStamp = ros::Time::now();
 
   //publishObservation(timeStamp, observation);   //NUA EDIT: Commented out.
-  publishTargetTrajectories(timeStamp, command.mpcTargetTrajectories_);
+  //publishTargetTrajectories(timeStamp, command.mpcTargetTrajectories_);
   publishOptimizedTrajectory(timeStamp, policy);
   
   if (geometryVisualization_ != nullptr) 
@@ -204,7 +202,7 @@ void OCS2_Mobile_Manipulator_Visualization::publishTargetTrajectories(const ros:
   command_tf.transform.translation = ros_msg_helpers::getVectorMsg(eeDesiredPosition);
   command_tf.transform.rotation = ros_msg_helpers::getOrientationMsg(eeDesiredOrientation);
 
-  //tfBroadcaster_.sendTransform(command_tf);
+  tfBroadcaster_.sendTransform(command_tf);
 }
 
 /******************************************************************************************************/

@@ -46,8 +46,6 @@ using namespace std;
 
 int main(int argc, char** argv) 
 {
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> START" << endl;
-
   const std::string robotName = "mobile_manipulator";
 
   // Initialize ros node
@@ -62,9 +60,7 @@ int main(int argc, char** argv)
   std::cerr << "Loading task file: " << taskFile << std::endl;
   std::cerr << "Loading library folder: " << libFolder << std::endl;
   std::cerr << "Loading urdf file: " << urdfFile << std::endl;
-  
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE MobileManipulatorInterface" << endl;
-  
+
   // Robot Interface
   mobile_manipulator::MobileManipulatorInterface interface(taskFile, libFolder, urdfFile);
 
@@ -81,41 +77,24 @@ int main(int argc, char** argv)
     std::cout << i << ": " << manipulatorModelInfo.dofNames[i] << std::endl;
   }
 
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE MRT_ROS_Interface" << endl;
-  
   // MRT
   MRT_ROS_Interface mrt(robotName);
-
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE getRollout" << endl;
-
   mrt.initRollout(&interface.getRollout());
-
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE launchNodes" << endl;
-
   mrt.launchNodes(nodeHandle);
-
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE Visualization" << endl;
 
   // Visualization
   std::shared_ptr<mobile_manipulator::OCS2_Mobile_Manipulator_Visualization> ocs2_mm_visu(new mobile_manipulator::OCS2_Mobile_Manipulator_Visualization(nodeHandle, interface));
 
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE OCS2_MRT_Loop" << endl;
-
   // MRT loop
   OCS2_MRT_Loop mrt_loop(nodeHandle, mrt, interface.getManipulatorModelInfo(), interface.mpcSettings().mrtDesiredFrequency_, interface.mpcSettings().mpcDesiredFrequency_);
-  
   mrt_loop.subscribeObservers({ocs2_mm_visu});
 
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE initial" << endl;
-  
   // initial state
   SystemObservation initObservation;
   initObservation.state = interface.getInitialState();
   initObservation.input.setZero(interface.getManipulatorModelInfo().inputDim);
   initObservation.time = 0.0;
 
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE OCS2_MRT_Loop" << endl;
-  
   // initial command
   vector_t initTarget(7);
   initTarget.head(3) << 1, 0, 1;
@@ -123,13 +102,10 @@ int main(int argc, char** argv)
   const vector_t zeroInput = vector_t::Zero(interface.getManipulatorModelInfo().inputDim);
   const TargetTrajectories initTargetTrajectories({initObservation.time}, {initTarget}, {zeroInput});
 
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> BEFORE run" << endl;
-  
   // Run mrt_loop (loops while ros is ok)
   mrt_loop.run(initTargetTrajectories);
   //mrt_loop.runSinglePolicy(initObservation, initTargetTrajectories);
 
   // Successful exit
-  cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> END" << endl;
   return 0;
 }

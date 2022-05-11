@@ -33,6 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <tf/transform_listener.h>
 #include <nav_msgs/Odometry.h>
+#include <gazebo_msgs/LinkStates.h>
 #include <sensor_msgs/JointState.h>
 #include <control_msgs/JointTrajectoryControllerState.h>
 #include <geometry_msgs/Twist.h>
@@ -125,6 +126,9 @@ class OCS2_MRT_Loop
     void odometryCallback(const nav_msgs::Odometry::ConstPtr& msg);
 
     /** NUA TODO: Add description */
+    void linkStateCallback(const gazebo_msgs::LinkStates::ConstPtr& msg);
+
+    /** NUA TODO: Add description */
     void jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg);
 
     /** NUA TODO: Add description */
@@ -152,10 +156,12 @@ class OCS2_MRT_Loop
     std::vector<int> stateIndexMap;
 
     nav_msgs::Odometry odometryMsg_;
+    geometry_msgs::Pose robotBasePoseMsg_;
     sensor_msgs::JointState jointStateMsg_;
     control_msgs::JointTrajectoryControllerState jointTrajectoryControllerStateMsg_;
 
     ros::Subscriber odometrySub_;
+    ros::Subscriber linkStateSub_;
     ros::Subscriber jointStateSub_;
     ros::Subscriber jointTrajectoryPControllerStateSub_;
 

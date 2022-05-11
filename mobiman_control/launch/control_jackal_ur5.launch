@@ -35,12 +35,12 @@
         args="load joint_group_position_controller" />
 
   <!-- Start EKF for localization jackal_velocity_controller-->
-  <node pkg="robot_localization" 
+  <!--node pkg="robot_localization" 
         type="ekf_localization_node" 
         name="ekf_localization">
     <rosparam command="load" 
               file="$(find mobiman_control)/config/jackal_ur5/localization.yaml" />
-  </node>
+  </node-->
 
   <node pkg="interactive_marker_twist_server" 
         type="marker_server" 

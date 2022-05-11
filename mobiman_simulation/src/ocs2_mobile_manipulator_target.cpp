@@ -34,20 +34,26 @@ using namespace ocs2;
 /**
  * Converts the pose of the interactive marker to TargetTrajectories.
  */
-TargetTrajectories goalPoseToTargetTrajectories(const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation,
-                                                const SystemObservation& observation) {
+TargetTrajectories goalPoseToTargetTrajectories(const Eigen::Vector3d& position,
+                                                const Eigen::Quaterniond& orientation,
+                                                const SystemObservation& observation)
+{
   // time trajectory
   const scalar_array_t timeTrajectory{observation.time};
+
   // state trajectory: 3 + 4 for desired position vector and orientation quaternion
   const vector_t target = (vector_t(7) << position, orientation.coeffs()).finished();
+  
   const vector_array_t stateTrajectory{target};
+
   // input trajectory
   const vector_array_t inputTrajectory{vector_t::Zero(observation.input.size())};
 
   return {timeTrajectory, stateTrajectory, inputTrajectory};
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
   const std::string robotName = "mobile_manipulator";
   ::ros::init(argc, argv, robotName + "_target");
   ::ros::NodeHandle nodeHandle;

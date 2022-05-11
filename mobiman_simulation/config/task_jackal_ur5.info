@@ -116,7 +116,7 @@ initialState
     wheelBasedMobileManipulator
     {
       (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
+      (1,0)  1.0  ; position y
       (2,0)  0.0  ; heading
     }
   }
