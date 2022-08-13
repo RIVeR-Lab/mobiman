@@ -31,12 +31,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ros/init.h>
 #include <ros/package.h>
 
-#include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
+//#include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
 #include <ocs2_mpc/SystemObservation.h>
 #include <ocs2_ros_interfaces/mrt/MRT_ROS_Interface.h>
 #include "ocs2_mobile_manipulator/ManipulatorModelInfo.h"
 
 // Custom libraries:
+#include <ocs2_mobile_manipulator_interface.h>
 #include <ocs2_mobile_manipulator_visualization.h>
 #include <ocs2_mrt_loop.h>
 

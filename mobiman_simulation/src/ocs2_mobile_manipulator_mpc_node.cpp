@@ -34,14 +34,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_ros_interfaces/mpc/MPC_ROS_Interface.h>
 #include <ocs2_ros_interfaces/synchronized_module/RosReferenceManager.h>
 
-#include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
+//#include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
+#include <ocs2_mobile_manipulator_interface.h>
 
 using namespace ocs2;
 using namespace mobile_manipulator;
 
 int main(int argc, char** argv) 
 {
-  std::cout << "ocs2_mobile_manipulator_mpc_node::main -> START" << std::endl; 
+  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] START" << std::endl; 
   const std::string robotName = "mobile_manipulator";
 
   // Initialize ros node
@@ -57,8 +58,10 @@ int main(int argc, char** argv)
   std::cerr << "Loading library folder: " << libFolder << std::endl;
   std::cerr << "Loading urdf file: " << urdfFile << std::endl;
   
+  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] BEFORE MobileManipulatorInterface" << std::endl;
   // Robot interface
   MobileManipulatorInterface interface(taskFile, libFolder, urdfFile);
+  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] AFTER MobileManipulatorInterface" << std::endl;
 
   // ROS ReferenceManager
   std::shared_ptr<ocs2::RosReferenceManager> rosReferenceManagerPtr(
@@ -78,6 +81,6 @@ int main(int argc, char** argv)
   mpcNode.launchNodes(nodeHandle);
 
   // Successful exit
-  std::cout << "ocs2_mobile_manipulator_mpc_node::main -> END" << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] END" << std::endl;
   return 0;
 }
