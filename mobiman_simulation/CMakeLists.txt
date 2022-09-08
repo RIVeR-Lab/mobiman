@@ -122,8 +122,8 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(ocs2_mrt_loop src/ocs2_mrt_loop.cpp)
-add_library(ocs2_mobile_manipulator_interface src/ocs2_mobile_manipulator_interface.cpp)
+#add_library(ocs2_mrt_loop src/ocs2_mrt_loop.cpp)
+#add_library(ocs2_mobile_manipulator_interface src/ocs2_mobile_manipulator_interface.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -151,42 +151,42 @@ add_library(ocs2_mobile_manipulator_interface src/ocs2_mobile_manipulator_interf
 # )
 
 # MPC node
-add_executable(ocs2_mobile_manipulator_mpc_node
-  src/ocs2_mobile_manipulator_mpc_node.cpp
-)
-add_dependencies(ocs2_mobile_manipulator_mpc_node
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(ocs2_mobile_manipulator_mpc_node
-  ${catkin_LIBRARIES} ocs2_mobile_manipulator_interface
-)
-target_compile_options(ocs2_mobile_manipulator_mpc_node PUBLIC ${FLAGS})
+#add_executable(ocs2_mobile_manipulator_mpc_node
+#  src/ocs2_mobile_manipulator_mpc_node.cpp
+#)
+#add_dependencies(ocs2_mobile_manipulator_mpc_node
+#  ${catkin_EXPORTED_TARGETS}
+#)
+#target_link_libraries(ocs2_mobile_manipulator_mpc_node
+#  ${catkin_LIBRARIES} ocs2_mobile_manipulator_interface
+#)
+#target_compile_options(ocs2_mobile_manipulator_mpc_node PUBLIC ${FLAGS})
 
 # MRT node
-add_executable(ocs2_mobile_manipulator_mrt_gazebo_node
-  src/ocs2_mobile_manipulator_mrt_gazebo.cpp
-  src/ocs2_mobile_manipulator_visualization.cpp
-)
-add_dependencies(ocs2_mobile_manipulator_mrt_gazebo_node
-  ${catkin_EXPORTED_TARGETS} ocs2_mobile_manipulator_interface
-)
-target_link_libraries(ocs2_mobile_manipulator_mrt_gazebo_node
-  ${catkin_LIBRARIES}
-  ocs2_mrt_loop
-)
-target_compile_options(ocs2_mobile_manipulator_mrt_gazebo_node PUBLIC ${FLAGS})
+#add_executable(ocs2_mobile_manipulator_mrt_gazebo_node
+#  src/ocs2_mobile_manipulator_mrt_gazebo.cpp
+#  src/ocs2_mobile_manipulator_visualization.cpp
+#)
+#add_dependencies(ocs2_mobile_manipulator_mrt_gazebo_node
+#  ${catkin_EXPORTED_TARGETS} ocs2_mobile_manipulator_interface
+#)
+#target_link_libraries(ocs2_mobile_manipulator_mrt_gazebo_node
+#  ${catkin_LIBRARIES}
+#  ocs2_mrt_loop
+#)
+#target_compile_options(ocs2_mobile_manipulator_mrt_gazebo_node PUBLIC ${FLAGS})
 
 # Target node
-add_executable(ocs2_mobile_manipulator_target
-  src/ocs2_mobile_manipulator_target.cpp
-)
-add_dependencies(ocs2_mobile_manipulator_target
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(ocs2_mobile_manipulator_target
-  ${catkin_LIBRARIES}
-)
-target_compile_options(ocs2_mobile_manipulator_target PUBLIC ${FLAGS})
+#add_executable(ocs2_mobile_manipulator_target
+#  src/ocs2_mobile_manipulator_target.cpp
+#)
+#add_dependencies(ocs2_mobile_manipulator_target
+#  ${catkin_EXPORTED_TARGETS}
+#)
+#target_link_libraries(ocs2_mobile_manipulator_target
+#  ${catkin_LIBRARIES}
+#)
+#target_compile_options(ocs2_mobile_manipulator_target PUBLIC ${FLAGS})
 
 #############
 ## Install ##
