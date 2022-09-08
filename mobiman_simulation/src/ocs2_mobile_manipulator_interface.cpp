@@ -34,7 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <pinocchio/multibody/joint/joint-composite.hpp>
 #include <pinocchio/multibody/model.hpp>
 
-#include "ocs2_mobile_manipulator/MobileManipulatorInterface.h"
+//#include "ocs2_mobile_manipulator/MobileManipulatorInterface.h"
 
 #include <ocs2_core/initialization/DefaultInitializer.h>
 #include <ocs2_core/misc/LoadData.h>
@@ -65,13 +65,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 
+// Custom
+#include <ocs2_mobile_manipulator_interface.h>
+
 namespace ocs2 {
 namespace mobile_manipulator {
 
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-MobileManipulatorInterface::MobileManipulatorInterface(const std::string& taskFile, 
+ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface(const std::string& taskFile, 
                                                        const std::string& libraryFolder,
                                                        const std::string& urdfFile) 
 {
@@ -79,28 +82,28 @@ MobileManipulatorInterface::MobileManipulatorInterface(const std::string& taskFi
   boost::filesystem::path taskFilePath(taskFile);
   if (boost::filesystem::exists(taskFilePath)) 
   {
-    std::cerr << "[MobileManipulatorInterface::MobileManipulatorInterface] Loading task file: " << taskFilePath << std::endl;
+    std::cerr << "[ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface] Loading task file: " << taskFilePath << std::endl;
   } 
   else 
   {
-    throw std::invalid_argument("MobileManipulatorInterface::MobileManipulatorInterface -> Task file not found: " + taskFilePath.string());
+    throw std::invalid_argument("ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface -> Task file not found: " + taskFilePath.string());
   }
 
   // check that urdf file exists
   boost::filesystem::path urdfFilePath(urdfFile);
   if (boost::filesystem::exists(urdfFilePath)) 
   {
-    std::cerr << "[MobileManipulatorInterface::MobileManipulatorInterface] Loading Pinocchio model from: " << urdfFilePath << std::endl;
+    std::cerr << "[ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface] Loading Pinocchio model from: " << urdfFilePath << std::endl;
   } 
   else 
   {
-    throw std::invalid_argument("[MobileManipulatorInterface::MobileManipulatorInterface] URDF file not found: " + urdfFilePath.string());
+    throw std::invalid_argument("[ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface] URDF file not found: " + urdfFilePath.string());
   }
 
   // create library folder if it does not exist
   boost::filesystem::path libraryFolderPath(libraryFolder);
   boost::filesystem::create_directories(libraryFolderPath);
-  std::cerr << "[MobileManipulatorInterface::MobileManipulatorInterface] Generated library path: " << libraryFolderPath << std::endl;
+  std::cerr << "[ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface] Generated library path: " << libraryFolderPath << std::endl;
 
   // read the task file
   boost::property_tree::ptree pt;
@@ -119,7 +122,7 @@ MobileManipulatorInterface::MobileManipulatorInterface(const std::string& taskFi
   loadData::loadPtreeValue<std::string>(pt, baseFrame, "model_information.baseFrame", false);
   loadData::loadPtreeValue<std::string>(pt, eeFrame, "model_information.eeFrame", false);
 
-  std::cerr << "\n #### [MobileManipulatorInterface::MobileManipulatorInterface] Model Information:";
+  std::cerr << "\n #### [ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface] Model Information:";
   std::cerr << "\n #### =============================================================================\n";
   std::cerr << "\n #### model_information.manipulatorModelType: " << static_cast<int>(modelType);
   std::cerr << "\n #### model_information.removeJoints: ";
@@ -141,7 +144,7 @@ MobileManipulatorInterface::MobileManipulatorInterface(const std::string& taskFi
 
   bool usePreComputation = true;
   bool recompileLibraries = true;
-  std::cerr << "\n #### [MobileManipulatorInterface::MobileManipulatorInterface] Model Settings:";
+  std::cerr << "\n #### [ocs2_mobile_manipulator_interface::ocs2_mobile_manipulator_interface] Model Settings:";
   std::cerr << "\n #### =============================================================================\n";
   loadData::loadPtreeValue(pt, usePreComputation, "model_settings.usePreComputation", true);
   loadData::loadPtreeValue(pt, recompileLibraries, "model_settings.recompileLibraries", true);
@@ -263,7 +266,7 @@ MobileManipulatorInterface::MobileManipulatorInterface(const std::string& taskFi
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-std::unique_ptr<StateInputCost> MobileManipulatorInterface::getQuadraticInputCost(const std::string& taskFile) {
+std::unique_ptr<StateInputCost> ocs2_mobile_manipulator_interface::getQuadraticInputCost(const std::string& taskFile) {
   matrix_t R = matrix_t::Zero(manipulatorModelInfo_.inputDim, manipulatorModelInfo_.inputDim);
   const int baseInputDim = manipulatorModelInfo_.inputDim - manipulatorModelInfo_.armDim;
   const int armStateDim = manipulatorModelInfo_.armDim;
@@ -291,7 +294,7 @@ std::unique_ptr<StateInputCost> MobileManipulatorInterface::getQuadraticInputCos
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-std::unique_ptr<StateCost> MobileManipulatorInterface::getEndEffectorConstraint(const PinocchioInterface& pinocchioInterface,
+std::unique_ptr<StateCost> ocs2_mobile_manipulator_interface::getEndEffectorConstraint(const PinocchioInterface& pinocchioInterface,
                                                                                 const std::string& taskFile, const std::string& prefix,
                                                                                 bool usePreComputation, const std::string& libraryFolder,
                                                                                 bool recompileLibraries) {
@@ -334,11 +337,14 @@ std::unique_ptr<StateCost> MobileManipulatorInterface::getEndEffectorConstraint(
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-std::unique_ptr<StateCost> MobileManipulatorInterface::getSelfCollisionConstraint(const PinocchioInterface& pinocchioInterface,
+std::unique_ptr<StateCost> ocs2_mobile_manipulator_interface::getSelfCollisionConstraint(const PinocchioInterface& pinocchioInterface,
                                                                                   const std::string& taskFile, const std::string& urdfFile,
                                                                                   const std::string& prefix, bool usePreComputation,
                                                                                   const std::string& libraryFolder,
-                                                                                  bool recompileLibraries) {
+                                                                                  bool recompileLibraries) 
+{
+  std::cout << "[ocs2_mobile_manipulator_interface::getSelfCollisionConstraint] START" << std::endl;
+
   std::vector<std::pair<size_t, size_t>> collisionObjectPairs;
   std::vector<std::pair<std::string, std::string>> collisionLinkPairs;
   scalar_t mu = 1e-2;
@@ -355,6 +361,9 @@ std::unique_ptr<StateCost> MobileManipulatorInterface::getSelfCollisionConstrain
   loadData::loadStdVectorOfPair(taskFile, prefix + ".collisionObjectPairs", collisionObjectPairs, true);
   loadData::loadStdVectorOfPair(taskFile, prefix + ".collisionLinkPairs", collisionLinkPairs, true);
   std::cerr << " #### =============================================================================\n";
+
+  std::cout << "[ocs2_mobile_manipulator_interface::getSelfCollisionConstraint] collisionObjectPairs size: " << collisionObjectPairs.size() << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_interface::getSelfCollisionConstraint] collisionLinkPairs size: " << collisionLinkPairs.size() << std::endl;
 
   PinocchioGeometryInterface geometryInterface(pinocchioInterface, collisionLinkPairs, collisionObjectPairs);
 
@@ -373,13 +382,15 @@ std::unique_ptr<StateCost> MobileManipulatorInterface::getSelfCollisionConstrain
 
   std::unique_ptr<PenaltyBase> penalty(new RelaxedBarrierPenalty({mu, delta}));
 
+  std::cout << "[ocs2_mobile_manipulator_interface::getSelfCollisionConstraint] END" << std::endl;
+
   return std::unique_ptr<StateCost>(new StateSoftConstraint(std::move(constraint), std::move(penalty)));
 }
 
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-std::unique_ptr<StateCost> MobileManipulatorInterface::getJointPositionLimitConstraint(const PinocchioInterface& pinocchioInterface,
+std::unique_ptr<StateCost> ocs2_mobile_manipulator_interface::getJointPositionLimitConstraint(const PinocchioInterface& pinocchioInterface,
                                                                                        const std::string& taskFile,
                                                                                        const std::string& prefix) 
 {
@@ -416,7 +427,7 @@ std::unique_ptr<StateCost> MobileManipulatorInterface::getJointPositionLimitCons
 /******************************************************************************************************/
 /******************************************************************************************************/
 /******************************************************************************************************/
-std::unique_ptr<StateInputCost> MobileManipulatorInterface::getJointVelocityLimitConstraint(const std::string& taskFile,
+std::unique_ptr<StateInputCost> ocs2_mobile_manipulator_interface::getJointVelocityLimitConstraint(const std::string& taskFile,
                                                                                             const std::string& prefix) {
   const int baseInputDim = manipulatorModelInfo_.inputDim - manipulatorModelInfo_.armDim;
   const int armInputDim = manipulatorModelInfo_.armDim;

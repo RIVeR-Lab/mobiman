@@ -47,6 +47,8 @@ using namespace std;
 
 int main(int argc, char** argv) 
 {
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] START" << std::endl;
+
   const std::string robotName = "mobile_manipulator";
 
   // Initialize ros node
@@ -63,16 +65,18 @@ int main(int argc, char** argv)
   std::cerr << "Loading urdf file: " << urdfFile << std::endl;
 
   // Robot Interface
-  mobile_manipulator::MobileManipulatorInterface interface(taskFile, libFolder, urdfFile);
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] BEFORE ocs2_mobile_manipulator_interface" << std::endl;
+  ocs2_mobile_manipulator_interface interface(taskFile, libFolder, urdfFile);
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] AFTER ocs2_mobile_manipulator_interface" << std::endl;
 
   // ManipulatorModelInfo
   ManipulatorModelInfo manipulatorModelInfo = interface.getManipulatorModelInfo();
 
-  std::cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> manipulatorModelType: " << modelTypeEnumToString(manipulatorModelInfo.manipulatorModelType) << std::endl;
-  std::cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> stateDim: " << manipulatorModelInfo.stateDim << std::endl;
-  std::cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> inputDim: " << manipulatorModelInfo.inputDim << std::endl;
-  std::cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> armDim: " << manipulatorModelInfo.armDim << std::endl;
-  std::cout << "ocs2_mobile_manipulator_mrt_gazebo::main -> dofNames: " << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] manipulatorModelType: " << modelTypeEnumToString(manipulatorModelInfo.manipulatorModelType) << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] stateDim: " << manipulatorModelInfo.stateDim << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] inputDim: " << manipulatorModelInfo.inputDim << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] armDim: " << manipulatorModelInfo.armDim << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mrt_gazebo::main] dofNames: " << std::endl;
   for (int i = 0; i < manipulatorModelInfo.dofNames.size(); ++i)
   {
     std::cout << i << ": " << manipulatorModelInfo.dofNames[i] << std::endl;
@@ -84,7 +88,7 @@ int main(int argc, char** argv)
   mrt.launchNodes(nodeHandle);
 
   // Visualization
-  std::shared_ptr<mobile_manipulator::OCS2_Mobile_Manipulator_Visualization> ocs2_mm_visu(new mobile_manipulator::OCS2_Mobile_Manipulator_Visualization(nodeHandle, interface));
+  std::shared_ptr<OCS2_Mobile_Manipulator_Visualization> ocs2_mm_visu(new OCS2_Mobile_Manipulator_Visualization(nodeHandle, interface));
 
   // MRT loop
   OCS2_MRT_Loop mrt_loop(nodeHandle, mrt, interface.getManipulatorModelInfo(), interface.mpcSettings().mrtDesiredFrequency_, interface.mpcSettings().mpcDesiredFrequency_);

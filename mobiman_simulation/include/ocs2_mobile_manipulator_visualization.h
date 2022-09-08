@@ -35,8 +35,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ocs2_ros_interfaces/mrt/DummyObserver.h>
 
 #include <ocs2_mobile_manipulator/ManipulatorModelInfo.h>
-#include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
+//#include <ocs2_mobile_manipulator/MobileManipulatorInterface.h>
 #include <ocs2_self_collision_visualization/GeometryInterfaceVisualization.h>
+
+// Custom libraries:
+#include <ocs2_mobile_manipulator_interface.h>
 
 namespace ocs2 {
 namespace mobile_manipulator {
@@ -44,7 +47,7 @@ namespace mobile_manipulator {
 class OCS2_Mobile_Manipulator_Visualization final : public DummyObserver 
 {
   public:
-    OCS2_Mobile_Manipulator_Visualization(ros::NodeHandle& nodeHandle, const MobileManipulatorInterface& interface)
+    OCS2_Mobile_Manipulator_Visualization(ros::NodeHandle& nodeHandle, const ocs2_mobile_manipulator_interface& interface)
       : pinocchioInterface_(interface.getPinocchioInterface()), modelInfo_(interface.getManipulatorModelInfo()) 
     {
       launchVisualizerNode(nodeHandle);

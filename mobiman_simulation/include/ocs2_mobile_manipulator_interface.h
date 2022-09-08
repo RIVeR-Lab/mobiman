@@ -47,7 +47,7 @@ namespace mobile_manipulator {
 /**
  * Mobile Manipulator Robot Interface class
  */
-class MobileManipulatorInterface final : public RobotInterface {
+class ocs2_mobile_manipulator_interface final : public RobotInterface {
  public:
   /**
    * Constructor
@@ -59,7 +59,7 @@ class MobileManipulatorInterface final : public RobotInterface {
    * @param [in] libraryFolder: The absolute path to the directory to generate CppAD library into.
    * @param [in] urdfFile: The absolute path to the URDF file for the robot.
    */
-  MobileManipulatorInterface(const std::string& taskFile, const std::string& libraryFolder, const std::string& urdfFile);
+  ocs2_mobile_manipulator_interface(const std::string& taskFile, const std::string& libraryFolder, const std::string& urdfFile);
 
   const vector_t& getInitialState() { return initialState_; }
 

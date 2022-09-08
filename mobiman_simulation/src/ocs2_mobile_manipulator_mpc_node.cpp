@@ -58,10 +58,10 @@ int main(int argc, char** argv)
   std::cerr << "Loading library folder: " << libFolder << std::endl;
   std::cerr << "Loading urdf file: " << urdfFile << std::endl;
   
-  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] BEFORE MobileManipulatorInterface" << std::endl;
+  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] BEFORE ocs2_mobile_manipulator_interface" << std::endl;
   // Robot interface
-  MobileManipulatorInterface interface(taskFile, libFolder, urdfFile);
-  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] AFTER MobileManipulatorInterface" << std::endl;
+  ocs2_mobile_manipulator_interface interface(taskFile, libFolder, urdfFile);
+  std::cout << "[ocs2_mobile_manipulator_mpc_node::main] AFTER ocs2_mobile_manipulator_interface" << std::endl;
 
   // ROS ReferenceManager
   std::shared_ptr<ocs2::RosReferenceManager> rosReferenceManagerPtr(

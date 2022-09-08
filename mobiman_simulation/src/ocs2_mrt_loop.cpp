@@ -105,7 +105,7 @@ void OCS2_MRT_Loop::run(const TargetTrajectories& initTargetTrajectories)
   } 
   else 
   {
-    //std::cout << "OCS2_MRT_Loop::run -> mrtLoop" << std::endl;
+    std::cout << "OCS2_MRT_Loop::run -> mrtLoop" << std::endl;
     //realtimeDummyLoop(initObservation, initTargetTrajectories);
     mrtLoop();
   }
