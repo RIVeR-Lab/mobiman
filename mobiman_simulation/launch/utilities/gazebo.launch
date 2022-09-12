@@ -32,7 +32,7 @@
 
   <!-- Launch the Gazebo world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <!--arg name="world_name" value="$(find mobiman_simulation)/worlds/northeastern_warehouse.world"/-->
+    <arg name="world_name" value="$(find mobiman_simulation)/worlds/no_roof_small_warehouse.world"/>
     <!--arg name="world_name" value="$(find mobiman_simulation)/worlds/willow_garage.world"/-->
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
@@ -42,6 +42,14 @@
     <arg name="verbose" value="$(arg verbose)" />
   </include>
 
+  <!-- Launch conveyor belt -->
+  <group ns="conveyor">
+		<node name="spawn_model_belt" pkg="gazebo_ros" type="spawn_model" args="-file $(find demo_world)/urdf/conveyor.urdf -urdf -model conveyor_belt" respawn="false" output="screen" />
+	</group>
+
+	<!--node name="cube_spawner" pkg="demo_world" type="demo.py" output="screen"/-->
+
+  <!-- Launch robot -->
   <group ns="$(arg robot_namespace)">
     <!-- Load the URDF into the ROS Parameter Server -->
     <param  name="robot_description"

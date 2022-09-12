@@ -21,14 +21,14 @@ model_settings
 ; DDP settings
 ddp
 {
-  algorithm                       SLQ
+  algorithm                       SLQ ; NUA EDIT: def: SLQ
 
   nThreads                        3
   threadPriority                  50
 
   maxNumIterations                1
   minRelCost                      0.1
-  constraintTolerance             1e-2  ; NUA EDIT: def: 1e-3
+  constraintTolerance             1e-3  ; NUA EDIT: def: 1e-3
 
   displayInfo                     false
   displayShortSummary             false
@@ -36,14 +36,14 @@ ddp
   debugPrintRollout               false
   debugCaching                    false
 
-  AbsTolODE                       1e-5
-  RelTolODE                       1e-3
-  maxNumStepsPerSecond            100000
-  timeStep                        1e-3
+  AbsTolODE                       1e-5 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-3 ; NUA EDIT: def: 1e-3
+  maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
+  timeStep                        1e-3  ; NUA EDIT: def: 1e-3
   backwardPassIntegratorType      ODE45
 
   constraintPenaltyInitialValue   20.0
-  constraintPenaltyIncreaseRate   2.0
+  constraintPenaltyIncreaseRate   1.0 ; NUA EDIT: def: 2.0
 
   preComputeRiccatiTerms          true
 
@@ -52,8 +52,8 @@ ddp
   strategy                        LINE_SEARCH
   lineSearch
   {
-    minStepLength                 1e-2
-    maxStepLength                 1.0
+    minStepLength                 1e-2 ; NUA EDIT: def: 1e-2
+    maxStepLength                 1.0 ; NUA EDIT: def: 1.0
     hessianCorrectionStrategy     DIAGONAL_SHIFT
     hessianCorrectionMultiple     1e-3
   }
@@ -62,25 +62,25 @@ ddp
 ; Rollout settings
 rollout
 {
-  AbsTolODE                       1e-5
-  RelTolODE                       1e-3
-  timeStep                        1e-2
+  AbsTolODE                       1e-5 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-3 ; NUA EDIT: def: 1e-3
+  timeStep                        1e-2 ; NUA EDIT: def: 1e-2
   integratorType                  ODE45
-  maxNumStepsPerSecond            100000
+  maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
   checkNumericalStability         false
 }
 
 ; MPC settings
 mpc
 {
-  timeHorizon                     1.0   ; [s]
-  solutionTimeWindow              0.2   ; [s]
+  timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
+  solutionTimeWindow              0.2   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false
 
-  mpcDesiredFrequency             -100   ; [Hz] NUA EDIT: def: 100
-  mrtDesiredFrequency             400   ; [Hz] NUA EDIT: def: 400
+  mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
+  mrtDesiredFrequency             30   ; [Hz] NUA EDIT: def: 400
 }
 
 ; initial state
@@ -203,7 +203,38 @@ selfCollision
   ; activate self-collision constraint
   activate  true
 
-  ; TODO: Replace the collision meshes of the arm with primitive shapes.
+  ; Self Collision raw object pairs
+  ;collisionObjectPairs
+  ;{
+  ;  [0] "1, 4"
+  ;  [1] "1, 6"
+  ;  [2] "1, 9"
+  ;}
+
+  ; Self Collision pairs
+  collisionLinkPairs
+  {
+    [0] "chassis_link, ur5_shoulder_link"
+    [1] "chassis_link, ur5_forearm_link"
+    [2] "chassis_link, ur5_wrist_1_link"
+    [3] "chassis_link, ur5_wrist_2_link"
+    ;[4] "chassis_link, ur5_wrist_3_link"
+  }
+
+  ; minimum distance allowed between the pairs
+  minimumDistance  0.1
+
+  ; relaxed log barrier mu
+  mu     1e-1 ; NUA EDIT: def: 1e-2
+
+  ; relaxed log barrier delta
+  delta  1e-3
+}
+
+extCollision
+{ 
+  ; activate external-collision constraint
+  activate  true
 }
 
 ; Only applied for arm joints: limits parsed from URDF

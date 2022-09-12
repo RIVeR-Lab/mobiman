@@ -16,6 +16,9 @@
       <!-- The library folder to generate CppAD codegen into -->
       <arg name="libFolder" />
 
+      <!-- Run the conveyor belt -->
+      <!--node pkg="rosservice" type="rosservice" name="conveyor_power_on" args="call /conveyor/control 'power: 100.0'" /-->
+
       <!-- make the files into global parameters -->
       <param name="taskFile"   value="$(arg taskFile)" />
       <param name="urdfFile"   value="$(arg urdfFile)" />
