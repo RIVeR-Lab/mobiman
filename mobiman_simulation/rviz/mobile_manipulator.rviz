@@ -431,6 +431,18 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Class: octomap_rviz_plugin/ColorOccupancyGrid
+      Enabled: true
+      Max. Height Display: inf
+      Max. Octree Depth: 16
+      Min. Height Display: -inf
+      Name: ColorOccupancyGrid
+      Octomap Topic: /octomap_mobiman
+      Queue Size: 5
+      Value: true
+      Voxel Alpha: 1
+      Voxel Coloring: Z-Axis
+      Voxel Rendering: Occupied Voxels
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
