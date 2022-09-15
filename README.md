@@ -26,10 +26,17 @@ sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev
 
 ## Examples:
 
-1. Mobile Manipulation of Hello Stretch Using OCS2 Toolbox:
+In seperate terminals:
+
+
+1. Start simulation in Gazebo:
 ```
-roslaunch ocs2_mobile_manipulator_ros mobile_manipulator_stretch.launch
+roslaunch mobiman_simulation gazebo.launch
+```
+
+2. Start the motion planning:
+```
+roslaunch mobiman_simulation ocs2_planner_jackal_ur5.launch
 ```
 
 ## Notes:
-1. sometimes first "catkin build" gives error! Building again compiles.

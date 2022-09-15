@@ -2,17 +2,53 @@ cmake_minimum_required(VERSION 3.0.2)
 project(mobiman_simulation)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
+add_definitions(-std=c++14 -g -O3 -ftree-vectorize -march=native)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-  ocs2_mobile_manipulator_ros
+#find_package(catkin REQUIRED COMPONENTS
+#  roscpp
+#  rospy
+#  std_msgs
+#  ocs2_core
+#  ocs2_robotic_tools
+#  ocs2_ddp
+#  voxblox
+#  voxblox_ros
+#)
+
+set(PACKAGE_DEPENDENCIES
+    roslib
+    roscpp
+    rospy
+    tf
+    geometry_msgs
+    #ocs2_comm_interfaces
+    ocs2_core
+    ocs2_robotic_tools
+    ocs2_ddp
+    #kindr
+    #kindr_ros
+    voxblox
+    voxblox_ros
+    pcl_msgs 
+    pcl_conversions 
+    pcl_ros
 )
+
+find_package(catkin REQUIRED COMPONENTS
+    ${PACKAGE_DEPENDENCIES}
+    message_generation
+)
+
+find_package(Boost REQUIRED COMPONENTS
+  system
+  filesystem
+)
+
+find_package(PCL REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -69,10 +105,23 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+)
+
+catkin_package(
+  INCLUDE_DIRS
+    include
+  LIBRARIES
+    mobiman_simulation
+  CATKIN_DEPENDS
+    ${PACKAGE_DEPENDENCIES}
+    message_runtime
+  DEPENDS
+    Boost
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,7 +155,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES mobiman_simulation
-  CATKIN_DEPENDS roscpp rospy std_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs 
   #DEPENDS system_lib
 )
 
@@ -119,8 +168,23 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
+add_library(${PROJECT_NAME}
+  src/EsdfCachingServer.cpp
+)
+
+add_dependencies(${PROJECT_NAME}
+        ${${PROJECT_NAME}_EXPORTED_TARGETS}
+        ${catkin_EXPORTED_TARGETS})
+        
+target_link_libraries(${PROJECT_NAME}
+${catkin_LIBRARIES}
+${Boost_LIBRARIES}
+${PCL_LIBRARIES}
+)
+        
 ## Declare a C++ library
 #add_library(ocs2_mrt_loop src/ocs2_mrt_loop.cpp)
 #add_library(ocs2_mobile_manipulator_interface src/ocs2_mobile_manipulator_interface.cpp)

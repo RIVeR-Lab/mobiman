@@ -415,7 +415,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -430,12 +430,12 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: octomap_rviz_plugin/ColorOccupancyGrid
       Enabled: true
-      Max. Height Display: inf
+      Max. Height Display: 3.4028234663852886e+38
       Max. Octree Depth: 16
-      Min. Height Display: -inf
+      Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
       Octomap Topic: /octomap_mobiman
       Queue Size: 5
@@ -443,6 +443,41 @@ Visualization Manager:
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
+    - Class: voxblox_rviz_plugin/VoxbloxMesh
+      Enabled: true
+      Name: VoxbloxMesh
+      Queue Size: 10
+      Topic: /voxblox_node/mesh
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /voxblox_node/tsdf_pointcloud
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -471,7 +506,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.129169940948486
+      Distance: 8.792757987976074
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -479,17 +514,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.19192974269390106
-        Y: -0.21516740322113037
-        Z: -0.2082298994064331
+        X: 1.4037615060806274
+        Y: 0.13129779696464539
+        Z: 0.5308873653411865
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7203983068466187
+      Pitch: 0.6303989887237549
       Target Frame: <Fixed Frame>
-      Yaw: 1.585385799407959
+      Yaw: 1.505409836769104
     Saved: ~
 Window Geometry:
   Displays:

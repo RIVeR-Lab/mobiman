@@ -234,7 +234,7 @@ selfCollision
 extCollision
 { 
   ; activate external-collision constraint
-  activate  true
+  activate  false
 }
 
 ; Only applied for arm joints: limits parsed from URDF
