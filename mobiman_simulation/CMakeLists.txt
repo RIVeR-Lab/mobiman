@@ -3,44 +3,18 @@ project(mobiman_simulation)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
-add_definitions(-std=c++14 -g -O3 -ftree-vectorize -march=native)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-#find_package(catkin REQUIRED COMPONENTS
-#  roscpp
-#  rospy
-#  std_msgs
-#  ocs2_core
-#  ocs2_robotic_tools
-#  ocs2_ddp
-#  voxblox
-#  voxblox_ros
-#)
-
-set(PACKAGE_DEPENDENCIES
-    roslib
-    roscpp
-    rospy
-    tf
-    geometry_msgs
-    #ocs2_comm_interfaces
-    ocs2_core
-    ocs2_robotic_tools
-    ocs2_ddp
-    #kindr
-    #kindr_ros
-    voxblox
-    voxblox_ros
-    pcl_msgs 
-    pcl_conversions 
-    pcl_ros
-)
-
 find_package(catkin REQUIRED COMPONENTS
-    ${PACKAGE_DEPENDENCIES}
-    message_generation
+  ${PACKAGE_DEPENDENCIES}
+  message_generation
+  roscpp
+  rospy
+  std_msgs
+  geometry_msgs
+  tf
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -49,10 +23,6 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 find_package(PCL REQUIRED)
-
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -171,19 +141,19 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME}
-  src/EsdfCachingServer.cpp
-)
+#add_library(${PROJECT_NAME}
+#  src/EsdfCachingServer.cpp
+#)
 
-add_dependencies(${PROJECT_NAME}
-        ${${PROJECT_NAME}_EXPORTED_TARGETS}
-        ${catkin_EXPORTED_TARGETS})
+#add_dependencies(${PROJECT_NAME}
+#        ${${PROJECT_NAME}_EXPORTED_TARGETS}
+#        ${catkin_EXPORTED_TARGETS})
         
-target_link_libraries(${PROJECT_NAME}
-${catkin_LIBRARIES}
-${Boost_LIBRARIES}
-${PCL_LIBRARIES}
-)
+#target_link_libraries(${PROJECT_NAME}
+#${catkin_LIBRARIES}
+#${Boost_LIBRARIES}
+#${PCL_LIBRARIES}
+#)
         
 ## Declare a C++ library
 #add_library(ocs2_mrt_loop src/ocs2_mrt_loop.cpp)

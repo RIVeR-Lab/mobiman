@@ -235,6 +235,15 @@ extCollision
 { 
   ; activate external-collision constraint
   activate  false
+
+  ; relaxed log barrier mu
+  mu              5e-3
+  
+  ; relaxed log barrier delta
+  delta           1e-4
+
+  ; minimum distance to obstacles
+  minimumDistance  0.1
 }
 
 ; Only applied for arm joints: limits parsed from URDF
