@@ -1,3 +1,6 @@
+## Clone mobiman
+git clone git@github.com:RIVeR-Lab/mobiman.git
+
 ## Clone ocs2
 git clone git@github.com:RIVeR-Lab/ocs2.git
 cd ocs2/
@@ -16,11 +19,40 @@ git clone https://github.com/leggedrobotics/ocs2_robotic_assets.git
 
 ## Clone voxblox
 git clone git@github.com:RIVeR-Lab/voxblox.git
+wstool init . ./voxblox/voxblox_ssh.rosinstall
+wstool update
 cd voxblox/
 git checkout noetic-akmandor-v0
 
-## Install dependencies
-sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
+## Clone jackal
+git clone git@github.com:RIVeR-Lab/jackal.git
+cd jackal/
+git checkout noetic-akmandor
+
+## Clone universal_robot
+git@github.com:fmauch/universal_robot.git
+cd universal_robot/
+git checkout calibration_devel
+
+## Clone LMS1xx
+git clone https://github.com/RIVeR-Lab/LMS1xx.git
+cd LMS1xx/
+git checkout noetic-akmandor
+
+## Clone aws-robomaker-small-warehouse-world
+git clone git@github.com:aws-robotics/aws-robomaker-small-warehouse-world.git
+
+## Clone gazebo-coveyor
+git clone git@github.com:rokokoo/gazebo-conveyor.git
+
+## Clone coveyor_demo
+git clone git@github.com:rokokoo/conveyor_demo.git
+
+## Clone octomap_rviz_plugins
+git clone git@github.com:OctoMap/octomap_rviz_plugins.git
+
+## Clone pointcloud_to_laserscan
+git clone git@github.com:ros-perception/pointcloud_to_laserscan.git
 
 ## Clone raisimLib
 git clone --depth 1 https://github.com/raisimTech/raisimLib.git -b v1.1.01
@@ -41,8 +73,14 @@ pip install Sphinx==1.8.5
 pip install breathe==4.13.0
 pip install sphinx_rtd_theme
 
-# Add in ocs_doc/tools/sphinx/conf.py
-master_doc = 'index'
+## Install dependencies
+sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
+sudo apt install ros-noetic-pybind11-catkin
+sudo apt install python3-catkin-tools
+sudo apt install doxygen doxygen-latex
+sudo apt-get install ros-noetic-rqt-multiplot
+sudo apt install ros-noetic-moveit
+rosdep install --from-paths src --ignore-src -r -y
 
 # Change catkin config
 catkin config --extend /opt/ros/noetic
