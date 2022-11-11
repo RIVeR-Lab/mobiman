@@ -42,8 +42,9 @@ git checkout noetic-akmandor
 ## Clone aws-robomaker-small-warehouse-world
 git clone git@github.com:aws-robotics/aws-robomaker-small-warehouse-world.git
 
+# NUA: Not needed.
 ## Clone gazebo-coveyor
-git clone git@github.com:rokokoo/gazebo-conveyor.git
+#git clone git@github.com:rokokoo/gazebo-conveyor.git
 
 ## Clone coveyor_demo
 git clone git@github.com:rokokoo/conveyor_demo.git
