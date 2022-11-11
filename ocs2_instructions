@@ -85,4 +85,4 @@ rosdep install --from-paths src --ignore-src -r -y
 
 # Change catkin config
 catkin config --extend /opt/ros/noetic
-catkin config -DCMAKE_BUILD_TYPE=RelWithDebInfo
+catkin config -DCMAKE_BUILD_TYPE=Release
