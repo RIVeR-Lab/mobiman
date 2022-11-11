@@ -30,7 +30,7 @@ cd jackal/
 git checkout noetic-akmandor
 
 ## Clone universal_robot
-git@github.com:fmauch/universal_robot.git
+git clone git@github.com:fmauch/universal_robot.git
 cd universal_robot/
 git checkout calibration_devel
 
