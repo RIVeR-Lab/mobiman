@@ -24,8 +24,8 @@
   <arg name="robot0_init_yaw" default="0.0"/>
 
   <arg name="init_ur5_shoulder_pan_joint" default="0.0"/>
-  <arg name="init_ur5_shoulder_lift_joint" default="-1.2"/> <!-- -1.2 -->
-  <arg name="init_ur5_elbow_joint" default="-2.0"/> <!-- -2.0 -->
+  <arg name="init_ur5_shoulder_lift_joint" default="0.0"/> <!-- -1.2 -->
+  <arg name="init_ur5_elbow_joint" default="0.0"/> <!-- -2.0 -->
   <arg name="init_ur5_wrist_1_joint" default="0.0"/>
   <arg name="init_ur5_wrist_2_joint" default="0.0"/>
   <arg name="init_ur5_wrist_3_joint" default="0.0"/>

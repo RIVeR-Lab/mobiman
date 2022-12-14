@@ -133,7 +133,7 @@ initialState
     wheelBasedMobileManipulator
     {
       (0,0)  0.0  ; position x
-      (1,0)  1.0  ; position y
+      (1,0)  0.0  ; position y
       (2,0)  0.0  ; heading
     }
   }
@@ -142,8 +142,8 @@ initialState
   arm
   {
     (0,0)  0.0  ; ur5_shoulder_pan_joint
-    (1,0)  -1.2  ; ur5_shoulder_lift_joint
-    (2,0)  -2.0  ; ur5_elbow_joint
+    (1,0)  0.0  ; ur5_shoulder_lift_joint
+    (2,0)  0.0  ; ur5_elbow_joint
     (3,0)  0.0  ; ur5_wrist_1_joint
     (4,0)  0.0  ; ur5_wrist_2_joint
     (5,0)  0.0  ; ur5_wrist_3_joint
@@ -218,7 +218,7 @@ finalEndEffector
 selfCollision
 { 
   ; activate self-collision constraint
-  activate  false
+  activate  true
 
   ; Self Collision raw object pairs
   ;collisionObjectPairs

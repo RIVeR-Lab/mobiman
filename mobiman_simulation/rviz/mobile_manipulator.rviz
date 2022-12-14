@@ -4,6 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /TF1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 625
@@ -24,7 +25,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -284,17 +285,17 @@ Visualization Manager:
         ur5_flange:
           Value: false
         ur5_forearm_link:
-          Value: false
+          Value: true
         ur5_shoulder_link:
-          Value: false
+          Value: true
         ur5_tool0:
           Value: true
         ur5_upper_arm_link:
-          Value: false
+          Value: true
         ur5_wrist_1_link:
-          Value: false
+          Value: true
         ur5_wrist_2_link:
-          Value: false
+          Value: true
         ur5_wrist_3_link:
           Value: false
         world:
@@ -506,7 +507,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.792757987976074
+      Distance: 3.331129312515259
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -514,17 +515,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.4037615060806274
-        Y: 0.13129779696464539
-        Z: 0.5308873653411865
+        X: 1.0837266445159912
+        Y: 0.39473116397857666
+        Z: 0.12049511075019836
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6303989887237549
+      Pitch: 0.49539914727211
       Target Frame: <Fixed Frame>
-      Yaw: 1.505409836769104
+      Yaw: 3.7704153060913086
     Saved: ~
 Window Geometry:
   Displays:
