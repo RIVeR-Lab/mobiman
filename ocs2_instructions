@@ -86,3 +86,6 @@ rosdep install --from-paths src --ignore-src -r -y
 # Change catkin config
 catkin config --extend /opt/ros/noetic
 catkin config -DCMAKE_BUILD_TYPE=Release
+
+## Create URDF from Xacro
+rosrun xacro xacro jackal_ur5.urdf.xacro --inorder > jackal_ur5_test.urdf
