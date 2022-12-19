@@ -8,8 +8,8 @@ model_information
   {
   }
 
-  ; Parent links of joints
-  dofParentLinkNames
+  ; Name of the parent link of the joint frames
+  jointParentFrameNames
   {
     [0] ur5_shoulder_link
     [1] ur5_upper_arm_link
@@ -24,9 +24,7 @@ model_information
   ; end-effector frame of the robot (from URDF)
   armBaseFrame                    "ur5_base_link"
   ; end-effector frame of the robot (from URDF)
-  eeFrame                         "ur5_wrist_3_link"
-  ; end-effector frame of the robot (from URDF)
-  toolFrame                       "ur5_tool0"
+  eeFrame                         "ur5_tool0"
 }
 
 model_settings
