@@ -257,8 +257,8 @@ extCollision
   ; relaxed log barrier delta
   delta           1e-4
 
-  ; minimum distance to obstacles
-  minimumDistance  0.1
+  ; maximum distance to obstacles
+  maxDistance  10
 }
 
 ; Only applied for arm joints: limits parsed from URDF

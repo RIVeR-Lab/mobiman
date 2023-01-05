@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   tf
+  voxblox
+  voxblox_ros
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -82,8 +84,8 @@ find_package(PCL REQUIRED)
 #)
 
 catkin_package(
-  #INCLUDE_DIRS
-    #include
+  INCLUDE_DIRS
+    include
   LIBRARIES
     mobiman_simulation
   CATKIN_DEPENDS
@@ -157,8 +159,7 @@ include_directories(
 #)
         
 ## Declare a C++ library
-#add_library(ocs2_mrt_loop src/ocs2_mrt_loop.cpp)
-#add_library(ocs2_mobile_manipulator_interface src/ocs2_mobile_manipulator_interface.cpp)
+add_library(testplanner src/testplanner.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -184,6 +185,17 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+# Voxblox Test
+add_executable(testplanner_node
+  src/testplanner_node.cpp
+)
+add_dependencies(testplanner_node
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(testplanner_node
+  ${catkin_LIBRARIES} testplanner
+)
 
 # MPC node
 #add_executable(ocs2_mobile_manipulator_mpc_node

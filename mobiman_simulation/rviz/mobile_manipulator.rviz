@@ -366,8 +366,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -401,8 +400,7 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        0 - 10: true
-        0 - 12: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -446,12 +444,12 @@ Visualization Manager:
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
     - Class: voxblox_rviz_plugin/VoxbloxMesh
-      Enabled: true
+      Enabled: false
       Name: VoxbloxMesh
       Queue Size: 10
       Topic: /voxblox_node/mesh
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -485,7 +483,15 @@ Visualization Manager:
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /voxblox_node/occupied_nodes
+      Name: MarkerArray
+      Namespaces:
+        occupied_voxels: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -516,7 +522,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.493255615234375
+      Distance: 8.145139694213867
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -524,17 +530,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.29845285415649414
-        Y: -0.22640030086040497
-        Z: 1.3930784463882446
+        X: 0.5435698628425598
+        Y: 0.6134247779846191
+        Z: 1.2221096754074097
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.34039920568466187
+      Pitch: 0.5353992581367493
       Target Frame: <Fixed Frame>
-      Yaw: 1.6704148054122925
+      Yaw: 2.6654181480407715
     Saved: ~
 Window Geometry:
   Displays:

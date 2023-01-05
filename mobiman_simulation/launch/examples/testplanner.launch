@@ -1,0 +1,7 @@
+<launch>
+      <node pkg="mobiman_simulation" name="testplanner_node" type="testplanner_node" output="screen"> <!-- launch-prefix="gdb -ex run &#45;&#45;args"-->
+      <remap from="/testplanner_node/esdf_map_in" to="esdf_map" />
+      <param name="tsdf_voxel_size" value="0.1" />
+      <param name="tsdf_voxels_per_side" value="16" />
+    </node>
+</launch>

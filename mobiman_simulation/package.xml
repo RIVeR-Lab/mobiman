@@ -65,6 +65,8 @@
   <depend>tf</depend>
   <depend>geometry_msgs</depend>
   <depend>message_generation</depend>
+  <depend>voxblox</depend>
+  <depend>voxblox_ros</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
