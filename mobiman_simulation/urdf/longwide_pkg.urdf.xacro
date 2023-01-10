@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot name="longwide_pkg_gazebo" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="PI" value="3.1415926535897931" />
+
+    <xacro:include filename="$(find mobiman_simulation)/urdf/package.urdf.xacro"/>
+
+    <xacro:package 
+        prefix="longwide_pkg" 
+        color="Yellow"
+        mass="0.5"
+        box_size_x="1.0" 
+        box_size_y="0.5" 
+        box_size_z="0.1" >
+    </xacro:package>
+
+</robot>

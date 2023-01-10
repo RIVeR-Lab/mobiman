@@ -32,7 +32,7 @@
 
   <!-- Launch the Gazebo world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find mobiman_simulation)/worlds/no_roof_small_warehouse.world"/>
+    <!--arg name="world_name" value="$(find mobiman_simulation)/worlds/no_roof_small_warehouse.world"/-->
     <!--arg name="world_name" value="$(find mobiman_simulation)/worlds/willow_garage.world"/-->
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
@@ -43,11 +43,36 @@
   </include>
 
   <!-- Launch conveyor belt -->
+  <!--node name="spawn_conveyor_belt" 
+        pkg="gazebo_ros" 
+        type="spawn_model" 
+        args="-file $(find mobiman_simulation)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt -x 2.0 -y -2.5 -z 0.2" />
+  <node name="bin" 
+        pkg="gazebo_ros" 
+        type="spawn_model" 
+        args="-file $(find mobiman_simulation)/urdf/bin.urdf -urdf -model bin -y 0.8 -x -0.5 -z 0.05" /-->
+
   <!--group ns="conveyor">
-		<node name="spawn_model_belt" pkg="gazebo_ros" type="spawn_model" args="-file $(find demo_world)/urdf/conveyor.urdf -urdf -model conveyor_belt" respawn="false" output="screen" />
+		<node name="spawn_model_belt" 
+          pkg="gazebo_ros" 
+          type="spawn_model" 
+          args="-file $(find demo_world)/urdf/conveyor.urdf -urdf -model conveyor_belt -x 0.0 -y -2.0 -z 0.2" 
+          respawn="false" 
+          output="screen" />
 	</group>
 
 	<node name="cube_spawner" pkg="demo_world" type="demo.py" output="screen"/-->
+
+  <group ns="conveyor">
+		<node name="spawn_conveyor" 
+          pkg="gazebo_ros" 
+          type="spawn_model" 
+          args="-file $(find mobiman_simulation)/urdf/conveyor.urdf -urdf -model conveyor_belt -x 0.0 -y -2.5 -z 0.2" 
+          respawn="false" 
+          output="screen" />
+	</group>
+
+	<node name="spawn_packages" pkg="mobiman_simulation" type="spawn_packages.py" output="screen"/>
 
   <!-- Launch robot -->
   <group ns="$(arg robot_namespace)">

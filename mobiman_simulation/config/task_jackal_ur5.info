@@ -249,7 +249,7 @@ selfCollision
 extCollision
 { 
   ; activate external-collision constraint
-  activate  true
+  activate  false
 
   ; relaxed log barrier mu
   mu              1e-1 ;5e-3
