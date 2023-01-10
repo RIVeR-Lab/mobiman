@@ -2,6 +2,7 @@
 
 import rospy, tf, rospkg, random
 from gazebo_msgs.srv import DeleteModel, SpawnModel, GetModelState
+from gazebo_conveyor.srv import ConveyorBeltControl
 from geometry_msgs.msg import Quaternion, Pose, Point
 
 class PkgSpawner():
@@ -26,6 +27,7 @@ class PkgSpawner():
 		self.sm = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
 		self.dm = rospy.ServiceProxy("/gazebo/delete_model", DeleteModel)
 		self.ms = rospy.ServiceProxy("/gazebo/get_model_state", GetModelState)
+		self.cc = rospy.ServiceProxy("/conveyor/control", ConveyorBeltControl)
 
 	def checkModelPkgIgn(self):
 		res = self.ms("pkg_ign", "world")
@@ -44,7 +46,6 @@ class PkgSpawner():
 		return res.pose.position.z
 
 	def spawnModelPkgIgn(self):
-		# print(self.pkg_index)
 		pkg_ign = self.pkgs_ign[self.pkg_ign_index]
 
 		with open(pkg_ign, "r") as f:
@@ -60,10 +61,9 @@ class PkgSpawner():
 			self.pkg_ign_index += 1
 		else:
 			self.pkg_ign_index = 0
-		rospy.sleep(0.5)
+		rospy.sleep(1.0)
 
 	def spawnModelPkgMan(self):
-		# print(self.pkg_index)
 		pkg_man = self.pkgs_man[self.pkg_man_index]
 
 		with open(pkg_man, "r") as f:
@@ -79,7 +79,7 @@ class PkgSpawner():
 			self.pkg_man_index += 1
 		else:
 			self.pkg_man_index = 0
-		rospy.sleep(0.5)
+		#rospy.sleep(0.5)
 
 	def deleteModelPkgIgn(self):
 		self.dm("pkg_ign")
@@ -94,6 +94,9 @@ class PkgSpawner():
 		self.deleteModelPkgMan()
 		print("[spawn_packages::shutdown_hook] Shutting down...")
 
+	def startConveyor(self):
+		self.cc(100)
+		#rospy.sleep(0.5)
 
 if __name__ == "__main__":
 	print("Waiting for gazebo services...")
@@ -101,12 +104,15 @@ if __name__ == "__main__":
 	rospy.wait_for_service("/gazebo/delete_model")
 	rospy.wait_for_service("/gazebo/spawn_urdf_model")
 	rospy.wait_for_service("/gazebo/get_model_state")
+	rospy.wait_for_service("/conveyor/control")
 	
 	r = rospy.Rate(15)
 	ps = PkgSpawner()
 	
 	rospy.on_shutdown(ps.shutdown_hook)
 	
+	ps.startConveyor()
+
 	while not rospy.is_shutdown():
 		if ps.checkModelPkgIgn() == False:
 			ps.spawnModelPkgIgn()
