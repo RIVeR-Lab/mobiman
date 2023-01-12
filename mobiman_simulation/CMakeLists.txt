@@ -17,6 +17,11 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   voxblox
   voxblox_ros
+  pcl_msgs 
+  pcl_conversions 
+  pcl_ros
+  octomap_ros
+  octomap_msgs
 )
 
 find_package(Boost REQUIRED COMPONENTS
@@ -25,6 +30,15 @@ find_package(Boost REQUIRED COMPONENTS
 )
 
 find_package(PCL REQUIRED)
+#find_package(SuiteSparse REQUIRED)
+#find_package(CCD REQUIRED)
+
+if(EXISTS "${CMAKE_SOURCE_DIR}/cmake/FindFCL.cmake")
+  find_package(FCL REQUIRED)
+else()
+  set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/cmake/")
+  find_package(FCL REQUIRED)
+endif()
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -93,6 +107,7 @@ catkin_package(
     message_runtime
   DEPENDS
     Boost
+    FCL
 )
 
 ################################################
@@ -126,7 +141,8 @@ catkin_package(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS 
-    #include
+    include
+    ${FCL_INCLUDE_DIRS}
   LIBRARIES mobiman_simulation
   CATKIN_DEPENDS roscpp rospy std_msgs 
   #DEPENDS system_lib
@@ -139,7 +155,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  #include
+  include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
@@ -160,6 +176,9 @@ include_directories(
         
 ## Declare a C++ library
 add_library(testplanner src/testplanner.cpp)
+add_library(map_utility src/map_utility.cpp)
+
+add_dependencies(map_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -196,6 +215,11 @@ add_dependencies(testplanner_node
 target_link_libraries(testplanner_node
   ${catkin_LIBRARIES} testplanner
 )
+
+# Scanner
+add_executable(map_utility_server src/map_utility_server.cpp)
+#add_dependencies(map_utility_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(map_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} nlopt ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES})
 
 # MPC node
 #add_executable(ocs2_mobile_manipulator_mpc_node

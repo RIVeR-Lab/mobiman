@@ -61,7 +61,7 @@ class PkgSpawner():
 			self.pkg_ign_index += 1
 		else:
 			self.pkg_ign_index = 0
-		rospy.sleep(1.0)
+		rospy.sleep(5.0)
 
 	def spawnModelPkgMan(self):
 		pkg_man = self.pkgs_man[self.pkg_man_index]
@@ -79,7 +79,7 @@ class PkgSpawner():
 			self.pkg_man_index += 1
 		else:
 			self.pkg_man_index = 0
-		#rospy.sleep(0.5)
+		#rospy.sleep(5.0)
 
 	def deleteModelPkgIgn(self):
 		self.dm("pkg_ign")
@@ -95,7 +95,7 @@ class PkgSpawner():
 		print("[spawn_packages::shutdown_hook] Shutting down...")
 
 	def startConveyor(self):
-		self.cc(100)
+		self.cc(10)
 		#rospy.sleep(0.5)
 
 if __name__ == "__main__":
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 	rospy.wait_for_service("/gazebo/get_model_state")
 	rospy.wait_for_service("/conveyor/control")
 	
-	r = rospy.Rate(15)
+	#r = rospy.Rate(15)
 	ps = PkgSpawner()
 	
 	rospy.on_shutdown(ps.shutdown_hook)
@@ -114,15 +114,18 @@ if __name__ == "__main__":
 	ps.startConveyor()
 
 	while not rospy.is_shutdown():
+		
+		#ps.spawnModelPkgIgn()
 		if ps.checkModelPkgIgn() == False:
 			ps.spawnModelPkgIgn()
 		elif ps.getPosZPkgIgn() < 0.2:
 			ps.deleteModelPkgIgn()
 
+		#ps.spawnModelPkgMan()
 		if ps.checkModelPkgMan() == False:
 			ps.spawnModelPkgMan()
 		elif ps.getPosZPkgMan() < 0.2:
 			ps.deleteModelPkgMan()
 
-		r.sleep()
+		#r.sleep()
 		
