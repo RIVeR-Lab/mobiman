@@ -43,6 +43,7 @@
 
         <gazebo reference="${prefix}_base_link">
             <material>Gazebo/${color}</material>
+            <gravity>0</gravity>
         </gazebo>
 
     </xacro:macro>

@@ -25,11 +25,6 @@ int main(int argc, char** argv)
   // INITIALIZE THE ROS NODE HANDLE FOR PARAMETERS
   ros::NodeHandle pnh("~");
 
-  //NUA TODO 1
-  //ros::MultiThreadedSpinner spinner(2);
-  //ros::AsyncSpinner spinner(0);
-  //spinner.start();
-
   // INITIALIZE TRANSFORM LISTENER
   tf::TransformListener* listener = new tf::TransformListener;
 

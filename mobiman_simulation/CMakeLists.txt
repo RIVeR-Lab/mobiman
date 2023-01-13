@@ -177,8 +177,10 @@ include_directories(
 ## Declare a C++ library
 add_library(testplanner src/testplanner.cpp)
 add_library(map_utility src/map_utility.cpp)
+add_library(scan_utility src/scan_utility.cpp)
 
 add_dependencies(map_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -216,10 +218,15 @@ target_link_libraries(testplanner_node
   ${catkin_LIBRARIES} testplanner
 )
 
-# Scanner
+# Map Utility
 add_executable(map_utility_server src/map_utility_server.cpp)
 #add_dependencies(map_utility_server ${catkin_EXPORTED_TARGETS})
 target_link_libraries(map_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} nlopt ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES})
+
+# Scanner
+add_executable(scan_utility_server src/scan_utility_server.cpp)
+#add_dependencies(scan_utility_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(scan_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} nlopt ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES})
 
 # MPC node
 #add_executable(ocs2_mobile_manipulator_mpc_node
