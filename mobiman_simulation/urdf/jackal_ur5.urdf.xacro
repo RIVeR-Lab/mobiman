@@ -22,7 +22,7 @@
 
     <!-- Import camera-->
     <!--xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/-->
-    <xacro:include filename="$(find mobiman_simulation)/urdf/realsense-d435.macro.xacro" />
+    <!--xacro:include filename="$(find mobiman_simulation)/urdf/realsense_d435.macro.xacro" /-->
 
     <!-- Attach robotic arm to the mobile base -->
     <joint name="ur5_to_jackal" type="fixed">
@@ -55,11 +55,11 @@
     </xacro:realsense-rs200-->
 
     <!-- Create camera instance -->
-    <xacro:realsense-d435 
+    <!--xacro:realsense-d435 
         prefix="d435_cam1" 
         parent="base_link">
         <origin xyz="0.2 0.0 0.2" rpy="0.0 0.0 0.0" />   
-    </xacro:realsense-d435>
+    </xacro:realsense-d435-->
 
     <!-- Create camera instance -1.570796327 -->
     <!--xacro:realsense-d435 

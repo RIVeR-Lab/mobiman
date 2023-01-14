@@ -91,7 +91,7 @@
     <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
 
     <!-- Run the sensor processes -->
-    <include file="$(find mobiman_simulation)/launch/utilities/camera_process.launch" />
+    <!--include file="$(find mobiman_simulation)/launch/utilities/camera_process.launch" /-->
 
     <!-- Run robot control on the gazebo master -->
     <include file="$(find mobiman_control)/launch/control_jackal_ur5.launch" />

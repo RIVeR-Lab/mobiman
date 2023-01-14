@@ -28,7 +28,15 @@
   <node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world base_link 100" />
 
   <!-- Launch object -->
-  <arg name="object_name" value="longwide_pkg"/>
+  <!-- normal_pkg 
+       long_pkg
+       longwide_pkg
+       red_cube
+       green_cube
+       blue_cube
+       conveyor
+  -->
+  <arg name="object_name" value="conveyor"/>
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param  name="robot_description_object"

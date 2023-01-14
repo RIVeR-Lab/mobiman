@@ -75,7 +75,7 @@
     <kd value="1"/>
     <fdir1 value="1 0 0"/>
   </gazebo>
-  <joint name="front_left_wheel" type="fixed">
+  <joint name="front_left_wheel" type="continuous">
     <parent link="chassis_link"/>
     <child link="front_left_wheel_link"/>
     <origin rpy="0 0 0" xyz="0.131 0.187795 0.0345"/>
@@ -121,7 +121,7 @@
     <kd value="1"/>
     <fdir1 value="1 0 0"/>
   </gazebo>
-  <joint name="front_right_wheel" type="fixed">
+  <joint name="front_right_wheel" type="continuous">
     <parent link="chassis_link"/>
     <child link="front_right_wheel_link"/>
     <origin rpy="0 0 0" xyz="0.131 -0.187795 0.0345"/>
@@ -167,7 +167,7 @@
     <kd value="1"/>
     <fdir1 value="1 0 0"/>
   </gazebo>
-  <joint name="rear_left_wheel" type="fixed">
+  <joint name="rear_left_wheel" type="continuous">
     <parent link="chassis_link"/>
     <child link="rear_left_wheel_link"/>
     <origin rpy="0 0 0" xyz="-0.131 0.187795 0.0345"/>
@@ -213,7 +213,7 @@
     <kd value="1"/>
     <fdir1 value="1 0 0"/>
   </gazebo>
-  <joint name="rear_right_wheel" type="fixed">
+  <joint name="rear_right_wheel" type="continuous">
     <parent link="chassis_link"/>
     <child link="rear_right_wheel_link"/>
     <origin rpy="0 0 0" xyz="-0.131 -0.187795 0.0345"/>
@@ -784,9 +784,6 @@
   </joint>
   <!-- Import lidar-->
   <!--xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx_mount.urdf.xacro" /-->
-  <!-- Import camera-->
-  <!--xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/-->
-  <!--xacro:include filename="$(find mobiman_simulation)/urdf/realsense_d435.macro.xacro" /-->
   <!-- Attach robotic arm to the mobile base -->
   <joint name="ur5_to_jackal" type="fixed">
     <parent link="base_link"/>
@@ -813,12 +810,171 @@
         parent="${arm_prefix}ee_link">
         <origin xyz="0.0 0.0 -0.05" rpy="0.0 0.0 0.0" />   
     </xacro:realsense-rs200-->
-  <!-- Create camera instance -->
-  <!--xacro:realsense-d435 
-        prefix="d435_cam1" 
-        parent="base_link">
-        <origin xyz="0.2 0.0 0.2" rpy="0.0 0.0 0.0" />   
-    </xacro:realsense-d435-->
+  <joint name="d435_cam1camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="d435_cam1camera_bottom_screw_frame"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.2 0.0 0.2"/>
+    <!--origin rpy="0.0 0.0 0" xyz="${offset_x} ${offset_y} ${offset_z}"/-->
+  </joint>
+  <link name="d435_cam1camera_bottom_screw_frame"/>
+  <gazebo reference="d435_cam1camera_bottom_screw_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <joint name="d435_cam1camera_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0175 0.0125"/>
+    <parent link="d435_cam1camera_bottom_screw_frame"/>
+    <child link="d435_cam1camera_link"/>
+  </joint>
+  <link name="d435_cam1camera_link">
+    <visual>
+      <origin rpy="1.570796327 0 1.570796327" xyz="0.0149 -0.0175 0"/>
+      <geometry>
+        <mesh filename="package://mobiman_simulation/meshes/d435.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="erwhi_aluminum"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 -0.0175 0"/>
+      <geometry>
+        <box size="0.02505 0.09 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.180"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+    </inertial>
+  </link>
+  <gazebo reference="d435_cam1camera_link">
+    <turnGravityOff>False</turnGravityOff>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- camera depth joints and links -->
+  <joint name="d435_cam1camera_depth_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="d435_cam1camera_link"/>
+    <child link="d435_cam1camera_depth_frame"/>
+  </joint>
+  <link name="d435_cam1camera_depth_frame"/>
+  <gazebo reference="d435_cam1camera_depth_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <joint name="d435_cam1camera_depth_optical_joint" type="fixed">
+    <origin rpy="-1.570796327 0 -1.570796327" xyz="0 0 0"/>
+    <parent link="d435_cam1camera_depth_frame"/>
+    <child link="d435_cam1camera_depth_optical_frame"/>
+  </joint>
+  <link name="d435_cam1camera_depth_optical_frame"/>
+  <gazebo reference="d435_cam1camera_depth_optical_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <!-- camera left IR joints and links -->
+  <joint name="d435_cam1camera_left_ir_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0 0"/>
+    <parent link="d435_cam1camera_depth_frame"/>
+    <child link="d435_cam1camera_left_ir_frame"/>
+  </joint>
+  <link name="d435_cam1camera_left_ir_frame"/>
+  <gazebo reference="d435_cam1camera_left_ir_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <joint name="d435_cam1camera_left_ir_optical_joint" type="fixed">
+    <origin rpy="-1.570796327 0 -1.570796327" xyz="0 0 0"/>
+    <parent link="d435_cam1camera_left_ir_frame"/>
+    <child link="d435_cam1camera_left_ir_optical_frame"/>
+  </joint>
+  <link name="d435_cam1camera_left_ir_optical_frame"/>
+  <gazebo reference="d435_cam1camera_left_ir_optical_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <!-- camera right IR joints and links -->
+  <joint name="d435_cam1camera_right_ir_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -0.05 0"/>
+    <parent link="d435_cam1camera_depth_frame"/>
+    <child link="d435_cam1camera_right_ir_frame"/>
+  </joint>
+  <link name="d435_cam1camera_right_ir_frame"/>
+  <gazebo reference="d435_cam1camera_right_ir_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <joint name="d435_cam1camera_right_ir_optical_joint" type="fixed">
+    <origin rpy="-1.570796327 0 -1.570796327" xyz="0 0 0"/>
+    <parent link="d435_cam1camera_right_ir_frame"/>
+    <child link="d435_cam1camera_right_ir_optical_frame"/>
+  </joint>
+  <link name="d435_cam1camera_right_ir_optical_frame"/>
+  <gazebo reference="d435_cam1camera_right_ir_optical_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <!-- camera color joints and links -->
+  <joint name="d435_cam1camera_color_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.015 0"/>
+    <parent link="d435_cam1camera_depth_frame"/>
+    <child link="d435_cam1camera_color_frame"/>
+  </joint>
+  <link name="d435_cam1camera_color_frame"/>
+  <gazebo reference="d435_cam1camera_color_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <joint name="d435_cam1camera_color_optical_joint" type="fixed">
+    <origin rpy="-1.570796327 0 -1.570796327" xyz="0 0 0"/>
+    <parent link="d435_cam1camera_color_frame"/>
+    <child link="d435_cam1camera_color_optical_frame"/>
+  </joint>
+  <link name="d435_cam1camera_color_optical_frame"/>
+  <gazebo reference="d435_cam1camera_color_optical_frame">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <link name="d435_cam1camera_depth_frame_gazebo"/>
+  <joint name="d435_cam1gazebo_joint" type="fixed">
+    <origin rpy="-1.570796327 0 -1.570796327" xyz="0 0 0"/>
+    <parent link="d435_cam1camera_link"/>
+    <child link="d435_cam1camera_depth_frame_gazebo"/>
+  </joint>
+  <gazebo reference="camera_depth_frame_gazebo">
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+  <gazebo reference="d435_cam1camera_link">
+    <sensor name="d435_cam1d435" type="depth">
+      <update_rate>30</update_rate>
+      <camera>
+        <horizontal_fov>1.59174</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>6</far>
+        </clip>
+      </camera>
+      <plugin filename="libgazebo_ros_openni_kinect.so" name="camera_plugin">
+        <visualize>true</visualize>
+        <baseline>0.05</baseline>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>d435_cam1d435</cameraName>
+        <imageTopicName>/d435_cam1d435/camera/color/image_raw</imageTopicName>
+        <cameraInfoTopicName>/d435_cam1d435/camera/color/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>/d435_cam1d435/camera/depth/image_raw</depthImageTopicName>
+        <depthImageInfoTopicName>/d435_cam1d435/camera/depth/camera_info</depthImageInfoTopicName>
+        <pointCloudTopicName>/d435_cam1d435/camera/depth/color/points</pointCloudTopicName>
+        <frameName>d435_cam1camera_depth_frame_gazebo</frameName>
+        <pointCloudCutoff>0.02</pointCloudCutoff>
+        <distortionK1>0</distortionK1>
+        <distortionK2>0</distortionK2>
+        <distortionK3>0</distortionK3>
+        <distortionT1>0</distortionT1>
+        <distortionT2>0</distortionT2>
+        <CxPrime>0</CxPrime>
+        <Cx>0</Cx>
+        <Cy>0</Cy>
+        <focalLength>0</focalLength>
+        <hackBaseline>0</hackBaseline>
+      </plugin>
+    </sensor>
+  </gazebo>
   <!-- Create camera instance -1.570796327 -->
   <!--xacro:realsense-d435 
         prefix="d435_cam2" 

@@ -2,7 +2,7 @@
 
   <arg name="gazebo" default="true"/>
   <arg name="robot_namespace" default="/"/>
-  <arg name="model" default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf.xacro robot_namespace:=$(arg robot_namespace)"/>
+  <arg name="model" default="$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro robot_namespace:=$(arg robot_namespace)"/>
   <arg name="gui" default="false" />
   <arg name="rvizconfig" default="$(find mobiman_simulation)/rviz/mobile_manipulator.rviz" />
   <arg name="debug" default="false"/>

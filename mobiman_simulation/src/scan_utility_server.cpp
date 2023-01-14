@@ -81,7 +81,6 @@ int main(int argc, char** argv)
   }
 
   // INITIALIZE AND SET MAP PARAMETERS
-  /*
   ScanUtility su(nh,
                  obj_name,
                  data_dir,
@@ -99,7 +98,6 @@ int main(int argc, char** argv)
 
   su.scanner();
   su.writePointcloud2Data();
-  */
 
   // MAP SERVER LOOP
   //double scan_server_dt = 0.1;
@@ -107,13 +105,15 @@ int main(int argc, char** argv)
 
   //ros::Duration(1.0).sleep();
 
+  /*
   ScanUtility su(nh, "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/longwide_pkg.json");
-  
+
   while(ros::ok())
   {
     su.publishPC2Msg();
     ros::spinOnce();
   }
+  */
 
   cout << "[scan_utility_server::main] END" << endl;
 

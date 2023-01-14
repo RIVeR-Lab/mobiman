@@ -6,6 +6,10 @@ model_information
   ; motion joints in the URDF to consider fixed
   removeJoints 
   {
+    ;[0] front_left_wheel
+    ;[1] front_right_wheel
+    ;[2] rear_left_wheel
+    ;[3] rear_right_wheel
   }
 
   ; Name of the parent link of the joint frames

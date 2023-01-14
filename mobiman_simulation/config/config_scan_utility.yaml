@@ -1,7 +1,7 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
-obj_name: "longwide_pkg"
+obj_name: "conveyor"
 world_frame_name: "world"
 
 data_dir: "models/point_cloud/"
