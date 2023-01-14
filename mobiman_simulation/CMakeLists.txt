@@ -24,6 +24,8 @@ find_package(catkin REQUIRED COMPONENTS
   octomap_msgs
 )
 
+find_package(nlohmann_json REQUIRED)
+
 find_package(Boost REQUIRED COMPONENTS
   system
   filesystem
@@ -226,7 +228,7 @@ target_link_libraries(map_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${
 # Scanner
 add_executable(scan_utility_server src/scan_utility_server.cpp)
 #add_dependencies(scan_utility_server ${catkin_EXPORTED_TARGETS})
-target_link_libraries(scan_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} nlopt ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES})
+target_link_libraries(scan_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} nlopt ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
 # MPC node
 #add_executable(ocs2_mobile_manipulator_mpc_node

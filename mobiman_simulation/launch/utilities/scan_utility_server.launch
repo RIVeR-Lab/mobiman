@@ -3,12 +3,12 @@
 
 <launch>
   <!-- CONFIGURATION OPTIONS
-    config_map_utility_scanner
+    config_scan_utility
   -->
-  <arg name="config_map_utility"  default="config_map_utility_scanner" />
+  <arg name="config_scan_utility"  default="config_scan_utility" />
 
   <!-- PUBLISH CONFIGURATION PARAMETERS -->
-  <rosparam file="$(find mobiman_simulation)/config/$(arg config_map_utility).yaml"/>
+  <rosparam file="$(find mobiman_simulation)/config/$(arg config_scan_utility).yaml"/>
 
   <node name="scan_utility_server" pkg="mobiman_simulation" type="scan_utility_server" output="screen" />
 </launch>

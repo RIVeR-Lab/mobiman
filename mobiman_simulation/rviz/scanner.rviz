@@ -8,6 +8,7 @@ Panels:
         - /RobotModel1/Links1/base_link1
         - /RobotModel1/Links1/d435_cam1camera_bottom_screw_frame1
         - /RobotModel1/Links1/d435_cam1camera_color_frame1
+        - /TF1
       Splitter Ratio: 0.7904191613197327
     Tree Height: 625
   - Class: rviz/Selection
@@ -259,7 +260,7 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_link:
-          Value: true
+          Value: false
         d435_cam1camera_bottom_screw_frame:
           Value: false
         d435_cam1camera_color_frame:
@@ -349,7 +350,7 @@ Visualization Manager:
         d435_cam4camera_right_ir_optical_frame:
           Value: false
         world:
-          Value: false
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -572,7 +573,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /scan_pc2_out
+      Topic: pc2_scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -605,7 +606,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.026580333709717
+      Distance: 4.49393892288208
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -613,17 +614,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.11472544819116592
-        Y: -0.11795470118522644
-        Z: 0.44641417264938354
+        X: 0.1294422447681427
+        Y: -0.12818756699562073
+        Z: 0.27058035135269165
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8354008197784424
+      Pitch: 1.0054004192352295
       Target Frame: <Fixed Frame>
-      Yaw: 4.680402755737305
+      Yaw: 4.673563480377197
     Saved: ~
 Window Geometry:
   Displays:

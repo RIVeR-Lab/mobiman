@@ -1,7 +1,10 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
+obj_name: "longwide_pkg"
 world_frame_name: "world"
+
+data_dir: "models/point_cloud/"
 
 pc2_msg_name_sensor1: "/d435_cam1d435/camera/depth/color/points"
 pc2_msg_name_sensor2: "/d435_cam2d435/camera/depth/color/points"
