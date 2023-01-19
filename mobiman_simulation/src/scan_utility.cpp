@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.14
+// LAST UPDATE: 2023.01.17
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -12,6 +12,14 @@
 // --CUSTOM LIBRARIES--
 #include "scan_utility.h"
 
+ScanUtility::ScanUtility(NodeHandle& nh)
+{
+  tflistener_ = new tf::TransformListener;
+
+  // Publishers
+  pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
+}
+
 ScanUtility::ScanUtility(NodeHandle& nh, string data_path)
 {
   tflistener_ = new tf::TransformListener;
@@ -19,10 +27,7 @@ ScanUtility::ScanUtility(NodeHandle& nh, string data_path)
   readPointcloud2Data(data_path);
 
   // Publishers
-  pub_oct_msg_ = nh.advertise<octomap_msgs::Octomap>("octomap_scan", 100);
   pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
-  //pub_debug_array_visu_ = nh.advertise<visualization_msgs::MarkerArray>("debug_array_scan", 10);
-  //pub_debug_visu_ = nh.advertise<visualization_msgs::Marker>("debug_scan", 10);
 }
 
 ScanUtility::ScanUtility(NodeHandle& nh,
@@ -216,6 +221,11 @@ ScanUtility& ScanUtility::operator = (const ScanUtility& su)
   return *this;
 }
 
+sensor_msgs::PointCloud2 ScanUtility::getPC2MsgScan()
+{
+  return pc2_msg_scan_;
+}
+
 void ScanUtility::getPointcloud2wrtWorld(const sensor_msgs::PointCloud2& msg_in, 
                                          sensor_msgs::PointCloud2& msg_out)
 {
@@ -370,6 +380,13 @@ void ScanUtility::pc2CallbackSensor4(const sensor_msgs::PointCloud2::ConstPtr& m
   pcl_ros::transformPointCloud(world_frame_name_, measured_transform_sensor4_wrt_world, *msg, measured_pc2_msg_sensor4_);
 }
 */
+
+void ScanUtility::getScanPointcloud2(string data_path, sensor_msgs::PointCloud2& pc2_msg)
+{
+  readPointcloud2Data(data_path);
+
+  pc2_msg = pc2_msg_scan_;
+}
 
 void ScanUtility::octomapToPclPointcloud()
 {
@@ -633,7 +650,7 @@ void ScanUtility::readPointcloud2Data(string data_path)
   std::cout << "[ScanUtility::readPointcloud2Data] world_frame_name_: " << world_frame_name_ << std::endl;
   std::cout << "[ScanUtility::readPointcloud2Data] oct_resolution_: " << oct_resolution_ << std::endl;
   
-  std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
+  std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl << std::endl;
 
   /*
   int i = 0;

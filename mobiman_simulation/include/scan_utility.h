@@ -1,5 +1,5 @@
-#ifndef MAP_UTILITY_H
-#define MAP_UTILITY_H
+#ifndef SCAN_UTILITY_H
+#define SCAN_UTILITY_H
 
 // LAST UPDATE: 2023.01.14
 //
@@ -24,7 +24,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-
 // --NAMESPACES--
 using namespace std;
 using namespace ros;
@@ -35,6 +34,9 @@ using json = nlohmann::json;
 class ScanUtility
 {
   public:
+
+    // DESCRIPTION: TODO...
+    ScanUtility(NodeHandle& nh);
 
     // DESCRIPTION: TODO...
     ScanUtility(NodeHandle& nh,
@@ -63,9 +65,14 @@ class ScanUtility
     // DESCRIPTION: TODO...
   	ScanUtility& operator = (const ScanUtility& su);
 
+    // DESCRIPTION: TODO...
+    sensor_msgs::PointCloud2 getPC2MsgScan();
+
+    // DESCRIPTION: TODO...
     void getPointcloud2wrtWorld(const sensor_msgs::PointCloud2& msg_in, 
                                 sensor_msgs::PointCloud2& msg_out);
 
+    // DESCRIPTION: TODO...
     void getSensorPoseAndTransformPointcloud2(const sensor_msgs::PointCloud2& msg_in, 
                                               geometry_msgs::Pose& sensor_pose, 
                                               sensor_msgs::PointCloud2& msg_out);
@@ -86,6 +93,9 @@ class ScanUtility
     // DESCRIPTION: TODO...
     void pc2CallbackSensor4(const sensor_msgs::PointCloud2::ConstPtr& msg);
     */
+
+    // DESCRIPTION: TODO...
+    void getScanPointcloud2(string data_path, sensor_msgs::PointCloud2& pc2_msg);
 
     // DESCRIPTION: TODO...
     void octomapToPclPointcloud();

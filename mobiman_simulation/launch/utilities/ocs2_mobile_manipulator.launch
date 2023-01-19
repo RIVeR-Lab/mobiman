@@ -26,6 +26,19 @@
       <param name="/mobile_manipulator_mpc_node/tsdf_voxel_size" value="0.1" />
       <param name="/mobile_manipulator_mpc_node/tsdf_voxels_per_side" value="16" />
 
+      <!--remap from="pointcloud" to="pc2_scan"/>
+      <remap from="voxblox_node/esdf_map_out" to="esdf_map" />    
+      <param name="tsdf_voxel_size" value="0.1" />
+      <param name="tsdf_voxels_per_side" value="16" />
+      <param name="publish_esdf_map" value="true" />
+      <param name="publish_pointclouds" value="true" />
+      <param name="use_tf_transforms" value="true" />
+      <param name="allow_clear" value="true" />
+      <param name="update_mesh_every_n_sec" value="0.2" />
+      <param name="clear_sphere_for_planning" value="true" />
+      <param name="world_frame" value="world" />
+      <rosparam file="$(find mobiman_simulation)/config/voxblox.yaml"/-->
+
       <node pkg="ocs2_mobile_manipulator_ros" 
             type="mobile_manipulator_mpc_node" 
             name="mobile_manipulator_mpc_node" 

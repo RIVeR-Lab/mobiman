@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.14
+// LAST UPDATE: 2023.01.16
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -14,10 +14,10 @@
 
 int main(int argc, char** argv)
 {
-  cout << "[scan_utility_server::main] START" << endl;
+  cout << "[scanner::main] START" << endl;
 
   // INITIALIZE ROS
-  ros::init(argc, argv, "scan_utility_server");
+  ros::init(argc, argv, "scanner");
   
   // INITIALIZE THE MAIN ROS NODE HANDLE
   ros::NodeHandle nh;
@@ -47,20 +47,20 @@ int main(int argc, char** argv)
   pnh.param("/bbx_z_max", bbx_z_max, 0.0);
   pnh.param("/oct_resolution", oct_resolution, 0.0);
   
-  cout << "[scan_utility_server::main] obj_name: " << obj_name << endl;
-  cout << "[scan_utility_server::main] data_dir: " << data_dir << endl;
-  cout << "[scan_utility_server::main] world_frame_name: " << world_frame_name << endl;
-  cout << "[scan_utility_server::main] pc2_msg_name_sensor1: " << pc2_msg_name_sensor1 << endl;
-  cout << "[scan_utility_server::main] pc2_msg_name_sensor2: " << pc2_msg_name_sensor2 << endl;
-  cout << "[scan_utility_server::main] pc2_msg_name_sensor3: " << pc2_msg_name_sensor3 << endl;
-  cout << "[scan_utility_server::main] pc2_msg_name_sensor4: " << pc2_msg_name_sensor4 << endl;
-  cout << "[scan_utility_server::main] bbx_x_min: " << bbx_x_min << endl;
-  cout << "[scan_utility_server::main] bbx_x_max: " << bbx_x_max << endl;
-  cout << "[scan_utility_server::main] bbx_y_min: " << bbx_y_min << endl;
-  cout << "[scan_utility_server::main] bbx_y_max: " << bbx_y_max << endl;
-  cout << "[scan_utility_server::main] bbx_z_min: " << bbx_z_min << endl;
-  cout << "[scan_utility_server::main] bbx_z_max: " << bbx_z_max << endl;
-  cout << "[scan_utility_server::main] oct_resolution: " << oct_resolution << endl << endl;
+  cout << "[scanner::main] obj_name: " << obj_name << endl;
+  cout << "[scanner::main] data_dir: " << data_dir << endl;
+  cout << "[scanner::main] world_frame_name: " << world_frame_name << endl;
+  cout << "[scanner::main] pc2_msg_name_sensor1: " << pc2_msg_name_sensor1 << endl;
+  cout << "[scanner::main] pc2_msg_name_sensor2: " << pc2_msg_name_sensor2 << endl;
+  cout << "[scanner::main] pc2_msg_name_sensor3: " << pc2_msg_name_sensor3 << endl;
+  cout << "[scanner::main] pc2_msg_name_sensor4: " << pc2_msg_name_sensor4 << endl;
+  cout << "[scanner::main] bbx_x_min: " << bbx_x_min << endl;
+  cout << "[scanner::main] bbx_x_max: " << bbx_x_max << endl;
+  cout << "[scanner::main] bbx_y_min: " << bbx_y_min << endl;
+  cout << "[scanner::main] bbx_y_max: " << bbx_y_max << endl;
+  cout << "[scanner::main] bbx_z_min: " << bbx_z_min << endl;
+  cout << "[scanner::main] bbx_z_max: " << bbx_z_max << endl;
+  cout << "[scanner::main] oct_resolution: " << oct_resolution << endl << endl;
 
   vector<string> pc2_msg_name_vec;
   if (pc2_msg_name_sensor1 != "")
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
   }
   */
 
-  cout << "[scan_utility_server::main] END" << endl;
+  cout << "[scanner::main] END" << endl;
 
   return 0;
 }

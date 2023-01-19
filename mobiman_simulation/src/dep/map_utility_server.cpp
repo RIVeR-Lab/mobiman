@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.12
+// LAST UPDATE: 2023.01.16
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -7,7 +7,6 @@
 // DESCRIPTION: TODO...
 //
 // NUA TODO:
-// 1) Map Service is not working with main callback. Asynchronous spin is working but then map gets messy!
 
 // --CUSTOM LIBRARIES--
 #include "map_utility.h"
@@ -140,7 +139,7 @@ int main(int argc, char** argv)
   ros::Duration(1.0).sleep();
 
   // MAP SERVER LOOP
-  ros::Timer timer = nh.createTimer(ros::Duration(map_server_dt), &MapUtility::mainCallback, &mu);
+  ros::Timer timer = nh.createTimer(ros::Duration(map_server_dt), &MapUtility::sensorMsgToOctomapCallback, &mu);
 
   //spinner.spin();
   //ros::waitForShutdown();

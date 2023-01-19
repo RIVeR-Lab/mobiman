@@ -1,31 +1,19 @@
 <?xml version="1.0"?>
-<robot name="conveyor_gazebo" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="conveyor_belt" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:property name="prefix" value="belt" />
     <xacro:property name="parent_link" value="world" />
-    <xacro:property name="x_wrt_parent" value="0.0" />
-    <xacro:property name="y_wrt_parent" value="0.0" />
-    <xacro:property name="z_wrt_parent" value="0.0" />
-    <xacro:property name="roll_wrt_parent" value="0.0" />
-    <xacro:property name="pitch_wrt_parent" value="0.0" />
-    <xacro:property name="yaw_wrt_parent" value="0.0" />
     <xacro:property name="conveyor_size_x" value="10.0" />
     <xacro:property name="conveyor_size_y" value="0.5" />
     <xacro:property name="conveyor_size_z" value="0.2" />
-    <xacro:property name="conveyor_pos_x" value="0.0" />
-    <xacro:property name="conveyor_pos_y" value="0.0" />
-    <xacro:property name="conveyor_pos_z" value="0.05" />
+    <xacro:property name="moving_gap_x" value="0.0" />
+    <xacro:property name="moving_gap_y" value="0.0" />
+    <xacro:property name="moving_gap_z" value="0.05" />
 
     <xacro:property name="PI" value="3.1415926535897931" />
 
     <xacro:macro name="conveyor_belt" params="prefix 
                                               parent_link 
-                                              x_wrt_parent 
-                                              y_wrt_parent 
-                                              z_wrt_parent 
-                                              roll_wrt_parent 
-                                              pitch_wrt_parent 
-                                              yaw_wrt_parent 
                                               conveyor_size_x 
                                               conveyor_size_y 
                                               conveyor_size_z">
@@ -33,8 +21,8 @@
         <joint name="fixed" type="fixed">
             <parent link="${parent_link}"/>
             <child link="${prefix}_visual"/>
-            <origin xyz="${x_wrt_parent} ${y_wrt_parent} ${z_wrt_parent + conveyor_size_z / 2}" 
-                    rpy="${roll_wrt_parent} ${pitch_wrt_parent} ${yaw_wrt_parent}" />
+            <origin xyz="0.0 0.0 0.0" 
+                    rpy="0.0 0.0 0.0" />
         </joint>
 
         <link name="${prefix}_visual">
@@ -74,7 +62,7 @@
             </inertial>
 
             <collision>
-                <origin xyz="${conveyor_pos_x} ${conveyor_pos_y} ${conveyor_pos_z}" rpy="0 0 0"/>
+                <origin xyz="${moving_gap_x} ${moving_gap_y} ${moving_gap_z}" rpy="0 0 0"/>
                 <geometry>
                     <box size="${conveyor_size_x} ${conveyor_size_y} ${conveyor_size_z}"/>
                 </geometry>
@@ -82,11 +70,11 @@
         </link>
 
         <joint name="belt_joint" type="prismatic">
-            <origin xyz="0.0 0.0 0.05" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
             <parent link="${prefix}_visual"/>
             <child link="${prefix}_moving"/>
             <axis xyz="1 0 0"/>
-            <limit lower="0.0" upper="1.0" effort="1000" velocity="1000"/>
+            <limit lower="0.0" upper="1.0" effort="100" velocity="100"/>
         </joint>
 
         <gazebo>
@@ -105,12 +93,6 @@
 
     <xacro:conveyor_belt prefix="${prefix}"
                          parent_link="${parent_link}" 
-                         x_wrt_parent="${x_wrt_parent}" 
-                         y_wrt_parent="${y_wrt_parent}"
-                         z_wrt_parent="${z_wrt_parent}"
-                         roll_wrt_parent="${roll_wrt_parent}"
-                         pitch_wrt_parent="${pitch_wrt_parent}"
-                         yaw_wrt_parent="${yaw_wrt_parent}"
                          conveyor_size_x="${conveyor_size_x}"
                          conveyor_size_y="${conveyor_size_y}"
                          conveyor_size_z="${conveyor_size_z}" >

@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.12
+// LAST UPDATE: 2023.01.17
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -40,6 +40,40 @@ MapUtility::MapUtility()
   oct_msg.header.frame_id = world_frame_name;
   pc_msg.header.frame_id = world_frame_name;
   pc2_msg.header.frame_id = world_frame_name;
+}
+
+MapUtility::MapUtility(NodeHandle& nh,
+                       string new_world_frame_name,
+                       string gz_model_msg,
+                       vector<string> frame_name_pkgs_ign, 
+                       vector<string> frame_name_pkgs_man,
+                       vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_ign,
+                       vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man)
+{
+  tflistener = new tf::TransformListener;
+
+  world_frame_name = new_world_frame_name;
+
+  frame_name_pkgs_ign_ = frame_name_pkgs_ign;
+  frame_name_pkgs_man_ = frame_name_pkgs_man;
+
+  pc2_msg_gz_pkgs_ign_ = pc2_msg_gz_pkgs_ign;
+  pc2_msg_gz_pkgs_man_ = pc2_msg_gz_pkgs_man;
+
+  // Subscribers
+  sub_gz_model_ = nh.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
+
+  // Publishers
+  pc2_msg_pub = nh.advertise<sensor_msgs::PointCloud2>("pc2_" + map_name, 100);
+  pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 100);
+
+  pub_pc2_msg_gz_pkg_ign_conveyor_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 100);
+  pub_pc2_msg_gz_pkg_ign_red_cube_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 100);
+  pub_pc2_msg_gz_pkg_ign_green_cube_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 100);
+  pub_pc2_msg_gz_pkg_ign_blue_cube_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 100);
+  pub_pc2_msg_gz_pkg_man_normal_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 100);
+  pub_pc2_msg_gz_pkg_man_long_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 100);
+  pub_pc2_msg_gz_pkg_man_longwide_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 100);
 }
 
 MapUtility::MapUtility(NodeHandle& nh, 
@@ -1649,6 +1683,60 @@ void MapUtility::publishPC2Msg()
   pc2_msg_pub.publish(pc2_msg);
 }
 
+void MapUtility::publishPC2MsgGzPkgIgn(int index_pkg_ign)
+{
+  pc2_msg_gz_pkgs_ign_[index_pkg_ign].header.frame_id = frame_name_pkgs_ign_[index_pkg_ign];
+  pc2_msg_gz_pkgs_ign_[index_pkg_ign].header.seq++;
+  pc2_msg_gz_pkgs_ign_[index_pkg_ign].header.stamp = ros::Time::now();
+
+  switch (index_pkg_ign)
+  {
+    case 0:
+      pub_pc2_msg_gz_pkg_ign_conveyor_.publish(pc2_msg_gz_pkgs_ign_[index_pkg_ign]);
+      break;
+
+    case 1:
+      pub_pc2_msg_gz_pkg_ign_red_cube_.publish(pc2_msg_gz_pkgs_ign_[index_pkg_ign]);
+      break;
+
+    case 2:
+      pub_pc2_msg_gz_pkg_ign_green_cube_.publish(pc2_msg_gz_pkgs_ign_[index_pkg_ign]);
+      break;
+
+    case 3:
+      pub_pc2_msg_gz_pkg_ign_blue_cube_.publish(pc2_msg_gz_pkgs_ign_[index_pkg_ign]);
+      break;
+    
+    default:
+      break;
+  }
+}
+
+void MapUtility::publishPC2MsgGzPkgMan(int index_pkg_man)
+{
+  pc2_msg_gz_pkgs_man_[index_pkg_man].header.frame_id = frame_name_pkgs_man_[index_pkg_man];
+  pc2_msg_gz_pkgs_man_[index_pkg_man].header.seq++;
+  pc2_msg_gz_pkgs_man_[index_pkg_man].header.stamp = ros::Time::now();
+  
+  switch (index_pkg_man)
+  {
+    case 0:
+      pub_pc2_msg_gz_pkg_man_normal_pkg_.publish(pc2_msg_gz_pkgs_man_[index_pkg_man]);
+      break;
+
+    case 1:
+      pub_pc2_msg_gz_pkg_man_long_pkg_.publish(pc2_msg_gz_pkgs_man_[index_pkg_man]);
+      break;
+
+    case 2:
+      pub_pc2_msg_gz_pkg_man_longwide_pkg_.publish(pc2_msg_gz_pkgs_man_[index_pkg_man]);
+      break;
+    
+    default:
+      break;
+  }
+}
+
 void MapUtility::publishDebugArrayVisu()
 {
   for (int i = 0; i < debug_array_visu.markers.size(); ++i)
@@ -1807,6 +1895,64 @@ void MapUtility::laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
   measured_laser_msg = *msg;
 }
 
+void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg)
+{
+  gazebo_msgs::ModelStates ms = *msg;
+
+  bool initFlag = true;
+  sensor_msgs::PointCloud2 pc2_msg_scan;
+
+  for (size_t i = 0; i < ms.name.size(); i++)
+  {
+    for (size_t j = 0; j < frame_name_pkgs_ign_.size(); j++)
+    {
+      if (ms.name[i] == frame_name_pkgs_ign_[j])
+      {
+        sensor_msgs::PointCloud2 pc2_msg_gz_pkgs_ign_wrt_world;
+        transform_pkg_ign_.setIdentity();
+        transform_pkg_ign_.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
+        transform_pkg_ign_.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
+      
+        pcl_ros::transformPointCloud(world_frame_name, transform_pkg_ign_, pc2_msg_gz_pkgs_ign_[j], pc2_msg_gz_pkgs_ign_wrt_world);
+
+        static tf::TransformBroadcaster br_gz_pkg_ign;
+        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign_, ros::Time::now(), world_frame_name, frame_name_pkgs_ign_[j]));
+
+        //publishPC2MsgGzPkgIgn(j);
+        if (initFlag)
+        {
+          pc2_msg_scan = pc2_msg_gz_pkgs_ign_wrt_world;
+          initFlag = false;
+        }
+        else
+        {
+          pcl::concatenatePointCloud(pc2_msg_scan, pc2_msg_gz_pkgs_ign_wrt_world, pc2_msg_scan);
+        }
+      }
+    }
+
+    for (size_t j = 0; j < frame_name_pkgs_man_.size(); j++)
+    {
+      if (ms.name[i] == frame_name_pkgs_man_[j])
+      {
+        transform_pkg_man_.setIdentity();
+        transform_pkg_man_.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
+        transform_pkg_man_.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
+      
+        static tf::TransformBroadcaster br_gz_pkg_man;
+        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man_, ros::Time::now(), world_frame_name, frame_name_pkgs_man_[j]));
+
+        //publishPC2MsgGzPkgMan(j);
+      }
+    }
+  }
+
+  pc2_msg_scan.header.frame_id = world_frame_name;
+  pc2_msg_scan.header.seq++;
+  pc2_msg_scan.header.stamp = ros::Time::now();
+  pub_pc2_msg_scan_.publish(pc2_msg_scan);
+}
+
 void MapUtility::update_states()
 {
   //map_pose = measured_map_pose;
@@ -1901,7 +2047,7 @@ bool MapUtility::reset_map_utility(tentabot::reset_map_utility::Request &req, te
 }
 */
 
-void MapUtility::mainCallback(const ros::TimerEvent& e)
+void MapUtility::sensorMsgToOctomapCallback(const ros::TimerEvent& e)
 {
   if (!local_map_flag)
   {

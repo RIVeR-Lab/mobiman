@@ -1,7 +1,15 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
-obj_name: "conveyor"
+# conveyor_belt
+# red_cube
+# green_cube
+# blue_cube
+# normal_pkg
+# long_pkg
+# longwide_pkg
+
+obj_name: "conveyor_belt"
 world_frame_name: "world"
 
 data_dir: "models/point_cloud/"

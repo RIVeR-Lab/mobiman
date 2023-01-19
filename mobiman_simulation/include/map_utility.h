@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.01.12
+// LAST UPDATE: 2023.01.17
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -15,10 +15,12 @@
 #include <tf/transform_listener.h>
 #include <tf_conversions/tf_eigen.h>
 #include <tf/message_filter.h>
+#include <tf/transform_broadcaster.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 #include <sensor_msgs/point_cloud_conversion.h>
 #include <sensor_msgs/LaserScan.h>
+#include <gazebo_msgs/ModelStates.h>
 #include <octomap_msgs/conversions.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <cv_bridge/cv_bridge.h>
@@ -48,10 +50,19 @@ class MapUtility
     MapUtility();
 
     // DESCRIPTION: TODO...
+    MapUtility(NodeHandle& nh,
+               string new_world_frame_name,
+               string gz_model_msg,
+               vector<string> frame_name_pkgs_ign, 
+               vector<string> frame_name_pkgs_man,
+               vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_ign,
+               vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_man);
+
+    // DESCRIPTION: TODO...
     MapUtility(NodeHandle& nh, 
-               string new_map_name, 
-               string sensor_pc2_msg_name, 
-               string sensor_laser_msg_name);
+               string new_map_name,
+               string new_sensor_pc2_msg_name, 
+               string new_sensor_laser_msg_name);
 
     // DESCRIPTION: TODO...
   	MapUtility(const MapUtility& mu);
@@ -520,6 +531,15 @@ class MapUtility
     void publishPC2Msg();
 
     // DESCRIPTION: TODO...
+    void publishPC2MsgGzConveyor();
+
+    // DESCRIPTION: TODO...
+    void publishPC2MsgGzPkgIgn(int index_pkg_ign);
+
+    // DESCRIPTION: TODO...
+    void publishPC2MsgGzPkgMan(int index_pkg_man);
+
+    // DESCRIPTION: TODO...
     void publishDebugArrayVisu();
 
     // DESCRIPTION: TODO...
@@ -547,6 +567,9 @@ class MapUtility
     void laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg);
 
     // DESCRIPTION: TODO...
+    void gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg);
+
+    // DESCRIPTION: TODO...
     void update_states();
 
     // DESCRIPTION: TODO...
@@ -556,10 +579,11 @@ class MapUtility
     //bool reset_map_utility(tentabot::reset_map_utility::Request& req, tentabot::reset_map_utility::Response& res);
 
     // DESCRIPTION: TODO...
-    void mainCallback(const ros::TimerEvent& e);
+    void sensorMsgToOctomapCallback(const ros::TimerEvent& e);
 
   private:
 
+    // NUA TODO: Change naming convention by adding "_".
     tf::TransformListener* tflistener;
 
     string world_frame_name;
@@ -653,6 +677,27 @@ class MapUtility
     ros::Publisher pc2_msg_pub;
     ros::Publisher debug_array_visu_pub;
     ros::Publisher debug_visu_pub;
+
+    // NUA TODO: Add them in constructors if necessary.
+    ros::Subscriber sub_gz_model_;
+
+    vector<string> frame_name_pkgs_ign_;
+    vector<string> frame_name_pkgs_man_;
+
+    tf::Transform transform_pkg_ign_;
+    tf::Transform transform_pkg_man_;
+
+    vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_ign_;
+    vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man_;
+
+    ros::Publisher pub_pc2_msg_scan_;
+    ros::Publisher pub_pc2_msg_gz_pkg_ign_conveyor_;
+    ros::Publisher pub_pc2_msg_gz_pkg_ign_red_cube_;
+    ros::Publisher pub_pc2_msg_gz_pkg_ign_green_cube_;
+    ros::Publisher pub_pc2_msg_gz_pkg_ign_blue_cube_;
+    ros::Publisher pub_pc2_msg_gz_pkg_man_normal_pkg_;
+    ros::Publisher pub_pc2_msg_gz_pkg_man_long_pkg_;
+    ros::Publisher pub_pc2_msg_gz_pkg_man_longwide_pkg_;
 
 };//END of class MapUtility
 

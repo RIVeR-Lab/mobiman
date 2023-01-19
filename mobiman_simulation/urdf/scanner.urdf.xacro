@@ -10,7 +10,7 @@
     <xacro:include filename="$(find mobiman_simulation)/urdf/materials.xacro" />
 
     <!-- Import camera-->
-    <xacro:include filename="$(find mobiman_simulation)/urdf/realsense-d435.macro.xacro" />
+    <xacro:include filename="$(find mobiman_simulation)/urdf/realsense_d435_gravityOff.macro.xacro" />
 
     <link name="base_link"></link>
 

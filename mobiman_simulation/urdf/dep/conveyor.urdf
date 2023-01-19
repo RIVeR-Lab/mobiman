@@ -8,7 +8,7 @@
   <joint name="fixed" type="fixed">
     <parent link="world"/>
     <child link="belt_visual"/>
-    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.1"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
   </joint>
   <link name="belt_visual">
     <collision>
@@ -44,7 +44,7 @@
     </collision>
   </link>
   <joint name="belt_joint" type="prismatic">
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.05"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
     <parent link="belt_visual"/>
     <child link="belt_moving"/>
     <axis xyz="1 0 0"/>
