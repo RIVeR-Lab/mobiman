@@ -25,6 +25,22 @@
       <remap from="/mobile_manipulator_mpc_node/esdf_map_in" to="esdf_map" />
       <param name="/mobile_manipulator_mpc_node/tsdf_voxel_size" value="0.1" />
       <param name="/mobile_manipulator_mpc_node/tsdf_voxels_per_side" value="16" />
+      <!--param name="/mobile_manipulator_mpc_node/publish_esdf_map" value="true" />
+      <param name="/mobile_manipulator_mpc_node/publish_pointclouds" value="true" />
+      <param name="/mobile_manipulator_mpc_node/use_tf_transforms" value="true" />
+      <param name="/mobile_manipulator_mpc_node/allow_clear" value="true" />
+      <param name="/mobile_manipulator_mpc_node/update_mesh_every_n_sec" value="0.05" />
+      <param name="/mobile_manipulator_mpc_node/clear_sphere_for_planning" value="false" />
+
+      <remap from="/mobile_manipulator_gazebo_mrt_node/esdf_map_in" to="esdf_map" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/tsdf_voxel_size" value="0.1" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/tsdf_voxels_per_side" value="16" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/publish_esdf_map" value="true" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/publish_pointclouds" value="true" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/use_tf_transforms" value="true" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/allow_clear" value="true" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/update_mesh_every_n_sec" value="0.05" />
+      <param name="/mobile_manipulator_gazebo_mrt_node/clear_sphere_for_planning" value="false" /-->
 
       <!--remap from="pointcloud" to="pc2_scan"/>
       <remap from="voxblox_node/esdf_map_out" to="esdf_map" />    

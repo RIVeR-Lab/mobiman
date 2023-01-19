@@ -177,7 +177,7 @@ include_directories(
 #)
         
 ## Declare a C++ library
-#add_library(testplanner src/testplanner.cpp)
+add_library(testplanner src/testplanner.cpp)
 add_library(map_utility src/map_utility.cpp)
 add_library(scan_utility src/scan_utility.cpp)
 
@@ -209,16 +209,16 @@ add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 #   ${catkin_LIBRARIES}
 # )
 
-# Voxblox Test (Deprecated)
-#add_executable(testplanner_node
-#  src/testplanner_node.cpp
-#)
-#add_dependencies(testplanner_node
-#  ${catkin_EXPORTED_TARGETS}
-#)
-#target_link_libraries(testplanner_node
-#  ${catkin_LIBRARIES} testplanner
-#)
+# Voxblox Test
+add_executable(testplanner_node
+  src/testplanner_node.cpp
+)
+add_dependencies(testplanner_node
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(testplanner_node
+  ${catkin_LIBRARIES} testplanner
+)
 
 # Map Utility Server (Deprecated)
 #add_executable(map_utility_server src/map_utility_server.cpp)

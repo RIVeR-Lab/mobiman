@@ -10,9 +10,9 @@ int main(int argc, char** argv)
   {
     for (double i = -5; i < 5; i = i + 1)
     {
-      for (double j = -10; j < 10; j = j + 1)
+      for (double j = -5; j < 5; j = j + 1)
       {
-        for (double k = -10; k < 10; k = k + 1)
+        for (double k = 1; k < 2; k = k + 1)
         {
           Eigen::Vector3d p(i, j, k);
           Eigen::Vector3d v(0,0,0);
@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
           d = planer.getMapDistanceAndGradientAtPosition(p, v);
           
-          //std::cout << "[testplanner_node::main] d: " << d << std::endl;
+          std::cout << "[testplanner_node::main] d: " << d << std::endl;
 
           if (d > 0)
           {

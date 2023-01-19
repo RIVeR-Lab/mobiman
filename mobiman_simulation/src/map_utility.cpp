@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.17
+// LAST UPDATE: 2023.01.19
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -7,7 +7,6 @@
 // DESCRIPTION: TODO...
 // 
 // TODO:
-// - Laser is cleaned each timestep but assumed cylinder hull, could be more detailed as cumulative convex hulls.
 
 // --CUSTOM LIBRARIES--
 #include "map_utility.h"
@@ -43,6 +42,7 @@ MapUtility::MapUtility()
 }
 
 MapUtility::MapUtility(NodeHandle& nh,
+                       NodeHandle& pnh,
                        string new_world_frame_name,
                        string gz_model_msg,
                        vector<string> frame_name_pkgs_ign, 
@@ -51,6 +51,9 @@ MapUtility::MapUtility(NodeHandle& nh,
                        vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man)
 {
   tflistener = new tf::TransformListener;
+
+  esdf_server_ptr_.reset(new voxblox::EsdfServer(nh, pnh));
+  //esdf_server_ptr_->setClearFlag(true);
 
   world_frame_name = new_world_frame_name;
 
@@ -1904,6 +1907,8 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
 
   for (size_t i = 0; i < ms.name.size(); i++)
   {
+    //esdf_server_ptr_->clear();
+
     for (size_t j = 0; j < frame_name_pkgs_ign_.size(); j++)
     {
       if (ms.name[i] == frame_name_pkgs_ign_[j])

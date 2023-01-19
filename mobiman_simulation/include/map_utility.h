@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.01.17
+// LAST UPDATE: 2023.01.19
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -31,6 +31,7 @@
 #include <fcl/geometry/shape/convex.h>
 #include <laser_geometry/laser_geometry.h>
 #include <ros/package.h>
+#include <voxblox_ros/esdf_server.h>
 
 // --CUSTOM LIBRARIES--
 #include "common_utility.h"
@@ -51,6 +52,7 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     MapUtility(NodeHandle& nh,
+               NodeHandle& pnh,
                string new_world_frame_name,
                string gz_model_msg,
                vector<string> frame_name_pkgs_ign, 
@@ -698,6 +700,8 @@ class MapUtility
     ros::Publisher pub_pc2_msg_gz_pkg_man_normal_pkg_;
     ros::Publisher pub_pc2_msg_gz_pkg_man_long_pkg_;
     ros::Publisher pub_pc2_msg_gz_pkg_man_longwide_pkg_;
+
+    std::shared_ptr<voxblox::EsdfServer> esdf_server_ptr_;
 
 };//END of class MapUtility
 

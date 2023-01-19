@@ -81,7 +81,7 @@ int main(int argc, char** argv)
   //voxblox::EsdfServer esdf_node(nh, pnh);
 
   // Initialize Map Utility
-  MapUtility mu(nh, world_frame_name, gz_model_msg_name, name_pkgs_ign, name_pkgs_man, pc2_msg_pkgs_ign, pc2_msg_pkgs_man);
+  MapUtility mu(nh, pnh, world_frame_name, gz_model_msg_name, name_pkgs_ign, name_pkgs_man, pc2_msg_pkgs_ign, pc2_msg_pkgs_man);
 
   //ros::Duration(1.0).sleep();
 
