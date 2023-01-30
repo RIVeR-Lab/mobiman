@@ -181,6 +181,8 @@ add_library(testplanner src/testplanner.cpp)
 add_library(map_utility src/map_utility.cpp)
 add_library(scan_utility src/scan_utility.cpp)
 
+add_library(testplanner2 src/testplanner2.cpp)
+
 add_dependencies(map_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
@@ -218,6 +220,16 @@ add_dependencies(testplanner_node
 )
 target_link_libraries(testplanner_node
   ${catkin_LIBRARIES} testplanner
+)
+
+add_executable(testplanner_node2
+  src/testplanner_node2.cpp
+)
+add_dependencies(testplanner_node2
+  ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(testplanner_node2
+  ${catkin_LIBRARIES} testplanner2
 )
 
 # Map Utility Server (Deprecated)
