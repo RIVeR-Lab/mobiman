@@ -116,7 +116,7 @@
       <param name="world_frame" value="world" />\
     </node-->
 
-    <node name="voxblox_node" pkg="voxblox_ros" type="esdf_server" output="log" args="" clear_params="true">
+    <!--node name="voxblox_node" pkg="voxblox_ros" type="esdf_server" output="log" args="" clear_params="true">
         <remap from="pointcloud" to="d435_cam1d435/camera/depth_registered/points"/>
         <remap from="voxblox_node/esdf_map_out" to="esdf_map" />    
         <param name="tsdf_voxel_size" value="0.1" />
@@ -129,7 +129,7 @@
         <param name="clear_sphere_for_planning" value="false" />
         <param name="world_frame" value="world" />
         <rosparam file="$(find mobiman_simulation)/config/voxblox.yaml"/>
-    </node>
+    </node-->
 
     <!-- Spawn marker on the robot -->
     <!--node if="$(arg has_marker)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" /-->

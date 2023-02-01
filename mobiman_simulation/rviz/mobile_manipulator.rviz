@@ -229,8 +229,12 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
+        blue_cube:
+          Value: true
         chassis_link:
           Value: false
+        conveyor_belt:
+          Value: true
         d435_cam1camera_bottom_screw_frame:
           Value: false
         d435_cam1camera_color_frame:
@@ -261,12 +265,20 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        green_cube:
+          Value: true
         imu_link:
           Value: false
+        long_pkg:
+          Value: true
+        longwide_pkg:
+          Value: true
         mid_mount:
           Value: false
         navsat_link:
           Value: false
+        normal_pkg:
+          Value: true
         rear_fender_link:
           Value: false
         rear_left_wheel_link:
@@ -275,6 +287,8 @@ Visualization Manager:
           Value: false
         rear_right_wheel_link:
           Value: false
+        red_cube:
+          Value: true
         ur5_base:
           Value: false
         ur5_base_link:
@@ -359,6 +373,20 @@ Visualization Manager:
                             ur5_flange:
                               ur5_tool0:
                                 {}
+          blue_cube:
+            {}
+          conveyor_belt:
+            {}
+          green_cube:
+            {}
+          long_pkg:
+            {}
+          longwide_pkg:
+            {}
+          normal_pkg:
+            {}
+          red_cube:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -552,39 +580,11 @@ Visualization Manager:
       Value: false
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /voxblox_node/occupied_nodes
+      Marker Topic: /occupancy_distance
       Name: MarkerArray
       Namespaces:
-        occupied_voxels: true
+        {}
       Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: Intensity
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Min Color: 0; 0; 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.009999999776482582
-      Style: Flat Squares
-      Topic: /voxblox_node/esdf_pointcloud
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
       Value: true
   Enabled: true
   Global Options:
@@ -614,7 +614,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.427830696105957
+      Distance: 9.84003734588623
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -622,17 +622,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.180491328239441
-        Y: -1.1677414178848267
-        Z: -0.4684946835041046
+        X: 0.20941969752311707
+        Y: -1.2430596351623535
+        Z: -0.4526425302028656
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.724797785282135
+      Pitch: 0.9147976040840149
       Target Frame: <Fixed Frame>
-      Yaw: 1.8804131746292114
+      Yaw: 1.575413465499878
     Saved: ~
 Window Geometry:
   Displays:

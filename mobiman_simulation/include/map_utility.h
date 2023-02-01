@@ -23,7 +23,6 @@
 #include <gazebo_msgs/ModelStates.h>
 #include <octomap_msgs/conversions.h>
 #include <visualization_msgs/MarkerArray.h>
-#include <cv_bridge/cv_bridge.h>
 #include <nav_msgs/Odometry.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/transforms.h>
@@ -31,10 +30,12 @@
 #include <fcl/geometry/shape/convex.h>
 #include <laser_geometry/laser_geometry.h>
 #include <ros/package.h>
-#include <voxblox_ros/esdf_server.h>
+//#include <cv_bridge/cv_bridge.h>
+//#include <voxblox_ros/esdf_server.h>
 
 // --CUSTOM LIBRARIES--
 #include "common_utility.h"
+#include "mobiman_simulation/getNearestOccDist.h"
 //#include "tentabot/reset_map_utility.h"
 
 // --NAMESPACES--
@@ -364,6 +365,12 @@ class MapUtility
     void setPC2Msg(sensor_msgs::PointCloud2& new_pc2);
 
     // DESCRIPTION: TODO...
+    void setFrameNamePkgsIgn(vector<string> frame_name_pkgs_ign);
+
+    // DESCRIPTION: TODO...
+    void setFrameNamePkgsMan(vector<string> frame_name_pkgs_man);
+
+    // DESCRIPTION: TODO...
     void resetMap();
 
     // DESCRIPTION: TODO...
@@ -542,6 +549,12 @@ class MapUtility
     void publishPC2MsgGzPkgMan(int index_pkg_man);
 
     // DESCRIPTION: TODO...
+    void publishOccDistanceVisu(geometry_msgs::Point p0, geometry_msgs::Point p1);
+
+    // DESCRIPTION: TODO...
+    void publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec, vector<geometry_msgs::Point> p1_vec);
+
+    // DESCRIPTION: TODO...
     void publishDebugArrayVisu();
 
     // DESCRIPTION: TODO...
@@ -582,6 +595,13 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void sensorMsgToOctomapCallback(const ros::TimerEvent& e);
+
+    // DESCRIPTION: TODO...
+    double getNearestOccupancyDist(double x, double y, double z);
+
+    // DESCRIPTION: TODO...
+    bool getNearestOccupancyDist(mobiman_simulation::getNearestOccDist::Request &req, 
+                                 mobiman_simulation::getNearestOccDist::Response &res);
 
   private:
 
@@ -686,13 +706,18 @@ class MapUtility
     vector<string> frame_name_pkgs_ign_;
     vector<string> frame_name_pkgs_man_;
 
-    tf::Transform transform_pkg_ign_;
-    tf::Transform transform_pkg_man_;
+    vector<tf::Transform> transform_pkgs_ign_;
+    vector<tf::Transform> transform_pkgs_man_;
 
     vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_ign_;
     vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man_;
 
+    visualization_msgs::Marker occ_distance_visu_;
+    visualization_msgs::MarkerArray occ_distance_array_visu_;
+
     ros::Publisher pub_pc2_msg_scan_;
+
+    // NUA TODO: Find a way to generalize!
     ros::Publisher pub_pc2_msg_gz_pkg_ign_conveyor_;
     ros::Publisher pub_pc2_msg_gz_pkg_ign_red_cube_;
     ros::Publisher pub_pc2_msg_gz_pkg_ign_green_cube_;
@@ -701,7 +726,10 @@ class MapUtility
     ros::Publisher pub_pc2_msg_gz_pkg_man_long_pkg_;
     ros::Publisher pub_pc2_msg_gz_pkg_man_longwide_pkg_;
 
-    std::shared_ptr<voxblox::EsdfServer> esdf_server_ptr_;
+    ros::Publisher pub_occ_distance_visu_;
+    ros::Publisher pub_occ_distance_array_visu_;
+
+    //std::shared_ptr<voxblox::EsdfServer> esdf_server_ptr_;
 
 };//END of class MapUtility
 

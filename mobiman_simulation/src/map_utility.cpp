@@ -52,7 +52,7 @@ MapUtility::MapUtility(NodeHandle& nh,
 {
   tflistener = new tf::TransformListener;
 
-  esdf_server_ptr_.reset(new voxblox::EsdfServer(nh, pnh));
+  //esdf_server_ptr_.reset(new voxblox::EsdfServer(nh, pnh));
   //esdf_server_ptr_->setClearFlag(true);
 
   world_frame_name = new_world_frame_name;
@@ -77,6 +77,9 @@ MapUtility::MapUtility(NodeHandle& nh,
   pub_pc2_msg_gz_pkg_man_normal_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 100);
   pub_pc2_msg_gz_pkg_man_long_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 100);
   pub_pc2_msg_gz_pkg_man_longwide_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 100);
+
+  pub_occ_distance_visu_ = nh.advertise<visualization_msgs::MarkerArray>("occupancy_distance", 10);
+  pub_occ_distance_array_visu_ = nh.advertise<visualization_msgs::MarkerArray>("occupancy_distance_array", 100);
 }
 
 MapUtility::MapUtility(NodeHandle& nh, 
@@ -720,6 +723,16 @@ void MapUtility::setPCMsg(sensor_msgs::PointCloud& new_pc_msg)
 void MapUtility::setPC2Msg(sensor_msgs::PointCloud2& new_pc2_msg)
 {
   pc2_msg = new_pc2_msg;
+}
+
+void MapUtility::setFrameNamePkgsIgn(vector<string> frame_name_pkgs_ign)
+{
+  frame_name_pkgs_ign_ = frame_name_pkgs_ign;
+}
+
+void MapUtility::setFrameNamePkgsMan(vector<string> frame_name_pkgs_man)
+{
+  frame_name_pkgs_man_ = frame_name_pkgs_man;
 }
 
 void MapUtility::resetMap()
@@ -1740,6 +1753,66 @@ void MapUtility::publishPC2MsgGzPkgMan(int index_pkg_man)
   }
 }
 
+void MapUtility::publishOccDistanceVisu(geometry_msgs::Point p0, geometry_msgs::Point p1)
+{
+  occ_distance_visu_.ns = "occupancy_distance";
+  occ_distance_visu_.id = 1;
+  occ_distance_visu_.header.frame_id = world_frame_name;
+  occ_distance_visu_.type = visualization_msgs::Marker::ARROW;
+  occ_distance_visu_.action = visualization_msgs::Marker::ADD;
+  occ_distance_visu_.scale.x = 0.02;
+  occ_distance_visu_.scale.y = 0.04;
+  occ_distance_visu_.scale.z = 0.04;
+  occ_distance_visu_.color.r = 1.0;
+  occ_distance_visu_.color.g = 0.0;
+  occ_distance_visu_.color.b = 1.0;
+  occ_distance_visu_.color.a = 1.0;
+
+  occ_distance_visu_.points.clear();
+  occ_distance_visu_.points.push_back(p0);
+  occ_distance_visu_.points.push_back(p1);
+
+  occ_distance_visu_.header.frame_id = world_frame_name;
+  occ_distance_visu_.header.seq++;
+  occ_distance_visu_.header.stamp = ros::Time::now();
+
+  pub_occ_distance_visu_.publish(occ_distance_visu_);
+}
+
+void MapUtility::publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec, vector<geometry_msgs::Point> p1_vec)
+{
+  occ_distance_array_visu_.markers.clear();
+
+  for (size_t i = 0; i < p0_vec.size(); i++)
+  {
+    visualization_msgs::Marker occ_distance_visu;
+    occ_distance_visu.ns = "occupancy_distance_" + i;
+    occ_distance_visu.id = 1;
+    occ_distance_visu.header.frame_id = world_frame_name;
+    occ_distance_visu.type = visualization_msgs::Marker::ARROW;
+    occ_distance_visu.action = visualization_msgs::Marker::ADD;
+    occ_distance_visu.scale.x = 0.02;
+    occ_distance_visu.scale.y = 0.04;
+    occ_distance_visu.scale.z = 0.04;
+    occ_distance_visu.color.r = 1.0;
+    occ_distance_visu.color.g = 0.0;
+    occ_distance_visu.color.b = 1.0;
+    occ_distance_visu.color.a = 1.0;
+
+    occ_distance_visu.points.clear();
+    occ_distance_visu.points.push_back(p0_vec[i]);
+    occ_distance_visu.points.push_back(p1_vec[i]);
+
+    occ_distance_visu.header.frame_id = world_frame_name;
+    occ_distance_visu.header.seq++;
+    occ_distance_visu.header.stamp = ros::Time::now();
+
+    occ_distance_array_visu_.markers.push_back(occ_distance_visu);
+  }
+
+  pub_occ_distance_array_visu_.publish(occ_distance_array_visu_);
+}
+
 void MapUtility::publishDebugArrayVisu()
 {
   for (int i = 0; i < debug_array_visu.markers.size(); ++i)
@@ -1913,15 +1986,18 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
     {
       if (ms.name[i] == frame_name_pkgs_ign_[j])
       {
+        transform_pkgs_ign_.clear();
+        tf::Transform transform_pkg_ign;
+
         sensor_msgs::PointCloud2 pc2_msg_gz_pkgs_ign_wrt_world;
-        transform_pkg_ign_.setIdentity();
-        transform_pkg_ign_.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
-        transform_pkg_ign_.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
+        transform_pkg_ign.setIdentity();
+        transform_pkg_ign.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
+        transform_pkg_ign.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
       
-        pcl_ros::transformPointCloud(world_frame_name, transform_pkg_ign_, pc2_msg_gz_pkgs_ign_[j], pc2_msg_gz_pkgs_ign_wrt_world);
+        pcl_ros::transformPointCloud(world_frame_name, transform_pkg_ign, pc2_msg_gz_pkgs_ign_[j], pc2_msg_gz_pkgs_ign_wrt_world);
 
         static tf::TransformBroadcaster br_gz_pkg_ign;
-        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign_, ros::Time::now(), world_frame_name, frame_name_pkgs_ign_[j]));
+        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name, frame_name_pkgs_ign_[j]));
 
         //publishPC2MsgGzPkgIgn(j);
         if (initFlag)
@@ -1933,6 +2009,8 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
         {
           pcl::concatenatePointCloud(pc2_msg_scan, pc2_msg_gz_pkgs_ign_wrt_world, pc2_msg_scan);
         }
+
+        transform_pkgs_ign_.push_back(transform_pkg_ign);
       }
     }
 
@@ -1940,14 +2018,19 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
     {
       if (ms.name[i] == frame_name_pkgs_man_[j])
       {
-        transform_pkg_man_.setIdentity();
-        transform_pkg_man_.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
-        transform_pkg_man_.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
+        transform_pkgs_man_.clear();
+        tf::Transform transform_pkg_man;
+
+        transform_pkg_man.setIdentity();
+        transform_pkg_man.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
+        transform_pkg_man.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
       
         static tf::TransformBroadcaster br_gz_pkg_man;
-        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man_, ros::Time::now(), world_frame_name, frame_name_pkgs_man_[j]));
+        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man, ros::Time::now(), world_frame_name, frame_name_pkgs_man_[j]));
 
         //publishPC2MsgGzPkgMan(j);
+
+        transform_pkgs_man_.push_back(transform_pkg_man);
       }
     }
   }
@@ -1981,7 +2064,7 @@ void MapUtility::update_states()
   }
   catch (tf::TransformException ex)
   {
-    ROS_INFO("MapUtility::update_states -> Couldn't get transform!");
+    ROS_INFO("[MapUtility::reset_map_utility] Couldn't get transform!");
     ROS_ERROR("%s", ex.what());
     ROS_ERROR("world_frame_name: %s", world_frame_name.c_str());
     ROS_ERROR("map_frame_name: %s", map_frame_name.c_str());
@@ -2040,12 +2123,12 @@ void MapUtility::update_map()
 /*
 bool MapUtility::reset_map_utility(tentabot::reset_map_utility::Request &req, tentabot::reset_map_utility::Response &res)
 {
-  cout << "MapUtility::reset_map_utility -> Map is NOT reset! parity: " << req.parity << endl;
+  cout << "[MapUtility::reset_map_utility] Map is NOT reset! parity: " << req.parity << endl;
 
   oct -> clear();
   fillOctMsgFromOct();
 
-  cout << "MapUtility::reset_map_utility -> Map is reset!" << endl;
+  cout << "[MapUtility::reset_map_utility] Map is reset!" << endl;
 
   res.success = true;
   return true;
@@ -2065,4 +2148,111 @@ void MapUtility::sensorMsgToOctomapCallback(const ros::TimerEvent& e)
   update_map();
 
   publishOctMsg();
+}
+
+double MapUtility::getNearestOccupancyDist(double x, double y, double z)
+{
+  std::cout << "[MapUtility::getNearestOccupancyDist] START" << std::endl;
+
+  double dist_min, dist_tmp;
+  string name_min_;
+  int idx_min;
+  geometry_msgs::Point collision_p;
+  geometry_msgs::Point query_p;
+  geometry_msgs::Point min_p;
+  query_p.x = x;
+  query_p.y = y;
+  query_p.z = z;
+  
+  if (transform_pkgs_ign_.size() > 0)
+  {
+    collision_p.x = transform_pkgs_ign_[0].getOrigin().x();
+    collision_p.y = transform_pkgs_ign_[0].getOrigin().y();
+    collision_p.z = transform_pkgs_ign_[0].getOrigin().z();
+    dist_min = find_Euclidean_distance(query_p, collision_p);
+  }
+  else
+  {
+    return -1;
+  }
+
+  for (size_t i = 0; i < transform_pkgs_ign_.size(); i++)
+  {
+    collision_p.x = transform_pkgs_ign_[i].getOrigin().x();
+    collision_p.y = transform_pkgs_ign_[i].getOrigin().y();
+    collision_p.z = transform_pkgs_ign_[i].getOrigin().z();
+    dist_tmp = find_Euclidean_distance(query_p, collision_p);
+
+    if (dist_tmp < dist_min)
+    {
+      dist_min = dist_tmp;
+      name_min_ = frame_name_pkgs_ign_[i];
+      idx_min = i;
+    }
+  }
+
+  tf::Transform transform_pc2;
+  transform_pc2.setIdentity();
+  transform_pc2.setOrigin(transform_pkgs_ign_[idx_min].getOrigin());
+  transform_pc2.setRotation(transform_pkgs_ign_[idx_min].getRotation());
+
+  sensor_msgs::PointCloud2 pc2_wrt_world;
+  pcl_ros::transformPointCloud(world_frame_name, transform_pc2, pc2_msg_gz_pkgs_ign_[idx_min], pc2_wrt_world);
+  
+  sensor_msgs::PointCloud2ConstIterator<float> iter_x(pc2_wrt_world, "x");
+  sensor_msgs::PointCloud2ConstIterator<float> iter_y(pc2_wrt_world, "y");
+  sensor_msgs::PointCloud2ConstIterator<float> iter_z(pc2_wrt_world, "z");
+
+  if (iter_x != iter_x.end())
+  {
+    collision_p.x = *iter_x;
+    collision_p.y = *iter_y;
+    collision_p.z = *iter_z;
+    dist_min = find_Euclidean_distance(query_p, collision_p);
+  }
+  else
+  {
+    return -1;
+  }
+
+  for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z)
+  {
+    collision_p.x = *iter_x;
+    collision_p.y = *iter_y;
+    collision_p.z = *iter_z;
+    dist_tmp = find_Euclidean_distance(query_p, collision_p);
+
+    if (dist_tmp < dist_min)
+    {
+      dist_min = dist_tmp;
+      min_p = collision_p;
+    }
+  }
+
+  publishOccDistanceVisu(query_p, min_p);
+
+  return dist_min;
+
+  std::cout << "[MapUtility::getNearestOccupancyDist] END" << std::endl;
+}
+
+bool MapUtility::getNearestOccupancyDist(mobiman_simulation::getNearestOccDist::Request &req, 
+                                         mobiman_simulation::getNearestOccDist::Response &res)
+{
+  std::cout << "[MapUtility::getNearestOccupancyDist] START" << std::endl;
+
+  res.distance = getNearestOccupancyDist(req.x, req.y, req.z);
+
+  if (res.distance < 0)
+  {
+    std::cout << "[MapUtility::getNearestOccupancyDist] FALSE END" << std::endl;
+    return false;
+  }
+  else
+  {
+    std::cout << "[MapUtility::getNearestOccupancyDist] TRUE END" << std::endl;
+    return true;
+  }
+
+  return true;
 }

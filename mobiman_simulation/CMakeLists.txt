@@ -15,8 +15,9 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   tf
-  voxblox
-  voxblox_ros
+  #voxblox
+  #voxblox_ros
+  laser_geometry
   pcl_msgs 
   pcl_conversions 
   pcl_ros
@@ -79,11 +80,10 @@ endif()
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  getNearestOccDist.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -93,23 +93,10 @@ endif()
 # )
 
 ## Generate added messages and services with any dependencies listed here
-#generate_messages(
-#  DEPENDENCIES
-#  std_msgs
-#  geometry_msgs
-#)
-
-catkin_package(
-  INCLUDE_DIRS
-    include
-  LIBRARIES
-    mobiman_simulation
-  CATKIN_DEPENDS
-    ${PACKAGE_DEPENDENCIES}
-    message_runtime
-  DEPENDS
-    Boost
-    FCL
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
 )
 
 ################################################
@@ -144,10 +131,19 @@ catkin_package(
 catkin_package(
   INCLUDE_DIRS 
     include
+    ${catkin_INCLUDE_DIRS}
     ${FCL_INCLUDE_DIRS}
-  LIBRARIES mobiman_simulation
-  CATKIN_DEPENDS roscpp rospy std_msgs 
-  #DEPENDS system_lib
+  LIBRARIES 
+    mobiman_simulation
+  CATKIN_DEPENDS 
+    roscpp 
+    rospy 
+    std_msgs 
+    message_runtime 
+    ${PACKAGE_DEPENDENCIES}
+  DEPENDS 
+    Boost 
+    FCL
 )
 
 ###########
@@ -177,11 +173,10 @@ include_directories(
 #)
         
 ## Declare a C++ library
-add_library(testplanner src/testplanner.cpp)
+#add_library(testplanner src/testplanner.cpp)
 add_library(map_utility src/map_utility.cpp)
 add_library(scan_utility src/scan_utility.cpp)
-
-add_library(testplanner2 src/testplanner2.cpp)
+#add_library(testplanner2 src/testplanner2.cpp)
 
 add_dependencies(map_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -211,31 +206,26 @@ add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 #   ${catkin_LIBRARIES}
 # )
 
-# Voxblox Test
-add_executable(testplanner_node
-  src/testplanner_node.cpp
-)
-add_dependencies(testplanner_node
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(testplanner_node
-  ${catkin_LIBRARIES} testplanner
-)
+# Voxblox Test (Deprecated)
+#add_executable(testplanner_node
+#  src/testplanner_node.cpp
+#)
+#add_dependencies(testplanner_node
+#  ${catkin_EXPORTED_TARGETS}
+#)
+#target_link_libraries(testplanner_node
+#  ${catkin_LIBRARIES} testplanner
+#)
 
-add_executable(testplanner_node2
-  src/testplanner_node2.cpp
-)
-add_dependencies(testplanner_node2
-  ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(testplanner_node2
-  ${catkin_LIBRARIES} testplanner2
-)
-
-# Map Utility Server (Deprecated)
-#add_executable(map_utility_server src/map_utility_server.cpp)
-#add_dependencies(map_utility_server ${catkin_EXPORTED_TARGETS})
-#target_link_libraries(map_utility_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES})
+#add_executable(testplanner_node2
+#  src/testplanner_node2.cpp
+#)
+#add_dependencies(testplanner_node2
+#  ${catkin_EXPORTED_TARGETS}
+#)
+#target_link_libraries(testplanner_node2
+#  ${catkin_LIBRARIES} testplanner2
+#)
 
 # Scanner
 add_executable(scanner src/scanner.cpp)
@@ -246,6 +236,11 @@ target_link_libraries(scanner ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIB
 add_executable(map_server src/map_server.cpp)
 add_dependencies(map_server ${catkin_EXPORTED_TARGETS})
 target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
+# Distance Server (NUA TODO: Using instead of Voxblox! Try to adapt an esdf map library...)
+#add_executable(distance_server src/distance_server.cpp)
+#add_dependencies(distance_server ${catkin_EXPORTED_TARGETS})
+#target_link_libraries(distance_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
 # MPC node
 #add_executable(ocs2_mobile_manipulator_mpc_node
