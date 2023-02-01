@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     {
       for (double j = -5; j < 5; j = j + 1)
       {
-        for (double k = 1; k < 2; k = k + 1)
+        for (double k = -10; k < 10; k = k + 1)
         {
           Eigen::Vector3d p(i, j, k);
           Eigen::Vector3d v(0,0,0);

@@ -16,6 +16,7 @@ class PlannerVoxblox {
   PlannerVoxblox();
   virtual ~PlannerVoxblox() {}
   double getMapDistanceAndGradientAtPosition(const Eigen::Vector3d position, Eigen::Vector3d gradient) const;
+  double getMapDistanceAtPosition(const Eigen::Vector3d position) const;
  private:
   ros::NodeHandle nh_;
   ros::NodeHandle nh_private_;
