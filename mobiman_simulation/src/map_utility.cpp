@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.19
+// LAST UPDATE: 2023.02.02
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -31,7 +31,7 @@ MapUtility::MapUtility()
   x_range.clear();
   y_range.clear();
   z_range.clear();
-  map_resolution = 0;
+  map_resolution_ = 0;
   pc_resolution_scale = 0;
   max_occupancy_belief_value = 0;
   map_server_dt = 0;
@@ -41,6 +41,24 @@ MapUtility::MapUtility()
   pc2_msg.header.frame_id = world_frame_name;
 }
 
+MapUtility::MapUtility(ros::NodeHandle& nh,
+                       string oct_msg_name,
+                       string pub_name_oct_msg)
+{
+  cout << "[MapUtility::MapUtility] START" << std::endl;
+
+  nh_ = nh;
+
+  cout << "[MapUtility::MapUtility] BEFORE subscribe" << std::endl;
+  sub_oct_msg_ = nh.subscribe(oct_msg_name, 100, &MapUtility::octMsgCallback, this);
+  //sub_map = nh.subscribe(robot_param.local_map_msg, 1000, &Tentabot::mapCallback, this);
+
+  cout << "[MapUtility::MapUtility] BEFORE advertise" << std::endl;
+  nh.advertise<octomap_msgs::Octomap>(pub_name_oct_msg, 100);
+
+  cout << "[MapUtility::MapUtility] END" << std::endl;
+}
+
 MapUtility::MapUtility(NodeHandle& nh,
                        NodeHandle& pnh,
                        string new_world_frame_name,
@@ -48,8 +66,10 @@ MapUtility::MapUtility(NodeHandle& nh,
                        vector<string> frame_name_pkgs_ign, 
                        vector<string> frame_name_pkgs_man,
                        vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_ign,
-                       vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man)
+                       vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man,
+                       double map_resolution)
 {
+  nh_ = nh;
   tflistener = new tf::TransformListener;
 
   //esdf_server_ptr_.reset(new voxblox::EsdfServer(nh, pnh));
@@ -63,23 +83,26 @@ MapUtility::MapUtility(NodeHandle& nh,
   pc2_msg_gz_pkgs_ign_ = pc2_msg_gz_pkgs_ign;
   pc2_msg_gz_pkgs_man_ = pc2_msg_gz_pkgs_man;
 
+  map_resolution_ = map_resolution;
+  oct = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+
   // Subscribers
-  sub_gz_model_ = nh.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
+  sub_gz_model_ = nh_.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
 
   // Publishers
-  pc2_msg_pub = nh.advertise<sensor_msgs::PointCloud2>("pc2_" + map_name, 100);
-  pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 100);
+  pub_pc2_msg_scan_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan", 100);
+  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 100);
 
-  pub_pc2_msg_gz_pkg_ign_conveyor_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 100);
-  pub_pc2_msg_gz_pkg_ign_red_cube_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 100);
-  pub_pc2_msg_gz_pkg_ign_green_cube_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 100);
-  pub_pc2_msg_gz_pkg_ign_blue_cube_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 100);
-  pub_pc2_msg_gz_pkg_man_normal_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 100);
-  pub_pc2_msg_gz_pkg_man_long_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 100);
-  pub_pc2_msg_gz_pkg_man_longwide_pkg_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 100);
+  pub_pc2_msg_gz_pkg_ign_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 100);
+  pub_pc2_msg_gz_pkg_ign_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 100);
+  pub_pc2_msg_gz_pkg_ign_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 100);
+  pub_pc2_msg_gz_pkg_ign_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 100);
+  pub_pc2_msg_gz_pkg_man_normal_pkg_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 100);
+  pub_pc2_msg_gz_pkg_man_long_pkg_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 100);
+  pub_pc2_msg_gz_pkg_man_longwide_pkg_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 100);
 
-  pub_occ_distance_visu_ = nh.advertise<visualization_msgs::MarkerArray>("occupancy_distance", 10);
-  pub_occ_distance_array_visu_ = nh.advertise<visualization_msgs::MarkerArray>("occupancy_distance_array", 100);
+  pub_occ_distance_visu_ = nh_.advertise<visualization_msgs::Marker>("occupancy_distance", 10);
+  pub_occ_distance_array_visu_ = nh_.advertise<visualization_msgs::MarkerArray>("occupancy_distance_array", 100);
 }
 
 MapUtility::MapUtility(NodeHandle& nh, 
@@ -87,6 +110,7 @@ MapUtility::MapUtility(NodeHandle& nh,
                        string new_sensor_pc2_msg_name, 
                        string new_sensor_laser_msg_name)
 {
+  nh_ = nh;
   tflistener = new tf::TransformListener;
 
   map_name = new_map_name;
@@ -112,7 +136,7 @@ MapUtility::MapUtility(NodeHandle& nh,
   y_range.clear();
   z_range.clear();
   
-  map_resolution = 0;
+  map_resolution_ = 0;
   pc_resolution_scale = 0;
   max_occupancy_belief_value = 100;
   map_server_dt = 0;
@@ -131,7 +155,7 @@ MapUtility::MapUtility(NodeHandle& nh,
   // NUA TODO: MAP SERVICE
   //ros::ServiceServer service_reset_map_utility = nh.advertiseService("reset_map_utility", &MapUtility::reset_map_utility, this);
 
-  oct_msg_pub = nh.advertise<octomap_msgs::Octomap>("octomap_" + map_name, 1000);
+  pub_oct_msg_ = nh.advertise<octomap_msgs::Octomap>("octomap_" + map_name, 1000);
   pc_msg_pub = nh.advertise<sensor_msgs::PointCloud>("PC_" + map_name, 10);
   pc2_msg_pub = nh.advertise<sensor_msgs::PointCloud2>("PC2_" + map_name, 10);
   debug_array_visu_pub = nh.advertise<visualization_msgs::MarkerArray>("debug_array_" + map_name, 10);
@@ -140,6 +164,7 @@ MapUtility::MapUtility(NodeHandle& nh,
 
 MapUtility::MapUtility(const MapUtility& mu)
 {
+  nh_ = mu.nh_;
   tflistener = mu.tflistener;
   world_frame_name = mu.world_frame_name;
   map_name = mu.map_name;
@@ -166,7 +191,7 @@ MapUtility::MapUtility(const MapUtility& mu)
   crop_y_min = mu.crop_y_min;
   crop_z_max = mu.crop_z_max;
   crop_z_min = mu.crop_z_min;
-  map_resolution = mu.map_resolution;
+  map_resolution_ = mu.map_resolution_;
   pc_resolution_scale = mu.pc_resolution_scale;
   max_occupancy_belief_value = mu.max_occupancy_belief_value;
   map_server_dt = mu.map_server_dt;
@@ -180,7 +205,7 @@ MapUtility::MapUtility(const MapUtility& mu)
   pc2_msg = mu.pc2_msg;
   debug_array_visu = mu.debug_array_visu;
   debug_visu = mu.debug_visu;
-  oct_msg_pub = mu.oct_msg_pub;
+  pub_oct_msg_ = mu.pub_oct_msg_;
   pc_msg_pub = mu.pc_msg_pub;
   pc2_msg_pub = mu.pc2_msg_pub;
   debug_array_visu_pub = mu.debug_array_visu_pub;
@@ -196,6 +221,7 @@ MapUtility::~MapUtility()
 
 MapUtility& MapUtility::operator = (const MapUtility& mu) 
 {
+  nh_ = mu.nh_;
   tflistener = mu.tflistener;
   world_frame_name = mu.world_frame_name;
   map_name = mu.map_name;
@@ -222,7 +248,7 @@ MapUtility& MapUtility::operator = (const MapUtility& mu)
   crop_y_min = mu.crop_y_min;
   crop_z_max = mu.crop_z_max;
   crop_z_min = mu.crop_z_min;
-  map_resolution = mu.map_resolution;
+  map_resolution_ = mu.map_resolution_;
   pc_resolution_scale = mu.pc_resolution_scale;
   max_occupancy_belief_value = mu.max_occupancy_belief_value;
   map_server_dt = mu.map_server_dt;
@@ -236,7 +262,7 @@ MapUtility& MapUtility::operator = (const MapUtility& mu)
   pc2_msg = mu.pc2_msg;
   debug_array_visu = mu.debug_array_visu;
   debug_visu = mu.debug_visu;
-  oct_msg_pub = mu.oct_msg_pub;
+  pub_oct_msg_ = mu.pub_oct_msg_;
   pc_msg_pub = mu.pc_msg_pub;
   pc2_msg_pub = mu.pc2_msg_pub;
   debug_array_visu_pub = mu.debug_array_visu_pub;
@@ -411,7 +437,7 @@ double MapUtility::getFilterGroundThreshold()
 
 double MapUtility::getMapResolution()
 {
-  return map_resolution;
+  return map_resolution_;
 }
 
 double MapUtility::getPCResolutionScale()
@@ -481,7 +507,7 @@ sensor_msgs::PointCloud2& MapUtility::getPC2Msg()
 
 ros::Publisher MapUtility::getOctMsgPub()
 {
-  return oct_msg_pub;
+  return pub_oct_msg_;
 }
 
 ros::Publisher MapUtility::getPCMsgPub()
@@ -492,6 +518,11 @@ ros::Publisher MapUtility::getPCMsgPub()
 ros::Publisher MapUtility::getPC2MsgPub()
 {
   return pc2_msg_pub;
+}
+
+void MapUtility::setNodeHandle(ros::NodeHandle nh)
+{
+  nh_ = nh;
 }
 
 void MapUtility::setWorldFrameName(string new_world_frame_name)
@@ -662,12 +693,12 @@ void MapUtility::setFilterGroundThreshold(double new_filter_ground_threshold)
   filter_ground_threshold =  new_filter_ground_threshold;
 }
 
-void MapUtility::setMapResolution(double new_map_resolution)
+void MapUtility::setMapResolution(double map_resolution)
 {
-  map_resolution = new_map_resolution;
+  map_resolution_ = map_resolution;
 
-  //oct = new ColorOcTree(map_resolution);
-  oct = std::make_shared<octomap::ColorOcTree>(map_resolution);
+  //oct = new ColorOcTree(map_resolution_);
+  oct = std::make_shared<octomap::ColorOcTree>(map_resolution_);
 }
 
 void MapUtility::setPCResolutionScale(double new_pc_resolution_scale)
@@ -735,10 +766,20 @@ void MapUtility::setFrameNamePkgsMan(vector<string> frame_name_pkgs_man)
   frame_name_pkgs_man_ = frame_name_pkgs_man;
 }
 
+void MapUtility::setPubOctMsg(string pub_name_oct_msg)
+{
+  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>(pub_name_oct_msg, 100);
+}
+
+void MapUtility::setPubOctDistVisu(string pub_name_occ_dist_visu)
+{
+  pub_occ_distance_visu_ = nh_.advertise<visualization_msgs::Marker>(pub_name_occ_dist_visu, 10);
+}
+
 void MapUtility::resetMap()
 {
-  //oct = new ColorOcTree(map_resolution);
-  oct = std::make_shared<octomap::ColorOcTree>(map_resolution);
+  //oct = new ColorOcTree(map_resolution_);
+  oct = std::make_shared<octomap::ColorOcTree>(map_resolution_);
 
   fillOctMsgFromOct();
 }
@@ -772,10 +813,11 @@ void MapUtility::transformPoint(string frame_from,
   p_to_msg = p_to_stamped_msg.point;
 }
 
-void MapUtility::createColorOcTree(double new_map_resolution, sensor_msgs::PointCloud& new_pc, vector<int> color_RGB)
+void MapUtility::createColorOcTree(double map_resolution, sensor_msgs::PointCloud& new_pc, vector<int> color_RGB)
 {
-  //oct = new ColorOcTree(new_map_resolution);
-  oct = std::make_shared<octomap::ColorOcTree>(map_resolution);
+  map_resolution_ = map_resolution;
+  //oct = new ColorOcTree(map_resolution);
+  oct = std::make_shared<octomap::ColorOcTree>(map_resolution_);
 
   int pcd_size = new_pc.points.size();
 
@@ -789,13 +831,13 @@ void MapUtility::createColorOcTree(double new_map_resolution, sensor_msgs::Point
 
 vector<geometry_msgs::Point32> MapUtility::extract_pc_from_node_center(geometry_msgs::Point center)
 {
-  double half_vdim = 0.5 * map_resolution;
+  double half_vdim = 0.5 * map_resolution_;
   if (pc_resolution_scale <= 0)
   {
     ROS_WARN("MapUtility::extract_pc_from_node_center -> pc_resolution_scale has not set. It is set to 1.");
     pc_resolution_scale = 1;
   }
-  double pc_resolution = pc_resolution_scale * map_resolution;
+  double pc_resolution = pc_resolution_scale * map_resolution_;
   vector<geometry_msgs::Point32> opc;
   geometry_msgs::Point minp;
   geometry_msgs::Point maxp;
@@ -908,12 +950,14 @@ void MapUtility::fillOctFromMeasuredPCMsg()
 
 void MapUtility::fillOctMsgFromOct()
 {
+  //cout << "[MapUtility::fillOctMsgFromOct] START" << endl;
   oct_msg.data.clear();
   oct_msg.header.frame_id = world_frame_name;
   oct_msg.binary = false;
   oct_msg.id = map_name;
-  oct_msg.resolution = map_resolution;
+  oct_msg.resolution = map_resolution_;
   octomap_msgs::fullMapToMsg(*oct, oct_msg);
+  //cout << "[MapUtility::fillOctMsgFromOct] END" << endl;
 }
 
 void MapUtility::fillPCMsgFromOct()
@@ -1025,6 +1069,22 @@ void MapUtility::addToOct(sensor_msgs::PointCloud& pc_msg)
   for(int i = 0; i < pc_msg.points.size(); i++)
   {
     oct -> updateNode(pc_msg.points[i].x, pc_msg.points[i].y, pc_msg.points[i].z, true);
+  }
+}
+
+void MapUtility::addToOct(sensor_msgs::PointCloud2& pc2_msg)
+{
+  sensor_msgs::PointCloud2ConstIterator<float> iter_x(pc2_msg, "x");
+  sensor_msgs::PointCloud2ConstIterator<float> iter_y(pc2_msg, "y");
+  sensor_msgs::PointCloud2ConstIterator<float> iter_z(pc2_msg, "z");
+
+  for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z)
+  {
+    // Check if the point is invalid
+    if (!std::isnan (*iter_x) && !std::isnan (*iter_y) && !std::isnan (*iter_z))
+    {
+      oct -> updateNode(*iter_x, *iter_y, *iter_z, true);
+    }
   }
 }
 
@@ -1275,7 +1335,7 @@ bool MapUtility::isOccupiedByGoal(double x, double y, double z, vector<geometry_
   po.y = y;
   po.z = z;
 
-  double free_rad = 2 * map_resolution;
+  double free_rad = 2 * map_resolution_;
 
   for(int i = 0; i < goal.size(); i++)
   {
@@ -1289,7 +1349,7 @@ bool MapUtility::isOccupiedByGoal(double x, double y, double z, vector<geometry_
 
 bool MapUtility::isOccupiedByGoal(geometry_msgs::Point po, vector<geometry_msgs::Pose> goal)
 {
-  double free_rad = 2 * map_resolution;
+  double free_rad = 2 * map_resolution_;
 
   for(int i = 0; i < goal.size(); i++)
   {
@@ -1325,7 +1385,7 @@ bool MapUtility::addStaticObstacle(double x,
   po.y = y;
   po.z = z;
 
-  if( constraint_flag && (isOccupied(x, y, z) || isOccupiedByGoal(x, y, z, goal) || isInCube(po, robot_center, robot_free_rad + map_resolution)) )
+  if( constraint_flag && (isOccupied(x, y, z) || isOccupiedByGoal(x, y, z, goal) || isInCube(po, robot_center, robot_free_rad + map_resolution_)) )
   {
     return false;
   }
@@ -1368,7 +1428,7 @@ void MapUtility::createRandomStaticObstacleMap(int num, bool constraint_flag, ve
     rp.position.y = randdouble(y_range[0], y_range[1]);
     rp.position.z = randdouble(z_range[0], z_range[1]);
 
-    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution)) )    // check for duplicates, goal and initial robot occupancy
+    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution_)) )    // check for duplicates, goal and initial robot occupancy
     {
       rp.position.x = randdouble(x_range[0], x_range[1]);
       rp.position.y = randdouble(y_range[0], y_range[1]);
@@ -1393,7 +1453,7 @@ void MapUtility::createRandomStaticObstacleMap(vector<double> new_x_range, vecto
     rp.position.y = randdouble(new_y_range[0], new_y_range[1]);
     rp.position.z = randdouble(new_z_range[0], new_z_range[1]);
 
-    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution)) )    // check for duplicates, goal and initial robot occupancy
+    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution_)) )    // check for duplicates, goal and initial robot occupancy
     {
       rp.position.x = randdouble(new_x_range[0], new_x_range[1]);
       rp.position.y = randdouble(new_y_range[0], new_y_range[1]);
@@ -1416,7 +1476,7 @@ void MapUtility::addRandomStaticObstacle(vector<double> new_x_range, vector<doub
     rp.position.y = randdouble(new_y_range[0], new_y_range[1]);
     rp.position.z = randdouble(new_z_range[0], new_z_range[1]);
 
-    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution)) )    // check for duplicates, goal and initial robot occupancy
+    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution_)) )    // check for duplicates, goal and initial robot occupancy
     {
       rp.position.x = randdouble(new_x_range[0], new_x_range[1]);
       rp.position.y = randdouble(new_y_range[0], new_y_range[1]);
@@ -1654,7 +1714,20 @@ void MapUtility::updateOctPC()
   }
 }
 
-void MapUtility::pointCloud2ToOctomap(const sensor_msgs::PointCloud2& cloud_pc2, octomap::Pointcloud& cloud_octomap)
+void MapUtility::updateOct(sensor_msgs::PointCloud2& pc2_msg)
+{
+  oct->clear();
+  addToOct(pc2_msg);
+
+  fillOctMsgFromOct();
+}
+
+void MapUtility::updateOct(string oct_msg_name)
+{
+  sub_oct_msg_ = nh_.subscribe(oct_msg_name, 100, &MapUtility::octMsgCallback, this);
+}
+
+void MapUtility::pointcloud2ToOctPc2(const sensor_msgs::PointCloud2& cloud_pc2, octomap::Pointcloud& cloud_octomap)
 {
   cloud_octomap.reserve(cloud_pc2.data.size() / cloud_pc2.point_step);
 
@@ -1676,9 +1749,9 @@ void MapUtility::publishOctMsg()
 {
   oct_msg.header.frame_id = world_frame_name;
   //oct_msg.header.seq++;
-  //oct_msg.header.stamp = ros::Time(0);
   oct_msg.header.stamp = ros::Time::now();
-  oct_msg_pub.publish(oct_msg);
+
+  pub_oct_msg_.publish(oct_msg);
 }
 
 void MapUtility::publishPCMsg()
@@ -1757,12 +1830,11 @@ void MapUtility::publishOccDistanceVisu(geometry_msgs::Point p0, geometry_msgs::
 {
   occ_distance_visu_.ns = "occupancy_distance";
   occ_distance_visu_.id = 1;
-  occ_distance_visu_.header.frame_id = world_frame_name;
   occ_distance_visu_.type = visualization_msgs::Marker::ARROW;
   occ_distance_visu_.action = visualization_msgs::Marker::ADD;
-  occ_distance_visu_.scale.x = 0.02;
-  occ_distance_visu_.scale.y = 0.04;
-  occ_distance_visu_.scale.z = 0.04;
+  occ_distance_visu_.scale.x = 0.03;
+  occ_distance_visu_.scale.y = 0.05;
+  occ_distance_visu_.scale.z = 0.05;
   occ_distance_visu_.color.r = 1.0;
   occ_distance_visu_.color.g = 0.0;
   occ_distance_visu_.color.b = 1.0;
@@ -1791,9 +1863,9 @@ void MapUtility::publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec
     occ_distance_visu.header.frame_id = world_frame_name;
     occ_distance_visu.type = visualization_msgs::Marker::ARROW;
     occ_distance_visu.action = visualization_msgs::Marker::ADD;
-    occ_distance_visu.scale.x = 0.02;
-    occ_distance_visu.scale.y = 0.04;
-    occ_distance_visu.scale.z = 0.04;
+    occ_distance_visu.scale.x = 0.03;
+    occ_distance_visu.scale.y = 0.05;
+    occ_distance_visu.scale.z = 0.05;
     occ_distance_visu.color.r = 1.0;
     occ_distance_visu.color.g = 0.0;
     occ_distance_visu.color.b = 1.0;
@@ -1865,7 +1937,7 @@ void MapUtility::saveMap(string filename)
     map_file << "x_range," + to_string(x_range[0]) + "," + to_string(x_range[1]) + "\n";
     map_file << "y_range," + to_string(y_range[0]) + "," + to_string(y_range[1]) + "\n";
     map_file << "z_range," + to_string(z_range[0]) + "," + to_string(z_range[1]) + "\n";
-    map_file << "map_resolution," + to_string(map_resolution) + "\n";
+    map_file << "map_resolution," + to_string(map_resolution_) + "\n";
     map_file << "pc_resolution_scale," + to_string(pc_resolution_scale) + "\n";
     map_file << "max_occupancy_belief_value," + to_string(max_occupancy_belief_value) + "\n";
 
@@ -1965,10 +2037,16 @@ void MapUtility::pc2Callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
 void MapUtility::laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
 {
-  //cout << "MapUtility::laserCallback -> Incoming data..." << endl;
+  //cout << "[MapUtility::laserCallback] Incoming data..." << endl;
   sensor_laser_frame_name = msg -> header.frame_id;
-  //cout << "MapUtility::laserCallback -> sensor_laser_frame_name: " << sensor_laser_frame_name << endl;
+  //cout << "[MapUtility::laserCallback] sensor_laser_frame_name: " << sensor_laser_frame_name << endl;
   measured_laser_msg = *msg;
+}
+
+void MapUtility::octMsgCallback(const octomap_msgs::Octomap::ConstPtr& msg)
+{
+  oct = std::shared_ptr<octomap::ColorOcTree> (dynamic_cast<octomap::ColorOcTree*> (octomap_msgs::msgToMap(*msg)));
+  fillOctMsgFromOct();
 }
 
 void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg)
@@ -1977,16 +2055,18 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
 
   bool initFlag = true;
   sensor_msgs::PointCloud2 pc2_msg_scan;
+  octomap::Pointcloud oct_pc2_scan;
+
+  transform_pkgs_ign_.clear();
+  transform_pkgs_man_.clear();
 
   for (size_t i = 0; i < ms.name.size(); i++)
   {
     //esdf_server_ptr_->clear();
-
     for (size_t j = 0; j < frame_name_pkgs_ign_.size(); j++)
     {
       if (ms.name[i] == frame_name_pkgs_ign_[j])
       {
-        transform_pkgs_ign_.clear();
         tf::Transform transform_pkg_ign;
 
         sensor_msgs::PointCloud2 pc2_msg_gz_pkgs_ign_wrt_world;
@@ -2018,7 +2098,6 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
     {
       if (ms.name[i] == frame_name_pkgs_man_[j])
       {
-        transform_pkgs_man_.clear();
         tf::Transform transform_pkg_man;
 
         transform_pkg_man.setIdentity();
@@ -2035,10 +2114,14 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
     }
   }
 
+  updateOct(pc2_msg_scan);
+
   pc2_msg_scan.header.frame_id = world_frame_name;
   pc2_msg_scan.header.seq++;
   pc2_msg_scan.header.stamp = ros::Time::now();
   pub_pc2_msg_scan_.publish(pc2_msg_scan);
+
+  publishOctMsg();
 }
 
 void MapUtility::update_states()
@@ -2150,16 +2233,16 @@ void MapUtility::sensorMsgToOctomapCallback(const ros::TimerEvent& e)
   publishOctMsg();
 }
 
-double MapUtility::getNearestOccupancyDist(double x, double y, double z)
+double MapUtility::getNearestOccupancyDist(double x, double y, double z, bool pub_flag)
 {
-  std::cout << "[MapUtility::getNearestOccupancyDist] START" << std::endl;
+  //std::cout << "[MapUtility::getNearestOccupancyDist] START" << std::endl;
 
   double dist_min, dist_tmp;
-  string name_min_;
+  string name_min;
   int idx_min;
   geometry_msgs::Point collision_p;
-  geometry_msgs::Point query_p;
   geometry_msgs::Point min_p;
+  geometry_msgs::Point query_p;
   query_p.x = x;
   query_p.y = y;
   query_p.z = z;
@@ -2170,11 +2253,16 @@ double MapUtility::getNearestOccupancyDist(double x, double y, double z)
     collision_p.y = transform_pkgs_ign_[0].getOrigin().y();
     collision_p.z = transform_pkgs_ign_[0].getOrigin().z();
     dist_min = find_Euclidean_distance(query_p, collision_p);
+    name_min = frame_name_pkgs_ign_[0];
+    idx_min = 0;
   }
   else
   {
     return -1;
   }
+
+  //std::cout << "[MapUtility::getNearestOccupancyDist] transform_pkgs_ign_.size(): " << transform_pkgs_ign_.size() << std::endl;
+  //std::cout << "[MapUtility::getNearestOccupancyDist] frame_name_pkgs_ign_.size(): " << frame_name_pkgs_ign_.size() << std::endl;
 
   for (size_t i = 0; i < transform_pkgs_ign_.size(); i++)
   {
@@ -2186,10 +2274,14 @@ double MapUtility::getNearestOccupancyDist(double x, double y, double z)
     if (dist_tmp < dist_min)
     {
       dist_min = dist_tmp;
-      name_min_ = frame_name_pkgs_ign_[i];
+      name_min = frame_name_pkgs_ign_[i];
       idx_min = i;
     }
   }
+ 
+  //std::cout << "[MapUtility::getNearestOccupancyDist] dist_min: " << dist_min << std::endl;
+  //std::cout << "[MapUtility::getNearestOccupancyDist] name_min: " << name_min << std::endl;
+  //std::cout << "[MapUtility::getNearestOccupancyDist] idx_min: " << idx_min << std::endl;
 
   tf::Transform transform_pc2;
   transform_pc2.setIdentity();
@@ -2209,6 +2301,7 @@ double MapUtility::getNearestOccupancyDist(double x, double y, double z)
     collision_p.y = *iter_y;
     collision_p.z = *iter_z;
     dist_min = find_Euclidean_distance(query_p, collision_p);
+    min_p = collision_p;
   }
   else
   {
@@ -2229,28 +2322,89 @@ double MapUtility::getNearestOccupancyDist(double x, double y, double z)
     }
   }
 
-  publishOccDistanceVisu(query_p, min_p);
+  if (pub_flag)
+  {
+    publishOccDistanceVisu(query_p, min_p);
+  }
+
+  //std::cout << "[MapUtility::getNearestOccupancyDist] END" << std::endl;
 
   return dist_min;
-
-  std::cout << "[MapUtility::getNearestOccupancyDist] END" << std::endl;
 }
 
-bool MapUtility::getNearestOccupancyDist(mobiman_simulation::getNearestOccDist::Request &req, 
-                                         mobiman_simulation::getNearestOccDist::Response &res)
+double MapUtility::getNearestOccupancyDist2(double x, double y, double z, bool pub_flag)
 {
-  std::cout << "[MapUtility::getNearestOccupancyDist] START" << std::endl;
+  //std::cout << "[MapUtility::getNearestOccupancyDist2] START" << std::endl;
 
-  res.distance = getNearestOccupancyDist(req.x, req.y, req.z);
+  octomap::ColorOcTree::iterator it = oct -> begin();  
+
+  if (it == NULL)
+  {
+    return -8;
+  }
+  else
+  {
+    double dist_min, dist_tmp;
+    geometry_msgs::Point collision_p;
+    geometry_msgs::Point min_p;
+    geometry_msgs::Point query_p;
+    query_p.x = x;
+    query_p.y = y;
+    query_p.z = z;
+
+    if (it != oct -> end())
+    {
+      collision_p.x = it.getX();
+      collision_p.y = it.getY();
+      collision_p.z = it.getZ();
+      dist_min = find_Euclidean_distance(query_p, collision_p);
+      min_p = collision_p;
+    }
+    else
+    {
+      return -1;
+    }
+
+    for(it = oct -> begin(); it != oct -> end(); it++)
+    {
+      collision_p.x = it.getX();
+      collision_p.y = it.getY();
+      collision_p.z = it.getZ();
+      dist_tmp = find_Euclidean_distance(query_p, collision_p);
+
+      if (dist_tmp < dist_min)
+      {
+        dist_min = dist_tmp;
+        min_p = collision_p;
+      }
+    }
+
+    if (pub_flag)
+    {
+      publishOccDistanceVisu(query_p, min_p);
+    }
+
+    //std::cout << "[MapUtility::getNearestOccupancyDist2] END" << std::endl;
+
+    return dist_min;
+  }
+}
+
+bool MapUtility::getNearestOccupancyDistSrv(mobiman_simulation::getNearestOccDist::Request &req, 
+                                            mobiman_simulation::getNearestOccDist::Response &res)
+{
+  //std::cout << "[MapUtility::getNearestOccupancyDistSrv] START" << std::endl;
+
+  res.distance = getNearestOccupancyDist2(req.x, req.y, req.z);
 
   if (res.distance < 0)
   {
-    std::cout << "[MapUtility::getNearestOccupancyDist] FALSE END" << std::endl;
+    //std::cout << "[MapUtility::getNearestOccupancyDistSrv] FALSE END" << std::endl << std::endl;
     return false;
   }
   else
   {
-    std::cout << "[MapUtility::getNearestOccupancyDist] TRUE END" << std::endl;
+    //std::cout << "[MapUtility::getNearestOccupancyDistSrv] TRUE END" << std::endl << std::endl;
     return true;
   }
 

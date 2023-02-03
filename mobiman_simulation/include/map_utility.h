@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.01.19
+// LAST UPDATE: 2023.02.01
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -59,7 +59,13 @@ class MapUtility
                vector<string> frame_name_pkgs_ign, 
                vector<string> frame_name_pkgs_man,
                vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_ign,
-               vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_man);
+               vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_man,
+               double map_resolution);
+
+    // DESCRIPTION: TODO...
+    MapUtility(ros::NodeHandle& nh,
+               string oct_msg_name,
+               string pub_name_oct_msg);
 
     // DESCRIPTION: TODO...
     MapUtility(NodeHandle& nh, 
@@ -230,6 +236,9 @@ class MapUtility
     ros::Publisher getPC2MsgPub();
 
     // DESCRIPTION: TODO...
+    void setNodeHandle(ros::NodeHandle nh); 
+
+    // DESCRIPTION: TODO...
     void setWorldFrameName(string new_world_frame_name);
 
     // DESCRIPTION: TODO...
@@ -329,7 +338,7 @@ class MapUtility
     void setFilterGroundThreshold(double new_filter_ground_threshold);
 
     // DESCRIPTION: TODO...
-    void setMapResolution(double new_map_resolution);
+    void setMapResolution(double map_resolution);
 
     // DESCRIPTION: TODO...
     void setPCResolutionScale(double new_pc_resolution_scale);
@@ -371,6 +380,12 @@ class MapUtility
     void setFrameNamePkgsMan(vector<string> frame_name_pkgs_man);
 
     // DESCRIPTION: TODO...
+    void setPubOctMsg(string name_oct_msg);
+
+    // DESCRIPTION: TODO...
+    void setPubOctDistVisu(string pub_name_occ_dist_visu);
+
+    // DESCRIPTION: TODO...
     void resetMap();
 
     // DESCRIPTION: TODO...
@@ -379,7 +394,7 @@ class MapUtility
                         geometry_msgs::Point& p_to_msg);
 
     // DESCRIPTION: TODO...
-    void createColorOcTree( double new_map_resolution, 
+    void createColorOcTree( double map_resolution, 
                             sensor_msgs::PointCloud& new_pc, 
                             vector<int> color_RGB=vector<int>{155,128,0});
 
@@ -412,6 +427,9 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void addToOct(sensor_msgs::PointCloud& pc_msg);
+
+    // DESCRIPTION: TODO...
+    void addToOct(sensor_msgs::PointCloud2& pc2_msg);
 
     // DESCRIPTION: TODO...
     void addToOctFromMeasuredPCMsg();
@@ -528,7 +546,13 @@ class MapUtility
     void updateOctPC();
 
     // DESCRIPTION: TODO...
-    void pointCloud2ToOctomap(const sensor_msgs::PointCloud2& cloud, octomap::Pointcloud& octomapCloud);
+    void updateOct(sensor_msgs::PointCloud2& pc2_msg);
+
+    // DESCRIPTION: TODO...
+    void updateOct(string oct_msg_name);
+
+    // DESCRIPTION: TODO...
+    void pointcloud2ToOctPc2(const sensor_msgs::PointCloud2& cloud, octomap::Pointcloud& octomapCloud);
 
     // DESCRIPTION: TODO...
     void publishOctMsg();
@@ -582,6 +606,9 @@ class MapUtility
     void laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg);
 
     // DESCRIPTION: TODO...
+    void octMsgCallback(const octomap_msgs::Octomap::ConstPtr& msg);
+
+    // DESCRIPTION: TODO...
     void gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg);
 
     // DESCRIPTION: TODO...
@@ -597,13 +624,18 @@ class MapUtility
     void sensorMsgToOctomapCallback(const ros::TimerEvent& e);
 
     // DESCRIPTION: TODO...
-    double getNearestOccupancyDist(double x, double y, double z);
+    double getNearestOccupancyDist(double x, double y, double z, bool pub_flag=true);
 
     // DESCRIPTION: TODO...
-    bool getNearestOccupancyDist(mobiman_simulation::getNearestOccDist::Request &req, 
-                                 mobiman_simulation::getNearestOccDist::Response &res);
+    double getNearestOccupancyDist2(double x, double y, double z, bool pub_flag=true);
+
+    // DESCRIPTION: TODO...
+    bool getNearestOccupancyDistSrv(mobiman_simulation::getNearestOccDist::Request &req, 
+                                    mobiman_simulation::getNearestOccDist::Response &res);
 
   private:
+
+    NodeHandle nh_;
 
     // NUA TODO: Change naming convention by adding "_".
     tf::TransformListener* tflistener;
@@ -650,7 +682,7 @@ class MapUtility
     bool filter_ground;
     double filter_ground_threshold;
 
-    double map_resolution;
+    double map_resolution_;
     double pc_resolution_scale;
     double max_occupancy_belief_value;
     double map_server_dt;
@@ -694,7 +726,7 @@ class MapUtility
     ros::Subscriber sub_pc2;
     ros::Subscriber sub_laser;
 
-    ros::Publisher oct_msg_pub;
+    ros::Publisher pub_oct_msg_;
     ros::Publisher pc_msg_pub;
     ros::Publisher pc2_msg_pub;
     ros::Publisher debug_array_visu_pub;
@@ -714,6 +746,8 @@ class MapUtility
 
     visualization_msgs::Marker occ_distance_visu_;
     visualization_msgs::MarkerArray occ_distance_array_visu_;
+
+    ros::Subscriber sub_oct_msg_;
 
     ros::Publisher pub_pc2_msg_scan_;
 

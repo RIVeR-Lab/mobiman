@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   #voxblox
   #voxblox_ros
+  catkin_simple 
   laser_geometry
   pcl_msgs 
   pcl_conversions 
@@ -24,6 +25,9 @@ find_package(catkin REQUIRED COMPONENTS
   octomap_ros
   octomap_msgs
 )
+
+#find_package(catkin_simple REQUIRED)
+#catkin_simple(ALL_DEPS_REQUIRED)
 
 find_package(nlohmann_json REQUIRED)
 
@@ -227,12 +231,23 @@ add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 #  ${catkin_LIBRARIES} testplanner2
 #)
 
-# Scanner
+## TESTS
+# test_map_utility_srv_getNearestOccDist
+add_executable(test_map_utility_srv_getNearestOccDist src/tests/test_map_utility_srv_getNearestOccDist.cpp)
+add_dependencies(test_map_utility_srv_getNearestOccDist ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_map_utility_srv_getNearestOccDist ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
+# test_map_utility_srv_getNearestOccDist
+add_executable(test_map_utility_getNearestOccupancyDist2 src/tests/test_map_utility_getNearestOccupancyDist2.cpp)
+add_dependencies(test_map_utility_getNearestOccupancyDist2 ${catkin_EXPORTED_TARGETS})
+target_link_libraries(test_map_utility_getNearestOccupancyDist2 ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
+## Scanner
 add_executable(scanner src/scanner.cpp)
 add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
 target_link_libraries(scanner ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
-# Map Server
+## Map Server
 add_executable(map_server src/map_server.cpp)
 add_dependencies(map_server ${catkin_EXPORTED_TARGETS})
 target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
@@ -334,3 +349,9 @@ target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+##########
+# EXPORT #
+##########
+cs_install()
+cs_export()

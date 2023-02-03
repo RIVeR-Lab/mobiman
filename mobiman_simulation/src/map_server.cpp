@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.18
+// LAST UPDATE: 2023.02.01
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -32,6 +32,7 @@ int main(int argc, char** argv)
   // INITIALIZE AND SET PARAMETERS
   string world_frame_name, gz_model_msg_name;
   std::vector<string> name_pkgs_ign, name_pkgs_man, scan_data_path_pkgs_ign, scan_data_path_pkgs_man;
+  double map_resolution;
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
@@ -51,6 +52,7 @@ int main(int argc, char** argv)
   {
     ROS_ERROR("Failed to get parameter from server.");
   }
+  pnh.param<double>("/map_resolution", map_resolution, 0.1);
 
   cout << "[map_server::main] world_frame_name: " << world_frame_name << endl;
   cout << "[map_server::main] gz_model_msg_name: " << gz_model_msg_name << endl;
@@ -64,6 +66,7 @@ int main(int argc, char** argv)
   {
     cout << i << " -> " << name_pkgs_man[i] << endl;
   }
+  cout << "[map_server::main] map_resolution: " << map_resolution << endl;
 
   // Initialize Scan Utility
   vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_ign(scan_data_path_pkgs_ign.size());
@@ -81,7 +84,18 @@ int main(int argc, char** argv)
   //voxblox::EsdfServer esdf_node(nh, pnh);
 
   // Initialize Map Utility
-  MapUtility mu(nh, pnh, world_frame_name, gz_model_msg_name, name_pkgs_ign, name_pkgs_man, pc2_msg_pkgs_ign, pc2_msg_pkgs_man);
+  MapUtility mu(nh, 
+                pnh, 
+                world_frame_name, 
+                gz_model_msg_name, 
+                name_pkgs_ign, 
+                name_pkgs_man, 
+                pc2_msg_pkgs_ign, 
+                pc2_msg_pkgs_man, 
+                map_resolution);
+
+  // Service
+  ros::ServiceServer service = nh.advertiseService("get_nearest_occ_dist", &MapUtility::getNearestOccupancyDistSrv, &mu);
 
   //ros::Duration(1.0).sleep();
 
