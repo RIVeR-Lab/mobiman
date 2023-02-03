@@ -25,22 +25,32 @@ int main(int argc, char** argv)
   // INITIALIZE THE MAIN ROS NODE HANDLE
   ros::NodeHandle nh;
 
+  // INITIALIZE THE ROS NODE HANDLE FOR PARAMETERS
+  ros::NodeHandle pnh("~");  
+
+  // INITIALIZE AND SET PARAMETERS
+  string world_frame_name, oct_msg_name, pub_name_oct_msg, pub_name_oct_dist_visu;
+  double qp_x, qp_y, qp_z;
+
+  pnh.param<string>("/world_frame_name", world_frame_name, "");
+  pnh.param<string>("/oct_msg_name", oct_msg_name, "");
+  pnh.param<string>("/pub_name_oct_msg", pub_name_oct_msg, "");
+  pnh.param<string>("/pub_name_oct_dist_visu", pub_name_oct_dist_visu, "");
+  pnh.param<double>("/qp_x", qp_x, 0.0);
+  pnh.param<double>("/qp_y", qp_y, 0.0);
+  pnh.param<double>("/qp_z", qp_z, 0.0);
+
   double distance = -1;
   geometry_msgs::Point qp;
-  qp.x = 0;
-  qp.y = 0;
-  qp.z = 0;
-
-  string oct_msg_name = "/octomap_scan";
-  string pub_name_oct_msg = oct_msg_name + "_remap";
-  string pub_name_oct_dist_visu = "occupancy_distance";
-  string world_frame_name = "world";
+  qp.x = qp_x;
+  qp.y = qp_y;
+  qp.z = qp_z;
   
   MapUtility mu;
+  mu.setWorldFrameName(world_frame_name);
   mu.setPubOctMsg(pub_name_oct_msg);
   mu.setPubOctDistVisu(pub_name_oct_dist_visu);
   mu.updateOct(oct_msg_name);
-  mu.setWorldFrameName(world_frame_name);
 
   double duration, frequency;
   std::chrono::steady_clock::time_point timer_start, timer_end;

@@ -25,14 +25,24 @@ int main(int argc, char** argv)
   // INITIALIZE THE MAIN ROS NODE HANDLE
   ros::NodeHandle nh;
 
+  // INITIALIZE THE ROS NODE HANDLE FOR PARAMETERS
+  ros::NodeHandle pnh("~");  
+
+  // INITIALIZE AND SET PARAMETERS
+  double qp_x, qp_y, qp_z;
+
+  pnh.param<double>("/qp_x", qp_x, 0.0);
+  pnh.param<double>("/qp_y", qp_y, 0.0);
+  pnh.param<double>("/qp_z", qp_z, 0.0);
+
   ros::ServiceClient occ_distance_client = nh.serviceClient<mobiman_simulation::getNearestOccDist>("get_nearest_occ_dist");;
   mobiman_simulation::getNearestOccDist occ_distance_srv; 
 
   double distance = -1;
   geometry_msgs::Point qp;
-  qp.x = 0;
-  qp.y = 0;
-  qp.z = 1;
+  qp.x = qp_x;
+  qp.y = qp_y;
+  qp.z = qp_z;
 
   double duration, frequency;
   std::chrono::steady_clock::time_point timer_start, timer_end;

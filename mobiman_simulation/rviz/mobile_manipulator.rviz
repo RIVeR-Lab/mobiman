@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
+        - /ColorOccupancyGrid2
       Splitter Ratio: 0.5
     Tree Height: 625
   - Class: rviz/Selection
@@ -267,8 +268,6 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: false
-        long_pkg:
-          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -372,8 +371,6 @@ Visualization Manager:
           conveyor_belt:
             {}
           green_cube:
-            {}
-          long_pkg:
             {}
           normal_pkg:
             {}
@@ -584,7 +581,7 @@ Visualization Manager:
       Max. Octree Depth: 16
       Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
-      Octomap Topic: /jericho
+      Octomap Topic: /octomap_scan
       Queue Size: 5
       Value: true
       Voxel Alpha: 1

@@ -2,8 +2,9 @@
 # E-MAIL: akmandor.n@northeastern.edu
 
 world_frame_name: "world"
-gz_model_msg_name: "/gazebo/model_states"
-name_pkgs_ign: ["conveyor_belt","red_cube","green_cube","blue_cube"] 
-name_pkgs_man: ["normal_pkg","long_pkg","longwide_pkg"] 
-scan_data_path_pkgs_ign: ["/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/conveyor_belt.json","/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/red_cube.json","/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/green_cube.json","/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/blue_cube.json"]
-scan_data_path_pkgs_man: ["/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/normal_pkg.json","/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/long_pkg.json","/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/longwide_pkg.json"]
+oct_msg_name: "octomap_scan"
+pub_name_oct_msg: "octomap_scan_remap"
+pub_name_oct_dist_visu: "occupancy_distance"
+qp_x: 1.0
+qp_y: -2.5
+qp_z: 1.0
