@@ -10,7 +10,7 @@
 //
 
 // --CUSTOM LIBRARIES--
-#include "scan_utility.h"
+#include "mobiman_simulation/scan_utility.h"
 
 ScanUtility::ScanUtility(NodeHandle& nh)
 {

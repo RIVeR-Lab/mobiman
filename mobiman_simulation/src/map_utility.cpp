@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.02.02
+// LAST UPDATE: 2023.02.03
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -9,7 +9,7 @@
 // TODO:
 
 // --CUSTOM LIBRARIES--
-#include "map_utility.h"
+#include "mobiman_simulation/map_utility.h"
 
 MapUtility::MapUtility()
 {
@@ -2332,7 +2332,7 @@ double MapUtility::getNearestOccupancyDist(double x, double y, double z, bool pu
   return dist_min;
 }
 
-double MapUtility::getNearestOccupancyDist2(double x, double y, double z, bool pub_flag)
+double MapUtility::getNearestOccupancyDist2(double x, double y, double z, bool pub_flag) const
 {
   //std::cout << "[MapUtility::getNearestOccupancyDist2] START" << std::endl;
 
@@ -2381,7 +2381,7 @@ double MapUtility::getNearestOccupancyDist2(double x, double y, double z, bool p
 
     if (pub_flag)
     {
-      publishOccDistanceVisu(query_p, min_p);
+      //publishOccDistanceVisu(query_p, min_p);
     }
 
     //std::cout << "[MapUtility::getNearestOccupancyDist2] END" << std::endl;

@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   #voxblox
   #voxblox_ros
-  catkin_simple 
+  #catkin_simple 
   laser_geometry
   pcl_msgs 
   pcl_conversions 
@@ -158,6 +158,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  mobiman_simulation
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
 )
@@ -353,5 +354,5 @@ target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_
 ##########
 # EXPORT #
 ##########
-cs_install()
-cs_export()
+#cs_install()
+#cs_export()

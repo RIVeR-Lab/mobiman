@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-        - /ColorOccupancyGrid2
       Splitter Ratio: 0.5
     Tree Height: 625
   - Class: rviz/Selection
@@ -230,6 +229,8 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
+        blue_cube:
+          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -268,6 +269,10 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: false
+        long_pkg:
+          Value: true
+        longwide_pkg:
+          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -368,9 +373,15 @@ Visualization Manager:
                             ur5_flange:
                               ur5_tool0:
                                 {}
+          blue_cube:
+            {}
           conveyor_belt:
             {}
           green_cube:
+            {}
+          long_pkg:
+            {}
+          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -383,7 +394,8 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -417,7 +429,8 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 11: true
+        0 - 9: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -500,7 +513,7 @@ Visualization Manager:
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -568,13 +581,13 @@ Visualization Manager:
       Use rainbow: true
       Value: false
     - Class: rviz/Marker
-      Enabled: true
-      Marker Topic: /occupancy_distance
+      Enabled: false
+      Marker Topic: /occ_dist
       Name: Marker
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: octomap_rviz_plugin/ColorOccupancyGrid
       Enabled: true
       Max. Height Display: 3.4028234663852886e+38
@@ -587,6 +600,23 @@ Visualization Manager:
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /occ_dist_array
+      Name: MarkerArray
+      Namespaces:
+        _distance_: true
+        ancy_distance_: true
+        ccupancy_distance_: true
+        cupancy_distance_: true
+        cy_distance_: true
+        ncy_distance_: true
+        occupancy_distance_: true
+        pancy_distance_: true
+        upancy_distance_: true
+        y_distance_: true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -615,7 +645,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.823197364807129
+      Distance: 3.197948932647705
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -623,17 +653,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.20941969752311707
-        Y: -1.2430596351623535
-        Z: -0.4526425302028656
+        X: -1.4445607662200928
+        Y: -2.0234899520874023
+        Z: 0.17394892871379852
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.529797375202179
+      Pitch: 0.9297975897789001
       Target Frame: <Fixed Frame>
-      Yaw: 1.5704134702682495
+      Yaw: 0.5604124665260315
     Saved: ~
 Window Geometry:
   Displays:

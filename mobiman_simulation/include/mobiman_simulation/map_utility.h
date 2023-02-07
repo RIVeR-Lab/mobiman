@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.02.01
+// LAST UPDATE: 2023.02.03
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -34,7 +34,7 @@
 //#include <voxblox_ros/esdf_server.h>
 
 // --CUSTOM LIBRARIES--
-#include "common_utility.h"
+#include "mobiman_simulation/common_utility.h"
 #include "mobiman_simulation/getNearestOccDist.h"
 //#include "tentabot/reset_map_utility.h"
 
@@ -627,7 +627,7 @@ class MapUtility
     double getNearestOccupancyDist(double x, double y, double z, bool pub_flag=true);
 
     // DESCRIPTION: TODO...
-    double getNearestOccupancyDist2(double x, double y, double z, bool pub_flag=true);
+    double getNearestOccupancyDist2(double x, double y, double z, bool pub_flag=true) const;
 
     // DESCRIPTION: TODO...
     bool getNearestOccupancyDistSrv(mobiman_simulation::getNearestOccDist::Request &req, 

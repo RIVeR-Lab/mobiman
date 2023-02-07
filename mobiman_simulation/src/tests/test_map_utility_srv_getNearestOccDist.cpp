@@ -12,7 +12,7 @@
 #include <chrono>
 
 // --CUSTOM LIBRARIES--
-#include <map_utility.h>
+#include <mobiman_simulation/map_utility.h>
 #include <mobiman_simulation/getNearestOccDist.h>
 
 int main(int argc, char** argv)

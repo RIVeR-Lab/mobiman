@@ -49,7 +49,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   
   <buildtool_depend>catkin</buildtool_depend>
-  <buildtool_depend>catkin_simple</buildtool_depend>
+  <!--buildtool_depend>catkin_simple</buildtool_depend-->
 
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>

@@ -9,8 +9,8 @@
 // NUA TODO:
 
 // --CUSTOM LIBRARIES--
-#include <scan_utility.h>
-#include <map_utility.h>
+#include <mobiman_simulation/scan_utility.h>
+#include <mobiman_simulation/map_utility.h>
 //#include <voxblox_ros/esdf_server.h>
 
 int main(int argc, char** argv)
