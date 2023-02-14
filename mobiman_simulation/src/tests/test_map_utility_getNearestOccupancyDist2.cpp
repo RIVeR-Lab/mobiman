@@ -76,7 +76,7 @@ int main(int argc, char** argv)
     ros::spinOnce();
   }
 
-  ros::spin();
+  //ros::spin();
 
   cout << "[test_map_utility_getNearestOccupancyDist2::main] END" << endl;
   return 0;

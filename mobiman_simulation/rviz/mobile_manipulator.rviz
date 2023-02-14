@@ -473,13 +473,6 @@ Visualization Manager:
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
-    - Class: voxblox_rviz_plugin/VoxbloxMesh
-      Enabled: false
-      Name: VoxbloxMesh
-      Queue Size: 10
-      Topic: /voxblox_node/mesh
-      Unreliable: false
-      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -645,7 +638,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.197948932647705
+      Distance: 9.131476402282715
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -653,17 +646,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -1.4445607662200928
-        Y: -2.0234899520874023
-        Z: 0.17394892871379852
+        X: 0.7398241758346558
+        Y: -2.942185878753662
+        Z: -0.6161317229270935
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9297975897789001
+      Pitch: 0.43979740142822266
       Target Frame: <Fixed Frame>
-      Yaw: 0.5604124665260315
+      Yaw: 0.9704127311706543
     Saved: ~
 Window Geometry:
   Displays:
