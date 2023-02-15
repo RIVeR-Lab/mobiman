@@ -42,7 +42,7 @@ ddp
 {
   algorithm                       SLQ ; NUA EDIT: def: SLQ
 
-  nThreads                        1
+  nThreads                        3
   threadPriority                  50
 
   maxNumIterations                1
@@ -99,7 +99,7 @@ mpc
   debugPrint                      false
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
-  mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400
+  mrtDesiredFrequency             10   ; [Hz] NUA EDIT: def: 400
 }
 
 ; initial state
@@ -182,10 +182,10 @@ inputCost
 
       wheelBasedMobileManipulator
       {
-        scaling 1e-2
+        scaling 1e-1  ; NUA EDIT: def: 1e-2
 
-        (0,0)  10.0  ; forward velocity    NUA EDIT: def: 2.5
-        (1,1)  10.0  ; turning velocity    NUA EDIT: def: 2.5
+        (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
+        (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
       }
     }
 
@@ -213,8 +213,8 @@ endEffector
 
 finalEndEffector
 {
-  muPosition      10.0
-  muOrientation    5.0
+  muPosition      1.0  ; NUA EDIT: def: 10
+  muOrientation    5.0  ; NUA EDIT: def: 5.0
 }
 
 selfCollision
@@ -233,15 +233,18 @@ selfCollision
   ; Self Collision pairs
   collisionLinkPairs
   {
-    [0] "chassis_link, ur5_shoulder_link"
+    [0] "chassis_link, ur5_upper_arm_link"
     [1] "chassis_link, ur5_forearm_link"
-    ;[2] "chassis_link, ur5_wrist_1_link"
-    ;[3] "chassis_link, ur5_wrist_2_link"
-    ;[4] "chassis_link, ur5_wrist_3_link"
+    [2] "chassis_link, ur5_wrist_1_link"
+    [3] "chassis_link, ur5_wrist_2_link"
+    [4] "chassis_link, ur5_wrist_3_link"
+    ;[5] "ur5_forearm_link, ur5_wrist_2_link"
+    ;[6] "ur5_forearm_link, ur5_wrist_3_link"
+    ;[7] "ur5_wrist_1_link, ur5_wrist_3_link"
   }
 
   ; minimum distance allowed between the pairs
-  minimumDistance  0.1
+  minimumDistance  0.03
 
   ; relaxed log barrier mu
   mu     1e-2 ; NUA EDIT: def: 1e-2
@@ -253,7 +256,7 @@ selfCollision
 extCollision
 { 
   ; activate external-collision constraint
-  activate  true
+  activate  false
 
   ; relaxed log barrier mu
   mu              1e-2 ;5e-3
