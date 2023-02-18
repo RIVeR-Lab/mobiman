@@ -95,7 +95,7 @@ int main(int argc, char** argv)
                 map_resolution);
 
   // Service
-  ros::ServiceServer service = nh.advertiseService("get_nearest_occ_dist", &MapUtility::getNearestOccupancyDistSrv, &mu);
+  //ros::ServiceServer service = nh.advertiseService("get_nearest_occ_dist", &MapUtility::getNearestOccupancyDistSrv, &mu);
 
   //ros::Duration(1.0).sleep();
 

@@ -21,14 +21,15 @@ def actor_poses_callback(actors):
         rospy.loginfo("Spawning model: actor_id = %s", actor_id)
 
         model_pose = Pose(Point(x= actor_pose.position.x,
-                               y= actor_pose.position.y,
-                               z= actor_pose.position.z),
-                         Quaternion(actor_pose.orientation.x,
-                                    actor_pose.orientation.y,
-                                    actor_pose.orientation.z,
-                                    actor_pose.orientation.w) )
+                                y= actor_pose.position.y,
+                                z= actor_pose.position.z),
+                          Quaternion(actor_pose.orientation.x,
+                                     actor_pose.orientation.y,
+                                     actor_pose.orientation.z,
+                                     actor_pose.orientation.w) )
 
         spawn_model(actor_id, xml_string, "", model_pose, "world")
+    
     rospy.signal_shutdown("all agents have been spawned !")
 
 if __name__ == '__main__':

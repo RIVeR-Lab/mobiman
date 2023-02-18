@@ -227,6 +227,10 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        actor0:
+          Value: true
+        actor1:
+          Value: true
         base_link:
           Value: true
         blue_cube:
@@ -321,6 +325,10 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
+          actor0:
+            {}
+          actor1:
+            {}
           base_link:
             chassis_link:
               front_fender_link:
@@ -394,8 +402,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -429,8 +436,7 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        0 - 11: true
-        0 - 9: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -506,7 +512,7 @@ Visualization Manager:
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -598,16 +604,7 @@ Visualization Manager:
       Marker Topic: /occ_dist_array
       Name: MarkerArray
       Namespaces:
-        _distance_: true
-        ancy_distance_: true
-        ccupancy_distance_: true
-        cupancy_distance_: true
-        cy_distance_: true
-        ncy_distance_: true
-        occupancy_distance_: true
-        pancy_distance_: true
-        upancy_distance_: true
-        y_distance_: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -638,7 +635,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 9.131476402282715
+      Distance: 12.282793045043945
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -646,17 +643,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.7398241758346558
-        Y: -2.942185878753662
-        Z: -0.6161317229270935
+        X: -0.2405329942703247
+        Y: -1.8567363023757935
+        Z: -2.013411283493042
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.43979740142822266
+      Pitch: 0.8497968912124634
       Target Frame: <Fixed Frame>
-      Yaw: 0.9704127311706543
+      Yaw: 1.4054123163223267
     Saved: ~
 Window Geometry:
   Displays:

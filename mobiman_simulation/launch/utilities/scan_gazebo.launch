@@ -35,8 +35,9 @@
        green_cube
        blue_cube
        conveyor_belt
+       actor
   -->
-  <arg name="object_name" value="conveyor_belt"/>
+  <arg name="object_name" value="actor"/>
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param  name="robot_description_object"
@@ -94,9 +95,6 @@
   
     <!-- Run Rviz visualization -->
     <include file="$(find mobiman_simulation)/launch/utilities/scanner_display.launch" />
-
-    <!-- Spawn marker on the robot -->
-    <!--node if="$(arg has_marker)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" /-->
   </group>
 
 </launch>

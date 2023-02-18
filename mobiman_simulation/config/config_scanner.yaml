@@ -8,8 +8,9 @@
 # normal_pkg
 # long_pkg
 # longwide_pkg
+# actor
 
-obj_name: "conveyor_belt"
+obj_name: "actor"
 world_frame_name: "world"
 
 data_dir: "models/point_cloud/"
@@ -19,6 +20,7 @@ pc2_msg_name_sensor2: "/d435_cam2d435/camera/depth/color/points"
 pc2_msg_name_sensor3: "/d435_cam3d435/camera/depth/color/points"
 pc2_msg_name_sensor4: "/d435_cam4d435/camera/depth/color/points"
 
+# NUA NOTE: Currently bbx parameters are not used!
 bbx_x_min: -1
 bbx_x_max: 1
 bbx_y_min: -1

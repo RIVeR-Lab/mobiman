@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.02.03
+// LAST UPDATE: 2023.02.16
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -56,10 +56,10 @@ class MapUtility
                NodeHandle& pnh,
                string new_world_frame_name,
                string gz_model_msg,
-               vector<string> frame_name_pkgs_ign, 
-               vector<string> frame_name_pkgs_man,
-               vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_ign,
-               vector<sensor_msgs::PointCloud2> pc2_msg_pkgs_man,
+               vector<string> vec_frame_name_ign, 
+               vector<string> vec_frame_name_man,
+               vector<sensor_msgs::PointCloud2> vec_pc2_msg_ign,
+               vector<sensor_msgs::PointCloud2> vec_pc2_msg_man,
                double map_resolution);
 
     // DESCRIPTION: TODO...
@@ -374,10 +374,10 @@ class MapUtility
     void setPC2Msg(sensor_msgs::PointCloud2& new_pc2);
 
     // DESCRIPTION: TODO...
-    void setFrameNamePkgsIgn(vector<string> frame_name_pkgs_ign);
+    void setFrameNamePkgsIgn(vector<string> vec_frame_name_ign);
 
     // DESCRIPTION: TODO...
-    void setFrameNamePkgsMan(vector<string> frame_name_pkgs_man);
+    void setFrameNamePkgsMan(vector<string> vec_frame_name_man);
 
     // DESCRIPTION: TODO...
     void setPubOctMsg(string name_oct_msg);
@@ -735,33 +735,35 @@ class MapUtility
     // NUA TODO: Add them in constructors if necessary.
     ros::Subscriber sub_gz_model_;
 
-    vector<string> frame_name_pkgs_ign_;
-    vector<string> frame_name_pkgs_man_;
+    vector<string> vec_frame_name_ign_;
+    vector<string> vec_frame_name_man_;
 
-    vector<tf::Transform> transform_pkgs_ign_;
-    vector<tf::Transform> transform_pkgs_man_;
+    vector<tf::Transform> vec_transform_ign_;
+    vector<tf::Transform> vec_transform_man_;
 
-    vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_ign_;
-    vector<sensor_msgs::PointCloud2> pc2_msg_gz_pkgs_man_;
+    vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_ign_;
+    vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_man_;
 
-    visualization_msgs::Marker occ_distance_visu_;
-    visualization_msgs::MarkerArray occ_distance_array_visu_;
+    visualization_msgs::Marker visu_occ_distance_;
+    visualization_msgs::MarkerArray visu_array_occ_distance_;
 
     ros::Subscriber sub_oct_msg_;
 
     ros::Publisher pub_pc2_msg_scan_;
 
     // NUA TODO: Find a way to generalize!
-    ros::Publisher pub_pc2_msg_gz_pkg_ign_conveyor_;
-    ros::Publisher pub_pc2_msg_gz_pkg_ign_red_cube_;
-    ros::Publisher pub_pc2_msg_gz_pkg_ign_green_cube_;
-    ros::Publisher pub_pc2_msg_gz_pkg_ign_blue_cube_;
-    ros::Publisher pub_pc2_msg_gz_pkg_man_normal_pkg_;
-    ros::Publisher pub_pc2_msg_gz_pkg_man_long_pkg_;
-    ros::Publisher pub_pc2_msg_gz_pkg_man_longwide_pkg_;
+    ros::Publisher pub_pc2_msg_gz_ign_conveyor_;
+    ros::Publisher pub_pc2_msg_gz_ign_pkg_red_cube_;
+    ros::Publisher pub_pc2_msg_gz_ign_pkg_green_cube_;
+    ros::Publisher pub_pc2_msg_gz_ign_pkg_blue_cube_;
+    ros::Publisher pub_pc2_msg_gz_ign_actor0_;
+    ros::Publisher pub_pc2_msg_gz_ign_actor1_;
+    ros::Publisher pub_pc2_msg_gz_man_pkg_normal_;
+    ros::Publisher pub_pc2_msg_gz_man_pkg_long_;
+    ros::Publisher pub_pc2_msg_gz_man_pkg_longwide_;
 
-    ros::Publisher pub_occ_distance_visu_;
-    ros::Publisher pub_occ_distance_array_visu_;
+    ros::Publisher pub_visu_occ_distance_;
+    ros::Publisher pub_visu_array_occ_distance_;
 
     //std::shared_ptr<voxblox::EsdfServer> esdf_server_ptr_;
 
