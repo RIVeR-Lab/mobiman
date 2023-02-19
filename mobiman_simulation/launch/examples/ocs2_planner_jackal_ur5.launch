@@ -1,17 +1,25 @@
 <launch>
       <!-- Enable rviz visualization -->
       <arg name="rviz"        default="true" />
+
       <!-- Set nodes on debug mode -->
       <arg name="debug"       default="false" />
+
+      <!-- Set nodes on debug mode -->
+      <!--
+            jackal_ur5
+            ur5
+      -->
+      <arg name="robot"       default="ur5" />
 
       <!-- The URDF model of the robot -->
       <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" />
       
       <!-- The task file for the mpc. -->
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task_jackal_ur5.info" />
+      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task_$(arg robot).info" />
       
       <!-- The library folder to generate CppAD codegen into -->
-      <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/jackal_ur5" />
+      <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />
       
       <include file="$(find mobiman_simulation)/launch/utilities/ocs2_mobile_manipulator.launch">
             <arg name="rviz"        value="$(arg rviz)" />

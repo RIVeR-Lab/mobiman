@@ -1,7 +1,7 @@
 ; robot model meta-information
 model_information 
 {
-  manipulatorModelType     1      // 0: Default-arm, 1: Wheel-based manipulator, 2: Floating-arm manipulator, 3: Fully actuated floating-arm manipulator
+  manipulatorModelType     0      // 0: Default-arm, 1: Wheel-based manipulator, 2: Floating-arm manipulator, 3: Fully actuated floating-arm manipulator
   
   ; motion joints in the URDF to consider fixed
   removeJoints 
@@ -24,7 +24,7 @@ model_information
   }
 
   ; base frame of the robot (from URDF)
-  baseFrame                       "base_link"
+  baseFrame                       "ur5_base_link"
   ; end-effector frame of the robot (from URDF)
   armBaseFrame                    "ur5_base_link"
   ; end-effector frame of the robot (from URDF)
@@ -81,8 +81,8 @@ ddp
 ; Rollout settings
 rollout
 {
-  AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
-  RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
+  AbsTolODE                       1e-5 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-3 ; NUA EDIT: def: 1e-3
   timeStep                        1e-2 ; NUA EDIT: def: 1e-2
   integratorType                  ODE45
   maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
@@ -93,7 +93,7 @@ rollout
 mpc
 {
   timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
-  solutionTimeWindow              0.4   ; [s] NUA EDIT: def: 0.2
+  solutionTimeWindow              0.2   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false
@@ -114,29 +114,29 @@ initialState
 
     floatingArmManipulator
     {
-      (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
-      (2,0)  0.0  ; position z
-      (3,0)  0.0  ; euler angle z
-      (4,0)  0.0  ; euler angle y
-      (5,0)  0.0  ; euler angle x
+      ;(0,0)  0.0  ; position x
+      ;(1,0)  0.0  ; position y
+      ;(2,0)  0.0  ; position z
+      ;(3,0)  0.0  ; euler angle z
+      ;(4,0)  0.0  ; euler angle y
+      ;(5,0)  0.0  ; euler angle x
     }
 
     fullyActuatedFloatingArmManipulator
     {
-      (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
-      (2,0)  0.0  ; position z
-      (3,0)  0.0  ; euler angle z
-      (4,0)  0.0  ; euler angle y
-      (5,0)  0.0  ; euler angle x
+      ;(0,0)  0.0  ; position x
+      ;(1,0)  0.0  ; position y
+      ;(2,0)  0.0  ; position z
+      ;(3,0)  0.0  ; euler angle z
+      ;(4,0)  0.0  ; euler angle y
+      ;(5,0)  0.0  ; euler angle x
     }
 
     wheelBasedMobileManipulator
     {
-      (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
-      (2,0)  0.0  ; heading
+      ;(0,0)  0.0  ; position x
+      ;(1,0)  0.0  ; position y
+      ;(2,0)  0.0  ; heading
     }
   }
 
@@ -170,22 +170,22 @@ inputCost
 
       fullyActuatedFloatingArmManipulator
       {
-        scaling 1e-2
+        ;scaling 1e-2
 
-        (0,0)  5.0  ; position x
-        (1,1)  5.0  ; position y
-        (2,2)  5.0  ; position z
-        (3,3)  5.0  ; euler angle z
-        (4,4)  5.0  ; euler angle y
-        (5,5)  5.0  ; euler angle x
+        ;(0,0)  5.0  ; position x
+        ;(1,1)  5.0  ; position y
+        ;(2,2)  5.0  ; position z
+        ;(3,3)  5.0  ; euler angle z
+        ;(4,4)  5.0  ; euler angle y
+        ;(5,5)  5.0  ; euler angle x
       }
 
       wheelBasedMobileManipulator
       {
-        scaling 1e-1  ; NUA EDIT: def: 1e-2
+        ;scaling 1e-1  ; NUA EDIT: def: 1e-2
 
-        (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
-        (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
+        ;(0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
+        ;(1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
       }
     }
 
