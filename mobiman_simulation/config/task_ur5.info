@@ -34,7 +34,7 @@ model_information
 model_settings
 {
   usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
-  recompileLibraries              false   ; NUA NOTE: make true when made some changes (for example self-collision pairs)
+  recompileLibraries              true   ; NUA NOTE: make true when made some changes (for example self-collision pairs)
 }
 
 ; DDP settings
@@ -93,7 +93,7 @@ rollout
 mpc
 {
   timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
-  solutionTimeWindow              0.2   ; [s] NUA EDIT: def: 0.2
+  solutionTimeWindow              0.4   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false

@@ -10,7 +10,7 @@
             jackal_ur5
             ur5
       -->
-      <arg name="robot"       default="ur5" />
+      <arg name="robot"       default="jackal_ur5" />
 
       <!-- The URDF model of the robot -->
       <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" />
