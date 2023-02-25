@@ -3,8 +3,7 @@ Panels:
     Help Height: 138
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /Grid1/Status1
+      Expanded: ~
       Splitter Ratio: 0.5
     Tree Height: 625
   - Class: rviz/Selection
@@ -39,9 +38,9 @@ Visualization Manager:
       Enabled: true
       Line Style:
         Line Width: 0.029999999329447746
-        Value: Billboards
+        Value: Lines
       Name: Grid
-      Normal Cell Count: 1
+      Normal Cell Count: 0
       Offset:
         X: 0
         Y: 0
@@ -233,8 +232,6 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
-        blue_cube:
-          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -269,20 +266,12 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        green_cube:
-          Value: true
         imu_link:
           Value: false
-        long_pkg:
-          Value: true
-        longwide_pkg:
-          Value: true
         mid_mount:
           Value: false
         navsat_link:
           Value: false
-        normal_pkg:
-          Value: true
         rear_fender_link:
           Value: false
         rear_left_wheel_link:
@@ -381,17 +370,7 @@ Visualization Manager:
                             ur5_flange:
                               ur5_tool0:
                                 {}
-          blue_cube:
-            {}
           conveyor_belt:
-            {}
-          green_cube:
-            {}
-          long_pkg:
-            {}
-          longwide_pkg:
-            {}
-          normal_pkg:
             {}
           red_cube:
             {}
@@ -402,8 +381,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -636,7 +614,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.258228302001953
+      Distance: 7.204705715179443
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -644,17 +622,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.8359947204589844
-        Y: -0.5943817496299744
-        Z: 0.4465257525444031
+        X: 0.11218578368425369
+        Y: -0.42125949263572693
+        Z: -0.5230957269668579
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.27979758381843567
+      Pitch: 0.814797043800354
       Target Frame: <Fixed Frame>
-      Yaw: 2.8654258251190186
+      Yaw: 1.575425148010254
     Saved: ~
 Window Geometry:
   Displays:
