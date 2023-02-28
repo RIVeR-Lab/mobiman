@@ -103,56 +103,6 @@ mpc
   mrtDesiredFrequency             10   ; [Hz] NUA EDIT: def: 400
 }
 
-; initial state
-initialState
-{
-  ; initial state for the different types of arm base DOFs
-  base
-  {
-    defaultManipulator
-    {
-    }
-
-    floatingArmManipulator
-    {
-      (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
-      (2,0)  0.0  ; position z
-      (3,0)  0.0  ; euler angle z
-      (4,0)  0.0  ; euler angle y
-      (5,0)  0.0  ; euler angle x
-    }
-
-    fullyActuatedFloatingArmManipulator
-    {
-      (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
-      (2,0)  0.0  ; position z
-      (3,0)  0.0  ; euler angle z
-      (4,0)  0.0  ; euler angle y
-      (5,0)  0.0  ; euler angle x
-    }
-
-    wheelBasedMobileManipulator
-    {
-      (0,0)  0.0  ; position x
-      (1,0)  0.0  ; position y
-      (2,0)  0.0  ; heading
-    }
-  }
-
-  ; initial state for the arm DOFs
-  arm
-  {
-    (0,0)  0.0  ; ur5_shoulder_pan_joint
-    (1,0)  0.0  ; ur5_shoulder_lift_joint
-    (2,0)  0.0  ; ur5_elbow_joint
-    (3,0)  0.0  ; ur5_wrist_1_joint
-    (4,0)  0.0  ; ur5_wrist_2_joint
-    (5,0)  0.0  ; ur5_wrist_3_joint
-  }
-}
-
 inputCost
 {
   ; control weight matrix
