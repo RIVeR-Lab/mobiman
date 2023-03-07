@@ -1,8 +1,7 @@
 ; robot model meta-information
 model_information 
 {
-  useMultiModel              true    ; 
-  manipulatorModelType     1          ; 0: Default-arm, 1: Wheel-based manipulator, 2: Floating-arm manipulator, 3: Fully actuated floating-arm manipulator
+  robotModelType     2          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
   
   ; motion joints in the URDF to consider fixed
   removeJoints 
@@ -14,7 +13,7 @@ model_information
   }
 
   ; Name of the parent link of the joint frames
-  jointParentFrameNames
+  armJointFrameNames
   {
     [0] ur5_shoulder_link
     [1] ur5_upper_arm_link
@@ -22,6 +21,17 @@ model_information
     [3] ur5_wrist_1_link
     [4] ur5_wrist_2_link
     [5] ur5_wrist_3_link
+  }
+
+  ; Name of the parent link of the joint frames
+  armJointNames
+  {
+    [0] ur5_shoulder_pan_joint
+    [1] ur5_shoulder_lift_joint
+    [2] ur5_elbow_joint
+    [3] ur5_wrist_1_joint
+    [4] ur5_wrist_2_joint
+    [5] ur5_wrist_3_joint
   }
 
   ; base frame of the robot (from URDF)
@@ -111,33 +121,10 @@ inputCost
     ; input costs for the different types of arm base DOFs
     base
     {
-      defaultManipulator
-      {
-      }
+      scaling 1e-1  ; NUA EDIT: def: 1e-2
 
-      floatingArmManipulator
-      {
-      }
-
-      fullyActuatedFloatingArmManipulator
-      {
-        scaling 1e-2
-
-        (0,0)  5.0  ; position x
-        (1,1)  5.0  ; position y
-        (2,2)  5.0  ; position z
-        (3,3)  5.0  ; euler angle z
-        (4,4)  5.0  ; euler angle y
-        (5,5)  5.0  ; euler angle x
-      }
-
-      wheelBasedMobileManipulator
-      {
-        scaling 1e-1  ; NUA EDIT: def: 1e-2
-
-        (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
-        (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
-      }
+      (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
+      (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
     }
 
     ; input costs for the arm DOFs
@@ -245,29 +232,8 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      defaultManipulator
-      {
-      }
-
-      floatingArmManipulator
-      {
-      }
-
-      fullyActuatedFloatingArmManipulator
-      {
-        (0,0)  -0.1  ; linear velocity x
-        (1,0)  -0.1  ; linear velocity y
-        (2,0)  -0.1  ; linear velocity z
-        (3,0)  -0.3  ; euler angle velocity z
-        (4,0)  -0.3  ; euler angle velocity y
-        (5,0)  -0.3  ; euler angle velocity x
-      }
-
-      wheelBasedMobileManipulator
-      {
-        (0,0)  -0.5 ; forward velocity NUA EDIT: def: -0.5
-        (1,0)  -1.0 ; turning velocity NUA EDIT: def: -1.0
-      }
+      (0,0)  -0.5 ; forward velocity NUA EDIT: def: -0.5
+      (1,0)  -1.0 ; turning velocity NUA EDIT: def: -1.0
     }
 
     ; velocity limits for the arm DOFs
@@ -287,29 +253,8 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      defaultManipulator
-      {
-      }
-
-      floatingArmManipulator
-      {
-      }
-
-      fullyActuatedFloatingArmManipulator
-      {
-        (0,0)  0.1  ; linear velocity x
-        (1,0)  0.1  ; linear velocity y
-        (2,0)  0.1  ; linear velocity z
-        (3,0)  0.3  ; euler angle velocity z
-        (4,0)  0.3  ; euler angle velocity y
-        (5,0)  0.3  ; euler angle velocity x
-      }
-
-      wheelBasedMobileManipulator
-      {
-        (0,0)  0.5 ; forward velocity
-        (1,0)  1.0 ; turning velocity
-      }
+      (0,0)  0.5 ; forward velocity
+      (1,0)  1.0 ; turning velocity
     }
 
     ; velocity limits for the arm DOFs
