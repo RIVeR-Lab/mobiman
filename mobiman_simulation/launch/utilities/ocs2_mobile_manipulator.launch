@@ -59,13 +59,13 @@
             type="mobile_manipulator_mpc_node" 
             name="mobile_manipulator_mpc_node" 
             output="screen"
-            launch-prefix="gnome-terminal --" />
+            launch-prefix="" />
 
       <node pkg="ocs2_mobile_manipulator_ros" 
             type="mobile_manipulator_gazebo_mrt_node" 
             name="mobile_manipulator_gazebo_mrt_node" 
-            output="screen" />
-            <!--launch-prefix="" /--> <!--gnome-terminal - - -->
+            output="screen"
+            launch-prefix="gnome-terminal --" /> <!--gnome-terminal - - -->
 
       <node if="$(arg rviz)" 
                   pkg="ocs2_mobile_manipulator_ros" 
