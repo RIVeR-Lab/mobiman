@@ -1,0 +1,271 @@
+; robot model meta-information
+model_information 
+{
+  robotModelType     1          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
+  
+  ; motion joints in the URDF to consider fixed
+  removeJoints 
+  {
+    ;[0] front_left_wheel
+    ;[1] front_right_wheel
+    ;[2] rear_left_wheel
+    ;[3] rear_right_wheel
+  }
+
+  ; Name of the parent link of the joint frames
+  armJointFrameNames
+  {
+    [0] ur5_shoulder_link
+    [1] ur5_upper_arm_link
+    [2] ur5_forearm_link
+    [3] ur5_wrist_1_link
+    [4] ur5_wrist_2_link
+    [5] ur5_wrist_3_link
+  }
+
+  ; Name of the parent link of the joint frames
+  armJointNames
+  {
+    [0] ur5_shoulder_pan_joint
+    [1] ur5_shoulder_lift_joint
+    [2] ur5_elbow_joint
+    [3] ur5_wrist_1_joint
+    [4] ur5_wrist_2_joint
+    [5] ur5_wrist_3_joint
+  }
+
+  ; base frame of the robot (from URDF)
+  baseFrame                       "base_link"
+  ; end-effector frame of the robot (from URDF)
+  armBaseFrame                    "ur5_base_link"
+  ; end-effector frame of the robot (from URDF)
+  eeFrame                         "ur5_tool0"
+}
+
+model_settings
+{
+  usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
+  recompileLibraries              true   ; NUA NOTE: make true when made some changes (for example self-collision pairs)
+}
+
+; DDP settings
+ddp
+{
+  algorithm                       SLQ ; NUA EDIT: def: SLQ
+
+  nThreads                        1
+  threadPriority                  50
+
+  maxNumIterations                1
+  minRelCost                      0.1
+  constraintTolerance             1e-3  ; NUA EDIT: def: 1e-3
+
+  displayInfo                     false
+  displayShortSummary             false
+  checkNumericalStability         false
+  debugPrintRollout               false
+  debugCaching                    false
+
+  AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
+  maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
+  timeStep                        1e-3  ; NUA EDIT: def: 1e-3
+  backwardPassIntegratorType      ODE45
+
+  constraintPenaltyInitialValue   20.0
+  constraintPenaltyIncreaseRate   2.0 ; NUA EDIT: def: 2.0
+
+  preComputeRiccatiTerms          true
+
+  useFeedbackPolicy               false
+
+  strategy                        LINE_SEARCH
+  lineSearch
+  {
+    minStepLength                 1e-2 ; NUA EDIT: def: 1e-2
+    maxStepLength                 1.0 ; NUA EDIT: def: 1.0
+    hessianCorrectionStrategy     DIAGONAL_SHIFT
+    hessianCorrectionMultiple     1e-3
+  }
+}
+
+; Rollout settings
+rollout
+{
+  AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
+  timeStep                        1e-2 ; NUA EDIT: def: 1e-2
+  integratorType                  ODE45
+  maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
+  checkNumericalStability         false
+}
+
+; MPC settings
+mpc
+{
+  timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
+  solutionTimeWindow              0.4   ; [s] NUA EDIT: def: 0.2
+  coldStart                       false
+  
+  debugPrint                      false
+
+  mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
+  mrtDesiredFrequency             10   ; [Hz] NUA EDIT: def: 400
+}
+
+inputCost
+{
+  ; control weight matrix
+  R
+  {
+    ; input costs for the different types of arm base DOFs
+    base
+    {
+      scaling 1e-1  ; NUA EDIT: def: 1e-2
+
+      (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
+      (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
+    }
+
+    ; input costs for the arm DOFs
+    arm
+    {
+      scaling 1e-2
+
+      (0,0)  1.0  ; ur5_shoulder_pan_joint velocity
+      (1,1)  1.0  ; ur5_shoulder_lift_joint velocity
+      (2,2)  1.0  ; ur5_elbow_joint velocity
+      (3,3)  1.0  ; ur5_wrist_1_joint velocity
+      (4,4)  1.0  ; ur5_wrist_2_joint velocity
+      (5,5)  1.0  ; ur5_wrist_3_joint velocity
+    }
+  }
+}
+
+endEffector
+{
+  ; end effector quadratic penalty scaling
+  muPosition      5.0 ; NUA EDIT: def: 10.0
+  muOrientation    10.0 ; NUA EDIT: def: 5.0
+}
+
+finalEndEffector
+{
+  muPosition      1.0  ; NUA EDIT: def: 10
+  muOrientation    5.0  ; NUA EDIT: def: 5.0
+}
+
+selfCollision
+{ 
+  ; activate self-collision constraint
+  activate  true
+
+  ; Self Collision raw object pairs
+  ;collisionObjectPairs
+  ;{
+  ;  [0] "1, 4"
+  ;  [1] "1, 6"
+  ;  [2] "1, 9"
+  ;}
+
+  ; Self Collision pairs
+  collisionLinkPairs
+  {
+    [0] "chassis_link, ur5_upper_arm_link"
+    [1] "chassis_link, ur5_forearm_link"
+    [2] "chassis_link, ur5_wrist_1_link"
+    [3] "chassis_link, ur5_wrist_2_link"
+    [4] "chassis_link, ur5_wrist_3_link"
+    ;[5] "ur5_forearm_link, ur5_wrist_2_link"
+    ;[6] "ur5_forearm_link, ur5_wrist_3_link"
+    ;[7] "ur5_wrist_1_link, ur5_wrist_3_link"
+  }
+
+  ; minimum distance allowed between the pairs
+  minimumDistance  0.03
+
+  ; relaxed log barrier mu
+  mu     1e-2 ; NUA EDIT: def: 1e-2
+
+  ; relaxed log barrier delta
+  delta  1e-3
+}
+
+extCollision
+{ 
+  ; activate external-collision constraint
+  activate  true
+
+  ; relaxed log barrier mu
+  mu              1e-1 ;5e-3
+  
+  ; relaxed log barrier delta
+  delta           1e-2 ;1e-4
+
+  ; maximum distance to obstacles
+  maxDistance  10
+}
+
+; Only applied for arm joints: limits parsed from URDF
+jointPositionLimits
+{ 
+  ; activate constraint
+  activate  true
+
+  ; relaxed log barrier mu
+  mu      0.01
+
+  ; relaxed log barrier delta
+  delta   1e-3
+}
+
+jointVelocityLimits
+{
+  ; relaxed log barrier mu
+  mu      0.01
+
+  ; relaxed log barrier delta
+  delta   1e-3
+
+  lowerBound
+  {
+    ; velocity limits for the different types of arm base DOFs
+    base
+    {
+      (0,0)  -0.5 ; forward velocity NUA EDIT: def: -0.5
+      (1,0)  -1.0 ; turning velocity NUA EDIT: def: -1.0
+    }
+
+    ; velocity limits for the arm DOFs
+    arm
+    {
+      (0,0)  -3.14  ; ur5_shoulder_pan_joint velocity
+      (1,0)  -3.14  ; ur5_shoulder_lift_joint velocity
+      (2,0)  -3.14  ; ur5_elbow_joint velocity
+      (3,0)  -3.14  ; ur5_wrist_1_joint velocity
+      (4,0)  -3.14  ; ur5_wrist_2_joint velocity
+      (5,0)  -3.14  ; ur5_wrist_3_joint velocity
+    }
+  }
+
+  upperBound
+  {
+    ; velocity limits for the different types of arm base DOFs
+    base
+    {
+      (0,0)  0.5 ; forward velocity
+      (1,0)  1.0 ; turning velocity
+    }
+
+    ; velocity limits for the arm DOFs
+    arm
+    {
+      (0,0)  3.14  ; ur_arm_shoulder_pan_joint velocity
+      (1,0)  3.14  ; ur_arm_shoulder_lift_joint velocity
+      (2,0)  3.14  ; ur_arm_elbow_joint velocity
+      (3,0)  3.14  ; ur_arm_wrist_1_joint velocity
+      (4,0)  3.14  ; ur_arm_wrist_2_joint velocity
+      (5,0)  3.14  ; ur_arm_wrist_3_joint velocity
+    }
+  }
+}
