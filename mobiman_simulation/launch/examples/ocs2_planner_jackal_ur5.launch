@@ -12,11 +12,11 @@
       -->
       <arg name="robot"       default="jackal_ur5" />
 
+      <!-- The task file for the mpc. -->
+      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+
       <!-- The URDF model of the robot -->
       <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" />
-      
-      <!-- The task file for the mpc. -->
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task_$(arg robot).info" />
       
       <!-- The library folder to generate CppAD codegen into -->
       <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />

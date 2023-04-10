@@ -1,29 +1,32 @@
 <?xml version="1.0" ?>
 
 <launch>
-
       <!-- Enable rviz visualization -->
+      <arg name="rviz"        default="true" />
+
       <!-- Set nodes on debug mode -->
+      <!--arg name="debug"       default="false" /-->
+
       <!-- Set nodes on debug mode -->
       <!--
             jackal_ur5
             ur5
       -->
-      <!-- The URDF model of the robot -->
-      <!-- The task file for the mpc. -->
-      <!-- The library folder to generate CppAD codegen into -->
-      <arg name="rviz"        default="true" />
-      <arg name="debug"       default="false" />
       <arg name="robot"       default="jackal_ur5" />
+
+      <!-- The task file for the mpc. -->
+      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+
+      <!-- The URDF model of the robot -->
       <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" />
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task_$(arg robot).info" />
+      
+      <!-- The library folder to generate CppAD codegen into -->
       <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />
 
       <!-- make the files into global parameters -->
-      <!---param name="taskFile"   value="$(arg taskFile)" />
+      <param name="taskFile"   value="$(arg taskFile)" />
       <param name="urdfFile"   value="$(arg urdfFile)" />
-      <param name="libFolder"  value="$(arg libFolder)" /-->
-      <param name="workspacePath"  value="$(find mobiman_simulation)/" />
+      <param name="libFolder"  value="$(arg libFolder)" />
 
       <node pkg="ocs2_mobile_manipulator_ros" 
             type="mobile_manipulator_gazebo_mrt_node" 
