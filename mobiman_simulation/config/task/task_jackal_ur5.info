@@ -94,7 +94,7 @@ rollout
 {
   AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
   RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
-  timeStep                        1e-2 ; NUA EDIT: def: 1e-2
+  timeStep                        5e-2 ; NUA EDIT: def: 1e-2
   integratorType                  ODE45
   maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
   checkNumericalStability         false
@@ -103,14 +103,14 @@ rollout
 ; MPC settings
 mpc
 {
-  timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
+  timeHorizon                     10.0   ; [s] NUA EDIT: def: 1.0
   solutionTimeWindow              0.4   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
-  mrtDesiredFrequency             10   ; [Hz] NUA EDIT: def: 400
+  mrtDesiredFrequency             50   ; [Hz] NUA EDIT: def: 400
 }
 
 inputCost
@@ -171,18 +171,18 @@ selfCollision
   ; Self Collision pairs
   collisionLinkPairs
   {
-    [0] "chassis_link, ur5_upper_arm_link"
-    [1] "chassis_link, ur5_forearm_link"
-    [2] "chassis_link, ur5_wrist_1_link"
-    [3] "chassis_link, ur5_wrist_2_link"
-    [4] "chassis_link, ur5_wrist_3_link"
+    ;[0] "chassis_link, ur5_upper_arm_link"
+    [0] "chassis_link, ur5_forearm_link"
+    [1] "chassis_link, ur5_wrist_1_link"
+    [2] "chassis_link, ur5_wrist_2_link"
+    [3] "chassis_link, ur5_wrist_3_link"
     ;[5] "ur5_forearm_link, ur5_wrist_2_link"
     ;[6] "ur5_forearm_link, ur5_wrist_3_link"
     ;[7] "ur5_wrist_1_link, ur5_wrist_3_link"
   }
 
   ; minimum distance allowed between the pairs
-  minimumDistance  0.03
+  minimumDistance  0.05
 
   ; relaxed log barrier mu
   mu     1e-2 ; NUA EDIT: def: 1e-2
@@ -203,7 +203,7 @@ extCollision
   delta           1e-2 ;1e-4
 
   ; maximum distance to obstacles
-  maxDistance  10
+  maxDistance  2
 }
 
 ; Only applied for arm joints: limits parsed from URDF
