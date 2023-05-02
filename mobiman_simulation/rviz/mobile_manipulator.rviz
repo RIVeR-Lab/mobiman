@@ -235,8 +235,6 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
-        blue_cube:
-          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -275,10 +273,6 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: false
-        long_pkg:
-          Value: true
-        longwide_pkg:
-          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -383,15 +377,9 @@ Visualization Manager:
                             ur5_flange:
                               ur5_tool0:
                                 {}
-          blue_cube:
-            {}
           conveyor_belt:
             {}
           green_cube:
-            {}
-          long_pkg:
-            {}
-          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -514,13 +502,13 @@ Visualization Manager:
       Use rainbow: true
       Value: false
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /map_server/occupied_nodes
@@ -610,7 +598,7 @@ Visualization Manager:
       Marker Topic: /occ_dist_array
       Name: MarkerArray
       Namespaces:
-        {}
+        occupancy_distance_: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -641,7 +629,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.7518467903137207
+      Distance: 2.7565648555755615
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -657,9 +645,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3947969973087311
+      Pitch: 0.8697967529296875
       Target Frame: <Fixed Frame>
-      Yaw: 1.5823001861572266
+      Yaw: 3.022310972213745
     Saved: ~
 Window Geometry:
   Displays:
