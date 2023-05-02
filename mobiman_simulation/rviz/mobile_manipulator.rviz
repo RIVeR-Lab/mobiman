@@ -23,7 +23,7 @@ Panels:
     Splitter Ratio: 0.5
   - Class: rviz/Time
     Name: Time
-    SyncMode: 0
+    SyncMode: 3
     SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
@@ -235,6 +235,8 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
+        blue_cube:
+          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -273,6 +275,10 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: false
+        long_pkg:
+          Value: true
+        longwide_pkg:
+          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -377,9 +383,15 @@ Visualization Manager:
                             ur5_flange:
                               ur5_tool0:
                                 {}
+          blue_cube:
+            {}
           conveyor_belt:
             {}
           green_cube:
+            {}
+          long_pkg:
+            {}
+          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -502,13 +514,13 @@ Visualization Manager:
       Use rainbow: true
       Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /map_server/occupied_nodes
@@ -606,7 +618,7 @@ Visualization Manager:
     Background Color: 186; 189; 182
     Default Light: true
     Fixed Frame: world
-    Frame Rate: 30
+    Frame Rate: 10000
   Name: root
   Tools:
     - Class: rviz/Interact
@@ -629,7 +641,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.7565648555755615
+      Distance: 5.751825332641602
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -637,17 +649,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.21287983655929565
-        Y: -0.20315559208393097
-        Z: 0.5939905643463135
+        X: -0.6087642312049866
+        Y: 0.8564396500587463
+        Z: 0.8989241719245911
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8697967529296875
+      Pitch: 0.7347970604896545
       Target Frame: <Fixed Frame>
-      Yaw: 3.022310972213745
+      Yaw: 2.1623077392578125
     Saved: ~
 Window Geometry:
   Displays:

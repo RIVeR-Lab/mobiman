@@ -103,14 +103,14 @@ rollout
 ; MPC settings
 mpc
 {
-  timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
-  solutionTimeWindow              0.4   ; [s] NUA EDIT: def: 0.2
+  timeHorizon                     4.0   ; [s] NUA EDIT: def: 1.0
+  solutionTimeWindow              0.5   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
-  mrtDesiredFrequency             50   ; [Hz] NUA EDIT: def: 400
+  mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400
 }
 
 inputCost
