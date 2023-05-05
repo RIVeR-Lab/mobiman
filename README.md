@@ -1,8 +1,10 @@
 # mobiman
 
-## Installation: Please follow the instructions in [MANUAL_INSTALLATION](https://github.com/RIVeR-Lab/mobiman/blob/main/MANUAL_INSTALLATION)
+## Installation: 
 
-## Examples:
+Please follow the instructions in [MANUAL_INSTALLATION](https://github.com/RIVeR-Lab/mobiman/blob/main/MANUAL_INSTALLATION).
+
+## Run:
 
 In seperate terminals:
 
@@ -11,7 +13,7 @@ In seperate terminals:
 roslaunch mobiman_simulation gazebo.launch
 ```
 
-2. Start simulation in Gazebo:
+2. Start the mapping server:
 ```
 roslaunch mobiman_simulation map_server.launch
 ```
