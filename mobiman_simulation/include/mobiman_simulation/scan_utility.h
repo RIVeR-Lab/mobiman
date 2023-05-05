@@ -136,6 +136,7 @@ class ScanUtility
     tf::TransformListener* tflistener_;
 
     string obj_name_;
+    string pkg_dir_;
     string data_dir_;
     string data_path_;
     string world_frame_name_;

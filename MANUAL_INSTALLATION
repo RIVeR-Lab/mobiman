@@ -1,0 +1,70 @@
+## Install ROS packages
+
+### Clone mobiman
+git clone git@github.com:RIVeR-Lab/mobiman.git
+
+### Clone ocs2
+git clone git@github.com:RIVeR-Lab/ocs2.git
+cd ocs2/
+git checkout noetic-akmandor-v6
+
+### Clone pinocchio
+git clone --recurse-submodules https://github.com/RIVeR-Lab/pinocchio.git
+cd pinocchio/
+git checkout noetic-akmandor
+
+### Clone hpp-fcl
+git clone --recurse-submodules https://github.com/leggedrobotics/hpp-fcl.git
+
+### Clone ocs2_robotic_assets
+git clone https://github.com/leggedrobotics/ocs2_robotic_assets.git
+
+### Clone jackal
+git clone git@github.com:RIVeR-Lab/jackal.git
+cd jackal/
+git checkout noetic-akmandor
+
+### Clone universal_robot
+git clone git@github.com:RIVeR-Lab/universal_robot.git
+cd universal_robot/
+git checkout noetic-akmandor
+
+### Clone geometry2
+git@github.com:RIVeR-Lab/geometry2.git
+cd geometry2/
+git checkout noetic-akmandor
+
+### Clone pedsim_ros
+git clone git@github.com:RIVeR-Lab/pedsim_ros.git
+cd pedsim_ros
+git submodule update --init --recursive
+
+### Clone coveyor_demo
+git clone --recurse-submodules https://github.com/rokokoo/conveyor_demo.git
+
+### Clone octomap_rviz_plugins
+git clone git@github.com:OctoMap/octomap_rviz_plugins.git
+
+### Clone pointcloud_to_laserscan
+git clone git@github.com:ros-perception/pointcloud_to_laserscan.git
+
+## Install to fix ocs_doc compilation error
+pip install sphinxcontrib-spelling==4.2.1
+pip install sphinxcontrib-bibtex==0.4.2
+pip install Sphinx==1.8.5
+pip install breathe==4.13.0
+pip install sphinx_rtd_theme
+
+## Install dependencies
+sudo apt-get install nlohmann-json3-dev
+sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
+sudo apt install ros-noetic-pybind11-catkin
+sudo apt install python3-catkin-tools
+sudo apt install doxygen doxygen-latex
+sudo apt-get install ros-noetic-rqt-multiplot
+sudo apt install ros-noetic-moveit
+rosdep install --from-paths src --ignore-src -r -y
+
+## Change catkin config
+catkin config --extend /opt/ros/noetic
+catkin config -DCMAKE_BUILD_TYPE=Release

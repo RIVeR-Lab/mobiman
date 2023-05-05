@@ -1,5 +1,5 @@
 {
-    "data_path": "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/actor.json",
+    "data_path": "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/actor.json",
     "obj_name": "actor",
     "oct_resolution": 0.02,
     "pc2": {

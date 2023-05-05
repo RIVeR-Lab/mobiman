@@ -23,7 +23,7 @@ Panels:
     Splitter Ratio: 0.5
   - Class: rviz/Time
     Name: Time
-    SyncMode: 3
+    SyncMode: 0
     SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
@@ -641,7 +641,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.751825332641602
+      Distance: 2.671171188354492
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -649,17 +649,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.6087642312049866
-        Y: 0.8564396500587463
-        Z: 0.8989241719245911
+        X: -0.47225916385650635
+        Y: 0.6598485708236694
+        Z: 1.145308494567871
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7347970604896545
+      Pitch: 0.4997972846031189
       Target Frame: <Fixed Frame>
-      Yaw: 2.1623077392578125
+      Yaw: 1.8073073625564575
     Saved: ~
 Window Geometry:
   Displays:

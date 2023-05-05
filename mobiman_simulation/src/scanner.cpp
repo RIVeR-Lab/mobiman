@@ -117,5 +117,7 @@ int main(int argc, char** argv)
 
   cout << "[scanner::main] END" << endl;
 
+  ros::waitForShutdown();
+
   return 0;
 }

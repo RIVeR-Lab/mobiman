@@ -25,7 +25,7 @@
   </node>
 
   <!-- Convert poincloud_to_laserscan -->
-  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_$(arg prefix)" output="screen">
+  <!--node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan_$(arg prefix)" output="screen">
 
     <remap from="cloud_in" to="$(arg out_cloud)"/>
     <remap from="scan" to="scan_$(arg prefix)"/>
@@ -49,6 +49,6 @@
       # 2->inf : Parallelism level
       concurrency_level: 2
     </rosparam>
-  </node>
+  </node-->
 
 </launch>

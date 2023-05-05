@@ -16,6 +16,8 @@ ScanUtility::ScanUtility(NodeHandle& nh)
 {
   tflistener_ = new tf::TransformListener;
 
+  pkg_dir_ = ros::package::getPath("mobiman_simulation") + "/";
+
   // Publishers
   pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
 }
@@ -23,6 +25,8 @@ ScanUtility::ScanUtility(NodeHandle& nh)
 ScanUtility::ScanUtility(NodeHandle& nh, string data_path)
 {
   tflistener_ = new tf::TransformListener;
+
+  pkg_dir_ = ros::package::getPath("mobiman_simulation") + "/";
 
   readPointcloud2Data(data_path);
 
@@ -45,6 +49,7 @@ ScanUtility::ScanUtility(NodeHandle& nh,
 {
   tflistener_ = new tf::TransformListener;
 
+  pkg_dir_ = ros::package::getPath("mobiman_simulation") + "/";
   obj_name_ = obj_name;
   data_dir_ = data_dir;
   world_frame_name_ = world_frame_name;
@@ -110,6 +115,7 @@ ScanUtility::ScanUtility(const ScanUtility& su)
   tflistener_ = su.tflistener_;
   
   obj_name_ = su.obj_name_;
+  pkg_dir_ = su.pkg_dir_;
   data_dir_ = su.data_dir_;
   data_path_ = su.data_path_;
   world_frame_name_ = su.world_frame_name_;
@@ -167,6 +173,7 @@ ScanUtility& ScanUtility::operator = (const ScanUtility& su)
   tflistener_ = su.tflistener_;
   
   obj_name_ = su.obj_name_;
+  pkg_dir_ = su.pkg_dir_;
   data_dir_ = su.data_dir_;
   data_path_ = su.data_path_;
   world_frame_name_ = su.world_frame_name_;
@@ -383,7 +390,8 @@ void ScanUtility::pc2CallbackSensor4(const sensor_msgs::PointCloud2::ConstPtr& m
 
 void ScanUtility::getScanPointcloud2(string data_path, sensor_msgs::PointCloud2& pc2_msg)
 {
-  readPointcloud2Data(data_path);
+
+  readPointcloud2Data(pkg_dir_ + data_path);
 
   pc2_msg = pc2_msg_scan_;
 }
@@ -581,9 +589,8 @@ void ScanUtility::writePointcloud2Data()
   std::cout << "[ScanUtility::writePointcloud2Data] START" << std::endl;
 
   json j;
-  string mobiman_simulation_dir = ros::package::getPath("mobiman_simulation") + "/";
-  boost::filesystem::create_directories(mobiman_simulation_dir + data_dir_);
-  data_path_ = mobiman_simulation_dir + data_dir_ + obj_name_ + ".json";
+  boost::filesystem::create_directories(pkg_dir_ + data_dir_);
+  data_path_ = pkg_dir_ + data_dir_ + obj_name_ + ".json";
 
   vector<double> pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z;
   PclPointcloudToVec(pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z);
