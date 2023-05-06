@@ -17,6 +17,7 @@
 
       <!-- The URDF model of the robot -->
       <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" />
+      <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_ur5_holonomicFixed.urdf" /-->
       
       <!-- The library folder to generate CppAD codegen into -->
       <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />

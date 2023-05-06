@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2022.03.11
+LAST UPDATE: 2023.05.05
 
 AUTHOR: stretch_ros
         Hongyu Li (LHY)
@@ -39,6 +39,11 @@ get_link_srv = rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)
 get_world_properties = rospy.ServiceProxy('/gazebo/get_world_properties', GetWorldProperties)
 unpause_physics = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
 
+urdf_filename = rospy.get_param('urdf_filename', "")
+base_link = 'base_link'
+if urdf_filename == 'jackal_ur5_holonomic':
+    base_link = 'virtual_world_link'
+
 odom=Odometry()
 header = Header()
 header.frame_id='/world'
@@ -47,7 +52,7 @@ model.model_name='mobiman'
 models = []
 
 link = GetLinkStateRequest()
-link.link_name = 'base_link'
+link.link_name = base_link
 link.reference_frame = 'world'
 r = rospy.Rate(100)
 
@@ -77,7 +82,7 @@ while not rospy.is_shutdown():
 
             t.header.stamp = rospy.Time.now()
             t.header.frame_id = "world"
-            t.child_frame_id = "base_link"
+            t.child_frame_id = base_link
             t.transform.translation.x = odom.pose.pose.position.x
             t.transform.translation.y = odom.pose.pose.position.y
             t.transform.translation.z = odom.pose.pose.position.z

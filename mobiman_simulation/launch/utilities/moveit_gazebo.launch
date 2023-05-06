@@ -1,0 +1,131 @@
+<launch>
+
+  <!-- General Parameters -->
+  <!-- Custom -->
+  <arg name="flag_gazebo" default="true"/>
+  <arg name="flag_robot" default="true"/>
+  <arg name="flag_conveyor" default="true"/>
+  <arg name="flag_pedsim" default="true"/>
+  <arg name="flag_markers" default="false"/>
+  <arg name="flag_map_server" default="false"/>
+  <arg name="flag_rviz" default="true"/>
+
+  <!-- Gazebo -->
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="false"/>
+  <arg name="robot_namespace" default="/"/>
+
+  <!-- Task Parameters -->
+  <arg name="urdf_filename" default="jackal_ur5_holonomic"/>
+
+  <!-- Initial Robot Pose -->
+  <arg name="robot0_init_pos_x" default="0.0"/>
+  <arg name="robot0_init_pos_y" default="0.0"/>
+  <arg name="robot0_init_pos_z" default="0.1"/>
+  <arg name="robot0_init_roll" default="0.0"/>
+  <arg name="robot0_init_pitch" default="0.0"/>
+  <arg name="robot0_init_yaw" default="0.0"/>
+
+  <arg name="init_ur5_shoulder_pan_joint" default="0.0"/>
+  <arg name="init_ur5_shoulder_lift_joint" default="0.0"/> <!-- -1.2 -->
+  <arg name="init_ur5_elbow_joint" default="0.0"/> <!-- -2.0 -->
+  <arg name="init_ur5_wrist_1_joint" default="0.0"/>
+  <arg name="init_ur5_wrist_2_joint" default="0.0"/>
+  <arg name="init_ur5_wrist_3_joint" default="0.0"/>
+
+  <!-- Launch the Gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find mobiman_simulation)/worlds/empty_world_asphalt_ground.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="verbose" value="$(arg verbose)" />
+  </include>
+
+  <!-- Launch conveyor belt -->
+  <group if="$(eval arg('flag_conveyor') == true)">
+    <group ns="conveyor">
+      <node name="spawn_conveyor_belt" 
+            pkg="gazebo_ros" 
+            type="spawn_model" 
+            args="-file $(find mobiman_simulation)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt -x 0.0 -y -2.5 -z 0.15" 
+            respawn="false" 
+            output="screen" />
+    </group>
+    <node name="spawn_packages" pkg="mobiman_simulation" type="spawn_packages.py" output="screen"/>
+  </group>
+
+  <!-- Launch robot -->
+  <group if="$(eval arg('flag_robot') == true)">
+    <group ns="$(arg robot_namespace)">
+      <!-- Load the URDF into the ROS Parameter Server -->
+      <!--param  name="robot_description"
+              command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" /-->
+      <param name="robot_description" 
+              textfile="$(find mobiman_simulation)/urdf/$(arg urdf_filename).urdf" />
+
+      <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+      <node name="urdf_spawner" 
+            pkg="gazebo_ros" 
+            type="spawn_model" 
+            respawn="false" 
+            output="screen"
+            args="-urdf 
+                  -model mobiman 
+                  -param robot_description 
+                  -robot_namespace $(arg robot_namespace)
+                  -x $(arg robot0_init_pos_x)
+                  -y $(arg robot0_init_pos_y)
+                  -z $(arg robot0_init_pos_z)
+                  -R $(arg robot0_init_roll)
+                  -P $(arg robot0_init_pitch)  
+                  -Y $(arg robot0_init_yaw)
+                  -J ur5_shoulder_pan_joint $(arg init_ur5_shoulder_pan_joint)
+                  -J ur5_shoulder_lift_joint $(arg init_ur5_shoulder_lift_joint)
+                  -J ur5_elbow_joint $(arg init_ur5_elbow_joint)
+                  -J ur5_wrist_1_joint $(arg init_ur5_wrist_1_joint)
+                  -J ur5_wrist_2_joint $(arg init_ur5_wrist_2_joint)
+                  -J ur5_wrist_3_joint $(arg init_ur5_wrist_3_joint)
+                  -unpause"/>
+
+      <param name="urdf_filename" value="$(arg urdf_filename)" />
+      <node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" />
+
+      <!--node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world odom 100" /-->
+      
+      <!-- Load Robot Semantic -->
+      <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
+
+      <!-- Run the sensor processes -->
+      <!--include file="$(find mobiman_simulation)/launch/utilities/camera_process.launch" /-->
+
+      <!-- Run robot control on the gazebo master -->
+      <include file="$(find mobiman_control)/launch/control_jackal_ur5.launch" />
+    </group>
+  </group>
+
+  <!-- Run Pedsim -->
+  <group if="$(eval arg('flag_pedsim') == true)">
+    <node pkg="mobiman_simulation" type="spawn_pedsim_agents.py" name="spawn_pedsim_agents" output="screen" />
+    <include file="$(find mobiman_simulation)/launch/utilities/pedsim.launch" />
+  </group>
+
+  <!-- Spawn marker on the robot -->
+  <node if="$(arg flag_markers)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" />
+
+  <!-- Run Map Server -->
+  <group if="$(eval arg('flag_map_server') == true)">
+    <include file="$(find mobiman_simulation)/launch/utilities/map_server.launch" />
+  </group>
+
+  <!-- Run Rviz visualization -->
+  <group if="$(eval arg('flag_rviz') == true)">
+    <include file="$(find mobiman_simulation)/launch/utilities/display.launch" />
+  </group>
+</launch>

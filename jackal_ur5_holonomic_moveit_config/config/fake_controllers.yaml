@@ -1,0 +1,35 @@
+controller_list:
+  - name: fake_whole_body_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - x_axis_joint
+      - y_axis_joint
+      - theta_joint
+      - ur5_shoulder_pan_joint
+      - ur5_shoulder_lift_joint
+      - ur5_elbow_joint
+      - ur5_wrist_1_joint
+      - ur5_wrist_2_joint
+      - ur5_wrist_3_joint
+  - name: fake_arm_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - ur5_shoulder_pan_joint
+      - ur5_shoulder_lift_joint
+      - ur5_elbow_joint
+      - ur5_wrist_1_joint
+      - ur5_wrist_2_joint
+      - ur5_wrist_3_joint
+  - name: fake_base_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - x_axis_joint
+      - y_axis_joint
+      - theta_joint
+initial:  # Define initial robot poses per group
+  - group: whole_body
+    pose: all_zeros
+  - group: arm
+    pose: all_zeros
+  - group: base
+    pose: all_zeros

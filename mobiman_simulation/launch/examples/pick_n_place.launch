@@ -1,0 +1,21 @@
+<launch>
+    <arg name="debug"       default="false" />
+
+    <!-- LOCALIZATION -->
+    <!-- <include file="$(find amcl)/examples/amcl_diff.launch" /> -->
+    <!-- GMAPPING -->
+    <!--node pkg="gmapping" type="slam_gmapping" name="gmapping_record_map" output="screen" /-->
+
+    <!-- Move Base -->
+    <!--include file="$(find mobiman_simulation)/launch/move_base.launch" /-->
+
+    <include file="$(find jackal_ur5_holonomic_moveit_config)/launch/move_group.launch">
+        <arg name="allow_trajectory_execution" value="true" />
+        <arg name="info" value="true" />
+        <arg name="debug" value="$(arg debug)" />
+    </include>
+
+    <!-- include c++ script to do motion planning-->
+    <node pkg="mobiman_simulation" name="pick_n_place" type="pick_n_place" output="screen">
+    </node>
+</launch>

@@ -24,6 +24,11 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   octomap_ros
   octomap_msgs
+  moveit_core
+  moveit_ros_planning
+  moveit_ros_planning_interface
+  moveit_ros_perception
+  moveit_visual_tools
 )
 
 #find_package(catkin_simple REQUIRED)
@@ -144,6 +149,9 @@ catkin_package(
     rospy 
     std_msgs 
     message_runtime 
+    moveit_core
+    moveit_visual_tools
+    moveit_ros_planning_interface
     ${PACKAGE_DEPENDENCIES}
   DEPENDS 
     Boost 
@@ -211,26 +219,20 @@ add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 #   ${catkin_LIBRARIES}
 # )
 
-# Voxblox Test (Deprecated)
-#add_executable(testplanner_node
-#  src/testplanner_node.cpp
-#)
-#add_dependencies(testplanner_node
-#  ${catkin_EXPORTED_TARGETS}
-#)
-#target_link_libraries(testplanner_node
-#  ${catkin_LIBRARIES} testplanner
-#)
+## Scanner
+add_executable(scanner src/scanner.cpp)
+add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
+target_link_libraries(scanner ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
-#add_executable(testplanner_node2
-#  src/testplanner_node2.cpp
-#)
-#add_dependencies(testplanner_node2
-#  ${catkin_EXPORTED_TARGETS}
-#)
-#target_link_libraries(testplanner_node2
-#  ${catkin_LIBRARIES} testplanner2
-#)
+## Map Server
+add_executable(map_server src/map_server.cpp)
+add_dependencies(map_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
+## Pick and Place
+add_executable(pick_n_place src/pick_n_place.cpp)
+target_link_libraries(pick_n_place ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+install(TARGETS pick_n_place DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ## TESTS
 # test_map_utility_srv_getNearestOccDist
@@ -242,59 +244,6 @@ target_link_libraries(test_map_utility_srv_getNearestOccDist ${PCL_LIBRARIES} ${
 add_executable(test_map_utility_getNearestOccupancyDist2 src/tests/test_map_utility_getNearestOccupancyDist2.cpp)
 add_dependencies(test_map_utility_getNearestOccupancyDist2 ${catkin_EXPORTED_TARGETS})
 target_link_libraries(test_map_utility_getNearestOccupancyDist2 ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
-
-## Scanner
-add_executable(scanner src/scanner.cpp)
-add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
-target_link_libraries(scanner ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
-
-## Map Server
-add_executable(map_server src/map_server.cpp)
-add_dependencies(map_server ${catkin_EXPORTED_TARGETS})
-target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
-
-# Distance Server (NUA TODO: Using instead of Voxblox! Try to adapt an esdf map library...)
-#add_executable(distance_server src/distance_server.cpp)
-#add_dependencies(distance_server ${catkin_EXPORTED_TARGETS})
-#target_link_libraries(distance_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
-
-# MPC node
-#add_executable(ocs2_mobile_manipulator_mpc_node
-#  src/ocs2_mobile_manipulator_mpc_node.cpp
-#)
-#add_dependencies(ocs2_mobile_manipulator_mpc_node
-#  ${catkin_EXPORTED_TARGETS}
-#)
-#target_link_libraries(ocs2_mobile_manipulator_mpc_node
-#  ${catkin_LIBRARIES} ocs2_mobile_manipulator_interface
-#)
-#target_compile_options(ocs2_mobile_manipulator_mpc_node PUBLIC ${FLAGS})
-
-# MRT node
-#add_executable(ocs2_mobile_manipulator_mrt_gazebo_node
-#  src/ocs2_mobile_manipulator_mrt_gazebo.cpp
-#  src/ocs2_mobile_manipulator_visualization.cpp
-#)
-#add_dependencies(ocs2_mobile_manipulator_mrt_gazebo_node
-#  ${catkin_EXPORTED_TARGETS} ocs2_mobile_manipulator_interface
-#)
-#target_link_libraries(ocs2_mobile_manipulator_mrt_gazebo_node
-#  ${catkin_LIBRARIES}
-#  ocs2_mrt_loop
-#)
-#target_compile_options(ocs2_mobile_manipulator_mrt_gazebo_node PUBLIC ${FLAGS})
-
-# Target node
-#add_executable(ocs2_mobile_manipulator_target
-#  src/ocs2_mobile_manipulator_target.cpp
-#)
-#add_dependencies(ocs2_mobile_manipulator_target
-#  ${catkin_EXPORTED_TARGETS}
-#)
-#target_link_libraries(ocs2_mobile_manipulator_target
-#  ${catkin_LIBRARIES}
-#)
-#target_compile_options(ocs2_mobile_manipulator_target PUBLIC ${FLAGS})
 
 #############
 ## Install ##

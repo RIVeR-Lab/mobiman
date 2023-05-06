@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: mobiman_simulation
+    relative_path: urdf/jackal_ur5_holonomic.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/mobiman.srdf
+  CONFIG:
+    author_name: Neset Unver Akmandor
+    author_email: akmandor.n@northeastern.edu
+    generated_timestamp: 1683397147
