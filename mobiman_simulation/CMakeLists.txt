@@ -245,6 +245,11 @@ add_executable(test_map_utility_getNearestOccupancyDist2 src/tests/test_map_util
 add_dependencies(test_map_utility_getNearestOccupancyDist2 ${catkin_EXPORTED_TARGETS})
 target_link_libraries(test_map_utility_getNearestOccupancyDist2 ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
+# test_map_utility_srv_getNearestOccDist
+add_executable(test_moveit_planner src/tests/test_moveit_planner.cpp)
+target_link_libraries(test_moveit_planner ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+install(TARGETS test_moveit_planner DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 #############
 ## Install ##
 #############
