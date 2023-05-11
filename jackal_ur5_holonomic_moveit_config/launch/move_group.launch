@@ -94,6 +94,7 @@
     <!-- do not copy dynamics information from /joint_states to internal robot monitoring
          default to false, because almost nothing in move_group relies on this information -->
     <param name="monitor_dynamics" value="false" />
+    <param name="planning_plugin" value="ompl_interface/OMPLPlanner" />
 
     <!-- Publish the planning scene of the physical robot so that rviz plugin can know actual robot -->
     <param name="planning_scene_monitor/publish_planning_scene" value="$(arg publish_monitored_planning_scene)" />
