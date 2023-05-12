@@ -33,8 +33,8 @@ class ur5_check_bridge():
         self.num_joints = len(self.joint_state.name)
         self.joint_state.position = np.array([0.0] * self.num_joints)
         self.default_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        self.max_joints = np.array(self.default_joints) + 10.5
-        self.min_joints = np.array(self.default_joints) - 10.5
+        self.max_joints = np.array(self.default_joints) + 0.5
+        self.min_joints = np.array(self.default_joints) - 0.5
         self.time_start = time.time()
         self.rate = rospy.Rate(20)
         rospy.on_shutdown(self.shutdown)
