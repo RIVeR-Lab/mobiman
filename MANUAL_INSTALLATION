@@ -50,10 +50,10 @@ cd ..
 git clone --recurse-submodules https://github.com/rokokoo/conveyor_demo.git
 
 ### Clone octomap_rviz_plugins
-git clone git@github.com:OctoMap/octomap_rviz_plugins.git
+#git clone git@github.com:OctoMap/octomap_rviz_plugins.git
 
 ### Clone pointcloud_to_laserscan
-git clone git@github.com:ros-perception/pointcloud_to_laserscan.git
+#git clone git@github.com:ros-perception/pointcloud_to_laserscan.git
 
 ## Install to fix ocs_doc compilation error
 pip install sphinxcontrib-spelling==4.2.1
@@ -63,6 +63,8 @@ pip install breathe==4.13.0
 pip install sphinx_rtd_theme
 
 ## Install dependencies
+sudo apt install ros-noetic-octomap*
+sudo apt install ros-noetic-pointcloud-to-laserscan
 sudo apt-get install nlohmann-json3-dev
 sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
 sudo apt install ros-noetic-pybind11-catkin
