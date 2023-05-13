@@ -60,11 +60,11 @@ ddp
   minRelCost                      0.1
   constraintTolerance             1e-3  ; NUA EDIT: def: 1e-3
 
-  displayInfo                     false
-  displayShortSummary             false
-  checkNumericalStability         false
-  debugPrintRollout               false
-  debugCaching                    false
+  displayInfo                     true  ; NUA EDIT: def: false
+  displayShortSummary             true  ; NUA EDIT: def: false
+  checkNumericalStability         false  ; NUA EDIT: def: false
+  debugPrintRollout               true  ; NUA EDIT: def: false
+  debugCaching                    true  ; NUA EDIT: def: false
 
   AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
   RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
@@ -77,7 +77,7 @@ ddp
 
   preComputeRiccatiTerms          true
 
-  useFeedbackPolicy               false
+  useFeedbackPolicy               true
 
   strategy                        LINE_SEARCH
   lineSearch
@@ -94,7 +94,7 @@ rollout
 {
   AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
   RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
-  timeStep                        5e-2 ; NUA EDIT: def: 1e-2
+  timeStep                        1e-2 ; NUA EDIT: def: 1e-2
   integratorType                  ODE45
   maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
   checkNumericalStability         false
@@ -103,11 +103,11 @@ rollout
 ; MPC settings
 mpc
 {
-  timeHorizon                     4.0   ; [s] NUA EDIT: def: 1.0
-  solutionTimeWindow              0.5   ; [s] NUA EDIT: def: 0.2
+  timeHorizon                     3.0   ; [s] NUA EDIT: def: 1.0
+  solutionTimeWindow              1.0   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
-  debugPrint                      false
+  debugPrint                      true
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
   mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400
@@ -197,13 +197,13 @@ extCollision
   activate  true
 
   ; relaxed log barrier mu
-  mu              1.0 ;5e-3
+  mu              1e-1 ;5e-3
   
   ; relaxed log barrier delta
   delta           1e-3 ;1e-4
 
   ; maximum distance to obstacles
-  maxDistance  4
+  maxDistance  1.0
 }
 
 ; Only applied for arm joints: limits parsed from URDF

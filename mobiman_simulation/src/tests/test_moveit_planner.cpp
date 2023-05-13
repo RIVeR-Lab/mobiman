@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.05.11
+// LAST UPDATE: 2023.05.13
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -17,19 +17,6 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <visualization_msgs/Marker.h>
 
-// MoveIt
-/*
-#include <moveit/robot_model_loader/robot_model_loader.h>
-#include <moveit/robot_state/conversions.h>
-#include <moveit/planning_pipeline/planning_pipeline.h>
-#include <moveit/planning_interface/planning_interface.h>
-#include <moveit/planning_scene_monitor/planning_scene_monitor.h>
-#include <moveit/kinematic_constraints/utils.h>
-#include <moveit_msgs/DisplayTrajectory.h>
-#include <moveit_msgs/PlanningScene.h>
-#include <moveit_visual_tools/moveit_visual_tools.h>
-*/
-
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_pipeline/planning_pipeline.h>
 #include <moveit/planning_interface/planning_interface.h>
@@ -46,10 +33,7 @@ int main(int argc, char **argv)
   std::cout << "[test_moveit_planner::main] START" << std::endl;
 
   ros::init(argc, argv, "test_moveit_planner");
-  ros::NodeHandle node_handle("~");
-  
-  //ros::AsyncSpinner spinner(4);
-  //spinner.start();
+  ros::NodeHandle node_handle("/move_group/planning_pipelines/ompl");
 
   // Robot Model
   robot_model_loader::RobotModelLoaderPtr robotModelLoaderPtr(new robot_model_loader::RobotModelLoader("robot_description"));
@@ -75,8 +59,7 @@ int main(int argc, char **argv)
   psmPtr->startStateMonitor();
 
   //Planning Pipeline
-  planning_pipeline::PlanningPipelinePtr planningPipelinePtr(new planning_pipeline::PlanningPipeline(robotModelPtr, node_handle, "/move_group/planning_plugin", "request_adapters"));
-  //planning_pipeline::PlanningPipelinePtr planningPipelinePtr(new planning_pipeline::PlanningPipeline(robotModelPtr));
+  planning_pipeline::PlanningPipelinePtr planningPipelinePtr(new planning_pipeline::PlanningPipeline(robotModelPtr, node_handle, "planning_plugin", "request_adapters"));
 
   // MotionPlanRequest
   planning_interface::MotionPlanRequest req;
@@ -85,8 +68,8 @@ int main(int argc, char **argv)
   // Set the ee goal pose
   geometry_msgs::PoseStamped ee_pose;
   ee_pose.header.frame_id = "world";
-  ee_pose.pose.position.x = 0.2;
-  ee_pose.pose.position.y = 0.0;
+  ee_pose.pose.position.x = -0.2;
+  ee_pose.pose.position.y = 0.2;
   ee_pose.pose.position.z = 1.0;
   ee_pose.pose.orientation.w = 1.0;
 
@@ -123,24 +106,24 @@ int main(int argc, char **argv)
 
   // Set Visualization of the trajectory
   // Moveit Visual Tools
-  moveit_visual_tools::MoveItVisualTools visual_tools;
-  visual_tools.setBaseFrame(base_frame);
-  visual_tools.deleteAllMarkers();
+  //moveit_visual_tools::MoveItVisualTools visual_tools;
+  //visual_tools.setBaseFrame(base_frame);
+  //visual_tools.deleteAllMarkers();
 
-  moveit_msgs::DisplayTrajectory display_trajectory;
-  moveit_msgs::MotionPlanResponse response;
-  res.getMessage(response);
+  //moveit_msgs::DisplayTrajectory display_trajectory;
+  //moveit_msgs::MotionPlanResponse response;
+  //res.getMessage(response);
 
-  display_trajectory.trajectory_start = response.trajectory_start;
-  display_trajectory.trajectory.clear();
-  display_trajectory.trajectory.push_back(response.trajectory);
+  //display_trajectory.trajectory_start = response.trajectory_start;
+  //display_trajectory.trajectory.clear();
+  //display_trajectory.trajectory.push_back(response.trajectory);
 
   // Publish Trajectory
-  ros::Publisher display_pub = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/test_moveit_planner/display_planned_path", 10, true);
-  const moveit::core::JointModelGroup* jointModelGroupPtr = robotModelPtr->getJointModelGroup(group_name);
+  //ros::Publisher display_pub = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/test_moveit_planner/display_planned_path", 10, true);
+  //const moveit::core::JointModelGroup* jointModelGroupPtr = robotModelPtr->getJointModelGroup(group_name);
 
-  display_pub.publish(display_trajectory);
-  visual_tools.publishTrajectoryLine(display_trajectory.trajectory.back(), jointModelGroupPtr);
+  //display_pub.publish(display_trajectory);
+  //visual_tools.publishTrajectoryLine(display_trajectory.trajectory.back(), jointModelGroupPtr);
 
   /*
   while(ros::ok())

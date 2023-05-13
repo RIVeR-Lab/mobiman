@@ -1,6 +1,19 @@
 <launch>
     <arg name="debug"       default="false" />
 
+    <!-- 
+        RRTstar
+        PRMstar
+    -->
+    <arg name="planner_id"  default="RRTstar" />
+
+    <!-- 
+        base
+        arm
+        whole_body
+    -->
+    <arg name="move_group"  default="base" />
+
     <!-- LOCALIZATION -->
     <!-- <include file="$(find amcl)/examples/amcl_diff.launch" /> -->
     <!-- GMAPPING -->
@@ -17,5 +30,7 @@
 
     <!-- include c++ script to do motion planning-->
     <node pkg="mobiman_simulation" name="pick_n_place" type="pick_n_place" output="screen">
+        <param name="planner_id" value="$(arg planner_id)" />
+        <param name="move_group" value="$(arg move_group)" />
     </node>
 </launch>

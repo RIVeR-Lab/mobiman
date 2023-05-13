@@ -41,6 +41,8 @@ find_package(Boost REQUIRED COMPONENTS
   filesystem
 )
 
+find_package(octomap REQUIRED)
+
 find_package(PCL REQUIRED)
 #find_package(SuiteSparse REQUIRED)
 #find_package(CCD REQUIRED)
@@ -169,6 +171,7 @@ include_directories(
   mobiman_simulation
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${OCTOMAP_INCLUDE_DIRS}
 )
 
 #add_library(${PROJECT_NAME}
@@ -222,7 +225,7 @@ add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 ## Scanner
 add_executable(scanner src/scanner.cpp)
 add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
-target_link_libraries(scanner ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+target_link_libraries(scanner ${PCL_LIBRARIES} ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
 ## Map Server
 add_executable(map_server src/map_server.cpp)

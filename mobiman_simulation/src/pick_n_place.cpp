@@ -79,7 +79,7 @@ class MoveitInterface
     moveit::planning_interface::MoveGroupInterface arm_move_group_interface_;
     moveit::planning_interface::MoveGroupInterface whole_body_move_group_interface_;
 
-    moveit_msgs::DisplayTrajectory display_trajectory_;
+    //moveit_msgs::DisplayTrajectory display_trajectory_;
 
     std::vector<moveit_msgs::CollisionObject> collision_objects_;
 
@@ -94,9 +94,9 @@ class MoveitInterface
 
       std::cout << "[MoveitInterface::MoveitInterface] START vis_pub_" << std::endl;
       // Marker Publisher
-      vis_pub_ = nh_.advertise<visualization_msgs::Marker>("moveit_marker", 10);
-      display_pub_ = nh_.advertise<moveit_msgs::DisplayTrajectory>("/mobiman/display_planned_path", 10, true);
-      collision_object_pub_ = nh_.advertise<moveit_msgs::CollisionObject>("collision_object", 10, true);
+      //vis_pub_ = nh_.advertise<visualization_msgs::Marker>("moveit_marker", 10);
+      //display_pub_ = nh_.advertise<moveit_msgs::DisplayTrajectory>("/mobiman/display_planned_path", 10, true);
+      collision_object_pub_ = nh_.advertise<moveit_msgs::CollisionObject>("/collision_object", 10, true);
     
       std::cout << "[MoveitInterface::MoveitInterface] START visual_tools_" << std::endl;
       // Moveit Visual Tools
@@ -128,7 +128,7 @@ class MoveitInterface
 
       std::cout << "[MoveitInterface::MoveitInterface] START startWorldGeometryMonitor" << std::endl;
       // listens to changes of world geometry, collision objects, and (optionally) octomaps
-      psmPtr_->startWorldGeometryMonitor("/pick_n_place/collision_object");
+      psmPtr_->startWorldGeometryMonitor("/collision_object");
       
       std::cout << "[MoveitInterface::MoveitInterface] START startStateMonitor" << std::endl;
       // listen to joint state updates as well as changes in attached collision objects and update the internal planning scene accordingly
@@ -302,7 +302,7 @@ class MoveitInterface
 
     ~MoveitInterface(){} 
     
-    bool moveitPlanTrajectory()
+    bool moveitPlanTrajectory(std::string planner_id, std::string move_group)
     {
       std::cout << "[MoveitInterface::moveitPlanTrajectory] START" << std::endl;
 
@@ -315,18 +315,31 @@ class MoveitInterface
       pose.pose.position.z = 1.0;
       pose.pose.orientation.w = 1.0;
 
+      geometry_msgs::Vector3 max_corner;
+      max_corner.x = 3;
+      max_corner.y = 3;
+      max_corner.z = 2;
+      geometry_msgs::Vector3 min_corner;
+      min_corner.x = -1;
+      min_corner.y = -1;
+      min_corner.z = 0;
+
       std::vector<double> tolerance_pose(3, 0.01);
       std::vector<double> tolerance_angle(3, 0.01);
 
-      // mp_group_name_base_
-      // mp_group_name_arm_
-      // mp_group_name_wholeBody_
-      req.group_name = mp_group_name_wholeBody_;
-      req.planner_id = "RRTstar";
-      req.allowed_planning_time = 60;
-      req.num_planning_attempts = 1000;
-      //req.workspace_parameters.max_corner = {};
-      //req.workspace_parameters.min_corner = {};
+      req.group_name = move_group;
+      req.planner_id = planner_id;
+      req.allowed_planning_time = 10;
+      req.num_planning_attempts = 10;
+      //req.workspace_parameters.max_corner = max_corner;
+      //req.workspace_parameters.min_corner = min_corner;
+
+      /*
+      robot_state = planning_scene_monitor::LockedPlanningSceneRO(psmPtr_)->getCurrentStateUpdated(res.start_state);
+      robot_state->setJointGroupPositions(joint_model_group, response.trajectory.joint_trajectory.points.back().positions);
+      moveit::core::robotStateToRobotStateMsg(*robot_state, req.start_state);
+      */
+
       moveit_msgs::Constraints pose_goal = kinematic_constraints::constructGoalConstraints(ee_frame_, pose, tolerance_pose, tolerance_angle);
       req.goal_constraints.push_back(pose_goal);
 
@@ -344,9 +357,6 @@ class MoveitInterface
       if (res.error_code_.val != res.error_code_.SUCCESS)
       {
         ROS_ERROR("[MoveitInterface::moveitPlan] Could not compute plan successfully");
-
-        std::cout << "[MoveitInterface::moveitPlan] DEBUG INF" << std::endl;
-        while(1);
         return false;
       }
       std::cout << "[MoveitInterface::moveitPlanTrajectory] AFTER generatePlan" << std::endl;
@@ -360,15 +370,16 @@ class MoveitInterface
       //const moveit::core::JointModelGroup* jointModelGroupPtrArm = robotModelPtr_->getJointModelGroup(mp_group_name_arm_);
       //const moveit::core::JointModelGroup* jointModelGroupPtrWholeBody = robotModelPtr_->getJointModelGroup(mp_group_name_wholeBody);
 
-      display_trajectory_.trajectory_start = response.trajectory_start;
-      display_trajectory_.trajectory.clear();
-      display_trajectory_.trajectory.push_back(response.trajectory);
+      //display_trajectory_.trajectory_start = response.trajectory_start;
+      //display_trajectory_.trajectory.clear();
+      //display_trajectory_.trajectory.push_back(response.trajectory);
       
       std::cout << "[MoveitInterface::moveitPlanTrajectory] END" << std::endl;
 
       return true;
     }
 
+    /*
     void publishTrajectory()
     {
       const moveit::core::JointModelGroup* jointModelGroupPtrWholeBody = robotModelPtr_->getJointModelGroup(mp_group_name_wholeBody_);
@@ -376,6 +387,7 @@ class MoveitInterface
       display_pub_.publish(display_trajectory_);
       visual_tools_.publishTrajectoryLine(display_trajectory_.trajectory.back(), jointModelGroupPtrWholeBody);
     }
+    */
 
     void addCollisionObjects()
     {
@@ -465,15 +477,16 @@ class MoveitInterface
 
     void publishCollisionObjects()
     {
-      //std::cout << "[MoveitInterface::publishCollisionObjects] START" << std::endl;
+      std::cout << "[MoveitInterface::publishCollisionObjects] START" << std::endl;
 
       for (size_t i = 0; i < collision_objects_.size(); i++)
       {
+        std::cout << "[MoveitInterface::publishCollisionObjects] ADDED " << i << std::endl;
         collision_objects_[i].header.stamp = ros::Time::now();
         collision_object_pub_.publish(collision_objects_[i]);
       }
 
-      //std::cout << "[MoveitInterface::publishCollisionObjects] END" << std::endl;
+      std::cout << "[MoveitInterface::publishCollisionObjects] END" << std::endl;
     }
 
     /*
@@ -607,10 +620,17 @@ int main(int argc, char **argv)
   std::cout << "[pick_n_place::main] START" << std::endl;
 
   ros::init(argc, argv, "pick_n_place");
-  ros::NodeHandle node_handle("~");
+  ros::NodeHandle node_handle("/move_group/planning_pipelines/ompl");
   
-  ros::AsyncSpinner spinner(4);
-  spinner.start();
+  std::string planner_id = "RRTstar";
+  std::string move_group = "whole_body";
+  node_handle.getParam("/pick_n_place/planner_id", planner_id);
+  node_handle.getParam("/pick_n_place/move_group", move_group);
+
+  std::cout << "[pick_n_place::main] planner_id: " << planner_id << std::endl;
+
+  //ros::AsyncSpinner spinner(4);
+  //spinner.start();
 
   MoveitInterface demo(node_handle);
   demo.addCollisionObjects();
@@ -618,21 +638,19 @@ int main(int argc, char **argv)
   // Wait a bit for ROS things to initialize
   ros::WallDuration(2.0).sleep();
 
-  ///*
   std::cout << "[pick_n_place::main] START moveitPlanTrajectory" << std::endl;
-  demo.moveitPlanTrajectory();
+  bool success = demo.moveitPlanTrajectory(planner_id, move_group);
   std::cout << "[pick_n_place::main] END moveitPlanTrajectory" << std::endl;
 
-  demo.publishTrajectory();
-  std::cout << "[pick_n_place::main] END publishTrajectory" << std::endl;
-  //*/
-
-  while(ros::ok())
+  while(ros::ok() && !success)
   {
-    //demo.publishCollisionObjects();
+    demo.publishCollisionObjects();
+    success = demo.moveitPlanTrajectory(planner_id, move_group);
     ros::spinOnce();
   }
 
+  //demo.publishTrajectory();
+  std::cout << "[pick_n_place::main] END publishTrajectory" << std::endl;
 
   //demo.openGripper();
   //demo.another_pick();
