@@ -94,6 +94,12 @@ int main(int argc, char** argv)
                 pc2_msg_pkgs_man, 
                 map_resolution);
 
+  // Initialize Moveit collision objects
+  mu.initializeMoveitCollisionObjects();
+
+  // Add moveit collision objects
+  mu.addMoveitCollisionObjects();
+
   // Service
   //ros::ServiceServer service = nh.advertiseService("get_nearest_occ_dist", &MapUtility::getNearestOccupancyDistSrv, &mu);
 

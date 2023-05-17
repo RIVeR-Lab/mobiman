@@ -121,6 +121,6 @@
 
   <!-- Run Rviz visualization -->
   <group if="$(eval arg('flag_rviz') == true)">
-    <include file="$(find mobiman_simulation)/launch/utilities/display.launch" />
+    <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2.launch" />
   </group>
 </launch>

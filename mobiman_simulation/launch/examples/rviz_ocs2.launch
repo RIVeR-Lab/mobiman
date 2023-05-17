@@ -1,0 +1,47 @@
+<launch>
+
+  <arg name="gazebo" default="true"/>
+  <arg name="robot_namespace" default="/"/>
+  <arg name="model" default="$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro robot_namespace:=$(arg robot_namespace)"/>
+  <arg name="gui" default="false" />
+  <arg name="rvizconfig" default="$(find mobiman_simulation)/rviz/mobile_manipulator_ocs2.rviz" />
+  <arg name="debug" default="false"/>
+
+  <group unless="$(arg gazebo)">
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+  
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+      <remap from="/joint_states" to="/joint_states" />
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" type="string" value="" />
+    </node>
+
+    <node name="joint_state_publisher" 
+          pkg="joint_state_publisher" 
+          type="joint_state_publisher">
+      <param name="/use_gui" value="$(arg gui)"/>
+      <!--rosparam param="/source_list">[/move_group/fake_controller_joint_states]</rosparam-->
+      <rosparam param="/source_list">[/joint_states]</rosparam>
+    </node>
+  </group>
+
+  <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+  <!--include file="$(find mobiman_wb_moveit_config)/launch/planning_context.launch">
+      <arg name="load_robot_description" value="false"/>
+  </include-->
+
+  <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
+  <!--include file="$(find mobiman_wb_moveit_config)/launch/move_group.launch">
+      <arg name="allow_trajectory_execution" value="true"/>
+      <arg name="fake_execution" value="false"/>
+      <arg name="info" value="true"/>
+      <arg name="debug" value="$(arg debug)"/>
+  </include-->
+
+  <node name="rviz" 
+        pkg="rviz" 
+        type="rviz" 
+        args="-d $(arg rvizconfig)" 
+        required="true" />
+
+</launch>

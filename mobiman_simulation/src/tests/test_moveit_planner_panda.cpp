@@ -30,9 +30,9 @@
 
 int main(int argc, char **argv)
 {
-  std::cout << "[test_moveit_planner::main] START" << std::endl;
+  std::cout << "[test_moveit_planner_panda::main] START" << std::endl;
 
-  ros::init(argc, argv, "test_moveit_planner");
+  ros::init(argc, argv, "test_moveit_planner_panda");
   ros::NodeHandle node_handle("/move_group/planning_pipelines/ompl");
 
   // Robot Model
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
   //display_trajectory.trajectory.push_back(response.trajectory);
 
   // Publish Trajectory
-  //ros::Publisher display_pub = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/test_moveit_planner/display_planned_path", 10, true);
+  //ros::Publisher display_pub = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/test_moveit_planner_panda/display_planned_path", 10, true);
   //const moveit::core::JointModelGroup* jointModelGroupPtr = robotModelPtr->getJointModelGroup(group_name);
 
   //display_pub.publish(display_trajectory);
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
   }
   */
 
-  std::cout << "[test_moveit_planner::main] END" << std::endl;
+  std::cout << "[test_moveit_planner_panda::main] END" << std::endl;
 
   ros::waitForShutdown();
   return 0;

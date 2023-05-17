@@ -8,12 +8,12 @@
   <!-- jackal_ur5_holonomic 
        panda  
   -->
-  <arg name="robot"       default="panda" />
+  <arg name="robot"       default="mobiman" />
 
   <!-- PUBLISH CONFIGURATION PARAMETERS -->
   <!--rosparam file="$(find mobiman_simulation)/config/tests/$(arg config_test).yaml"/-->
 
-  <!--group if="$(eval arg('robot') == 'panda')">
+  <group if="$(eval arg('robot') == 'panda')">
     <include file="$(find panda_moveit_config)/launch/move_group.launch">
       <arg name="allow_trajectory_execution" value="true" />
       <arg name="info" value="true" />
@@ -21,14 +21,14 @@
     </include>
   </group>
 
-  <group if="$(eval arg('robot') == 'jackal_ur5_holonomic')">
+  <group if="$(eval arg('robot') == 'mobiman')">
     <include file="$(find jackal_ur5_holonomic_moveit_config)/launch/move_group.launch">
       <arg name="allow_trajectory_execution" value="true" />
       <arg name="info" value="true" />
       <arg name="debug" value="$(arg debug)" />
     </include>
-  </group-->
+  </group>
 
-  <node name="test_moveit_planner" pkg="mobiman_simulation" type="test_moveit_planner" output="screen" >
+  <node name="test_moveit_planner_$(arg robot)" pkg="mobiman_simulation" type="test_moveit_planner_$(arg robot)" output="screen" >
   </node>
 </launch>

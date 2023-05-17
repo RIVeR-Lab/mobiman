@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.02.16
+// LAST UPDATE: 2023.05.16
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -32,6 +32,7 @@
 #include <ros/package.h>
 //#include <cv_bridge/cv_bridge.h>
 //#include <voxblox_ros/esdf_server.h>
+#include <moveit_msgs/CollisionObject.h>
 
 // --CUSTOM LIBRARIES--
 #include "mobiman_simulation/common_utility.h"
@@ -389,6 +390,9 @@ class MapUtility
     void resetMap();
 
     // DESCRIPTION: TODO...
+    void initializeMoveitCollisionObjects();
+
+    // DESCRIPTION: TODO...
     void transformPoint(string frame_from,
                         string frame_to,
                         geometry_msgs::Point& p_to_msg);
@@ -496,6 +500,11 @@ class MapUtility
                                    geometry_msgs::Point robot_center=geometry_msgs::Point(), 
                                    double robot_free_rad=1, 
                                    vector<int> color_RGB=vector<int>{155,128,0});
+
+    // DESCRIPTION: TODO...
+    void addMoveitCollisionObjects();
+
+    void publishMoveitCollisionObjects();
 
     // DESCRIPTION: TODO...
     void createRandomStaticObstacleMap(int num, 
@@ -708,7 +717,6 @@ class MapUtility
 
     laser_geometry::LaserProjection sensor_laser_projector;
 
-    //octomap::ColorOcTree* oct;
     shared_ptr<octomap::ColorOcTree> oct;
     octomap_msgs::Octomap oct_msg;
     octomap::Pointcloud oct_pc;
@@ -744,12 +752,15 @@ class MapUtility
     vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_ign_;
     vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_man_;
 
+    std::vector<moveit_msgs::CollisionObject> moveit_collision_objects_;
+
     visualization_msgs::Marker visu_occ_distance_;
     visualization_msgs::MarkerArray visu_array_occ_distance_;
 
     ros::Subscriber sub_oct_msg_;
 
     ros::Publisher pub_pc2_msg_scan_;
+    ros::Publisher pub_moveit_collision_object_;
 
     // NUA TODO: Find a way to generalize!
     ros::Publisher pub_pc2_msg_gz_ign_conveyor_;
