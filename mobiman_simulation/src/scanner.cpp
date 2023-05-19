@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.02.03
+// LAST UPDATE: 2023.05.17
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -7,7 +7,6 @@
 // DESCRIPTION: TODO...
 //
 // NUA TODO:
-// 1) Map Service is not working with main callback. Asynchronous spin is working but then map gets messy!
 
 // --CUSTOM LIBRARIES--
 #include "mobiman_simulation/scan_utility.h"
@@ -30,7 +29,7 @@ int main(int argc, char** argv)
 
   // INITIALIZE AND SET PARAMETERS
   string obj_name, data_dir, world_frame_name, pc2_msg_name_sensor1, pc2_msg_name_sensor2, pc2_msg_name_sensor3, pc2_msg_name_sensor4;
-  double bbx_x_min, bbx_x_max, bbx_y_min, bbx_y_max, bbx_z_min, bbx_z_max, oct_resolution;
+  double scan_bbx_x_min, scan_bbx_x_max, scan_bbx_y_min, scan_bbx_y_max, scan_bbx_z_min, scan_bbx_z_max, oct_resolution;
 
   pnh.param<string>("/obj_name", obj_name, "");
   pnh.param<string>("/data_dir", data_dir, "");
@@ -39,13 +38,13 @@ int main(int argc, char** argv)
   pnh.param<string>("/pc2_msg_name_sensor2", pc2_msg_name_sensor2, "");
   pnh.param<string>("/pc2_msg_name_sensor3", pc2_msg_name_sensor3, "");
   pnh.param<string>("/pc2_msg_name_sensor4", pc2_msg_name_sensor4, "");
-  pnh.param("/bbx_x_min", bbx_x_min, 0.0);
-  pnh.param("/bbx_x_max", bbx_x_max, 0.0);
-  pnh.param("/bbx_y_min", bbx_y_min, 0.0);
-  pnh.param("/bbx_y_max", bbx_y_max, 0.0);
-  pnh.param("/bbx_z_min", bbx_z_min, 0.0);
-  pnh.param("/bbx_z_max", bbx_z_max, 0.0);
   pnh.param("/oct_resolution", oct_resolution, 0.0);
+  pnh.param("/scan_bbx_x_min", scan_bbx_x_min, 0.0);
+  pnh.param("/scan_bbx_x_max", scan_bbx_x_max, 0.0);
+  pnh.param("/scan_bbx_y_min", scan_bbx_y_min, 0.0);
+  pnh.param("/scan_bbx_y_max", scan_bbx_y_max, 0.0);
+  pnh.param("/scan_bbx_z_min", scan_bbx_z_min, 0.0);
+  pnh.param("/scan_bbx_z_max", scan_bbx_z_max, 0.0);
   
   cout << "[scanner::main] obj_name: " << obj_name << endl;
   cout << "[scanner::main] data_dir: " << data_dir << endl;
@@ -54,12 +53,12 @@ int main(int argc, char** argv)
   cout << "[scanner::main] pc2_msg_name_sensor2: " << pc2_msg_name_sensor2 << endl;
   cout << "[scanner::main] pc2_msg_name_sensor3: " << pc2_msg_name_sensor3 << endl;
   cout << "[scanner::main] pc2_msg_name_sensor4: " << pc2_msg_name_sensor4 << endl;
-  cout << "[scanner::main] bbx_x_min: " << bbx_x_min << endl;
-  cout << "[scanner::main] bbx_x_max: " << bbx_x_max << endl;
-  cout << "[scanner::main] bbx_y_min: " << bbx_y_min << endl;
-  cout << "[scanner::main] bbx_y_max: " << bbx_y_max << endl;
-  cout << "[scanner::main] bbx_z_min: " << bbx_z_min << endl;
-  cout << "[scanner::main] bbx_z_max: " << bbx_z_max << endl;
+  cout << "[scanner::main] scan_bbx_x_min: " << scan_bbx_x_min << endl;
+  cout << "[scanner::main] scan_bbx_x_max: " << scan_bbx_x_max << endl;
+  cout << "[scanner::main] scan_bbx_y_min: " << scan_bbx_y_min << endl;
+  cout << "[scanner::main] scan_bbx_y_max: " << scan_bbx_y_max << endl;
+  cout << "[scanner::main] scan_bbx_z_min: " << scan_bbx_z_min << endl;
+  cout << "[scanner::main] scan_bbx_z_max: " << scan_bbx_z_max << endl;
   cout << "[scanner::main] oct_resolution: " << oct_resolution << endl << endl;
 
   vector<string> pc2_msg_name_vec;
@@ -86,34 +85,18 @@ int main(int argc, char** argv)
                  data_dir,
                  world_frame_name,
                  pc2_msg_name_vec,
-                 bbx_x_min,
-                 bbx_x_max,
-                 bbx_y_min,
-                 bbx_y_max,
-                 bbx_z_min,
-                 bbx_z_max,
+                 scan_bbx_x_min,
+                 scan_bbx_x_max,
+                 scan_bbx_y_min,
+                 scan_bbx_y_max,
+                 scan_bbx_z_min,
+                 scan_bbx_z_max,
                  oct_resolution);
 
   ros::Duration(1.0).sleep();
 
   su.scanner();
   su.writePointcloud2Data();
-
-  // MAP SERVER LOOP
-  //double scan_server_dt = 0.1;
-  //ros::Timer timer = nh.createTimer(ros::Duration(scan_server_dt), &ScanUtility::mainCallback, &su);
-
-  //ros::Duration(1.0).sleep();
-
-  /*
-  ScanUtility su(nh, "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/longwide_pkg.json");
-
-  while(ros::ok())
-  {
-    su.publishPC2Msg();
-    ros::spinOnce();
-  }
-  */
 
   cout << "[scanner::main] END" << endl;
 

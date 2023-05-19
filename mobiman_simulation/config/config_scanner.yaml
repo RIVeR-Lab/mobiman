@@ -1,13 +1,13 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
-# conveyor_belt
+# normal_pkg 
+# long_pkg
+# longwide_pkg
 # red_cube
 # green_cube
 # blue_cube
-# normal_pkg
-# long_pkg
-# longwide_pkg
+# conveyor_belt
 # actor
 
 obj_name: "actor"
@@ -20,12 +20,12 @@ pc2_msg_name_sensor2: "/d435_cam2d435/camera/depth/color/points"
 pc2_msg_name_sensor3: "/d435_cam3d435/camera/depth/color/points"
 pc2_msg_name_sensor4: "/d435_cam4d435/camera/depth/color/points"
 
-# NUA NOTE: Currently bbx parameters are not used!
-bbx_x_min: -1
-bbx_x_max: 1
-bbx_y_min: -1
-bbx_y_max: 1
-bbx_z_min: -0.05
-bbx_z_max: 0.5
-
 oct_resolution: 0.02
+
+# NUA NOTE: Currently bbx parameters are not used!
+scan_bbx_x_min: -1
+scan_bbx_x_max: 1
+scan_bbx_y_min: -1
+scan_bbx_y_max: 1
+scan_bbx_z_min: -0.05
+scan_bbx_z_max: 0.5

@@ -1,5 +1,22 @@
 {
-    "data_path": "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/blue_cube.json",
+    "data_path": "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/blue_cube.json",
+    "obj_bbx": {
+        "max": {
+            "x": 0.029999999329447746,
+            "y": 0.029999999329447746,
+            "z": 0.029999999329447746
+        },
+        "min": {
+            "x": -0.029999999329447746,
+            "y": -0.029999999329447746,
+            "z": -0.029999999329447746
+        }
+    },
+    "obj_dim": {
+        "x": 0.05999999865889549,
+        "y": 0.05999999865889549,
+        "z": 0.05999999865889549
+    },
     "obj_name": "blue_cube",
     "oct_resolution": 0.02,
     "pc2": {

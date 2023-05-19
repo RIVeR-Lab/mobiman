@@ -1,7 +1,7 @@
 #ifndef COMMON_UTILITY_H
 #define COMMON_UTILITY_H
 
-// LAST UPDATE: 2022.03.23
+// LAST UPDATE: 2022.05.18
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -18,15 +18,11 @@
 #include <std_msgs/Float64MultiArray.h>
 #include <octomap_msgs/conversions.h>
 
+#include <ros/package.h>
+#include <tf/tf.h>
+
 // --NAMESPACES--
 using namespace std;
-
-// --GLOBAL VARIABLES--
-#define PI 3.141592653589793
-#define INF std::numeric_limits<double>::infinity()
-#define INFINT std::numeric_limits<int>::max()
-#define FMAX std::numeric_limits<float>::max()
-#define FMIN std::numeric_limits<float>::min()
 
 // DESCRIPTION: TODO...
 double randdouble(double from, double to)
@@ -329,11 +325,13 @@ double find_Euclidean_distance(geometry_msgs::Point p1, geometry_msgs::Point p2)
   return ( sqrt( pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2) ) );
 }
 
+/*
 // DESCRIPTION: TODO...
 double find_Euclidean_distance(geometry_msgs::Point32 p1, geometry_msgs::Point32 p2)
 {
   return ( sqrt( pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2) ) );
 }
+*/
 
 // DESCRIPTION: TODO...
 vector<double> find_closest_dist(vector<geometry_msgs::Point>& archy, 
@@ -421,6 +419,23 @@ void normalize(vector<double>& vals)
 }
 
 // DESCRIPTION: TODO...
+void print(vector<string>& vec)
+{
+  int vsize = vec.size();
+  for(int i = 0; i < vsize; i++)
+  {
+    if(i == vsize-1)
+    {
+      cout << i << ") " << vec[i] << endl;;
+    }
+    else
+    {
+      cout << i << ") " << vec[i] << ", ";
+    }   
+  }
+}
+
+// DESCRIPTION: TODO...
 void print(vector<int>& vec)
 {
   int vsize = vec.size();
@@ -480,6 +495,7 @@ void print(vector<geometry_msgs::Point>& vec)
   }
 }
 
+/*
 // DESCRIPTION: TODO...
 void print(vector<geometry_msgs::Point32>& vec)
 {
@@ -489,6 +505,7 @@ void print(vector<geometry_msgs::Point32>& vec)
     cout << i << ": (" << vec[i].x << ", " << vec[i].y << ", " << vec[i].z << ")" << endl; 
   }
 }
+*/
 
 // DESCRIPTION: TODO...
 void print(geometry_msgs::Point po)
@@ -496,11 +513,13 @@ void print(geometry_msgs::Point po)
   cout << "(" << po.x << ", " << po.y << ", " << po.z << ")" << endl; 
 }
 
+/*
 // DESCRIPTION: TODO...
 void print(geometry_msgs::Point32 po)
 {
   cout << "(" << po.x << ", " << po.y << ", " << po.z << ")" << endl; 
 }
+*/
 
 // DESCRIPTION: TODO...
 void print(vector< vector<double> >& vecvec)

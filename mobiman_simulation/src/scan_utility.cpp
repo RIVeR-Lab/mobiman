@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.01.17
+// LAST UPDATE: 2023.05.17
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -12,6 +12,9 @@
 // --CUSTOM LIBRARIES--
 #include "mobiman_simulation/scan_utility.h"
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 ScanUtility::ScanUtility(NodeHandle& nh)
 {
   tflistener_ = new tf::TransformListener;
@@ -22,6 +25,9 @@ ScanUtility::ScanUtility(NodeHandle& nh)
   pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 ScanUtility::ScanUtility(NodeHandle& nh, string data_path)
 {
   tflistener_ = new tf::TransformListener;
@@ -34,17 +40,20 @@ ScanUtility::ScanUtility(NodeHandle& nh, string data_path)
   pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 ScanUtility::ScanUtility(NodeHandle& nh,
                          string obj_name,
                          string data_dir,
                          string world_frame_name,
                          vector<string> pc2_msg_name_vec_,
-                         double bbx_x_min,
-                         double bbx_x_max,
-                         double bbx_y_min,
-                         double bbx_y_max,
-                         double bbx_z_min,
-                         double bbx_z_max,
+                         double scan_bbx_x_min,
+                         double scan_bbx_x_max,
+                         double scan_bbx_y_min,
+                         double scan_bbx_y_max,
+                         double scan_bbx_z_min,
+                         double scan_bbx_z_max,
                          double oct_resolution)
 {
   tflistener_ = new tf::TransformListener;
@@ -76,20 +85,20 @@ ScanUtility::ScanUtility(NodeHandle& nh,
     }
   }
 
-  bbx_x_min_ = bbx_x_min;
-  bbx_x_max_ = bbx_x_max;
-  bbx_y_min_ = bbx_y_min;
-  bbx_y_max_ = bbx_y_max;
-  bbx_z_min_ = bbx_z_min;
-  bbx_z_max_ = bbx_z_max;
+  scan_bbx_x_min_ = scan_bbx_x_min;
+  scan_bbx_x_max_ = scan_bbx_x_max;
+  scan_bbx_y_min_ = scan_bbx_y_min;
+  scan_bbx_y_max_ = scan_bbx_y_max;
+  scan_bbx_z_min_ = scan_bbx_z_min;
+  scan_bbx_z_max_ = scan_bbx_z_max;
 
   oct_resolution_ = oct_resolution;
   oct_ = std::make_shared<octomap::ColorOcTree>(oct_resolution_);
 
-  point3d bbx_mini(bbx_x_min, bbx_y_min, bbx_z_min);
-  point3d bbx_maxi(bbx_x_max, bbx_y_max, bbx_z_max);
-  oct_->setBBXMin(bbx_mini);
-  oct_->setBBXMax(bbx_maxi);
+  point3d scan_bbx_mini(scan_bbx_x_min_, scan_bbx_y_min_, scan_bbx_z_min_);
+  point3d scan_bbx_maxi(scan_bbx_x_max_, scan_bbx_y_max_, scan_bbx_z_max_);
+  oct_->setBBXMin(scan_bbx_mini);
+  oct_->setBBXMax(scan_bbx_maxi);
 
   // Subscribers
   //sub_pc2_sensor1_ = nh.subscribe(pc2_msg_name_sensor1_, 1000, &ScanUtility::pc2CallbackSensor1, this);
@@ -98,18 +107,24 @@ ScanUtility::ScanUtility(NodeHandle& nh,
   //sub_pc2_sensor4_ = nh.subscribe(pc2_msg_name_sensor4_, 1000, &ScanUtility::pc2CallbackSensor4, this);
 
   // Publishers
-  pub_oct_msg_ = nh.advertise<octomap_msgs::Octomap>("octomap_scan", 100);
+  pub_oct_msg_ = nh.advertise<octomap_msgs::Octomap>("octomap_scan", 10);
   pub_pc2_msg_scan_ = nh.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
   //pub_debug_array_visu_ = nh.advertise<visualization_msgs::MarkerArray>("scan_debug_array", 10);
   //pub_debug_visu_ = nh.advertise<visualization_msgs::Marker>("scan_debug", 10);
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 ScanUtility::~ScanUtility()
 {
   //std::std::cout << "[ScanUtility::~ScanUtility] Calling Destructor for ScanUtility..." << std::std::endl;
   delete[] tflistener_;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 ScanUtility::ScanUtility(const ScanUtility& su)
 {
   tflistener_ = su.tflistener_;
@@ -125,12 +140,12 @@ ScanUtility::ScanUtility(const ScanUtility& su)
   pc2_msg_name_sensor3_ =  su.pc2_msg_name_sensor3_;
   pc2_msg_name_sensor4_ =  su.pc2_msg_name_sensor4_;
 
-  bbx_x_min_ = su.bbx_x_min_;
-  bbx_x_max_ = su.bbx_x_max_;
-  bbx_y_min_ = su.bbx_y_min_;
-  bbx_y_max_ = su.bbx_y_max_;
-  bbx_z_min_ = su.bbx_z_min_;
-  bbx_z_max_ = su.bbx_z_max_;
+  scan_bbx_x_min_ = su.scan_bbx_x_min_;
+  scan_bbx_x_max_ = su.scan_bbx_x_max_;
+  scan_bbx_y_min_ = su.scan_bbx_y_min_;
+  scan_bbx_y_max_ = su.scan_bbx_y_max_;
+  scan_bbx_z_min_ = su.scan_bbx_z_min_;
+  scan_bbx_z_max_ = su.scan_bbx_z_max_;
   
   pose_sensor1_ = su.pose_sensor1_;
   pose_sensor2_ = su.pose_sensor2_;
@@ -153,6 +168,10 @@ ScanUtility::ScanUtility(const ScanUtility& su)
 
   pcl_pc_scan_ = su.pcl_pc_scan_;
   pc2_msg_scan_ = su.pc2_msg_scan_;
+
+  obj_dim_ = su.obj_dim_;
+  obj_bbx_min_ = su.obj_bbx_min_;
+  obj_bbx_max_ = su.obj_bbx_max_;
 
   //debug_array_visu_ = su.debug_array_visu_;
   //debug_visu_ = su.debug_visu_;
@@ -168,7 +187,10 @@ ScanUtility::ScanUtility(const ScanUtility& su)
   //pub_debug_visu_ = su.pub_debug_visu_;
 }
 
-ScanUtility& ScanUtility::operator = (const ScanUtility& su) 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+ScanUtility& ScanUtility::operator=(const ScanUtility& su) 
 {
   tflistener_ = su.tflistener_;
   
@@ -183,12 +205,12 @@ ScanUtility& ScanUtility::operator = (const ScanUtility& su)
   pc2_msg_name_sensor3_ =  su.pc2_msg_name_sensor3_;
   pc2_msg_name_sensor4_ =  su.pc2_msg_name_sensor4_;
 
-  bbx_x_min_ = su.bbx_x_min_;
-  bbx_x_max_ = su.bbx_x_max_;
-  bbx_y_min_ = su.bbx_y_min_;
-  bbx_y_max_ = su.bbx_y_max_;
-  bbx_z_min_ = su.bbx_z_min_;
-  bbx_z_max_ = su.bbx_z_max_;
+  scan_bbx_x_min_ = su.scan_bbx_x_min_;
+  scan_bbx_x_max_ = su.scan_bbx_x_max_;
+  scan_bbx_y_min_ = su.scan_bbx_y_min_;
+  scan_bbx_y_max_ = su.scan_bbx_y_max_;
+  scan_bbx_z_min_ = su.scan_bbx_z_min_;
+  scan_bbx_z_max_ = su.scan_bbx_z_max_;
 
   pose_sensor1_ = su.pose_sensor1_;
   pose_sensor2_ = su.pose_sensor2_;
@@ -211,6 +233,10 @@ ScanUtility& ScanUtility::operator = (const ScanUtility& su)
 
   pcl_pc_scan_ = su.pcl_pc_scan_;
   pc2_msg_scan_ = su.pc2_msg_scan_;
+
+  obj_dim_ = su.obj_dim_;
+  obj_bbx_min_ = su.obj_bbx_min_;
+  obj_bbx_max_ = su.obj_bbx_max_;
 
   //debug_array_visu_ = su.debug_array_visu_;
   //debug_visu_ = su.debug_visu_;
@@ -228,11 +254,41 @@ ScanUtility& ScanUtility::operator = (const ScanUtility& su)
   return *this;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 sensor_msgs::PointCloud2 ScanUtility::getPC2MsgScan()
 {
   return pc2_msg_scan_;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+geometry_msgs::Point ScanUtility::getObjBbxMin()
+{
+  return obj_bbx_min_;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+geometry_msgs::Point ScanUtility::getObjBbxMax()
+{
+  return obj_bbx_max_;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+geometry_msgs::Point ScanUtility::getObjDim()
+{
+  return obj_dim_;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::getPointcloud2wrtWorld(const sensor_msgs::PointCloud2& msg_in, 
                                          sensor_msgs::PointCloud2& msg_out)
 {
@@ -240,7 +296,7 @@ void ScanUtility::getPointcloud2wrtWorld(const sensor_msgs::PointCloud2& msg_in,
   tf::StampedTransform transform_sensor_wrt_world;
   try
   {
-    tflistener_ -> lookupTransform(world_frame_name_, msg_in.header.frame_id, ros::Time(0), transform_sensor_wrt_world);
+    tflistener_->lookupTransform(world_frame_name_, msg_in.header.frame_id, ros::Time(0), transform_sensor_wrt_world);
   }
   catch (tf::TransformException ex)
   {
@@ -254,6 +310,9 @@ void ScanUtility::getPointcloud2wrtWorld(const sensor_msgs::PointCloud2& msg_in,
   //std::cout << "[ScanUtility::getPointcloud2wrtWorld] END" << std::endl;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::getSensorPoseAndTransformPointcloud2(const sensor_msgs::PointCloud2& msg_in, 
                                                        geometry_msgs::Pose& sensor_pose, 
                                                        sensor_msgs::PointCloud2& msg_out)
@@ -262,7 +321,7 @@ void ScanUtility::getSensorPoseAndTransformPointcloud2(const sensor_msgs::PointC
   tf::StampedTransform transform_sensor_wrt_world;
   try
   {
-    tflistener_ -> lookupTransform(world_frame_name_, msg_in.header.frame_id, ros::Time(0), transform_sensor_wrt_world);
+    tflistener_->lookupTransform(world_frame_name_, msg_in.header.frame_id, ros::Time(0), transform_sensor_wrt_world);
   }
   catch (tf::TransformException ex)
   {
@@ -388,14 +447,18 @@ void ScanUtility::pc2CallbackSensor4(const sensor_msgs::PointCloud2::ConstPtr& m
 }
 */
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::getScanPointcloud2(string data_path, sensor_msgs::PointCloud2& pc2_msg)
 {
-
-  readPointcloud2Data(pkg_dir_ + data_path);
-
+  readPointcloud2Data(data_path);
   pc2_msg = pc2_msg_scan_;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::octomapToPclPointcloud()
 {
   pcl_pc_scan_.clear();
@@ -424,11 +487,15 @@ void ScanUtility::octomapToPclPointcloud()
   */
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::PclPointcloudToVec(vector<double>& pcl_pc_scan_x, 
                                      vector<double>& pcl_pc_scan_y, 
                                      vector<double>& pcl_pc_scan_z)
 {
-  for (auto c : pcl_pc_scan_)
+  pcl::PointCloud<pcl::PointXYZ> pcl_pc_scan = pcl_pc_scan_;
+  for (auto c : pcl_pc_scan)
   {
     pcl_pc_scan_x.push_back(c.x);
     pcl_pc_scan_y.push_back(c.y);
@@ -441,6 +508,9 @@ void ScanUtility::PclPointcloudToVec(vector<double>& pcl_pc_scan_x,
   std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_z size: " << pcl_pc_scan_z.size() << std::endl;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::vecToPclPointcloud(vector<double>& pcl_pc_scan_x, 
                                      vector<double>& pcl_pc_scan_y, 
                                      vector<double>& pcl_pc_scan_z)
@@ -457,6 +527,29 @@ void ScanUtility::vecToPclPointcloud(vector<double>& pcl_pc_scan_x,
   std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_z size: " << pcl_pc_scan_z.size() << std::endl;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void ScanUtility::updateObjBbxDim(vector<double>& pcl_pc_scan_x, 
+                                  vector<double>& pcl_pc_scan_y, 
+                                  vector<double>& pcl_pc_scan_z)
+{
+  obj_bbx_min_.x = *min_element(pcl_pc_scan_x.begin(), pcl_pc_scan_x.end());
+  obj_bbx_min_.y = *min_element(pcl_pc_scan_y.begin(), pcl_pc_scan_y.end());
+  obj_bbx_min_.z = *min_element(pcl_pc_scan_z.begin(), pcl_pc_scan_z.end());
+
+  obj_bbx_max_.x = *max_element(pcl_pc_scan_x.begin(), pcl_pc_scan_x.end());
+  obj_bbx_max_.y = *max_element(pcl_pc_scan_y.begin(), pcl_pc_scan_y.end());
+  obj_bbx_max_.z = *max_element(pcl_pc_scan_z.begin(), pcl_pc_scan_z.end());
+
+  obj_dim_.x = obj_bbx_max_.x - obj_bbx_min_.x;
+  obj_dim_.y = obj_bbx_max_.y - obj_bbx_min_.y;
+  obj_dim_.z = obj_bbx_max_.z - obj_bbx_min_.z;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::fillOctMsgFromOct()
 {
   oct_msg_.data.clear();
@@ -467,6 +560,9 @@ void ScanUtility::fillOctMsgFromOct()
   octomap_msgs::fullMapToMsg(*oct_, oct_msg_);
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::publishOctMsg()
 {
   oct_msg_.header.frame_id = world_frame_name_;
@@ -476,6 +572,9 @@ void ScanUtility::publishOctMsg()
   pub_oct_msg_.publish(oct_msg_);
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::publishPC2Msg()
 {
   pc2_msg_scan_.header.frame_id = world_frame_name_;
@@ -525,6 +624,9 @@ void ScanUtility::mainCallback(const ros::TimerEvent& e)
 }
 */
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::waitAndCheckForPointCloud2Message(string msg_name, double duration_time, sensor_msgs::PointCloud2& pc_msg)
 {
   boost::shared_ptr<sensor_msgs::PointCloud2 const> sharedPtr;
@@ -541,6 +643,9 @@ void ScanUtility::waitAndCheckForPointCloud2Message(string msg_name, double dura
   }
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::scanner()
 {
   std::cout << "[ScanUtility::scanner] START" << std::endl;
@@ -584,6 +689,9 @@ void ScanUtility::scanner()
   std::cout << "[ScanUtility::scanner] END" << std::endl << std::endl;
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void ScanUtility::writePointcloud2Data()
 {
   std::cout << "[ScanUtility::writePointcloud2Data] START" << std::endl;
@@ -595,10 +703,21 @@ void ScanUtility::writePointcloud2Data()
   vector<double> pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z;
   PclPointcloudToVec(pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z);
 
+  updateObjBbxDim(pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z);
+
   j["obj_name"] = obj_name_;
   j["data_path"] = data_path_;
   j["world_frame_name"] = world_frame_name_;
   j["oct_resolution"] = oct_resolution_;
+  j["obj_bbx"]["min"]["x"] = obj_bbx_min_.x;
+  j["obj_bbx"]["min"]["y"] = obj_bbx_min_.y;
+  j["obj_bbx"]["min"]["z"] = obj_bbx_min_.z;
+  j["obj_bbx"]["max"]["x"] = obj_bbx_max_.x;
+  j["obj_bbx"]["max"]["y"] = obj_bbx_max_.y;
+  j["obj_bbx"]["max"]["z"] = obj_bbx_max_.z;
+  j["obj_dim"]["x"] = obj_dim_.x;
+  j["obj_dim"]["y"] = obj_dim_.y;
+  j["obj_dim"]["z"] = obj_dim_.z;
 
   // Pointcloud2 data
   j["pc2"]["x"] = pcl_pc_scan_x;
@@ -622,12 +741,16 @@ void ScanUtility::writePointcloud2Data()
   std::cout << "[ScanUtility::writePointcloud2Data] END" << std::endl << std::endl;
 }
 
-void ScanUtility::readPointcloud2Data(string data_path)
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void ScanUtility::readPointcloud2Data(string& data_path)
 {
   std::cout << "[ScanUtility::readPointcloud2Data] START" << std::endl;
+  std::cout << "[ScanUtility::readPointcloud2Data] pkg_dir_: " << pkg_dir_ << std::endl;
   std::cout << "[ScanUtility::readPointcloud2Data] data_path: " << data_path << std::endl;
 
-  std::ifstream f(data_path);
+  std::ifstream f(pkg_dir_ + data_path);
   json data = json::parse(f);
   
   obj_name_ = data["obj_name"];
@@ -637,7 +760,7 @@ void ScanUtility::readPointcloud2Data(string data_path)
 
   vector<double> pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z;
   boost::property_tree::ptree pt;
-  boost::property_tree::read_json(data_path, pt);
+  boost::property_tree::read_json(pkg_dir_ + data_path, pt);
   BOOST_FOREACH(boost::property_tree::ptree::value_type &v, pt.get_child("pc2").get_child("x"))
   {
     pcl_pc_scan_x.push_back(stod(v.second.data()));
@@ -656,19 +779,43 @@ void ScanUtility::readPointcloud2Data(string data_path)
   std::cout << "[ScanUtility::readPointcloud2Data] data_path_: " << data_path_ << std::endl;
   std::cout << "[ScanUtility::readPointcloud2Data] world_frame_name_: " << world_frame_name_ << std::endl;
   std::cout << "[ScanUtility::readPointcloud2Data] oct_resolution_: " << oct_resolution_ << std::endl;
-  
   std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl << std::endl;
-
-  /*
-  int i = 0;
-  for (auto c : pcl_pc_scan_)
-  {
-    std::cout << i << " -> (" << c.x << c.y << c.z << ")" << std::endl;
-    i++;
-  }
-  */
 
   pcl::toROSMsg(pcl_pc_scan_, pc2_msg_scan_);
 
   std::cout << "[ScanUtility::readPointcloud2Data] END" << std::endl << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void ScanUtility::readObjBbxDim(string& data_path)
+{
+  std::cout << "[ScanUtility::readObjBbxDim] START" << std::endl;
+  std::cout << "[ScanUtility::readObjBbxDim] pkg_dir_: " << pkg_dir_ << std::endl;
+  std::cout << "[ScanUtility::readObjBbxDim] data_path: " << data_path << std::endl;
+
+  std::ifstream f(pkg_dir_ + data_path);
+  json data = json::parse(f);
+  
+  obj_bbx_min_.x = data["obj_bbx"]["min"]["x"];
+  obj_bbx_min_.y = data["obj_bbx"]["min"]["y"];
+  obj_bbx_min_.z = data["obj_bbx"]["min"]["z"];
+
+  obj_bbx_max_.x = data["obj_bbx"]["max"]["x"];
+  obj_bbx_max_.y = data["obj_bbx"]["max"]["y"];
+  obj_bbx_max_.z = data["obj_bbx"]["max"]["z"];
+
+  obj_dim_.x = data["obj_dim"]["x"];
+  obj_dim_.y = data["obj_dim"]["y"];
+  obj_dim_.z = data["obj_dim"]["z"];
+
+  std::cout << "[ScanUtility::readObjBbxDim] obj_bbx_min_: " << std::endl;
+  print(obj_bbx_min_);
+  std::cout << "[ScanUtility::readObjBbxDim] obj_bbx_max_: " << std::endl;
+  print(obj_bbx_max_);
+  std::cout << "[ScanUtility::readObjBbxDim] obj_dim_: " << std::endl;
+  print(obj_dim_);
+
+  std::cout << "[ScanUtility::readObjBbxDim] END" << std::endl;
 }

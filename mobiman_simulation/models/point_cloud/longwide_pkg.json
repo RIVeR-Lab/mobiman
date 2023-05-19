@@ -1,5 +1,22 @@
 {
-    "data_path": "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/longwide_pkg.json",
+    "data_path": "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/longwide_pkg.json",
+    "obj_bbx": {
+        "max": {
+            "x": 0.5099999904632568,
+            "y": 0.25,
+            "z": 0.05000000074505806
+        },
+        "min": {
+            "x": -0.5099999904632568,
+            "y": -0.25,
+            "z": -0.05000000074505806
+        }
+    },
+    "obj_dim": {
+        "x": 1.0199999809265137,
+        "y": 0.5,
+        "z": 0.10000000149011612
+    },
     "obj_name": "longwide_pkg",
     "oct_resolution": 0.02,
     "pc2": {

@@ -1,7 +1,7 @@
 #ifndef SCAN_UTILITY_H
 #define SCAN_UTILITY_H
 
-// LAST UPDATE: 2023.01.14
+// LAST UPDATE: 2023.05.18
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -23,6 +23,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+
+// --CUSTOM LIBRARIES--
+#include <mobiman_simulation/common_utility.h>
 
 // --NAMESPACES--
 using namespace std;
@@ -48,12 +51,12 @@ class ScanUtility
                 string data_dir,
                 string world_frame_name,
                 vector<string> pc2_msg_name_vec_,
-                double bbx_x_min,
-                double bbx_x_max,
-                double bbx_y_min,
-                double bbx_y_max,
-                double bbx_z_min,
-                double bbx_z_max,
+                double scan_bbx_x_min,
+                double scan_bbx_x_max,
+                double scan_bbx_y_min,
+                double scan_bbx_y_max,
+                double scan_bbx_z_min,
+                double scan_bbx_z_max,
                 double oct_resolution);
 
     // DESCRIPTION: TODO...
@@ -63,10 +66,19 @@ class ScanUtility
   	~ScanUtility();
 
     // DESCRIPTION: TODO...
-  	ScanUtility& operator = (const ScanUtility& su);
+  	ScanUtility& operator=(const ScanUtility& su);
 
     // DESCRIPTION: TODO...
     sensor_msgs::PointCloud2 getPC2MsgScan();
+
+    // DESCRIPTION: TODO...
+    geometry_msgs::Point getObjBbxMin();
+
+    // DESCRIPTION: TODO...
+    geometry_msgs::Point getObjBbxMax();
+
+    // DESCRIPTION: TODO...
+    geometry_msgs::Point getObjDim();
 
     // DESCRIPTION: TODO...
     void getPointcloud2wrtWorld(const sensor_msgs::PointCloud2& msg_in, 
@@ -111,6 +123,11 @@ class ScanUtility
                             vector<double>& pcl_pc_scan_z);
 
     // DESCRIPTION: TODO...
+    void updateObjBbxDim(vector<double>& pcl_pc_scan_x, 
+                         vector<double>& pcl_pc_scan_y, 
+                         vector<double>& pcl_pc_scan_z);
+
+    // DESCRIPTION: TODO...
     void fillOctMsgFromOct();
 
     // DESCRIPTION: TODO...
@@ -129,7 +146,10 @@ class ScanUtility
     void writePointcloud2Data();
 
     // DESCRIPTION: TODO...
-    void readPointcloud2Data(string data_path);
+    void readPointcloud2Data(string& data_path);
+
+    // DESCRIPTION: TODO...
+    void readObjBbxDim(string& data_path);
 
   private:
 
@@ -146,12 +166,12 @@ class ScanUtility
     string pc2_msg_name_sensor3_;
     string pc2_msg_name_sensor4_;
 
-    double bbx_x_min_;
-    double bbx_x_max_;
-    double bbx_y_min_;
-    double bbx_y_max_;
-    double bbx_z_min_;
-    double bbx_z_max_;
+    double scan_bbx_x_min_;
+    double scan_bbx_x_max_;
+    double scan_bbx_y_min_;
+    double scan_bbx_y_max_;
+    double scan_bbx_z_min_;
+    double scan_bbx_z_max_;
 
     sensor_msgs::PointCloud2 measured_pc2_msg_sensor1_;
     sensor_msgs::PointCloud2 measured_pc2_msg_sensor2_;
@@ -179,6 +199,10 @@ class ScanUtility
 
     pcl::PointCloud<pcl::PointXYZ> pcl_pc_scan_;
     sensor_msgs::PointCloud2 pc2_msg_scan_;
+
+    geometry_msgs::Point obj_bbx_min_;
+    geometry_msgs::Point obj_bbx_max_;
+    geometry_msgs::Point obj_dim_;
 
     //visualization_msgs::MarkerArray debug_array_visu_;
     //visualization_msgs::Marker debug_visu_;
