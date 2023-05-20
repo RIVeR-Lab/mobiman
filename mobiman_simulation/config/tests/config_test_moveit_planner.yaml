@@ -27,3 +27,7 @@ planner_id: "RRTstar"
 
 allowed_planning_time: 2
 num_planning_attempts: 1000
+
+# motion_plan_request
+# move_group_interface
+planning_framework: "move_group_interface"
