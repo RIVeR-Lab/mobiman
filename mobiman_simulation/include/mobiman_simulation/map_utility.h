@@ -524,6 +524,9 @@ class MapUtility
                                    geometry_msgs::Pose& obj_pose_wrt_world);
 
     // DESCRIPTION: TODO...
+    void updateMoveitCollisionObjects();
+
+    // DESCRIPTION: TODO...
     void createRandomStaticObstacleMap(int num, 
                                        bool constraint_flag=true, 
                                        vector<geometry_msgs::Pose> goal=vector<geometry_msgs::Pose>{}, 

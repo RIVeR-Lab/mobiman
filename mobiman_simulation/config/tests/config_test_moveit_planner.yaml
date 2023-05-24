@@ -18,7 +18,7 @@ ee_goal_type: "joint"
 # if ee_goal_type: "joint" -> [j0, j1, ..., jN]
 #ee_goal: [0.0, -4.0, 1.0, 0.0, 0.0, 0.0, 1.0]
 #ee_goal: [0.0, -4.0, 1.57]
-ee_goal: [3.0, 0.0, 1.57]
+ee_goal: [6.0, 0.0, 1.57]
 
 # RRTstar
 # BKPIECE

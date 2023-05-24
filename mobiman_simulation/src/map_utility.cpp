@@ -1134,9 +1134,6 @@ void MapUtility::initializeGazeboModelCallback(ros::NodeHandle& nh, string gz_mo
 void MapUtility::initializeMoveitCollisionObjects()
 {
   pub_moveit_collision_object_ = nh_.advertise<moveit_msgs::CollisionObject>("/collision_object", 10, true);
-
-  moveit_collision_objects_.clear();
-  moveit_collision_objects_.resize(1);
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -1897,88 +1894,47 @@ void MapUtility::addMoveitCollisionObjects()
 {
   std::cout << "[MapUtility::addMoveitCollisionObjects] START" << std::endl;
 
-  std::vector<moveit_msgs::CollisionObject> moveit_collision_objects;
-  
   // Add the object
-  moveit_collision_objects.resize(1);
-  moveit_collision_objects[0].id = "table1";
+  moveit_msgs::CollisionObject mco;
+  mco.id = "table1";
   
-
   // Define the primitive and its dimensions.
-  moveit_collision_objects[0].primitives.resize(1);
-  moveit_collision_objects[0].primitives[0].type = moveit_collision_objects[0].primitives[0].BOX;
-  moveit_collision_objects[0].primitives[0].dimensions.resize(3);
-  moveit_collision_objects[0].primitives[0].dimensions[0] = 0.2;
-  moveit_collision_objects[0].primitives[0].dimensions[1] = 1.4;
-  moveit_collision_objects[0].primitives[0].dimensions[2] = 0.4;
+  mco.primitives.resize(1);
+  mco.primitives[0].type = mco.primitives[0].BOX;
+  mco.primitives[0].dimensions.resize(3);
+  mco.primitives[0].dimensions[0] = 0.2;
+  mco.primitives[0].dimensions[1] = 1.4;
+  mco.primitives[0].dimensions[2] = 0.4;
 
   // Define the pose of the table.
-  ///*
-  moveit_collision_objects[0].primitive_poses.resize(1);
-  moveit_collision_objects[0].primitive_poses[0].position.x = 0.0;
-  moveit_collision_objects[0].primitive_poses[0].position.y = 0.0;
-  moveit_collision_objects[0].primitive_poses[0].position.z = 0.0;
-  moveit_collision_objects[0].primitive_poses[0].orientation.x = 0.0;
-  moveit_collision_objects[0].primitive_poses[0].orientation.y = 0.0;
-  moveit_collision_objects[0].primitive_poses[0].orientation.z = 0.0;
-  moveit_collision_objects[0].primitive_poses[0].orientation.w = 1.0;
-  //*/
-
-  moveit_collision_objects[0].pose.position.x = 1.0;
-  moveit_collision_objects[0].pose.position.y = 0.0;
-  moveit_collision_objects[0].pose.position.z = 0.2;
-
-  moveit_collision_objects[0].pose.orientation.x = 0.0;
-  moveit_collision_objects[0].pose.orientation.y = 0.0;
-  moveit_collision_objects[0].pose.orientation.z = 0.0;
-  moveit_collision_objects[0].pose.orientation.w = 1.0;
-
-  moveit_collision_objects[0].operation = moveit_collision_objects[0].ADD;
-
-  moveit_collision_objects[0].header.frame_id = "base_link";
-  moveit_collision_objects[0].header.stamp = ros::Time::now();
-  moveit_collision_objects[0].header.seq++;
-
-  moveit_collision_objects_ = moveit_collision_objects;
-  pub_moveit_collision_object_.publish(moveit_collision_objects_[0]);
-
   /*
-  // Define the object that we will be manipulating
-  moveit_collision_objects_[1].header.frame_id = "base_link";
-  moveit_collision_objects_[1].id = "object";
-
-  // Define the primitive and its dimensions.
-  moveit_collision_objects_[1].primitives.resize(1);
-  moveit_collision_objects_[1].primitives[0].type = moveit_collision_objects_[1].primitives[0].BOX;
-  moveit_collision_objects_[1].primitives[0].dimensions.resize(3);
-  moveit_collision_objects_[1].primitives[0].dimensions[0] = 0.02;
-  moveit_collision_objects_[1].primitives[0].dimensions[1] = 0.02;
-  moveit_collision_objects_[1].primitives[0].dimensions[2] = 0.2;
-
-  // Define the pose of the object.
-  ///*
-  moveit_collision_objects_[1].primitive_poses.resize(1);
-  moveit_collision_objects_[1].primitive_poses[0].position.x = 0.0;
-  moveit_collision_objects_[1].primitive_poses[0].position.y = 0.0;
-  moveit_collision_objects_[1].primitive_poses[0].position.z = 0.0;
-  moveit_collision_objects_[1].primitive_poses[0].orientation.x = 0.0;
-  moveit_collision_objects_[1].primitive_poses[0].orientation.y = 0.0;
-  moveit_collision_objects_[1].primitive_poses[0].orientation.z = 0.0;
-  moveit_collision_objects_[1].primitive_poses[0].orientation.w = 1.0;
-  //* /
-
-  moveit_collision_objects_[1].pose.position.x = 1.0;
-  moveit_collision_objects_[1].pose.position.y = 0.0;
-  moveit_collision_objects_[1].pose.position.z = 0.5;
-
-  moveit_collision_objects_[1].pose.orientation.x = 0.0;
-  moveit_collision_objects_[1].pose.orientation.y = 0.0;
-  moveit_collision_objects_[1].pose.orientation.z = 0.0;
-  moveit_collision_objects_[1].pose.orientation.w = 1.0;
-
-  moveit_collision_objects_[1].operation = moveit_collision_objects_[1].ADD;
+  mco.primitive_poses.resize(1);
+  mco.primitive_poses[0].position.x = 0.0;
+  mco.primitive_poses[0].position.y = 0.0;
+  mco.primitive_poses[0].position.z = 0.0;
+  mco.primitive_poses[0].orientation.x = 0.0;
+  mco.primitive_poses[0].orientation.y = 0.0;
+  mco.primitive_poses[0].orientation.z = 0.0;
+  mco.primitive_poses[0].orientation.w = 1.0;
   */
-  //planning_scene_interface_.applyCollisionObjects(moveit_collision_objects_);
+
+  mco.pose.position.x = 1.0;
+  mco.pose.position.y = 0.0;
+  mco.pose.position.z = 0.2;
+
+  mco.pose.orientation.x = 0.0;
+  mco.pose.orientation.y = 0.0;
+  mco.pose.orientation.z = 0.0;
+  mco.pose.orientation.w = 1.0;
+
+  mco.operation = mco.ADD;
+
+  mco.header.frame_id = "base_link";
+  mco.header.stamp = ros::Time::now();
+  mco.header.seq++;
+
+  moveit_collision_objects_.push_back(mco);
+  pub_moveit_collision_object_.publish(mco);
 
   std::cout << "[MapUtility::addMoveitCollisionObjects] END" << std::endl;
 }
@@ -2023,6 +1979,45 @@ void MapUtility::addMoveitCollisionObjects(std::string& obj_id,
   moveit_collision_objects_.push_back(co);
 
   //std::cout << "[MapUtility::addMoveitCollisionObjects(3)] END" << std::endl << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::updateMoveitCollisionObjects()
+{
+  //cout << "[MapUtility::updateMoveitCollisionObjects] START" << std::endl;
+
+  moveit_collision_objects_.clear();
+
+  gazebo_msgs::ModelStates ms = gz_model_states_;
+
+  string gz_model_name_tmp, tf_name_tmp;
+
+  for (size_t i = 0; i < ms.name.size(); i++)
+  {
+    gz_model_name_tmp = ms.name[i];
+
+    for (size_t j = 0; j < vec_frame_name_ign_.size(); j++)
+    {
+      tf_name_tmp = vec_frame_name_ign_[j];
+
+      // NUA TODO: Try to fix this by finding a way to generalize for multiple objects with the same namespace!
+      if ( tf_name_tmp == "actor" && (gz_model_name_tmp == "0" || gz_model_name_tmp == "1") )
+      {
+        tf_name_tmp += gz_model_name_tmp;
+        gz_model_name_tmp = tf_name_tmp;
+      }
+
+      if (gz_model_name_tmp == tf_name_tmp)
+      {
+        addMoveitCollisionObjects(gz_model_name_tmp, vec_obj_dim_ign_[j], ms.pose[i]);
+        break;
+      }
+    }
+  }
+
+  //cout << "[MapUtility::updateMoveitCollisionObjects] END" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -2636,7 +2631,7 @@ void MapUtility::publishMoveitCollisionObjects()
   std::vector<moveit_msgs::CollisionObject> moveit_collision_objects = moveit_collision_objects_;
   for (size_t i = 0; i < moveit_collision_objects.size(); i++)
   {
-    //std::cout << "[MoveitInterface::publishCollisionObjects] ADDED " << i << std::endl;
+    //std::cout << "[MapUtility::publishMoveitCollisionObjects] ADDED " << i << std::endl;
     moveit_collision_objects[i].operation = moveit_collision_objects[i].ADD;
     moveit_collision_objects[i].header.stamp = ros::Time::now();
     moveit_collision_objects[i].header.seq++;
@@ -2909,8 +2904,6 @@ void MapUtility::updateModelPc2Scan()
         }
 
         vec_transform_ign_.push_back(transform_pkg_ign);
-
-        //addMoveitCollisionObjects(gz_model_name_tmp, vec_obj_dim_ign_[j], ms.pose[i]);
         break;
       }
     }
@@ -2938,8 +2931,6 @@ void MapUtility::updateModelPc2Scan()
   }
 
   pc2_msg_scan_ = pc2_msg_scan;
-
-  //addMoveitCollisionObjects();
 
   //cout << "[MapUtility::updateModelPc2Scan] END" << std::endl;
 }

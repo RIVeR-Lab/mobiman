@@ -123,7 +123,7 @@ int main(int argc, char** argv)
   mu.initializeMoveitCollisionObjects();
 
   // Add moveit collision objects
-  mu.addMoveitCollisionObjects();
+  //mu.addMoveitCollisionObjects();
 
   ros::spinOnce();
 
@@ -133,7 +133,7 @@ int main(int argc, char** argv)
   while(ros::ok)
   {
     mu.updateModelPc2Scan();
-    
+
     //cout << "[map_server::main] BEFORE updateOct" << endl;
     // Update octomap with the recent transformed pc2 data
     mu.updateOct();
@@ -146,6 +146,8 @@ int main(int argc, char** argv)
     //cout << "[map_server::main] BEFORE publishOctMsg" << endl;
     // Publish Octomap message
     mu.publishOctMsg();
+
+    mu.updateMoveitCollisionObjects();
 
     //cout << "[map_server::main] BEFORE publishMoveitCollisionObjects" << endl;
     // Publish moveit collision objects

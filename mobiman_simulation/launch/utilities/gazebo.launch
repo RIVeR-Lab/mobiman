@@ -3,7 +3,7 @@
   <!-- Custom -->
   <arg name="flag_gazebo" default="true"/>
   <arg name="flag_robot" default="true"/>
-  <arg name="flag_moveit" default="false"/>
+  <arg name="flag_moveit" default="true"/>
   <arg name="flag_conveyor" default="true"/>
   <arg name="flag_pedsim" default="true"/>
   <arg name="flag_markers" default="false"/>
@@ -68,7 +68,7 @@
       <param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" />
 
       <group if="$(eval arg('flag_moveit') == true)">
-        <include file="$(find mobiman_simulation)/launch/moveit_planner.launch">
+        <include file="$(find mobiman_simulation)/launch/utilities/moveit_planner.launch">
         </include>
       </group>
 

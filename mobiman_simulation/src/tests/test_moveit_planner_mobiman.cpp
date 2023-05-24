@@ -105,6 +105,7 @@ int main(int argc, char **argv)
   const moveit::core::JointModelGroup* jointModelGroupPtr = robotStatePtr->getJointModelGroup(group_name);
 
   /// Collision objects
+  /*
   std::vector<moveit_msgs::CollisionObject> moveit_collision_objects;
 
   moveit_collision_objects.resize(1);
@@ -130,6 +131,7 @@ int main(int argc, char **argv)
   moveit_collision_objects[0].header.frame_id = "base_link";
   moveit_collision_objects[0].header.stamp = ros::Time::now();
   moveit_collision_objects[0].header.seq++;
+  */
 
   /// Set goal
   moveit_msgs::Constraints goal_constraint;
@@ -289,7 +291,7 @@ int main(int argc, char **argv)
     jointModelGroupPtr = moveGroupInterface.getCurrentState()->getJointModelGroup(group_name);
 
     // Add collision objects
-    planningSceneInterface.addCollisionObjects(moveit_collision_objects);
+    //planningSceneInterface.addCollisionObjects(moveit_collision_objects);
 
     //moveGroupInterface.setStartStateToCurrentState();
     moveGroupInterface.setStartState(*moveGroupInterface.getCurrentState());
