@@ -4,8 +4,8 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /TF1/Frames1
         - /MarkerArray5/Namespaces1
-        - /MotionPlanning1/Planned Path1
       Splitter Ratio: 0.5
     Tree Height: 790
   - Class: rviz/Selection
@@ -270,16 +270,12 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        green_cube:
-          Value: true
         imu_link:
           Value: false
         mid_mount:
           Value: false
         navsat_link:
           Value: false
-        normal_pkg:
-          Value: true
         rear_fender_link:
           Value: false
         rear_left_wheel_link:
@@ -312,6 +308,8 @@ Visualization Manager:
           Value: false
         ur5_wrist_3_link:
           Value: false
+        virtual_world_link:
+          Value: true
         world:
           Value: true
       Marker Alpha: 1
@@ -380,11 +378,9 @@ Visualization Manager:
                                 {}
           conveyor_belt:
             {}
-          green_cube:
-            {}
-          normal_pkg:
-            {}
           red_cube:
+            {}
+          virtual_world_link:
             {}
       Update Interval: 0
       Value: true
@@ -423,13 +419,13 @@ Visualization Manager:
       Update Topic: /simple_marker/update
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -499,13 +495,13 @@ Visualization Manager:
       Use rainbow: true
       Value: false
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /map_server/occupied_nodes
@@ -578,6 +574,14 @@ Visualization Manager:
         {}
       Queue Size: 100
       Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /occ_dist_array
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
     - Class: octomap_rviz_plugin/ColorOccupancyGrid
       Enabled: true
       Max. Height Display: 3.4028234663852886e+38
@@ -590,14 +594,6 @@ Visualization Manager:
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /occ_dist_array
-      Name: MarkerArray
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: true
     - Acceleration_Scaling_Factor: 0.1
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: false
@@ -629,15 +625,15 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-        Loop Animation: true
+        Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
         Show Robot Collision: false
         Show Robot Visual: true
-        Show Trail: false
-        State Display Time: 30x
+        Show Trail: true
+        State Display Time: 200x
         Trail Step Size: 1
-        Trajectory Topic: /mobiman/display_planned_path
+        Trajectory Topic: /move_group/display_planned_path
         Use Sim Time: false
       Planning Metrics:
         Payload: 1
@@ -652,14 +648,14 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: ""
+        Planning Group: arm
         Query Goal State: false
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
         Start State Color: 0; 255; 0
-      Planning Scene Topic: /pick_n_place/planning_scene
-      Robot Description: robot_description
+      Planning Scene Topic: /move_group/monitored_planning_scene
+      Robot Description: robot_description_virtual
       Scene Geometry:
         Scene Alpha: 0.8999999761581421
         Scene Color: 50; 230; 50
@@ -708,7 +704,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.64591121673584
+      Distance: 7.169980049133301
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -716,17 +712,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.05607444420456886
-        Y: -0.2492082715034485
-        Z: 0.8024736046791077
+        X: -0.3748018443584442
+        Y: -1.4695475101470947
+        Z: 0.3538617789745331
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4797964096069336
+      Pitch: 0.4397963285446167
       Target Frame: <Fixed Frame>
-      Yaw: 1.5641764402389526
+      Yaw: 1.5841920375823975
     Saved: ~
 Window Geometry:
   Displays:

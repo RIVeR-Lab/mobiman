@@ -227,6 +227,16 @@ add_executable(scanner src/scanner.cpp)
 add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
 target_link_libraries(scanner ${PCL_LIBRARIES} ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
+## World Frame Server
+add_executable(world_frame_server src/world_frame_server.cpp)
+add_dependencies(world_frame_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(world_frame_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
+## Virtual Frames Server
+add_executable(virtual_frames_server src/virtual_frames_server.cpp)
+add_dependencies(virtual_frames_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(virtual_frames_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
 ## Map Server
 add_executable(map_server src/map_server.cpp)
 add_dependencies(map_server ${catkin_EXPORTED_TARGETS})

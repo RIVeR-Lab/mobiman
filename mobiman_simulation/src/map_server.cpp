@@ -132,6 +132,8 @@ int main(int argc, char** argv)
   ros::Rate r(100);
   while(ros::ok)
   {
+    mu.updateModelPc2Scan();
+    
     //cout << "[map_server::main] BEFORE updateOct" << endl;
     // Update octomap with the recent transformed pc2 data
     mu.updateOct();

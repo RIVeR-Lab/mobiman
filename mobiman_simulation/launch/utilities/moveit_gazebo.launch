@@ -68,19 +68,24 @@
     <group ns="$(arg robot_namespace)">
       <!-- Load the URDF into the ROS Parameter Server -->
       <!--param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" /-->
-      <param name="robot_description" textfile="$(find mobiman_simulation)/urdf/$(arg urdf_filename).urdf" />
+      <param name="robot_description_virtual" textfile="$(find mobiman_simulation)/urdf/$(arg urdf_filename).urdf" />
       <param name="urdf_filename" value="$(arg urdf_filename)" />
 
       <group if="$(eval arg('flag_gazebo') == false)">
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+        <!-- Load Robot Semantic -->
+        <param name="robot_description_virtual_semantic" textfile="$(find mobiman_simulation)/urdf/mobiman.srdf" />
+        
+        <node name="robot_state_publisher_virtual" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+          <remap from="robot_description" to="robot_description_virtual" />
           <remap from="/joint_states" to="/joint_states" />
           <param name="publish_frequency" type="double" value="50.0" />
           <param name="tf_prefix" type="string" value="" />
         </node>
 
-        <node name="joint_state_publisher" 
+        <node name="joint_state_publisher_virtual" 
               pkg="joint_state_publisher" 
               type="joint_state_publisher">
+          <remap from="robot_description" to="robot_description_virtual" />
           <param name="/use_gui" value="$(arg gui)"/>
           <!--rosparam param="/source_list">[/move_group/fake_controller_joint_states]</rosparam-->
           <rosparam param="/source_list">[/joint_states]</rosparam>
@@ -115,9 +120,6 @@
         <node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" />
 
         <!--node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world odom 100" /-->
-        
-        <!-- Load Robot Semantic -->
-        <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
 
         <!-- Run the sensor processes -->
         <!--include file="$(find mobiman_simulation)/launch/utilities/camera_process.launch" /-->
@@ -144,6 +146,13 @@
 
   <!-- Run Rviz visualization -->
   <group if="$(eval arg('flag_rviz') == true)">
-    <include file="$(find mobiman_simulation)/launch/examples/rviz_moveit.launch" />
+
+    <group if="$(eval arg('flag_gazebo') == true)">
+      <include file="$(find mobiman_simulation)/launch/examples/rviz_moveit_gazebo.launch" />
+    </group>
+
+    <group if="$(eval arg('flag_gazebo') == false)">
+      <include file="$(find mobiman_simulation)/launch/examples/rviz_moveit.launch" />
+    </group>
   </group>
 </launch>

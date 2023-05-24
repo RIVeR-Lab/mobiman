@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.05.16
+// LAST UPDATE: 2023.05.23
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -396,6 +396,9 @@ class MapUtility
     void resetMap();
 
     // DESCRIPTION: TODO...
+    void initializeGazeboModelCallback(ros::NodeHandle& nh, string gz_model_msg);
+
+    // DESCRIPTION: TODO...
     void initializeMoveitCollisionObjects();
 
     // DESCRIPTION: TODO...
@@ -602,6 +605,12 @@ class MapUtility
     void publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec, vector<geometry_msgs::Point> p1_vec);
 
     // DESCRIPTION: TODO...
+    void publishWorldFrame(string& world_frame_name, string& origin_frame_name);
+
+    // DESCRIPTION: TODO...
+    void publishVirtualFrames(vector<string>& virtual_frame_names, string& origin_frame_name);
+
+    // DESCRIPTION: TODO...
     void publishMoveitCollisionObjects();
 
     // DESCRIPTION: TODO...
@@ -636,6 +645,9 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg);
+
+    // DESCRIPTION: TODO...
+    void updateModelPc2Scan();
 
     // DESCRIPTION: TODO...
     void update_states();
@@ -759,6 +771,8 @@ class MapUtility
     ros::Publisher debug_visu_pub;
 
     // NUA TODO: Add them in constructors if necessary.
+    gazebo_msgs::ModelStates gz_model_states_;
+    
     ros::Subscriber sub_gz_model_;
 
     vector<string> vec_frame_name_ign_;

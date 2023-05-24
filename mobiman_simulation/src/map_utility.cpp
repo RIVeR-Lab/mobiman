@@ -1122,6 +1122,15 @@ void MapUtility::resetMap()
   fillOctMsgFromOct();
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::initializeGazeboModelCallback(ros::NodeHandle& nh, string gz_model_msg)
+{
+  nh_ = nh;
+  sub_gz_model_ = nh_.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
+}
+
 void MapUtility::initializeMoveitCollisionObjects()
 {
   pub_moveit_collision_object_ = nh_.advertise<moveit_msgs::CollisionObject>("/collision_object", 10, true);
@@ -2561,6 +2570,65 @@ void MapUtility::publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+void MapUtility::publishWorldFrame(string& world_frame_name, string& origin_frame_name)
+{
+  //std::cout << "[MapUtility::publishGroundTruthWorldFrame] START" << std::endl;
+
+  static tf::TransformBroadcaster br_world;
+  tf::Transform tf_gt;
+
+  gazebo_msgs::ModelStates ms = gz_model_states_;
+
+  for (size_t i = 0; i < ms.name.size(); i++)
+  {
+    if (ms.name[i] == "mobiman")
+    {
+      tf_gt.setOrigin(tf::Vector3(ms.pose[i].position.x, ms.pose[i].position.y, ms.pose[i].position.z));
+      tf_gt.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
+      br_world.sendTransform(tf::StampedTransform(tf_gt, ros::Time::now(), world_frame_name_, origin_frame_name));
+      break;
+    }
+  }
+
+  //std::cout << "[MapUtility::publishGroundTruthWorldFrame] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::publishVirtualFrames(vector<string>& virtual_frame_names, string& origin_frame_name)
+{
+  //std::cout << "[MapUtility::publishVirtualFrames] START" << std::endl;
+
+  static tf::TransformBroadcaster br_virtual;
+  tf::StampedTransform stf_virtual;
+
+  try
+  {
+    //tflistener -> waitForTransform(world_frame_name_, origin_frame_name, ros::Time::now(), ros::Duration(1.0));
+    tflistener->lookupTransform(world_frame_name_, origin_frame_name, ros::Time(0), stf_virtual);
+  }
+  catch (tf::TransformException ex)
+  {
+    ROS_INFO("[MapUtility::publishVirtualFrames] Couldn't get transform!");
+    ROS_ERROR("%s", ex.what());
+  }
+
+  for (size_t i = 0; i < virtual_frame_names.size(); i++)
+  {
+    tf::Transform tf_virtual;
+    tf_virtual.setOrigin(stf_virtual.getOrigin());
+    tf_virtual.setRotation(stf_virtual.getRotation());
+
+    br_virtual.sendTransform(tf::StampedTransform(tf_virtual, ros::Time::now(), world_frame_name_, virtual_frame_names[i]));
+  }
+
+  //std::cout << "[MapUtility::publishVirtualFrames] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void MapUtility::publishMoveitCollisionObjects()
 {
   //std::cout << "[MapUtility::publishMoveitCollisionObjects] START" << std::endl;
@@ -2727,18 +2795,18 @@ void MapUtility::mapOdometryCallback(const nav_msgs::Odometry& msg)
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::pc2Callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 {
-  //cout << "MapUtility::pc2Callback -> Incoming data..." << endl;
-  sensor_pc2_frame_name = msg -> header.frame_id;
+  //cout << "[MapUtility::pc2Callback] Incoming data..." << endl;
+  sensor_pc2_frame_name = msg->header.frame_id;
   //cout << "MapUtility::pc2Callback -> sensor_pc2_frame_name: " << sensor_pc2_frame_name << endl;
 
   try
   {
     //tflistener -> waitForTransform(world_frame_name_, msg -> header.frame_id, ros::Time::now(), ros::Duration(1.0));
-    tflistener -> lookupTransform(world_frame_name_, msg -> header.frame_id, ros::Time(0), measured_transform_sensor_pc2_wrt_world);
+    tflistener->lookupTransform(world_frame_name_, msg->header.frame_id, ros::Time(0), measured_transform_sensor_pc2_wrt_world);
   }
   catch (tf::TransformException ex)
   {
-    ROS_INFO("MapUtility::pc2Callback -> Couldn't get transform!");
+    ROS_INFO("[MapUtility::pc2Callback] Couldn't get transform!");
     ROS_ERROR("%s", ex.what());
   }
 
@@ -2758,7 +2826,7 @@ void MapUtility::pc2Callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 void MapUtility::laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
 {
   //cout << "[MapUtility::laserCallback] Incoming data..." << endl;
-  sensor_laser_frame_name = msg -> header.frame_id;
+  sensor_laser_frame_name = msg->header.frame_id;
   //cout << "[MapUtility::laserCallback] sensor_laser_frame_name: " << sensor_laser_frame_name << endl;
   measured_laser_msg = *msg;
 }
@@ -2777,13 +2845,24 @@ void MapUtility::octMsgCallback(const octomap_msgs::Octomap::ConstPtr& msg)
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg)
 {
-  //cout << "[MapUtility::gazeboModelCallback(15)] START" << std::endl;
+  //cout << "[MapUtility::gazeboModelCallback] START" << std::endl;
 
-  gazebo_msgs::ModelStates ms = *msg;
+  gz_model_states_ = *msg;
+
+  //cout << "[MapUtility::gazeboModelCallback] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::updateModelPc2Scan()
+{
+  //cout << "[MapUtility::updateModelPc2Scan] START" << std::endl;
+
+  gazebo_msgs::ModelStates ms = gz_model_states_;
 
   bool initFlag = true;
   sensor_msgs::PointCloud2 pc2_msg_scan;
-  octomap::Pointcloud oct_pc2_scan;
   string gz_model_name_tmp, tf_name_tmp;
 
   vec_transform_ign_.clear();
@@ -2862,7 +2941,7 @@ void MapUtility::gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& m
 
   //addMoveitCollisionObjects();
 
-  //cout << "[MapUtility::gazeboModelCallback(15)] END" << std::endl;
+  //cout << "[MapUtility::updateModelPc2Scan] END" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------

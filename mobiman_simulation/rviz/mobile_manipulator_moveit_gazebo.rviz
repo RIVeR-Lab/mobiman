@@ -4,9 +4,11 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
+        - /Status1
+        - /RobotModel1/Status1
         - /TF1/Frames1
         - /MarkerArray5/Namespaces1
-        - /MotionPlanning1
       Splitter Ratio: 0.5
     Tree Height: 431
   - Class: rviz/Selection
@@ -255,86 +257,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_link:
-          Value: true
-        chassis_link:
-          Value: false
-        d435_cam1camera_bottom_screw_frame:
-          Value: false
-        d435_cam1camera_color_frame:
-          Value: false
-        d435_cam1camera_color_optical_frame:
-          Value: false
-        d435_cam1camera_depth_frame:
-          Value: false
-        d435_cam1camera_depth_frame_gazebo:
-          Value: false
-        d435_cam1camera_depth_optical_frame:
-          Value: false
-        d435_cam1camera_left_ir_frame:
-          Value: false
-        d435_cam1camera_left_ir_optical_frame:
-          Value: false
-        d435_cam1camera_link:
-          Value: false
-        d435_cam1camera_right_ir_frame:
-          Value: false
-        d435_cam1camera_right_ir_optical_frame:
-          Value: false
-        dummy_link:
-          Value: false
-        front_fender_link:
-          Value: false
-        front_left_wheel_link:
-          Value: false
-        front_mount:
-          Value: false
-        front_right_wheel_link:
-          Value: false
-        imu_link:
-          Value: false
-        mid_mount:
-          Value: false
-        navsat_link:
-          Value: false
-        rear_fender_link:
-          Value: false
-        rear_left_wheel_link:
-          Value: false
-        rear_mount:
-          Value: false
-        rear_right_wheel_link:
-          Value: false
-        theta_link:
-          Value: false
-        ur5_base:
-          Value: false
-        ur5_base_link:
-          Value: false
-        ur5_base_link_inertia:
-          Value: false
-        ur5_flange:
-          Value: false
-        ur5_forearm_link:
-          Value: false
-        ur5_shoulder_link:
-          Value: false
-        ur5_tool0:
-          Value: true
-        ur5_upper_arm_link:
-          Value: false
-        ur5_wrist_1_link:
-          Value: false
-        ur5_wrist_2_link:
-          Value: false
-        ur5_wrist_3_link:
-          Value: false
-        virtual_world_link:
-          Value: false
-        x_axis_link:
-          Value: false
-        y_axis_link:
-          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -342,63 +264,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        virtual_world_link:
-          dummy_link:
-            x_axis_link:
-              y_axis_link:
-                theta_link:
-                  base_link:
-                    chassis_link:
-                      front_fender_link:
-                        {}
-                      front_left_wheel_link:
-                        {}
-                      front_right_wheel_link:
-                        {}
-                      imu_link:
-                        {}
-                      mid_mount:
-                        front_mount:
-                          {}
-                        rear_mount:
-                          {}
-                      navsat_link:
-                        {}
-                      rear_fender_link:
-                        {}
-                      rear_left_wheel_link:
-                        {}
-                      rear_right_wheel_link:
-                        {}
-                    d435_cam1camera_bottom_screw_frame:
-                      d435_cam1camera_link:
-                        d435_cam1camera_depth_frame:
-                          d435_cam1camera_color_frame:
-                            d435_cam1camera_color_optical_frame:
-                              {}
-                          d435_cam1camera_depth_optical_frame:
-                            {}
-                          d435_cam1camera_left_ir_frame:
-                            d435_cam1camera_left_ir_optical_frame:
-                              {}
-                          d435_cam1camera_right_ir_frame:
-                            d435_cam1camera_right_ir_optical_frame:
-                              {}
-                        d435_cam1camera_depth_frame_gazebo:
-                          {}
-                    ur5_base_link:
-                      ur5_base:
-                        {}
-                      ur5_base_link_inertia:
-                        ur5_shoulder_link:
-                          ur5_upper_arm_link:
-                            ur5_forearm_link:
-                              ur5_wrist_1_link:
-                                ur5_wrist_2_link:
-                                  ur5_wrist_3_link:
-                                    ur5_flange:
-                                      ur5_tool0:
-                                        {}
+        {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -845,7 +711,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: arm
+        Planning Group: ""
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -1081,7 +947,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.345127582550049
+      Distance: 6.132500171661377
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1089,17 +955,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.019769975915551186
-        Y: 0.23685136437416077
-        Z: 0.556022584438324
+        X: 0.5990259051322937
+        Y: -0.18855665624141693
+        Z: 1.0366390943527222
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.1947987079620361
+      Pitch: 0.22979877889156342
       Target Frame: <Fixed Frame>
-      Yaw: 3.159175157546997
+      Yaw: 2.3441691398620605
     Saved: ~
 Window Geometry:
   Displays:

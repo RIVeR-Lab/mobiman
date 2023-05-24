@@ -31,5 +31,8 @@
   </group-->
 
   <node name="test_moveit_planner_$(arg robot)" pkg="mobiman_simulation" type="test_moveit_planner_$(arg robot)" output="screen" >
+    <remap from="robot_description" to="robot_description_virtual" />
+    <remap from="robot_description_virtual_semantic" to="robot_description_semantic" />
+    <remap from="robot_description_semantic" to="robot_description_virtual_semantic" />
   </node>
 </launch>
