@@ -1,7 +1,7 @@
 ; robot model meta-information
 model_information 
 {
-  robotModelType     2          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
+  robotModelType     1          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
   
   ; motion joints in the URDF to consider fixed
   removeJoints 
@@ -60,11 +60,11 @@ ddp
   minRelCost                      0.1
   constraintTolerance             1e-3  ; NUA EDIT: def: 1e-3
 
-  displayInfo                     true  ; NUA EDIT: def: false
-  displayShortSummary             true  ; NUA EDIT: def: false
+  displayInfo                     false  ; NUA EDIT: def: false
+  displayShortSummary             false  ; NUA EDIT: def: false
   checkNumericalStability         false  ; NUA EDIT: def: false
-  debugPrintRollout               true  ; NUA EDIT: def: false
-  debugCaching                    true  ; NUA EDIT: def: false
+  debugPrintRollout               false  ; NUA EDIT: def: false
+  debugCaching                    false  ; NUA EDIT: def: false
 
   AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
   RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
@@ -107,7 +107,7 @@ mpc
   solutionTimeWindow              1.0   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
-  debugPrint                      true
+  debugPrint                      false
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
   mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400

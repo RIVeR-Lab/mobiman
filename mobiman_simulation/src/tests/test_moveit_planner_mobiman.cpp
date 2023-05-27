@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.05.20
+// LAST UPDATE: 2023.05.27
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -18,6 +18,7 @@
 //#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 //#include <visualization_msgs/Marker.h>
 
+#include <tf/transform_listener.h>
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -51,12 +52,48 @@
 
 using namespace std;
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void transformPose(tf::TransformListener& tflistener,
+                   string& frame_from,
+                   string& frame_to,
+                   geometry_msgs::Pose& p_from,
+                   geometry_msgs::Pose& p_to)
+{
+  tf::Pose p_from_tf;
+  geometry_msgs::Pose p_from_msg = p_from;
+  tf::poseMsgToTF(p_from_msg, p_from_tf);
+  tf::Stamped<tf::Pose> p_from_stamped_tf(p_from_tf, ros::Time(0), frame_from);
+  tf::Stamped<tf::Pose> p_to_stamped_tf;
+  geometry_msgs::PoseStamped p_to_stamped_msg;
+
+  try
+  {
+    tflistener.transformPose(frame_to, p_from_stamped_tf, p_to_stamped_tf);
+  }
+  catch(tf::TransformException ex)
+  {
+    ROS_INFO("[test_moveit_planner_mobiman::transformPose] Couldn't get transform!");
+    ROS_ERROR("%s",ex.what());
+
+    while(1);
+    cout << "[test_moveit_planner_mobiman::transformPose] DEBUG INF" << endl;
+    //ros::Duration(1.0).sleep();
+  }
+
+  tf::poseStampedTFToMsg(p_to_stamped_tf, p_to_stamped_msg);
+  p_to = p_to_stamped_msg.pose;
+}
+
 int main(int argc, char **argv)
 {
   std::cout << "[test_moveit_planner_mobiman::main] START" << std::endl;
 
   // Initialize Node
   ros::init(argc, argv, "test_moveit_planner_mobiman");
+
+  tf::TransformListener tflistener;
 
   // Initialize Node Handle for moveit config
   ros::NodeHandle nh("/move_group/planning_pipelines/ompl");
@@ -65,14 +102,19 @@ int main(int argc, char **argv)
   ros::NodeHandle pnh("~");
 
   // Initialize and set parameters
-  string group_name, ee_frame, ee_goal_type, planner_id, planning_framework;
-  double allowed_planning_time;
+  string group_name, ee_frame, goal_frame, world_frame, ee_goal_type, planner_id, planning_framework;
+  double allowed_planning_time, position_tolerance, orientation_tolerance, joint_tolerance;
   int num_planning_attempts;
   vector<double> ee_goal;
   pnh.param<string>("/group_name", group_name, "");
   pnh.param<string>("/ee_frame", ee_frame, "");
+  pnh.param<string>("/goal_frame", goal_frame, "");
+  pnh.param<string>("/world_frame", world_frame, "");
   pnh.param<string>("/ee_goal_type", ee_goal_type, "");
   pnh.getParam("/ee_goal", ee_goal);
+  pnh.param<double>("/position_tolerance", position_tolerance, 0.0);
+  pnh.param<double>("/orientation_tolerance", orientation_tolerance, 0.0);
+  pnh.param<double>("/joint_tolerance", joint_tolerance, 0.0);
   pnh.param<string>("/planner_id", planner_id, "");
   pnh.param<double>("/allowed_planning_time", allowed_planning_time, 0.0);
   pnh.param<int>("/num_planning_attempts", num_planning_attempts, 0);
@@ -80,9 +122,14 @@ int main(int argc, char **argv)
 
   cout << "[test_moveit_planner_mobiman::main] group_name: " << group_name << std::endl;
   cout << "[test_moveit_planner_mobiman::main] ee_frame: " << ee_frame << std::endl;
+  cout << "[test_moveit_planner_mobiman::main] goal_frame: " << goal_frame << std::endl;
+  cout << "[test_moveit_planner_mobiman::main] world_frame: " << world_frame << std::endl;
   cout << "[test_moveit_planner_mobiman::main] ee_goal_type: " << ee_goal_type << std::endl;
   cout << "[test_moveit_planner_mobiman::main] ee_goal: " << std::endl;
   print(ee_goal);
+  cout << "[test_moveit_planner_mobiman::main] position_tolerance: " << position_tolerance << std::endl;
+  cout << "[test_moveit_planner_mobiman::main] orientation_tolerance: " << orientation_tolerance << std::endl;
+  cout << "[test_moveit_planner_mobiman::main] joint_tolerance: " << joint_tolerance << std::endl;
   cout << "[test_moveit_planner_mobiman::main] planner_id: " << planner_id << std::endl;
   cout << "[test_moveit_planner_mobiman::main] allowed_planning_time: " << allowed_planning_time << std::endl;
   cout << "[test_moveit_planner_mobiman::main] num_planning_attempts: " << num_planning_attempts << std::endl;
@@ -133,34 +180,6 @@ int main(int argc, char **argv)
   moveit_collision_objects[0].header.seq++;
   */
 
-  /// Set goal
-  moveit_msgs::Constraints goal_constraint;
-
-  if (ee_goal_type == "pose")
-  {
-    // Set the ee goal pose
-    geometry_msgs::PoseStamped ee_pose;
-    ee_pose.header.frame_id = "world";
-    ee_pose.pose.position.x = ee_goal[0];
-    ee_pose.pose.position.y = ee_goal[1];
-    ee_pose.pose.position.z = ee_goal[2];
-    ee_pose.pose.orientation.x = ee_goal[3];
-    ee_pose.pose.orientation.y = ee_goal[4];
-    ee_pose.pose.orientation.z = ee_goal[5];;
-    ee_pose.pose.orientation.w = ee_goal[6];
-    std::vector<double> tolerance_pose(3, 0.01);
-    std::vector<double> tolerance_angle(3, 0.01);
-    goal_constraint = kinematic_constraints::constructGoalConstraints(ee_frame, ee_pose, tolerance_pose, tolerance_angle);
-  }
-  else if (ee_goal_type == "joint")
-  {
-    // Set joint space goal
-    moveit::core::RobotState goal_state(*robotStatePtr);
-    std::vector<double> joint_values = ee_goal;
-    goal_state.setJointGroupPositions(jointModelGroupPtr, joint_values);
-    goal_constraint = kinematic_constraints::constructGoalConstraints(goal_state, jointModelGroupPtr);
-  }
-
   if (planning_framework == "motion_plan_request")
   {
     std::cout << "[test_moveit_planner_mobiman::test_moveit_planner_mobiman] START motion_plan_request" << std::endl;
@@ -184,6 +203,42 @@ int main(int argc, char **argv)
     planning_interface::MotionPlanRequest req;
     planning_interface::MotionPlanResponse res;
 
+    /// Set goal
+    moveit_msgs::Constraints goal_constraint;
+
+    if (ee_goal_type == "pose")
+    {
+      geometry_msgs::Pose ee_pose_wrt_goal_frame;
+
+      // Set the ee goal pose
+      geometry_msgs::Pose obj_pose_wrt_world;
+      obj_pose_wrt_world.position.x = ee_goal[0];
+      obj_pose_wrt_world.position.y = ee_goal[1];
+      obj_pose_wrt_world.position.z = ee_goal[2];
+      obj_pose_wrt_world.orientation.x = ee_goal[3];
+      obj_pose_wrt_world.orientation.y = ee_goal[4];
+      obj_pose_wrt_world.orientation.z = ee_goal[5];
+      obj_pose_wrt_world.orientation.w = ee_goal[6];
+
+      transformPose(tflistener, world_frame, goal_frame, obj_pose_wrt_world, ee_pose_wrt_goal_frame);
+
+      geometry_msgs::PoseStamped ee_poseStamped_wrt_goal_frame;
+      ee_poseStamped_wrt_goal_frame.header.frame_id = goal_frame;
+      ee_poseStamped_wrt_goal_frame.pose = ee_pose_wrt_goal_frame;
+
+      //std::vector<double> tolerance_pose(3, 0.1);
+      //std::vector<double> tolerance_angle(3, 0.1);
+      goal_constraint = kinematic_constraints::constructGoalConstraints(ee_frame, ee_poseStamped_wrt_goal_frame, position_tolerance, orientation_tolerance);
+    }
+    else if (ee_goal_type == "joint")
+    {
+      // Set joint space goal
+      moveit::core::RobotState goal_state(*robotStatePtr);
+      std::vector<double> joint_values = ee_goal;
+      goal_state.setJointGroupPositions(jointModelGroupPtr, joint_values);
+      goal_constraint = kinematic_constraints::constructGoalConstraints(goal_state, jointModelGroupPtr);
+    }
+
     // Set Motion Plan Request 
     bool success = false;
     req.group_name = group_name;
@@ -192,7 +247,6 @@ int main(int argc, char **argv)
     req.num_planning_attempts = num_planning_attempts;
     
     req.goal_constraints.clear();
-    //req.goal_constraints.push_back(pose_goal);
     req.goal_constraints.push_back(goal_constraint);
 
     std::cout << "[test_moveit_planner_mobiman::test_moveit_planner_mobiman] BEFORE generatePlan" << std::endl;
@@ -226,7 +280,7 @@ int main(int argc, char **argv)
 
         ctr++;
       }
-      
+
       planning_scene_monitor::LockedPlanningSceneRO lscene(psmPtr);
 
       if (vco.size() <= 0)
@@ -234,8 +288,8 @@ int main(int argc, char **argv)
         std::cout << "[test_moveit_planner_mobiman::test_moveit_planner_mobiman] DEBUG INF" << std::endl;
         while(1);
       }
-      
       std::cout << "[test_moveit_planner_mobiman::test_moveit_planner_mobiman] BEFORE generatePlan: " << ctr << std::endl;
+      
       // Now, call the pipeline and check whether planning was successful.
       success = planningPipelinePtr->generatePlan(lscene, req, res);
     }
@@ -275,6 +329,7 @@ int main(int argc, char **argv)
 
     ros::waitForShutdown();
   }
+
   else if (planning_framework == "move_group_interface")
   {
     std::cout << "[test_moveit_planner_mobiman::test_moveit_planner_mobiman] START motion_plan_request" << std::endl;
@@ -295,12 +350,95 @@ int main(int argc, char **argv)
 
     //moveGroupInterface.setStartStateToCurrentState();
     moveGroupInterface.setStartState(*moveGroupInterface.getCurrentState());
-    moveGroupInterface.setJointValueTarget(ee_goal);
+    
+    if (ee_goal_type == "pose")
+    {
+      geometry_msgs::Pose ee_pose_wrt_goal_frame;
+
+      // Set the ee goal pose
+      geometry_msgs::Pose obj_pose_wrt_world;
+      obj_pose_wrt_world.position.x = ee_goal[0];
+      obj_pose_wrt_world.position.y = ee_goal[1];
+      obj_pose_wrt_world.position.z = ee_goal[2];
+      obj_pose_wrt_world.orientation.x = ee_goal[3];
+      obj_pose_wrt_world.orientation.y = ee_goal[4];
+      obj_pose_wrt_world.orientation.z = ee_goal[5];
+      obj_pose_wrt_world.orientation.w = ee_goal[6];
+
+      cout << "x: " << obj_pose_wrt_world.position.x << endl;
+      cout << "y: " << obj_pose_wrt_world.position.y << endl;
+      cout << "z: " << obj_pose_wrt_world.position.z << endl;
+      cout << "quad x: " << obj_pose_wrt_world.orientation.x << endl;
+      cout << "quad y: " << obj_pose_wrt_world.orientation.y << endl;
+      cout << "quad z: " << obj_pose_wrt_world.orientation.z << endl;
+      cout << "quad w: " << obj_pose_wrt_world.orientation.w << endl << endl;
+
+      transformPose(tflistener, world_frame, goal_frame, obj_pose_wrt_world, ee_pose_wrt_goal_frame);
+
+      geometry_msgs::PoseStamped ee_poseStamped_wrt_goal_frame;
+      ee_poseStamped_wrt_goal_frame.header.frame_id = goal_frame;
+      ee_poseStamped_wrt_goal_frame.pose = ee_pose_wrt_goal_frame;
+
+      cout << "x: " << ee_pose_wrt_goal_frame.position.x << endl;
+      cout << "y: " << ee_pose_wrt_goal_frame.position.y << endl;
+      cout << "z: " << ee_pose_wrt_goal_frame.position.z << endl;
+      cout << "quad x: " << ee_pose_wrt_goal_frame.orientation.x << endl;
+      cout << "quad y: " << ee_pose_wrt_goal_frame.orientation.y << endl;
+      cout << "quad z: " << ee_pose_wrt_goal_frame.orientation.z << endl;
+      cout << "quad w: " << ee_pose_wrt_goal_frame.orientation.w << endl;
+
+      moveGroupInterface.setPoseTarget(ee_poseStamped_wrt_goal_frame, ee_frame);
+      moveGroupInterface.setGoalPositionTolerance(position_tolerance);
+      moveGroupInterface.setGoalOrientationTolerance(orientation_tolerance);
+    }
+    else if (ee_goal_type == "joint")
+    {
+      moveGroupInterface.setJointValueTarget(ee_goal);
+      moveGroupInterface.setGoalJointTolerance(joint_tolerance);
+    }
+    
     moveGroupInterface.setPlannerId(planner_id);
     moveGroupInterface.setPlanningTime(allowed_planning_time);
     moveGroupInterface.setNumPlanningAttempts(num_planning_attempts);
+    moveGroupInterface.allowReplanning(true);
+    
+    auto params = moveGroupInterface.getPlannerParams(planner_id, group_name);
+
+    // Get an iterator pointing to the first element in the map
+    auto it = params.begin();
+  
+    // Iterate through the map and print the elements
+    while (it != params.end())
+    {
+      std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
+      ++it;
+    }
+
+    /*
+    for (auto i = params.begin(); i != params.end(); i++)
+    {
+      cout << "[test_moveit_planner_mobiman::main] params: " << *i << std::endl;
+    }
+    */
 
     bool success = (moveGroupInterface.plan(mgiPlan) == moveit::core::MoveItErrorCode::SUCCESS);
+
+    while(!success){}
+
+    auto plan_joint_names = mgiPlan.trajectory_.joint_trajectory.joint_names;
+    auto plan_joint_traj_points = mgiPlan.trajectory_.joint_trajectory.points;
+    cout << "[test_moveit_planner_mobiman::main] plan_joint_names size: " << plan_joint_names.size() << std::endl;
+    cout << "[test_moveit_planner_mobiman::main] plan_joint_traj_points size: " << plan_joint_traj_points.size() << std::endl;
+    for (size_t i = 0; i < plan_joint_names.size(); i++)
+    {
+      cout << plan_joint_names[i] << endl;
+    }
+
+    for (size_t i = 0; i < plan_joint_traj_points.size(); i++)
+    {
+      cout << plan_joint_traj_points[i].time_from_start << endl;
+    }
+        
 
     std::cout << "[test_moveit_planner_mobiman::main] success: " << success << std::endl;
 

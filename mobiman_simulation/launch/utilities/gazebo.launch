@@ -3,11 +3,11 @@
   <!-- Custom -->
   <arg name="flag_gazebo" default="true"/>
   <arg name="flag_robot" default="true"/>
-  <arg name="flag_moveit" default="true"/>
+  <arg name="flag_moveit" default="false"/>
   <arg name="flag_conveyor" default="true"/>
-  <arg name="flag_pedsim" default="true"/>
+  <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
-  <arg name="flag_map_server" default="false"/>
+  <arg name="flag_map_server" default="true"/>
   <arg name="flag_rviz" default="true"/>
 
   <!-- Gazebo -->
