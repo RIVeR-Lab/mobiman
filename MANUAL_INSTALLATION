@@ -56,11 +56,11 @@ git clone --recurse-submodules https://github.com/rokokoo/conveyor_demo.git
 #git clone git@github.com:ros-perception/pointcloud_to_laserscan.git
 
 ## Install to fix ocs_doc compilation error
-pip install sphinxcontrib-spelling==4.2.1
-pip install sphinxcontrib-bibtex==0.4.2
-pip install Sphinx==1.8.5
-pip install breathe==4.13.0
-pip install sphinx_rtd_theme
+#pip install Sphinx==1.8.5
+#pip install sphinxcontrib-spelling==4.2.1
+#pip install sphinxcontrib-bibtex==0.4.2
+#pip install breathe==4.13.0
+#pip install sphinx_rtd_theme
 
 ## Install dependencies
 sudo apt install ros-noetic-octomap*
