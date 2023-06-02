@@ -192,10 +192,12 @@ include_directories(
 #add_library(testplanner src/testplanner.cpp)
 add_library(map_utility src/map_utility.cpp)
 add_library(scan_utility src/scan_utility.cpp)
+add_library(goal_utility src/goal_utility.cpp)
 #add_library(testplanner2 src/testplanner2.cpp)
 
 add_dependencies(map_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(scan_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(goal_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

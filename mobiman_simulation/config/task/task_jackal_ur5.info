@@ -1,7 +1,7 @@
 ; robot model meta-information
 model_information 
 {
-  robotModelType     1          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
+  robotModelType     2          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
   
   ; motion joints in the URDF to consider fixed
   removeJoints 

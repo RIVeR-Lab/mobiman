@@ -2926,6 +2926,7 @@ void MapUtility::updateModelPc2Scan()
         //publishPC2MsgGzPkgMan(j);
 
         vec_transform_man_.push_back(transform_pkg_man);
+        break;
       }
     }
   }
