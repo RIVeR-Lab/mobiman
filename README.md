@@ -38,10 +38,10 @@ roslaunch mobiman_simulation ocs2_planner_jackal_ur5.launch
 4. In a new terminal run `roscore` and check connectivity with kinova_arm and jackal with ros by running the following commands:
 =======
 
-3. Once Isaac Sim is up and running, open the `jackal_kinnova.usd` located in `~/mobiman_ws/src/mobiman_simulation/models/usd/scenes` in Isaac.
+3. Once Isaac Sim is up and running, open the `jackal_kinova.usd` located in `~/mobiman_ws/src/mobiman_simulation/models/usd/scenes` in Isaac.
 ![Open Scene](https://i.ibb.co/yFpV49F/image.png)
 
-4. In a new terminal run `roscore` and check connectivity with kinnova_arm and jackal with ros by running the following commands:
+4. In a new terminal run `roscore` and check connectivity with kinova_arm and jackal with ros by running the following commands:
 
 >>>>>>> f7f68994aad70905a9e4d69a640e054643323497
 ```
