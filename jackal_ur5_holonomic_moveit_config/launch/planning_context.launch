@@ -18,7 +18,7 @@
   </group>
 
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
-  <group ns="$(arg robot_description)_kinematics">
+  <group ns="$(arg robot_description)_virtual_kinematics">
     <rosparam command="load" file="$(find jackal_ur5_holonomic_moveit_config)/config/kinematics.yaml"/>
 
   </group>

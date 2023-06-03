@@ -102,7 +102,13 @@ class PkgSpawner():
 		print("[spawn_packages::shutdown_hook] Shutting down...")
 
 	def startConveyor(self):
+		#print("[spawn_packages::startConveyor] Conveyor started!")
 		self.cc(10)
+		#rospy.sleep(0.5)
+
+	def stopConveyor(self):
+		#print("[spawn_packages::stopConveyor] Conveyor stopped!")
+		self.cc(0)
 		#rospy.sleep(0.5)
 
 if __name__ == "__main__":
@@ -134,5 +140,10 @@ if __name__ == "__main__":
 		elif ps.getPkgPosX(pkg_man_name) > 5.0:
 			ps.deleteModelPkg(pkg_man_name)
 
+		if (ps.checkModelPkg("longwide_pkg")):
+			ps.stopConveyor()
+
 		#r.sleep()
+
+	print("[spawn_packages::__main__] END")
 		

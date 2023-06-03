@@ -1,13 +1,13 @@
 <launch>
-
   <!-- General Parameters -->
   <!-- Custom -->
   <arg name="flag_gazebo" default="true"/>
   <arg name="flag_robot" default="true"/>
+  <arg name="flag_moveit" default="false"/>
   <arg name="flag_conveyor" default="true"/>
-  <arg name="flag_pedsim" default="true"/>
+  <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
-  <arg name="flag_map_server" default="false"/>
+  <arg name="flag_map_server" default="true"/>
   <arg name="flag_rviz" default="true"/>
 
   <!-- Gazebo -->
@@ -36,35 +36,41 @@
   <arg name="init_ur5_wrist_3_joint" default="0.0"/>
 
   <!-- Launch the Gazebo world -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find mobiman_simulation)/worlds/empty_world_asphalt_ground.world"/>
-    <arg name="paused" value="$(arg paused)"/>
-    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-    <arg name="gui" value="$(arg gui)" />
-    <arg name="headless" value="$(arg headless)"/>
-    <arg name="debug" value="$(arg debug)" />
-    <arg name="verbose" value="$(arg verbose)" />
-  </include>
+  <group if="$(eval arg('flag_gazebo') == true)">
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find mobiman_simulation)/worlds/empty_world_asphalt_ground.world"/>
+      <arg name="paused" value="$(arg paused)"/>
+      <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+      <arg name="gui" value="$(arg gui)" />
+      <arg name="headless" value="$(arg headless)"/>
+      <arg name="debug" value="$(arg debug)" />
+      <arg name="verbose" value="$(arg verbose)" />
+    </include>
 
-  <!-- Launch conveyor belt -->
-  <group if="$(eval arg('flag_conveyor') == true)">
-    <group ns="conveyor">
-      <node name="spawn_conveyor_belt" 
-            pkg="gazebo_ros" 
-            type="spawn_model" 
-            args="-file $(find mobiman_simulation)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt -x 0.0 -y -2.5 -z 0.15" 
-            respawn="false" 
-            output="screen" />
+    <!-- Launch conveyor belt -->
+    <group if="$(eval arg('flag_conveyor') == true)">
+      <group ns="conveyor">
+        <node name="spawn_conveyor_belt" 
+              pkg="gazebo_ros" 
+              type="spawn_model" 
+              args="-file $(find mobiman_simulation)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt -x 0.0 -y -2.5 -z 0.15" 
+              respawn="false" 
+              output="screen" />
+      </group>
+      <node name="spawn_packages" pkg="mobiman_simulation" type="spawn_packages.py" output="screen"/>
     </group>
-    <node name="spawn_packages" pkg="mobiman_simulation" type="spawn_packages.py" output="screen"/>
   </group>
 
   <!-- Launch robot -->
   <group if="$(eval arg('flag_robot') == true)">
     <group ns="$(arg robot_namespace)">
       <!-- Load the URDF into the ROS Parameter Server -->
-      <param  name="robot_description"
-              command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" />
+      <param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" />
+
+      <group if="$(eval arg('flag_moveit') == true)">
+        <include file="$(find mobiman_simulation)/launch/utilities/moveit_planner.launch">
+        </include>
+      </group>
 
       <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
       <node name="urdf_spawner" 
@@ -90,9 +96,8 @@
                   -J ur5_wrist_3_joint $(arg init_ur5_wrist_3_joint)
                   -unpause"/>
 
-      <node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" />
-
-      <!--node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world odom 100" /-->
+      <!--node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" /-->
+      <node name="world_frame_server" pkg="mobiman_simulation" type="world_frame_server" output="screen" />
       
       <!-- Load Robot Semantic -->
       <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
@@ -106,21 +111,25 @@
   </group>
 
   <!-- Run Pedsim -->
-  <group if="$(eval arg('flag_pedsim') == true)">
-    <node pkg="mobiman_simulation" type="spawn_pedsim_agents.py" name="spawn_pedsim_agents" output="screen" />
-    <include file="$(find mobiman_simulation)/launch/utilities/pedsim.launch" />
+  <group if="$(eval arg('flag_gazebo') == true)">
+    <group if="$(eval arg('flag_pedsim') == true)">
+      <node pkg="mobiman_simulation" type="spawn_pedsim_agents.py" name="spawn_pedsim_agents" output="screen" />
+      <include file="$(find mobiman_simulation)/launch/utilities/pedsim.launch" />
+    </group>
   </group>
 
   <!-- Spawn marker on the robot -->
   <node if="$(arg flag_markers)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" />
 
   <!-- Run Map Server -->
-  <group if="$(eval arg('flag_map_server') == true)">
-    <include file="$(find mobiman_simulation)/launch/utilities/map_server.launch" />
+  <group if="$(eval arg('flag_gazebo') == true)">
+    <group if="$(eval arg('flag_map_server') == true)">
+      <include file="$(find mobiman_simulation)/launch/utilities/map_server.launch" />
+    </group>
   </group>
 
   <!-- Run Rviz visualization -->
   <group if="$(eval arg('flag_rviz') == true)">
-    <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2.launch" />
+    <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_gazebo.launch" />
   </group>
 </launch>

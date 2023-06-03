@@ -1,0 +1,33 @@
+# AUTHOR: Neset Unver Akmandor (NUA)
+# E-MAIL: akmandor.n@northeastern.edu
+
+# base
+# arm
+# whole_body
+group_name: "base"
+
+# base_link
+# ur5_tool0
+ee_frame: "base_link"
+
+# pose
+# joint
+ee_goal_type: "joint"
+
+# if ee_goal_type: "pose" -> [p.x, p.y, p.z, q.x, q.y, q.z, q.w] OR [x, y, z, yaw, pitch, roll]
+# if ee_goal_type: "joint" -> [j0, j1, ..., jN]
+#ee_goal: [0.0, -4.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+#ee_goal: [0.0, -4.0, 1.57]
+ee_goal: [3.0, 0.0, 1.57]
+
+# RRTstar
+# BKPIECE
+# LBKPIECE
+planner_id: "RRTstar"
+
+allowed_planning_time: 2
+num_planning_attempts: 1000
+
+# motion_plan_request
+# move_group_interface
+planning_framework: "move_group_interface"

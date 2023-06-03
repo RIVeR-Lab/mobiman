@@ -1,5 +1,22 @@
 {
-    "data_path": "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/normal_pkg.json",
+    "data_path": "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/normal_pkg.json",
+    "obj_bbx": {
+        "max": {
+            "x": 0.20999999344348907,
+            "y": 0.15000000596046448,
+            "z": 0.10999999940395355
+        },
+        "min": {
+            "x": -0.20999999344348907,
+            "y": -0.15000000596046448,
+            "z": -0.09000000357627869
+        }
+    },
+    "obj_dim": {
+        "x": 0.41999998688697815,
+        "y": 0.30000001192092896,
+        "z": 0.20000000298023224
+    },
     "obj_name": "normal_pkg",
     "oct_resolution": 0.02,
     "pc2": {

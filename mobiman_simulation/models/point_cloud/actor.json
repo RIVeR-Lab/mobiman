@@ -1,5 +1,22 @@
 {
     "data_path": "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/actor.json",
+    "obj_bbx": {
+        "max": {
+            "x": 0.10999999940395355,
+            "y": 0.10999999940395355,
+            "z": 0.75
+        },
+        "min": {
+            "x": -0.10999999940395355,
+            "y": -0.10999999940395355,
+            "z": -0.75
+        }
+    },
+    "obj_dim": {
+        "x": 0.2199999988079071,
+        "y": 0.2199999988079071,
+        "z": 1.5
+    },
     "obj_name": "actor",
     "oct_resolution": 0.02,
     "pc2": {

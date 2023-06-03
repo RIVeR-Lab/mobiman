@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.05.16
+// LAST UPDATE: 2023.05.23
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -55,12 +55,18 @@ class MapUtility
     // DESCRIPTION: TODO...
     MapUtility(NodeHandle& nh,
                NodeHandle& pnh,
-               string new_world_frame_name,
-               string gz_model_msg,
-               vector<string> vec_frame_name_ign, 
-               vector<string> vec_frame_name_man,
-               vector<sensor_msgs::PointCloud2> vec_pc2_msg_ign,
-               vector<sensor_msgs::PointCloud2> vec_pc2_msg_man,
+               string& world_frame_name,
+               string& gz_model_msg,
+               vector<string>& vec_frame_name_ign, 
+               vector<sensor_msgs::PointCloud2>& vec_pc2_msg_ign,
+               vector<geometry_msgs::Point>& vec_obj_bbx_min_ign,
+               vector<geometry_msgs::Point>& vec_obj_bbx_max_ign,
+               vector<geometry_msgs::Point>& vec_obj_dim_ign,
+               vector<string>& vec_frame_name_man,
+               vector<sensor_msgs::PointCloud2>& vec_pc2_msg_man,
+               vector<geometry_msgs::Point>& vec_obj_bbx_min_man,
+               vector<geometry_msgs::Point>& vec_obj_bbx_max_man,
+               vector<geometry_msgs::Point>& vec_obj_dim_man,
                double map_resolution);
 
     // DESCRIPTION: TODO...
@@ -240,7 +246,7 @@ class MapUtility
     void setNodeHandle(ros::NodeHandle nh); 
 
     // DESCRIPTION: TODO...
-    void setWorldFrameName(string new_world_frame_name);
+    void setWorldFrameName(string world_frame_name);
 
     // DESCRIPTION: TODO...
     void setMapName(string new_map_name);
@@ -390,12 +396,20 @@ class MapUtility
     void resetMap();
 
     // DESCRIPTION: TODO...
+    void initializeGazeboModelCallback(ros::NodeHandle& nh, string gz_model_msg);
+
+    // DESCRIPTION: TODO...
     void initializeMoveitCollisionObjects();
 
     // DESCRIPTION: TODO...
-    void transformPoint(string frame_from,
-                        string frame_to,
-                        geometry_msgs::Point& p_to_msg);
+    void transformPoint(string& frame_from,
+                        string& frame_to,
+                        geometry_msgs::Point& p_from_to);
+
+    // DESCRIPTION: TODO...
+    void transformPose(string& frame_from,
+                        string& frame_to,
+                        geometry_msgs::Pose& po);
 
     // DESCRIPTION: TODO...
     void createColorOcTree( double map_resolution, 
@@ -504,7 +518,13 @@ class MapUtility
     // DESCRIPTION: TODO...
     void addMoveitCollisionObjects();
 
-    void publishMoveitCollisionObjects();
+    // DESCRIPTION: TODO...
+    void addMoveitCollisionObjects(std::string& obj_id, 
+                                   geometry_msgs::Point& obj_dim, 
+                                   geometry_msgs::Pose& obj_pose_wrt_world);
+
+    // DESCRIPTION: TODO...
+    void updateMoveitCollisionObjects();
 
     // DESCRIPTION: TODO...
     void createRandomStaticObstacleMap(int num, 
@@ -555,7 +575,7 @@ class MapUtility
     void updateOctPC();
 
     // DESCRIPTION: TODO...
-    void updateOct(sensor_msgs::PointCloud2& pc2_msg);
+    void updateOct();
 
     // DESCRIPTION: TODO...
     void updateOct(string oct_msg_name);
@@ -573,7 +593,7 @@ class MapUtility
     void publishPC2Msg();
 
     // DESCRIPTION: TODO...
-    void publishPC2MsgGzConveyor();
+    void publishPC2MsgGzScan();
 
     // DESCRIPTION: TODO...
     void publishPC2MsgGzPkgIgn(int index_pkg_ign);
@@ -586,6 +606,15 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec, vector<geometry_msgs::Point> p1_vec);
+
+    // DESCRIPTION: TODO...
+    void publishWorldFrame(string& world_frame_name, string& origin_frame_name);
+
+    // DESCRIPTION: TODO...
+    void publishVirtualFrames(vector<string>& virtual_frame_names, string& origin_frame_name);
+
+    // DESCRIPTION: TODO...
+    void publishMoveitCollisionObjects();
 
     // DESCRIPTION: TODO...
     void publishDebugArrayVisu();
@@ -621,6 +650,9 @@ class MapUtility
     void gazeboModelCallback(const gazebo_msgs::ModelStates::ConstPtr& msg);
 
     // DESCRIPTION: TODO...
+    void updateModelPc2Scan();
+
+    // DESCRIPTION: TODO...
     void update_states();
 
     // DESCRIPTION: TODO...
@@ -649,7 +681,7 @@ class MapUtility
     // NUA TODO: Change naming convention by adding "_".
     tf::TransformListener* tflistener;
 
-    string world_frame_name;
+    string world_frame_name_;
 
     string map_name;
     string map_frame_name;
@@ -727,6 +759,7 @@ class MapUtility
     sensor_msgs::PointCloud pc_msg;
     sensor_msgs::PointCloud2 pc2_msg;
     sensor_msgs::PointCloud2 laser_pc2_msg;
+    sensor_msgs::PointCloud2 pc2_msg_scan_;
 
     visualization_msgs::MarkerArray debug_array_visu;
     visualization_msgs::Marker debug_visu;
@@ -741,6 +774,8 @@ class MapUtility
     ros::Publisher debug_visu_pub;
 
     // NUA TODO: Add them in constructors if necessary.
+    gazebo_msgs::ModelStates gz_model_states_;
+    
     ros::Subscriber sub_gz_model_;
 
     vector<string> vec_frame_name_ign_;
@@ -752,10 +787,19 @@ class MapUtility
     vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_ign_;
     vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_man_;
 
+    vector<geometry_msgs::Point> vec_obj_bbx_min_ign_;
+    vector<geometry_msgs::Point> vec_obj_bbx_min_man_;
+
+    vector<geometry_msgs::Point> vec_obj_bbx_max_ign_;
+    vector<geometry_msgs::Point> vec_obj_bbx_max_man_;
+
+    vector<geometry_msgs::Point> vec_obj_dim_ign_;
+    vector<geometry_msgs::Point> vec_obj_dim_man_;
+
     std::vector<moveit_msgs::CollisionObject> moveit_collision_objects_;
 
-    visualization_msgs::Marker visu_occ_distance_;
-    visualization_msgs::MarkerArray visu_array_occ_distance_;
+    //visualization_msgs::Marker visu_occ_distance_;
+    //visualization_msgs::MarkerArray visu_array_occ_distance_;
 
     ros::Subscriber sub_oct_msg_;
 

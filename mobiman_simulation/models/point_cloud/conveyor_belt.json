@@ -1,5 +1,22 @@
 {
-    "data_path": "/home/akmandor/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/conveyor_belt.json",
+    "data_path": "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/models/point_cloud/conveyor_belt.json",
+    "obj_bbx": {
+        "max": {
+            "x": 4.989999771118164,
+            "y": 0.25,
+            "z": 0.10999999940395355
+        },
+        "min": {
+            "x": -4.989999771118164,
+            "y": -0.25,
+            "z": -0.09000000357627869
+        }
+    },
+    "obj_dim": {
+        "x": 9.979999542236328,
+        "y": 0.5,
+        "z": 0.20000000298023224
+    },
     "obj_name": "conveyor_belt",
     "oct_resolution": 0.02,
     "pc2": {

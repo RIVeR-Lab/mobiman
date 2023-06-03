@@ -2,18 +2,19 @@
 <!--E-MAIL: akmandor.n@northeastern.edu-->
 
 <launch>
-  <!--arg name="config_test"  default="config_test_" /-->
   <arg name="debug"       default="false" />
 
-  <!-- jackal_ur5_holonomic 
+  <!-- mobiman 
        panda  
   -->
   <arg name="robot"       default="mobiman" />
 
-  <!-- PUBLISH CONFIGURATION PARAMETERS -->
-  <!--rosparam file="$(find mobiman_simulation)/config/tests/$(arg config_test).yaml"/-->
+  <arg name="config_test"  default="config_test_moveit_planner" />
 
-  <group if="$(eval arg('robot') == 'panda')">
+  <!-- PUBLISH CONFIGURATION PARAMETERS -->
+  <rosparam file="$(find mobiman_simulation)/config/tests/$(arg config_test).yaml"/>
+
+  <!--group if="$(eval arg('robot') == 'panda')">
     <include file="$(find panda_moveit_config)/launch/move_group.launch">
       <arg name="allow_trajectory_execution" value="true" />
       <arg name="info" value="true" />
@@ -27,8 +28,11 @@
       <arg name="info" value="true" />
       <arg name="debug" value="$(arg debug)" />
     </include>
-  </group>
+  </group-->
 
   <node name="test_moveit_planner_$(arg robot)" pkg="mobiman_simulation" type="test_moveit_planner_$(arg robot)" output="screen" >
+    <remap from="robot_description" to="robot_description_virtual" />
+    <remap from="robot_description_virtual_semantic" to="robot_description_semantic" />
+    <remap from="robot_description_semantic" to="robot_description_virtual_semantic" />
   </node>
 </launch>

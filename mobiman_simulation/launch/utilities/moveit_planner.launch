@@ -1,0 +1,45 @@
+<!--AUTHOR: Neset Unver Akmandor (NUA)-->
+<!--E-MAIL: akmandor.n@northeastern.edu-->
+
+<launch>
+  <arg name="debug"     default="false" />
+  <arg name="config"    default="config_moveit_planner" />
+  <arg name="gui"       default="false"/>
+
+  <!-- PUBLISH CONFIGURATION PARAMETERS -->
+  <rosparam file="$(find mobiman_simulation)/config/$(arg config).yaml"/>
+
+  <param name="robot_description_virtual" textfile="$(find mobiman_simulation)/urdf/jackal_ur5_holonomic.urdf" />
+
+  <!-- Load Robot Semantic -->
+  <param name="robot_description_virtual_semantic" textfile="$(find mobiman_simulation)/urdf/mobiman.srdf" />
+
+  <node name="virtual_frames_server" pkg="mobiman_simulation" type="virtual_frames_server" output="screen" />
+
+  <!--node name="robot_state_publisher_virtual" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+    <remap from="robot_description" to="robot_description_virtual" />
+    <remap from="/joint_states" to="/joint_states" />
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="virtual" />
+  </node>
+
+  <node name="joint_state_publisher_virtual" pkg="joint_state_publisher" type="joint_state_publisher">
+    <remap from="robot_description" to="robot_description_virtual" />
+    <remap from="robot_description_semantic" to="robot_description_virtual_semantic" />
+    <param name="/use_gui" value="$(arg gui)"/>
+    <param name="tf_prefix" type="string" value="virtual" />
+  </node-->
+
+  <include file="$(find jackal_ur5_holonomic_moveit_config)/launch/move_group.launch">
+    <param name="tf_prefix" type="string" value="virtual" />
+    <arg name="allow_trajectory_execution" value="true" />
+    <arg name="info" value="true" />
+    <arg name="debug" value="$(arg debug)" />
+  </include>
+
+  <!--node name="test_moveit_planner_mobiman" pkg="mobiman_simulation" type="test_moveit_planner_mobiman" output="screen" >
+    <remap from="robot_description" to="robot_description_virtual" />
+    <remap from="robot_description_virtual_semantic" to="robot_description_semantic" />
+    <remap from="robot_description_semantic" to="robot_description_virtual_semantic" />
+  </node-->
+</launch>

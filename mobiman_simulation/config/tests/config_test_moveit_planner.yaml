@@ -1,0 +1,48 @@
+# AUTHOR: Neset Unver Akmandor (NUA)
+# E-MAIL: akmandor.n@northeastern.edu
+
+# base
+# arm
+# whole_body
+group_name: "whole_body"
+
+# base_link
+# ur5_tool0
+ee_frame: "ur5_tool0"
+
+goal_frame: "base_link"
+world_frame: "world"
+
+# pose
+# joint
+ee_goal_type: "pose"
+
+# if ee_goal_type: "pose" -> [p.x, p.y, p.z, q.x, q.y, q.z, q.w] OR [x, y, z, yaw, pitch, roll] // NUA TODO: NOT IMPLEMENTED YET!
+#ee_goal: [1.000001, -1.0, 0.8, 1.000001, 0.000001, 0.000001, 0.000001]
+ee_goal: [0.000001, -0.4, 0.8, 1.000001, 0.000001, 0.000001, 0.000001]
+
+# if ee_goal_type: "joint" -> [j0, j1, ..., jN]
+#ee_goal: [1.000001, -1.0, 1.57, -0.500001, -0.500001, 1.500001, 0.000001, 0.000001, 0.000001]
+#ee_goal: [-3.78, -0.36, 1.0, 1.07, 3.04, 0.2, 1.51]
+#ee_goal: [-0.5, 0.8, 0.0, 0.0, 0.3, 0.0]
+#ee_goal: [3.0, 0.0, 1.57, -0.5, 0.8, 0.0, 0.0, 0.3, 0.0]
+#ee_goal: [4.0, -4.0, 1.57]
+
+position_tolerance: 0.05
+orientation_tolerance: 0.1
+joint_tolerance: 0.05
+
+# RRTstar
+# PRMstar
+# RRTConnect
+# KPIECE
+# BKPIECE
+# LBKPIECE
+planner_id: "RRTstar"
+
+allowed_planning_time: 5
+num_planning_attempts: 2000
+
+# motion_plan_request
+# move_group_interface
+planning_framework: "move_group_interface"
