@@ -269,7 +269,7 @@ install(TARGETS test_moveit_planner_mobiman DESTINATION ${CATKIN_PACKAGE_BIN_DES
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/jackal_check_bridge.py
-  scripts/kinnova_check_bridge.py
+  scripts/kinova_check_bridge.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
