@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-Program for testing ROS Bridge with kinnova model in Isaac Sim
+Program for testing ROS Bridge with kinova model in Isaac Sim
 author - @sarvesh
 email - sarvesh101p@gmail.com
 Referecnce - Isaac documentation and tutorials
@@ -13,7 +13,7 @@ import numpy as np
 import time
 
 
-class kinnova_check_bridge():
+class kinova_check_bridge():
     '''
     Class based on ROS middle-ware
     Functions
@@ -22,10 +22,10 @@ class kinnova_check_bridge():
     '''
     def __init__(self):
         '''
-        Constructor that creates ros node with name `kinnova_isaac_test`
+        Constructor that creates ros node with name `kinova_isaac_test`
         Defines default and limits of joint poses
         '''
-        rospy.init_node("kinnova_moveit_test", anonymous=True)
+        rospy.init_node("kinova_moveit_test", anonymous=True)
         self.pub = rospy.Publisher("/joint_command", JointState, queue_size=10)
         self.joint_state = JointState()
         self.joint_state.name = ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", \
@@ -45,7 +45,7 @@ class kinnova_check_bridge():
     def shutdown(self):
         '''
         Function - Shutdown
-        Resets the kinnova to default pose when ctrl+c is pressed
+        Resets the kinova to default pose when ctrl+c is pressed
         '''
         self.joint_state.position = self.default_joints
         self.pub.publish(self.joint_state)
@@ -55,7 +55,7 @@ class kinnova_check_bridge():
     def main(self):
         '''
         Function - main
-        Manipulates kinnova's position
+        Manipulates kinova's position
         '''
         while not rospy.is_shutdown():
             self.joint_state.position = np.sin(time.time() - self.time_start) * (self.max_joints - self.min_joints) * 0.5 + self.default_joints
@@ -65,10 +65,10 @@ class kinnova_check_bridge():
 
 if __name__ == '__main__':
     '''
-    Entry point of program that utilized kinnova_check_bridge class
+    Entry point of program that utilized kinova_check_bridge class
     '''
-    kinnova = kinnova_check_bridge()
+    kinova = kinova_check_bridge()
     try:
-        kinnova.main()
+        kinova.main()
     except rospy.ROSInterruptException as e:
         pass
