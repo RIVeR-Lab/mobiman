@@ -23,63 +23,15 @@
     ur5
     j2n6s300
   -->
-  <arg name="robot_arm" default="ur5"/>
+  <arg name="robot_arm" default="j2n6s300"/>
 
-  <!-- Task Parameters -->
-  <!-- Initial Robot Pose -->
+  <!-- Initial Robot Base Pose -->
   <arg name="robot0_init_pos_x" default="0.0"/>
   <arg name="robot0_init_pos_y" default="0.0"/>
   <arg name="robot0_init_pos_z" default="0.1"/>
-  <arg name="robot0_init_roll" default="0.0"/>
+  <arg name="robot0_init_roll"  default="0.0"/>
   <arg name="robot0_init_pitch" default="0.0"/>
-  <arg name="robot0_init_yaw" default="0.0"/>
-
-  <!-- Default robot_arm = ur5 -->
-  <arg name="name_arm_joint_1" default="ur5_shoulder_pan_joint"/>
-  <arg name="name_arm_joint_2" default="ur5_shoulder_lift_joint"/>
-  <arg name="name_arm_joint_3" default="ur5_elbow_joint"/>
-  <arg name="name_arm_joint_4" default="ur5_wrist_1_joint"/>
-  <arg name="name_arm_joint_5" default="ur5_wrist_2_joint"/>
-  <arg name="name_arm_joint_6" default="ur5_wrist_3_joint"/>
-
-  <arg name="init_arm_joint_pos_1" default="0.0"/>
-  <arg name="init_arm_joint_pos_2" default="0.0"/>
-  <arg name="init_arm_joint_pos_3" default="0.0"/>
-  <arg name="init_arm_joint_pos_4" default="0.0"/>
-  <arg name="init_arm_joint_pos_5" default="0.0"/>
-  <arg name="init_arm_joint_pos_6" default="0.0"/>
-
-  <arg name="name_finger_joint_1" default=""/>
-  <arg name="name_finger_joint_2" default=""/>
-  <arg name="name_finger_joint_3" default=""/>
-
-  <arg name="init_finger_joint_pos_1" default="0.0"/>
-  <arg name="init_finger_joint_pos_2" default="0.0"/>
-  <arg name="init_finger_joint_pos_3" default="0.0"/>
-
-  <!--group if="$(eval arg('robot_arm') == 'j2n6s300')">
-    <arg name="name_arm_joint_1" default="j2n6s300_joint_1"/>
-    <arg name="name_arm_joint_2" default="j2n6s300_joint_2"/>
-    <arg name="name_arm_joint_3" default="j2n6s300_joint_3"/>
-    <arg name="name_arm_joint_4" default="j2n6s300_joint_4"/>
-    <arg name="name_arm_joint_5" default="j2n6s300_joint_5"/>
-    <arg name="name_arm_joint_6" default="j2n6s300_joint_6"/>
-
-    <arg name="init_arm_joint_pos_1" default="0.0"/>
-    <arg name="init_arm_joint_pos_2" default="2.9"/>
-    <arg name="init_arm_joint_pos_3" default="1.3"/>
-    <arg name="init_arm_joint_pos_4" default="4.2"/>
-    <arg name="init_arm_joint_pos_5" default="1.4"/>
-    <arg name="init_arm_joint_pos_6" default="0.0"/>
-
-    <arg name="name_finger_joint_1" default="j2n6s300_joint_finger_1"/>
-    <arg name="name_finger_joint_2" default="j2n6s300_joint_finger_2"/>
-    <arg name="name_finger_joint_3" default="j2n6s300_joint_finger_3"/>
-
-    <arg name="init_finger_joint_pos_1" default="1.0"/>
-    <arg name="init_finger_joint_pos_2" default="1.0"/>
-    <arg name="init_finger_joint_pos_3" default="1.0"/>
-  </group-->
+  <arg name="robot0_init_yaw"   default="0.0"/>
 
   <!-- Launch the Gazebo world -->
   <group if="$(eval arg('flag_gazebo') == true)">
@@ -126,6 +78,21 @@
 
       <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
       <group if="$(eval arg('robot_arm') == 'ur5')">
+
+        <arg name="name_arm_joint_1" default="ur5_shoulder_pan_joint"/>
+        <arg name="name_arm_joint_2" default="ur5_shoulder_lift_joint"/>
+        <arg name="name_arm_joint_3" default="ur5_elbow_joint"/>
+        <arg name="name_arm_joint_4" default="ur5_wrist_1_joint"/>
+        <arg name="name_arm_joint_5" default="ur5_wrist_2_joint"/>
+        <arg name="name_arm_joint_6" default="ur5_wrist_3_joint"/>
+
+        <arg name="init_arm_joint_pos_1" default="0.0"/>
+        <arg name="init_arm_joint_pos_2" default="0.0"/>
+        <arg name="init_arm_joint_pos_3" default="0.0"/>
+        <arg name="init_arm_joint_pos_4" default="0.0"/>
+        <arg name="init_arm_joint_pos_5" default="0.0"/>
+        <arg name="init_arm_joint_pos_6" default="0.0"/>
+
         <node name="urdf_spawner" 
               pkg="gazebo_ros" 
               type="spawn_model" 
@@ -151,6 +118,29 @@
       </group>
       
       <group if="$(eval arg('robot_arm') == 'j2n6s300')">
+
+        <arg name="name_arm_joint_1" value="j2n6s300_joint_1"/>
+        <arg name="name_arm_joint_2" value="j2n6s300_joint_2"/>
+        <arg name="name_arm_joint_3" value="j2n6s300_joint_3"/>
+        <arg name="name_arm_joint_4" value="j2n6s300_joint_4"/>
+        <arg name="name_arm_joint_5" value="j2n6s300_joint_5"/>
+        <arg name="name_arm_joint_6" value="j2n6s300_joint_6"/>
+
+        <arg name="init_arm_joint_pos_1" value="0.0"/>
+        <arg name="init_arm_joint_pos_2" value="2.9"/>
+        <arg name="init_arm_joint_pos_3" value="1.3"/>
+        <arg name="init_arm_joint_pos_4" value="4.2"/>
+        <arg name="init_arm_joint_pos_5" value="1.4"/>
+        <arg name="init_arm_joint_pos_6" value="0.0"/>
+
+        <arg name="name_finger_joint_1" value="j2n6s300_joint_finger_1"/>
+        <arg name="name_finger_joint_2" value="j2n6s300_joint_finger_2"/>
+        <arg name="name_finger_joint_3" value="j2n6s300_joint_finger_3"/>
+
+        <arg name="init_finger_joint_pos_1" value="1.0"/>
+        <arg name="init_finger_joint_pos_2" value="1.0"/>
+        <arg name="init_finger_joint_pos_3" value="1.0"/>
+
         <node name="urdf_spawner" 
               pkg="gazebo_ros" 
               type="spawn_model" 
@@ -194,6 +184,10 @@
 
       <group if="$(eval arg('robot_arm') == 'j2n6s300')">
         <include file="$(find mobiman_control)/launch/control_jackal_jaco.launch" />
+
+        <node name="command_robot_home_pose" pkg="kinova_control" type="move_robot.py"
+          respawn="false" output="screen" args="$(arg robot_arm)">       
+        </node>
       </group>
     </group>
   </group>

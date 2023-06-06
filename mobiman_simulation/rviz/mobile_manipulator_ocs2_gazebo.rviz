@@ -140,6 +140,79 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        j2n6s300_end_effector:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        j2n6s300_link_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_5:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_6:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_finger_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_finger_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_finger_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_finger_tip_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_finger_tip_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_finger_tip_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        jaco_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         mid_mount:
           Alpha: 1
           Show Axes: false
@@ -164,57 +237,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         rear_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ur5_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ur5_base_link_inertia:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_flange:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ur5_forearm_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_shoulder_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_tool0:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        ur5_upper_arm_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_wrist_1_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_wrist_2_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        ur5_wrist_3_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -272,6 +294,36 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: false
+        j2n6s300_end_effector:
+          Value: true
+        j2n6s300_link_1:
+          Value: false
+        j2n6s300_link_2:
+          Value: false
+        j2n6s300_link_3:
+          Value: false
+        j2n6s300_link_4:
+          Value: false
+        j2n6s300_link_5:
+          Value: false
+        j2n6s300_link_6:
+          Value: false
+        j2n6s300_link_base:
+          Value: true
+        j2n6s300_link_finger_1:
+          Value: false
+        j2n6s300_link_finger_2:
+          Value: false
+        j2n6s300_link_finger_3:
+          Value: false
+        j2n6s300_link_finger_tip_1:
+          Value: false
+        j2n6s300_link_finger_tip_2:
+          Value: false
+        j2n6s300_link_finger_tip_3:
+          Value: false
+        jaco_base_link:
+          Value: false
         long_pkg:
           Value: true
         mid_mount:
@@ -290,28 +342,6 @@ Visualization Manager:
           Value: false
         red_cube:
           Value: true
-        ur5_base:
-          Value: false
-        ur5_base_link:
-          Value: false
-        ur5_base_link_inertia:
-          Value: false
-        ur5_flange:
-          Value: false
-        ur5_forearm_link:
-          Value: false
-        ur5_shoulder_link:
-          Value: false
-        ur5_tool0:
-          Value: true
-        ur5_upper_arm_link:
-          Value: false
-        ur5_wrist_1_link:
-          Value: false
-        ur5_wrist_2_link:
-          Value: false
-        ur5_wrist_3_link:
-          Value: false
         world:
           Value: true
       Marker Alpha: 1
@@ -361,18 +391,24 @@ Visualization Manager:
                       {}
                 d435_cam1camera_depth_frame_gazebo:
                   {}
-            ur5_base_link:
-              ur5_base:
-                {}
-              ur5_base_link_inertia:
-                ur5_shoulder_link:
-                  ur5_upper_arm_link:
-                    ur5_forearm_link:
-                      ur5_wrist_1_link:
-                        ur5_wrist_2_link:
-                          ur5_wrist_3_link:
-                            ur5_flange:
-                              ur5_tool0:
+            jaco_base_link:
+              j2n6s300_link_base:
+                j2n6s300_link_1:
+                  j2n6s300_link_2:
+                    j2n6s300_link_3:
+                      j2n6s300_link_4:
+                        j2n6s300_link_5:
+                          j2n6s300_link_6:
+                            j2n6s300_end_effector:
+                              {}
+                            j2n6s300_link_finger_1:
+                              j2n6s300_link_finger_tip_1:
+                                {}
+                            j2n6s300_link_finger_2:
+                              j2n6s300_link_finger_tip_2:
+                                {}
+                            j2n6s300_link_finger_3:
+                              j2n6s300_link_finger_tip_3:
                                 {}
           conveyor_belt:
             {}
@@ -683,7 +719,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_target
       Name: MarkerArray
       Namespaces:
-        target_wp1: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -714,7 +750,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.0522360801696777
+      Distance: 5.075876712799072
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -730,9 +766,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.25479674339294434
+      Pitch: 0.36479663848876953
       Target Frame: <Fixed Frame>
-      Yaw: 1.069193959236145
+      Yaw: 1.5091935396194458
     Saved: ~
 Window Geometry:
   Displays:

@@ -20,18 +20,24 @@
             type="spawner" 
             respawn="false"
       output="screen" args="joint_state_controller
-                              jackal_velocity_controller"/>
-                              <!--theta_joint_position_controller"/-->
+                            jackal_velocity_controller
+                            effort_joint_trajectory_controller
+                            effort_finger_trajectory_controller    
+                            finger_tip_1_position_controller
+                            finger_tip_2_position_controller 
+                            finger_tip_3_position_controller"/>
       
       <!-- Effort Joint trajectory controller-->
-      <node name="$(arg kinova_robotName)_trajectory_controller" pkg="controller_manager" type="spawner" 
-            output="screen" ns="$(arg kinova_robotName)"
+      <!--node name="$(arg kinova_robotName)_trajectory_controller" 
+            pkg="controller_manager" 
+            type="spawner" 
+            output="screen"
             args="effort_joint_trajectory_controller
             effort_finger_trajectory_controller    
             finger_tip_1_position_controller
             finger_tip_2_position_controller 
             finger_tip_3_position_controller
-            joint_state_controller"/>
+            joint_state_controller"/-->
 
       <!-- Start EKF for localization jackal_velocity_controller-->
       <!--node pkg="robot_localization" 
