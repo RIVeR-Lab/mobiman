@@ -1,0 +1,57 @@
+<launch>
+
+      <arg name="kinova_robotType" default="j2n6s300"/>
+      <arg name="kinova_robotName" default="$(arg kinova_robotType)"/> 
+
+      <!-- convert joint states to TF transforms for rviz, etc -->
+      <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+      <remap from="/joint_states" to="/joint_states" />
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" type="string" value="" />
+      </node>
+
+      <!-- Load joint controller configurations from YAML file to parameter server -->
+      <!--rosparam file="$(find mobiman_control)/config/jackal_ur5/control.yaml" command="load"/-->
+      <rosparam file="$(find mobiman_control)/config/jackal_jaco/control.yaml" command="load"/>
+
+      <!-- load the controllers -->
+      <node name="controller_spawner" 
+            pkg="controller_manager" 
+            type="spawner" 
+            respawn="false"
+      output="screen" args="joint_state_controller
+                              jackal_velocity_controller"/>
+                              <!--theta_joint_position_controller"/-->
+      
+      <!-- Effort Joint trajectory controller-->
+      <node name="$(arg kinova_robotName)_trajectory_controller" pkg="controller_manager" type="spawner" 
+            output="screen" ns="$(arg kinova_robotName)"
+            args="effort_joint_trajectory_controller
+            effort_finger_trajectory_controller    
+            finger_tip_1_position_controller
+            finger_tip_2_position_controller 
+            finger_tip_3_position_controller
+            joint_state_controller"/>
+
+      <!-- Start EKF for localization jackal_velocity_controller-->
+      <!--node pkg="robot_localization" 
+            type="ekf_localization_node" 
+            name="ekf_localization">
+      <rosparam command="load" 
+                  file="$(find mobiman_control)/config/jackal_ur5/localization.yaml" />
+      </node-->
+
+      <node pkg="interactive_marker_twist_server" 
+            type="marker_server" 
+            name="twist_marker_server" 
+            output="screen"/>
+
+      <node pkg="twist_mux" 
+            type="twist_mux" 
+            name="twist_mux">
+      <!--rosparam command="load" file="$(find mobiman_control)/config/jackal_ur5/twist_mux.yaml" /-->
+      <rosparam command="load" file="$(find mobiman_control)/config/jackal_jaco/twist_mux.yaml" />
+      <remap from="cmd_vel_out" to="jackal_velocity_controller/cmd_vel"/>
+      </node>
+
+</launch>

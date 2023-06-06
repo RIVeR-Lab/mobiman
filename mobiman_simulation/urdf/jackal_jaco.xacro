@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<robot name="mobiman" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name="robot_namespace" default="/"/>
+    <xacro:property name="arm_prefix" value="ur5_" />
+    <xacro:property name="path_meshes" value="package://mobiman_simulation/meshes" />
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+    <xacro:property name="M_PI_2" value="1.570796327" />
+    
+    <xacro:include filename="$(find mobiman_simulation)/urdf/materials.xacro" />
+
+    <!-- Import mobile base -->
+    <!--xacro:include filename="$(find husky_description)/urdf/husky.urdf.xacro"/-->
+    <xacro:include filename="$(find jackal_description)/urdf/jackal.urdf.xacro"/>
+
+    <!-- Import robotic arm -->
+    <!--xacro:include filename="$(find ur_description)/urdf/inc/ur5_macro.xacro"/>
+    <xacro:ur5_robot prefix="${arm_prefix}" /-->
+    <xacro:include filename="$(find kinova_description)/urdf/j2n6s300.xacro"/>
+
+    <!-- Import lidar-->
+    <!--xacro:include filename="$(find lms1xx)/urdf/sick_lms1xx_mount.urdf.xacro" /-->
+
+    <!-- Import camera-->
+    <!--xacro:include filename="$(find realsense_gazebo_plugin)/urdf/realsense-RS200.macro.xacro"/-->
+    <xacro:include filename="$(find mobiman_simulation)/urdf/realsense_d435.macro.xacro" />
+
+    <!-- Attach robotic arm to the mobile base -->
+    <!--joint name="ur5_to_jackal" type="fixed">
+        <parent link="base_link"/>
+        <child link="ur5_base_link"/>
+        <origin xyz="0 0 0.2" rpy="0 0 0" />
+    </joint-->
+
+    <link name="jaco_base_link"/>
+    
+    <joint name="jaco_to_jackal" type="fixed">
+        <parent link="base_link"/>
+        <child link="jaco_base_link"/>
+        <origin xyz="0 0 0.2" rpy="0 0 0" />    
+    </joint> 
+
+    <xacro:property name="robot_root" value="jaco_base_link" />
+
+    <xacro:j2n6s300  base_parent="${robot_root}"/>
+
+    <!-- Create lidar instance -->
+    <!--xacro:sick_lms1xx_mount prefix="jackal"
+        parent_link="base_link"
+        topic="jackal/scan"
+        min_range="0.2"
+        max_range="4.0">
+        <origin xyz="0 0 0.18" rpy="0 0 0" />
+    </xacro:sick_lms1xx_mount-->
+
+    <!-- Create camera instance -->
+    <xacro:realsense-d435 
+        prefix="d435_cam1" 
+        parent="base_link">
+        <origin xyz="0.2 0.0 0.2" rpy="0.0 0.0 0.0" />   
+    </xacro:realsense-d435>
+
+</robot>
