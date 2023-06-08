@@ -7,6 +7,15 @@
 
 Please follow the instructions in [MANUAL_INSTALLATION](https://github.com/RIVeR-Lab/mobiman/blob/main/MANUAL_INSTALLATION).
 
+OR
+
+```
+wget https://www.dropbox.com/s/buzni9moi17rhdz/mobiman_install.sh
+chmod +x mobiman_install.sh
+./mobiman_install.sh -d=mobiman_ws # mobiman_ws is empty in this case, don't run on existing workspace so things don't break.
+```
+
+
 ## Run:
 
 In seperate terminals:
