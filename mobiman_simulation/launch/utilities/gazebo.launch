@@ -19,21 +19,19 @@
   <arg name="verbose" default="false"/>
   <arg name="robot_namespace" default="/"/>
 
-  <!-- Task Parameters -->
-  <!-- Initial Robot Pose -->
+  <!-- 
+    ur5
+    j2n6s300
+  -->
+  <arg name="robot_arm" default="j2n6s300"/>
+
+  <!-- Initial Robot Base Pose -->
   <arg name="robot0_init_pos_x" default="0.0"/>
   <arg name="robot0_init_pos_y" default="0.0"/>
   <arg name="robot0_init_pos_z" default="0.1"/>
-  <arg name="robot0_init_roll" default="0.0"/>
+  <arg name="robot0_init_roll"  default="0.0"/>
   <arg name="robot0_init_pitch" default="0.0"/>
-  <arg name="robot0_init_yaw" default="0.0"/>
-
-  <arg name="init_ur5_shoulder_pan_joint" default="0.0"/>
-  <arg name="init_ur5_shoulder_lift_joint" default="0.0"/> <!-- -1.2 -->
-  <arg name="init_ur5_elbow_joint" default="0.0"/> <!-- -2.0 -->
-  <arg name="init_ur5_wrist_1_joint" default="0.0"/>
-  <arg name="init_ur5_wrist_2_joint" default="0.0"/>
-  <arg name="init_ur5_wrist_3_joint" default="0.0"/>
+  <arg name="robot0_init_yaw"   default="0.0"/>
 
   <!-- Launch the Gazebo world -->
   <group if="$(eval arg('flag_gazebo') == true)">
@@ -65,7 +63,13 @@
   <group if="$(eval arg('flag_robot') == true)">
     <group ns="$(arg robot_namespace)">
       <!-- Load the URDF into the ROS Parameter Server -->
-      <param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" />
+      <group if="$(eval arg('robot_arm') == 'ur5')">
+        <param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_ur5.urdf.xacro'" />
+      </group>
+      
+      <group if="$(eval arg('robot_arm') == 'j2n6s300')">
+        <param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_jaco.xacro'" />
+      </group>
 
       <group if="$(eval arg('flag_moveit') == true)">
         <include file="$(find mobiman_simulation)/launch/utilities/moveit_planner.launch">
@@ -73,28 +77,96 @@
       </group>
 
       <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-      <node name="urdf_spawner" 
-            pkg="gazebo_ros" 
-            type="spawn_model" 
-            respawn="false" 
-            output="screen"
-            args="-urdf 
-                  -model mobiman 
-                  -param robot_description 
-                  -robot_namespace $(arg robot_namespace)
-                  -x $(arg robot0_init_pos_x)
-                  -y $(arg robot0_init_pos_y)
-                  -z $(arg robot0_init_pos_z)
-                  -R $(arg robot0_init_roll)
-                  -P $(arg robot0_init_pitch)  
-                  -Y $(arg robot0_init_yaw)
-                  -J ur5_shoulder_pan_joint $(arg init_ur5_shoulder_pan_joint)
-                  -J ur5_shoulder_lift_joint $(arg init_ur5_shoulder_lift_joint)
-                  -J ur5_elbow_joint $(arg init_ur5_elbow_joint)
-                  -J ur5_wrist_1_joint $(arg init_ur5_wrist_1_joint)
-                  -J ur5_wrist_2_joint $(arg init_ur5_wrist_2_joint)
-                  -J ur5_wrist_3_joint $(arg init_ur5_wrist_3_joint)
-                  -unpause"/>
+      <group if="$(eval arg('robot_arm') == 'ur5')">
+
+        <arg name="name_arm_joint_1" default="ur5_shoulder_pan_joint"/>
+        <arg name="name_arm_joint_2" default="ur5_shoulder_lift_joint"/>
+        <arg name="name_arm_joint_3" default="ur5_elbow_joint"/>
+        <arg name="name_arm_joint_4" default="ur5_wrist_1_joint"/>
+        <arg name="name_arm_joint_5" default="ur5_wrist_2_joint"/>
+        <arg name="name_arm_joint_6" default="ur5_wrist_3_joint"/>
+
+        <arg name="init_arm_joint_pos_1" default="0.0"/>
+        <arg name="init_arm_joint_pos_2" default="0.0"/>
+        <arg name="init_arm_joint_pos_3" default="0.0"/>
+        <arg name="init_arm_joint_pos_4" default="0.0"/>
+        <arg name="init_arm_joint_pos_5" default="0.0"/>
+        <arg name="init_arm_joint_pos_6" default="0.0"/>
+
+        <node name="urdf_spawner" 
+              pkg="gazebo_ros" 
+              type="spawn_model" 
+              respawn="false" 
+              output="screen"
+              args="-urdf 
+                    -model mobiman 
+                    -param robot_description 
+                    -robot_namespace $(arg robot_namespace)
+                    -x $(arg robot0_init_pos_x)
+                    -y $(arg robot0_init_pos_y)
+                    -z $(arg robot0_init_pos_z)
+                    -R $(arg robot0_init_roll)
+                    -P $(arg robot0_init_pitch)  
+                    -Y $(arg robot0_init_yaw)
+                    -J $(arg name_arm_joint_1) $(arg init_arm_joint_pos_1)
+                    -J $(arg name_arm_joint_2) $(arg init_arm_joint_pos_2)
+                    -J $(arg name_arm_joint_3) $(arg init_arm_joint_pos_3)
+                    -J $(arg name_arm_joint_4) $(arg init_arm_joint_pos_4)
+                    -J $(arg name_arm_joint_5) $(arg init_arm_joint_pos_5)
+                    -J $(arg name_arm_joint_6) $(arg init_arm_joint_pos_6)
+                    -unpause"/>
+      </group>
+      
+      <group if="$(eval arg('robot_arm') == 'j2n6s300')">
+
+        <arg name="name_arm_joint_1" value="j2n6s300_joint_1"/>
+        <arg name="name_arm_joint_2" value="j2n6s300_joint_2"/>
+        <arg name="name_arm_joint_3" value="j2n6s300_joint_3"/>
+        <arg name="name_arm_joint_4" value="j2n6s300_joint_4"/>
+        <arg name="name_arm_joint_5" value="j2n6s300_joint_5"/>
+        <arg name="name_arm_joint_6" value="j2n6s300_joint_6"/>
+
+        <arg name="init_arm_joint_pos_1" value="0.0"/>
+        <arg name="init_arm_joint_pos_2" value="2.9"/>
+        <arg name="init_arm_joint_pos_3" value="1.3"/>
+        <arg name="init_arm_joint_pos_4" value="4.2"/>
+        <arg name="init_arm_joint_pos_5" value="1.4"/>
+        <arg name="init_arm_joint_pos_6" value="0.0"/>
+
+        <arg name="name_finger_joint_1" value="j2n6s300_joint_finger_1"/>
+        <arg name="name_finger_joint_2" value="j2n6s300_joint_finger_2"/>
+        <arg name="name_finger_joint_3" value="j2n6s300_joint_finger_3"/>
+
+        <arg name="init_finger_joint_pos_1" value="1.0"/>
+        <arg name="init_finger_joint_pos_2" value="1.0"/>
+        <arg name="init_finger_joint_pos_3" value="1.0"/>
+
+        <node name="urdf_spawner" 
+              pkg="gazebo_ros" 
+              type="spawn_model" 
+              respawn="false" 
+              output="screen"
+              args="-urdf 
+                    -model mobiman 
+                    -param robot_description 
+                    -robot_namespace $(arg robot_namespace)
+                    -x $(arg robot0_init_pos_x)
+                    -y $(arg robot0_init_pos_y)
+                    -z $(arg robot0_init_pos_z)
+                    -R $(arg robot0_init_roll)
+                    -P $(arg robot0_init_pitch)  
+                    -Y $(arg robot0_init_yaw)
+                    -J $(arg name_arm_joint_1) $(arg init_arm_joint_pos_1)
+                    -J $(arg name_arm_joint_2) $(arg init_arm_joint_pos_2)
+                    -J $(arg name_arm_joint_3) $(arg init_arm_joint_pos_3)
+                    -J $(arg name_arm_joint_4) $(arg init_arm_joint_pos_4)
+                    -J $(arg name_arm_joint_5) $(arg init_arm_joint_pos_5)
+                    -J $(arg name_arm_joint_6) $(arg init_arm_joint_pos_6)
+                    -J $(arg name_finger_joint_1) $(arg init_finger_joint_pos_1)
+                    -J $(arg name_finger_joint_2) $(arg init_finger_joint_pos_2)
+                    -J $(arg name_finger_joint_3) $(arg init_finger_joint_pos_3)
+                    -unpause"/>
+        </group>
 
       <!--node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" /-->
       <node name="world_frame_server" pkg="mobiman_simulation" type="world_frame_server" output="screen" />
@@ -106,7 +178,17 @@
       <!--include file="$(find mobiman_simulation)/launch/utilities/camera_process.launch" /-->
 
       <!-- Run robot control on the gazebo master -->
-      <include file="$(find mobiman_control)/launch/control_jackal_ur5.launch" />
+      <group if="$(eval arg('robot_arm') == 'ur5')">
+        <include file="$(find mobiman_control)/launch/control_jackal_ur5.launch" />
+      </group>
+
+      <group if="$(eval arg('robot_arm') == 'j2n6s300')">
+        <include file="$(find mobiman_control)/launch/control_jackal_jaco.launch" />
+
+        <node name="command_robot_home_pose" pkg="mobiman_simulation" type="move_jaco.py"
+          respawn="false" output="screen" args="$(arg robot_arm)">       
+        </node>
+      </group>
     </group>
   </group>
 
