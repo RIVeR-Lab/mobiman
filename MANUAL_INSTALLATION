@@ -33,6 +33,12 @@ cd universal_robot/
 git checkout noetic-akmandor
 cd ..
 
+### Clone kinova-ros
+git clone git@github.com:RIVeR-Lab/kinova-ros.git
+cd kinova-ros
+git checkout noetic-akmandor
+cd ..
+
 ### Clone geometry2
 git clone git@github.com:RIVeR-Lab/geometry2.git
 cd geometry2/
