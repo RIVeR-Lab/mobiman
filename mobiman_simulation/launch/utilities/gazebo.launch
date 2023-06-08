@@ -185,7 +185,7 @@
       <group if="$(eval arg('robot_arm') == 'j2n6s300')">
         <include file="$(find mobiman_control)/launch/control_jackal_jaco.launch" />
 
-        <node name="command_robot_home_pose" pkg="kinova_control" type="move_robot.py"
+        <node name="command_robot_home_pose" pkg="mobiman_simulation" type="move_jaco.py"
           respawn="false" output="screen" args="$(arg robot_arm)">       
         </node>
       </group>

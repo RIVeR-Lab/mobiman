@@ -256,6 +256,8 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
+        blue_cube:
+          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -325,6 +327,8 @@ Visualization Manager:
         jaco_base_link:
           Value: false
         long_pkg:
+          Value: true
+        longwide_pkg:
           Value: true
         mid_mount:
           Value: false
@@ -410,11 +414,15 @@ Visualization Manager:
                             j2n6s300_link_finger_3:
                               j2n6s300_link_finger_tip_3:
                                 {}
+          blue_cube:
+            {}
           conveyor_belt:
             {}
           green_cube:
             {}
           long_pkg:
+            {}
+          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -750,7 +758,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.075876712799072
+      Distance: 4.166603088378906
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -758,17 +766,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.29496583342552185
-        Y: -1.4510960578918457
-        Z: 0.3052792549133301
+        X: -0.1779252290725708
+        Y: -1.1980327367782593
+        Z: -0.041632067412137985
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.36479663848876953
+      Pitch: 0.48479658365249634
       Target Frame: <Fixed Frame>
-      Yaw: 1.5091935396194458
+      Yaw: 1.4541953802108765
     Saved: ~
 Window Geometry:
   Displays:
