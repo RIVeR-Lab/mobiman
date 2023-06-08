@@ -7,6 +7,15 @@
 
 Please follow the instructions in [MANUAL_INSTALLATION](https://github.com/RIVeR-Lab/mobiman/blob/main/MANUAL_INSTALLATION).
 
+OR
+
+```
+wget https://www.dropbox.com/s/buzni9moi17rhdz/mobiman_install.sh
+chmod +x mobiman_install.sh
+./mobiman_install.sh -d=mobiman_ws # mobiman_ws is empty in this case, don't run on existing workspace so things don't break.
+```
+
+
 ## Run:
 
 In seperate terminals:
@@ -41,12 +50,12 @@ roslaunch mobiman_simulation ocs2_planner_jackal_ur5.launch
 5. Fill out the final bit and `Complete the Setup`.
 ![Config](https://i.ibb.co/SnqqtnS/P3.jpg)
 <!-- <<<<<<< HEAD -->
-6. Once Isaac Sim is up and running, open the `jackal_kinova.usd` located in `~/mobiman_ws/src/mobiman_simulation/models/usd/scenes` in Isaac.
+6. Once Isaac Sim is up and running, open the `jaco_jackal_warehouse.usd` (this will take some time) located in `~/mobiman_ws/src/mobiman_simulation/models/usd/scenes` in Isaac.
 ![Open Scene](https://i.ibb.co/yFpV49F/image.png)
 7. In a new terminal run `roscore` and check connectivity with kinova_arm and jackal with ros by running the following commands:
 <!-- ======= -->
 
-8. Once Isaac Sim is up and running, open the `jackal_kinova.usd` located in `~/mobiman_ws/src/mobiman_simulation/models/usd/scenes` in Isaac.
+8. Once Isaac Sim is up and running, open the `jaco_jackal_warehouse.usd` located in `~/mobiman_ws/src/mobiman_simulation/models/usd/scenes` in Isaac.
 ![Open Scene](https://i.ibb.co/yFpV49F/image.png)
 
 9. In a new terminal run `roscore` and check connectivity with kinova_arm and jackal with ros by running the following commands:
