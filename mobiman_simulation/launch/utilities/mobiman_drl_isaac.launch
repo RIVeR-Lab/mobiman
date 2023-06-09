@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <node name="mobiman_drl_isaac" pkg="mobiman_simulation" type="mobiman_drl_isaac.py" output="screen" />
+</launch>
