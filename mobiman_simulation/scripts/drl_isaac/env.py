@@ -1,4 +1,4 @@
-#### LAST UPDATE: 2023.06.09
+#### LAST UPDATE: 2023.06.10
 ##
 #### AUTHOR: 
 ## Neset Unver Akmandor (NUA)
@@ -25,14 +25,18 @@ class Isaac_envs(gym.Env):
     metadata = {"render.modes": ["human"]}
 
     def __init__(
-        self,
-        skip_frame=1,
-        physics_dt=1.0 / 60.0,
-        rendering_dt=1.0 / 60.0,
-        max_episode_length=3000,
-        seed=0,
-        headless=True,
-    ) -> None:
+            self,
+            skip_frame=1,
+            physics_dt=1.0 / 60.0,
+            rendering_dt=1.0 / 60.0,
+            max_episode_length=3000,
+            seed=0,
+            headless=True,
+            env_name="random_walk",
+            robot_name="jetbot",
+            action_type="discrete"
+        ) -> None:
+        
         from omni.isaac.kit import SimulationApp
 
         self.headless = headless
@@ -42,13 +46,14 @@ class Isaac_envs(gym.Env):
         self._max_episode_length = max_episode_length
         self._steps_after_reset = int(rendering_dt / physics_dt)
         self.dc            = omni.isaac.dynamic_control._dynamic_control.acquire_dynamic_control_interface()
+        
         from isaac_robots  import isaac_robot
         from isaac_envs    import isaac_envs  
         from omni.isaac.core.objects import VisualCuboid
 
-        env_name    = "random_walk" #random_walk
-        robot_name  = "jetbot"
-        action_type = "discrete"
+        #env_name    = "random_walk" #random_walk
+        #robot_name  = robot_name
+        #action_type = "discrete"
 
         self._env_name    = env_name
         self._action_type = action_type

@@ -1,1 +1,4 @@
 mobiman_simulation/codegen/
+__pycache__/
+events.out.tfevents*
+mobiman_simulation/dataset/drl_training_data/

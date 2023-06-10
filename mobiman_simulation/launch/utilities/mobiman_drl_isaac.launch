@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+    <!-- CONFIGURATION OPTIONS
+        config_mobiman_drl_isaac
+    -->
+    <arg name="config_mobiman_drl_isaac"  default="config_mobiman_drl_isaac" />
+
+    <rosparam file="$(find mobiman_simulation)/config/drl/$(arg config_mobiman_drl_isaac).yaml"/>
+
     <node name="mobiman_drl_isaac" pkg="mobiman_simulation" type="mobiman_drl_isaac.py" output="screen" />
 </launch>

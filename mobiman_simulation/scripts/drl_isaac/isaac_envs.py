@@ -26,6 +26,9 @@ class isaac_envs():
         headless=True
     
     ) -> None:
+        
+        print("[isaac_envs::__init__] START")
+
         from omni.isaac.core import World
         from omni.isaac.core.utils.nucleus import find_nucleus_server
         from omni.isaac.core.utils.nucleus import get_assets_root_path
@@ -49,6 +52,8 @@ class isaac_envs():
         self.stage = omni.usd.get_context().get_stage()
         self.lidarInterface = _range_sensor.acquire_lidar_sensor_interface()
 
+        print("[isaac_envs::__init__] END")
+
         return
     
     
@@ -61,6 +66,9 @@ class isaac_envs():
         Returns:
             World
         """
+
+        print("[isaac_envs::add_environment] START")
+
         from omni.isaac.core.utils.stage import add_reference_to_stage
 
         asset_path = ""
@@ -101,11 +109,16 @@ class isaac_envs():
         else:
             carb.log_error("Could not find the selected environment")
         
+        print("[isaac_envs::add_environment] END")
+
         return self._my_world
     
     ## Set sensor's configurations
 
     def _set_camera(self, name: str, prim_path: str, headless: bool, size: Optional[np.ndarray] = np.array( [128, 128]) ):
+        
+        print("[isaac_envs::_set_camera] START")
+        
         from omni.isaac.synthetic_utils import SyntheticDataHelper
         from pxr import Gf, UsdGeom
         
@@ -165,9 +178,15 @@ class isaac_envs():
         self.sd_helper.initialize(sensor_names=["depth", "rgb"], viewport_api=self.viewport_window)
         self._my_world.render()
         self.sd_helper.get_groundtruth(["depth", "rgb"], self.viewport_window)
+        
+        print("[isaac_envs::_set_camera] END")
+
         return
     
     def _set_lidar(self, name: str, prim_path: str, headless: bool, number_lasers: Optional[int] = 12):        
+        
+        print("[isaac_envs::_set_lidar] START")
+        
         lidarPath = ""
         parent    = ""
         min_range = 0.1
@@ -230,11 +249,17 @@ class isaac_envs():
             yaw_offset=0.0,
             enable_semantics=False
         )
+
+        print("[isaac_envs::_set_lidar] END")
+
         return
     
     ## Return sensor's data
     
     def _get_cam_data(self, type: str = "rgb"):
+
+        print("[isaac_envs::_get_cam_data] START")
+
         self._my_world.render()
         if type=="depth":
              gt = self.sd_helper.get_groundtruth(["depth"], self.viewport_window, verify_sensor_init=False, wait_for_sensor_data=0)
@@ -243,9 +268,14 @@ class isaac_envs():
         else:
             gt = self.sd_helper.get_groundtruth(["rgb"], self.viewport_window, verify_sensor_init=False, wait_for_sensor_data=0)
             img = gt["rgb"][:, :, :3]
+
+        print("[isaac_envs::_get_cam_data] END")
+
         return img
     
     def _get_lidar_data(self, lidar_selector: Optional[int] = 1):
+
+        print("[isaac_envs::_get_lidar_data] START")
 
         if lidar_selector==1:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path)
@@ -253,12 +283,18 @@ class isaac_envs():
         if lidar_selector==2:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path2)
             depth_points = np.resize(depth_points, (1,self.number_lasers))
+
+        print("[isaac_envs::_get_lidar_data] END")
+
         return depth_points
     
 
     ## Random walk env
 
     def _set_random_walk_env(self, name: str = "jetbot", map_dist_unit=50, map_dimension=5, height=20):
+
+        print("[isaac_envs::_set_random_walk_env] START")
+
         from pxr import UsdGeom
 
         if name=="jetbot" or name=="kaya":
@@ -337,9 +373,15 @@ class isaac_envs():
                 self.cuboid_T["wall_cube{0}".format(i)] =  xform.AddTransformOp()
                 i += 1
             i += 1
+
+        print("[isaac_envs::_set_random_walk_env] END")
+
         return
 
     def _generate_map(self, max_n_tunel = 40, max_length_tunel = 3, random = True):
+
+        print("[isaac_envs::_generate_map] START")
+
         from pxr import Gf
         # Reference: https://www.freecodecamp.org/news/how-to-make-your-own-procedural-dungeon-map-generator-using-the-random-walk-algorithm-e0085c8aa9a/
         map = np.ones((self._map_dimension, self._map_dimension))
@@ -397,9 +439,14 @@ class isaac_envs():
                 i += 1
             i += 1
         
+        print("[isaac_envs::_generate_map] END")
+
         return map
 
     def _generate_vertical_path_map(self, random = True):
+
+        print("[isaac_envs::_generate_vertical_path_map] START")
+
         mapita_aux = np.zeros((2, self._map_dimension))
         mapita_core = np.rot90(self._generate_map(random=random), axes=(1,0))
         no_path = True
@@ -417,9 +464,15 @@ class isaac_envs():
         
         
         map = np.concatenate((mapita_aux, mapita_core, mapita_aux), axis=0)
+        
+        print("[isaac_envs::_generate_vertical_path_map] END")
+
         return map
     
     def _robot_pose_random_walk(self,random: bool = False):
+
+        print("[isaac_envs::_robot_pose_random_walk] START")
+
         if random:
             position = np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (-1.5), 0])
             # randomize robot orientation expressed in quaternions with cosine-sine trick to constraint rotation in one axis and make the final vector's magnitude equal to 1
@@ -433,11 +486,20 @@ class isaac_envs():
         else:
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (-1.5), 0])
             orientation = np.array([1.0, 0.0, 0.0, 0.0])
+
+        print("[isaac_envs::_robot_pose_random_walk] END")
+
         return position, orientation
 
     def _target_pos_random_walk(self, random: bool = False):
+
+        print("[isaac_envs::_target_pos_random_walk] START")
+
         if random:
             position=np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (5.5), 0.25])
         else:
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (5.5), 0.25])
+        
+        print("[isaac_envs::_target_pos_random_walk] END")
+
         return position
