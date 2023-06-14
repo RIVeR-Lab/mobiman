@@ -1,4 +1,4 @@
-#### LAST UPDATE: 2023.06.09
+#### LAST UPDATE: 2023.06.13
 ##
 #### AUTHOR: 
 ## Neset Unver Akmandor (NUA)
@@ -39,7 +39,7 @@ class isaac_envs():
         #result, self.nucleus_server = find_nucleus_server('/Isaac')
         self.nucleus_server = get_assets_root_path()
         if self.nucleus_server is None:
-            carb.log_error("Could not find nucleus server with /Isaac folder")
+            carb.log_error("[isaac_envs::__init__] ERROR: Could not find nucleus server with /Isaac folder")
             return
         
         self._headless = headless
@@ -75,37 +75,48 @@ class isaac_envs():
         if env=="grid_default":
             asset_path = self.nucleus_server + "/Isaac/Environments/Grid/default_environment.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="grid_black":
             asset_path = self.nucleus_server + "/Isaac/Environments/Grid/gridroom_black.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="grid_curved":
             asset_path = self.nucleus_server + "/Isaac/Environments/Grid/gridroom_curved.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="simple_room":
             asset_path = self.nucleus_server + "/Isaac/Environments/Simple_Room/simple_room.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="warehause_small_A":
             asset_path = self.nucleus_server + "/Isaac/Environments/Simple_Warehouse/warehouse.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="warehause_small_B":
             asset_path = self.nucleus_server + "/Isaac/Environments/Simple_Warehouse/warehouse_with_forklifts.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="warehause_small_C":
             asset_path = self.nucleus_server + "/Isaac/Environments/Simple_Warehouse/warehouse_multiple_shelves.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="warehause_full":
             asset_path = self.nucleus_server + "/Isaac/Environments/Simple_Warehouse/full_warehouse.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="hospital":
             asset_path = self.nucleus_server + "/Isaac/Environments/Hospital/hospital.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="office":
             asset_path = self.nucleus_server + "/Isaac/Environments/Office/office.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
+
         elif env=="random_walk":
             asset_path = self.nucleus_server + "/Isaac/Environments/Grid/default_environment.usd"
             add_reference_to_stage(usd_path=asset_path, prim_path="/World")
             self._set_random_walk_env(name=name)
+
         else:
             carb.log_error("Could not find the selected environment")
         
@@ -124,60 +135,67 @@ class isaac_envs():
         
         if name=="jetbot":
             camera_path = prim_path+"/chassis/rgb_camera/jetbot_camera"
+
         elif name=="carter_v1":
             camera_path= prim_path+"/chassis_link/camera_mount/carter_camera_first_person"
+
         elif name=="kaya":
             camera_path = prim_path+"/base_link/camera"
             camera_prim = self.stage.DefinePrim(camera_path, "Camera")
+
         elif name=="transporter":
             camera_path = prim_path+"/camera_mount/transporter_camera_first_person"
 
-        if headless:
-            #viewport_handle = omni.kit.viewport.get_viewport_interface()
-            viewport_handle = omni.kit.viewport.utility.get_active_viewport() #changed
-
-            viewport_handle.get_viewport_window().set_active_camera(str(camera_path))
-            viewport_window = viewport_handle.get_viewport_window()
-            self.viewport_window = viewport_window
-            viewport_window.set_texture_resolution(size[0], size[1])
-            
-            if name=="kaya":
-                xform = UsdGeom.Xformable(camera_prim)
-                transform = xform.AddTransformOp()
-                mat = Gf.Matrix4d()
-                mat.SetTranslateOnly(Gf.Vec3d(0.0, 11.5, 8.0))
-                mat.SetRotateOnly(Gf.Rotation(Gf.Vec3d(1,0,0), 70))
-                transform.Set(mat)
-            
         else:
-            #viewport_handle = omni.kit.viewport.get_viewport_interface().create_instance()
-            #new_viewport_name = omni.kit.viewport.get_viewport_interface().get_viewport_window_name(viewport_handle)
-            #viewport_window = omni.kit.viewport.get_viewport_interface().get_viewport_window(viewport_handle)
-            viewport_handle = omni.kit.viewport.utility.get_active_viewport()
-            new_viewport_name = omni.kit.viewport.utility.get_active_viewport_camera_string(viewport_handle)
-            viewport_window = omni.kit.viewport.utility.get_active_viewport_window(new_viewport_name)
+            camera_path = None
 
-            #viewport_window.set_active_camera(camera_path)
-            viewport_window.camera_path = camera_path
-            #viewport_window.set_texture_resolution(size[0], size[1])
-            viewport_window.resolution = (size[0], size[1])
+        if camera_path:
+            if headless:
+                #viewport_handle = omni.kit.viewport.get_viewport_interface()
+                viewport_handle = omni.kit.viewport.utility.get_active_viewport() #changed
+
+                viewport_handle.get_viewport_window().set_active_camera(str(camera_path))
+                viewport_window = viewport_handle.get_viewport_window()
+                self.viewport_window = viewport_window
+                viewport_window.set_texture_resolution(size[0], size[1])
+                
+                if name=="kaya":
+                    xform = UsdGeom.Xformable(camera_prim)
+                    transform = xform.AddTransformOp()
+                    mat = Gf.Matrix4d()
+                    mat.SetTranslateOnly(Gf.Vec3d(0.0, 11.5, 8.0))
+                    mat.SetRotateOnly(Gf.Rotation(Gf.Vec3d(1,0,0), 70))
+                    transform.Set(mat)
+                
+            else:
+                #viewport_handle = omni.kit.viewport.get_viewport_interface().create_instance()
+                #new_viewport_name = omni.kit.viewport.get_viewport_interface().get_viewport_window_name(viewport_handle)
+                #viewport_window = omni.kit.viewport.get_viewport_interface().get_viewport_window(viewport_handle)
+                viewport_handle = omni.kit.viewport.utility.get_active_viewport()
+                new_viewport_name = omni.kit.viewport.utility.get_active_viewport_camera_string(viewport_handle)
+                viewport_window = omni.kit.viewport.utility.get_active_viewport_window(new_viewport_name)
+
+                #viewport_window.set_active_camera(camera_path)
+                viewport_window.camera_path = camera_path
+                #viewport_window.set_texture_resolution(size[0], size[1])
+                viewport_window.resolution = (size[0], size[1])
+                
+                if name=="kaya":
+                    xform = UsdGeom.Xformable(camera_prim)
+                    transform = xform.AddTransformOp()
+                    mat = Gf.Matrix4d()
+                    mat.SetTranslateOnly(Gf.Vec3d(0.0, 11.5, 8.0))
+                    mat.SetRotateOnly(Gf.Rotation(Gf.Vec3d(1,0,0), 70))
+                    transform.Set(mat)
+                
+                #viewport_window.set_window_size(420, 420)
+                #self.viewport_window = viewport_window
+                self.viewport_window = viewport_handle
             
-            if name=="kaya":
-                xform = UsdGeom.Xformable(camera_prim)
-                transform = xform.AddTransformOp()
-                mat = Gf.Matrix4d()
-                mat.SetTranslateOnly(Gf.Vec3d(0.0, 11.5, 8.0))
-                mat.SetRotateOnly(Gf.Rotation(Gf.Vec3d(1,0,0), 70))
-                transform.Set(mat)
-            
-            #viewport_window.set_window_size(420, 420)
-            #self.viewport_window = viewport_window
-            self.viewport_window = viewport_handle
-        
-        self.sd_helper = SyntheticDataHelper()
-        self.sd_helper.initialize(sensor_names=["depth", "rgb"], viewport_api=self.viewport_window)
-        self._my_world.render()
-        self.sd_helper.get_groundtruth(["depth", "rgb"], self.viewport_window)
+            self.sd_helper = SyntheticDataHelper()
+            self.sd_helper.initialize(sensor_names=["depth", "rgb"], viewport_api=self.viewport_window)
+            self._my_world.render()
+            self.sd_helper.get_groundtruth(["depth", "rgb"], self.viewport_window)
         
         print("[isaac_envs::_set_camera] END")
 
@@ -194,6 +212,11 @@ class isaac_envs():
         number_lasers = number_lasers
         
         self.number_lasers = number_lasers
+
+        print("[isaac_envs::_set_lidar] name: " + str(name))
+        print("[isaac_envs::_set_lidar] prim_path: " + str(prim_path))
+        print("[isaac_envs::_set_lidar] headless: " + str(headless))
+        print("[isaac_envs::_set_lidar] number_lasers: " + str(number_lasers))
 
         if name=="jetbot":
             lidarPath = "/lidar"
@@ -223,32 +246,40 @@ class isaac_envs():
             min_range = 0.15
             max_range = 1
         
+        elif name=="jackal_jaco":
+            lidarPath = None
+            parent    = None
+            self._lidar_path = None
+            min_range = None
+            max_range = None
+
         else:
-            carb.log_error("Could not find the selected sensor, maybe there is a lidar already in this robot")
+            carb.log_error("[isaac_envs::_set_lidar] ERROR: Could not find the selected sensor, maybe there is a lidar already in this robot")
             return
 
-        if headless:
-            draw_lines = False
-        else:
-            draw_lines = True
-        
-        result, prim = omni.kit.commands.execute(
-            "RangeSensorCreateLidar",
-            path=lidarPath,
-            parent=parent,
-            min_range=min_range,
-            max_range=max_range,
-            draw_points=False,
-            draw_lines=draw_lines,
-            horizontal_fov=360.0,
-            vertical_fov=30.0,
-            horizontal_resolution=(360/number_lasers),
-            vertical_resolution=4.0,
-            rotation_rate=0.0,
-            high_lod=False,
-            yaw_offset=0.0,
-            enable_semantics=False
-        )
+        if lidarPath:
+            if headless:
+                draw_lines = False
+            else:
+                draw_lines = True
+            
+            result, prim = omni.kit.commands.execute(
+                "RangeSensorCreateLidar",
+                path=lidarPath,
+                parent=parent,
+                min_range=min_range,
+                max_range=max_range,
+                draw_points=False,
+                draw_lines=draw_lines,
+                horizontal_fov=360.0,
+                vertical_fov=30.0,
+                horizontal_resolution=(360/number_lasers),
+                vertical_resolution=4.0,
+                rotation_rate=0.0,
+                high_lod=False,
+                yaw_offset=0.0,
+                enable_semantics=False
+            )
 
         print("[isaac_envs::_set_lidar] END")
 
@@ -260,7 +291,7 @@ class isaac_envs():
 
         print("[isaac_envs::_get_cam_data] START")
 
-        self._my_world.render()
+        #self._my_world.render()
         if type=="depth":
              gt = self.sd_helper.get_groundtruth(["depth"], self.viewport_window, verify_sensor_init=False, wait_for_sensor_data=0)
              #img = gt["depth"][:, :, :1]
@@ -269,22 +300,27 @@ class isaac_envs():
             gt = self.sd_helper.get_groundtruth(["rgb"], self.viewport_window, verify_sensor_init=False, wait_for_sensor_data=0)
             img = gt["rgb"][:, :, :3]
 
+        print("[isaac_envs::_get_cam_data] img")
+        print(img)
+
         print("[isaac_envs::_get_cam_data] END")
 
         return img
     
     def _get_lidar_data(self, lidar_selector: Optional[int] = 1):
 
-        print("[isaac_envs::_get_lidar_data] START")
+        #print("[isaac_envs::_get_lidar_data] START")
+        #print("[isaac_envs::_get_lidar_data] self._lidar_path: " + str(self._lidar_path))
 
         if lidar_selector==1:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path)
             depth_points = np.resize(depth_points, (1,self.number_lasers))
+        
         if lidar_selector==2:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path2)
             depth_points = np.resize(depth_points, (1,self.number_lasers))
 
-        print("[isaac_envs::_get_lidar_data] END")
+        #print("[isaac_envs::_get_lidar_data] END")
 
         return depth_points
     
@@ -499,7 +535,7 @@ class isaac_envs():
             position=np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (5.5), 0.25])
         else:
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (5.5), 0.25])
-        
+
         print("[isaac_envs::_target_pos_random_walk] END")
 
         return position
