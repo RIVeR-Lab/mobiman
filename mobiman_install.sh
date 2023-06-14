@@ -38,9 +38,10 @@ else
   wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz
   tar -xf protobuf-all-3.6.1.tar.gz
   cd protobuf-3.6.1
-  cmake cmake/.
+  ./configure
   make -j4
   sudo make install
+  sudo ldconfig
   cd ..
   rm -rf protobuf-3.6.1
   rm -rf protobuf-all-3.6.1.tar.gz
@@ -118,3 +119,4 @@ rosdep install --from-paths src --ignore-src -r -y
 catkin config --extend /opt/ros/noetic
 catkin config -DCMAKE_BUILD_TYPE=Release
 catkin build
+
