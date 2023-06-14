@@ -311,6 +311,7 @@ class isaac_envs():
 
         #print("[isaac_envs::_get_lidar_data] START")
         #print("[isaac_envs::_get_lidar_data] self._lidar_path: " + str(self._lidar_path))
+        #print("[isaac_envs::_get_lidar_data] lidar_selector: " + str(lidar_selector))
 
         if lidar_selector==1:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path)
@@ -344,6 +345,10 @@ class isaac_envs():
         if name=="transporter":
             map_dist_unit=1.3
             height = 0.4
+
+        if name=="jackal_jaco":
+            map_dist_unit=0.5#50
+            height = 0.2#20
         
         self._map_dimension = map_dimension
         self._map_dist_unit = map_dist_unit

@@ -71,7 +71,7 @@ class isaac_robot(Robot):
             usd_path = "/Isaac/Robots/Quadcopter/quadcopter.usd"
 
         elif name=="jackal_jaco":
-            usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_kinova.usd"
+            usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_jaco.usd"
 
         else:
             carb.log_error("Could not find robot :(")
@@ -368,10 +368,6 @@ class isaac_robot(Robot):
         
         print("[isaac_robots::set_robot_pose] START")
 
-        #print("[isaac_robots::set_robot_pose] DEBUG INF")
-        #while 1:
-        #    continue
-
         if self._name=="jetbot":
             chassis_path = self._prim_path+"/chassis"
         
@@ -385,15 +381,21 @@ class isaac_robot(Robot):
             chassis_path = self._prim_path+"/base_link"
 
         elif self._name=="jackal_jaco":
-            chassis_path = self._prim_path+"/base_link"
+            chassis_path = self._prim_path+"/chassis_link"
         
         else:
-            carb.log_error("Could not find the selected sensor, maybe there is a lidar already in this robot :p")
+            carb.log_error("[isaac_robots::set_robot_pose] ERROR: Could not find the selected sensor, maybe there is a lidar already in this robot!")
             return
         
+        print("[isaac_robots::set_robot_pose] chassis_path: " + str(chassis_path))
+
         robot = self.dc.get_rigid_body(chassis_path)
         new_pose = _dynamic_control.Transform( position, orientation)
         self.dc.set_rigid_body_pose(robot, new_pose)
+
+        #print("[isaac_robots::set_robot_pose] DEBUG INF")
+        #while 1:
+        #    continue
 
         print("[isaac_robots::set_robot_pose] END")
 
