@@ -152,7 +152,7 @@ if __name__ == '__main__':
     save_freq = 5000
     #max_episode_length = rospy.get_param('max_episode_length', "")
     max_episode_length = 1000
-    total_timesteps = 1000
+    total_timesteps = 2000
     name_prefix = "mobiman_policy_checkpoint"
     policy = "MultiInputPolicy"
     

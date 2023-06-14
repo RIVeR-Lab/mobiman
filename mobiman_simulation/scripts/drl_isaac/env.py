@@ -58,27 +58,23 @@ class Isaac_envs(gym.Env):
         from isaac_robots  import isaac_robot
         from isaac_envs    import isaac_envs  
         from omni.isaac.core.objects import VisualCuboid
-        #from omni.isaac.core.utils.extensions import enable_extension
+        from omni.isaac.core.utils.extensions import enable_extension
 
         # Enable ROS bridge extension
-        #enable_extension("omni.isaac.ros_bridge")
+        enable_extension("omni.isaac.ros_bridge")
 
         # Check if rosmaster node is running
         # This is to prevent this sample from waiting indefinetly if roscore is not running
         ### NUA NOTE: Can be removed in regular usage
-        #import rosgraph
-        #if not rosgraph.is_master_online():
-        #    print("[env::Isaac_envs::__init__] ERROR: Please run roscore before executing this script!")
-        #    self.simulation_app.close()
-        #    exit()
+        import rosgraph
+        if not rosgraph.is_master_online():
+            print("[env::Isaac_envs::__init__] ERROR: Please run roscore before executing this script!")
+            self.simulation_app.close()
+            exit()
 
         ### NUA NOTE: Note that this is not the system level rospy, but one compiled for omniverse
-        #import rospy
-        #from sensor_msgs.msg import LaserScan
-
-        #env_name    = "random_walk" #random_walk
-        #robot_name  = robot_name
-        #action_type = "discrete"
+        import rospy
+        from sensor_msgs.msg import LaserScan
 
         self._env_name    = env_name
         self._action_type = action_type
@@ -112,7 +108,7 @@ class Isaac_envs(gym.Env):
         )
 
         # ROS Subscribers
-        #rospy.Subscriber("/scan", LaserScan, self._laser_scan_callback)
+        rospy.Subscriber("/scan", LaserScan, self._laser_scan_callback)
 
         self.isaac_environments._set_camera(name=self.robot._name, prim_path=self.robot._prim_path, headless=self.headless)
         self.isaac_environments._set_lidar(name=self.robot._name, prim_path=self.robot._prim_path, headless=self.headless)
@@ -173,12 +169,18 @@ class Isaac_envs(gym.Env):
     DESCRIPTION: TODO...
     '''
     def get_dt(self):
+        
+        print("[env::Isaac_envs::get_dt] START")
+        
         return self._dt
 
     '''
     DESCRIPTION: TODO...
     '''
     def step(self, action):
+
+        print("[env::Isaac_envs::step] START")
+
         previous_jetbot_position, _ = self.robot.get_world_pose()
 
         #print("[env::Isaac_envs::step] previous_jetbot_position type: " + str(type(previous_jetbot_position)))
@@ -251,12 +253,17 @@ class Isaac_envs(gym.Env):
 
         self.step_count = self._my_world.current_time_step_index
 
+        print("[env::Isaac_envs::step] END")
+
         return observations, reward, done, info
 
     '''
     DESCRIPTION: TODO...
     '''
     def reset(self):
+
+        print("[env::Isaac_envs::reset] START")
+        
         self._my_world.reset()
         if self._env_name=="random_walk":
             # randomize goal location in circle around robot
@@ -274,6 +281,9 @@ class Isaac_envs(gym.Env):
         print("[env::Isaac_envs::reset] Distance on episode " + str(self.episode_count) + ": " + str(self.distance_count))
         self.episode_count += 1
         self.distance_count = 0
+        
+        print("[env::Isaac_envs::reset] END")
+        
         return observations
 
     '''
@@ -281,24 +291,24 @@ class Isaac_envs(gym.Env):
     '''
     def get_observations(self):
 
-        #print("[env::Isaac_envs::get_observations] START")
+        print("[env::Isaac_envs::get_observations] START")
 
         ## Camera Data
         # rgb_data   = self.isaac_environments._get_cam_data(type="rgb")
-        depth_data = self.isaac_environments._get_cam_data(type="depth")
-
+        #depth_data = self.isaac_environments._get_cam_data(type="depth")
+        self._my_world.render()
+        
         #print("[env::Isaac_envs::reset] self.robot.name: " + str(self.robot.name))
         #print("[env::Isaac_envs::reset] self.robot._name: " + str(self.robot._name))
 
         ## Lidar Data
-        #if self.robot.name == "jackal_jaco":  
-        #    lidar_data = self._get_lidar_data()
-        #else:
-        
-        lidar_data = self.isaac_environments._get_lidar_data()
+        if self.robot.name == "jackal_jaco":  
+            lidar_data = self._get_lidar_data()
+        else:
+            lidar_data = self.isaac_environments._get_lidar_data()
 
-        #print("[env::Isaac_envs::get_observations] lidar_data:")
-        #print(lidar_data)
+        print("[env::Isaac_envs::get_observations] lidar_data:")
+        print(lidar_data)
 
         #print("[env::Isaac_envs::get_observations] DEBUG INF")
         #while 1:
@@ -322,7 +332,7 @@ class Isaac_envs(gym.Env):
         obs = {"IR_raleted" : lidar_data, "pos_raleted" : target_relative_to_robot_data, "vel_raleted" : vase_vel_data} 
         #obs = {"h_raleted" : h_state, "vel_raleted" : obs_state}
 
-        #print("[env::Isaac_envs::get_observations] END")
+        print("[env::Isaac_envs::get_observations] END")
 
         return obs
 
@@ -330,27 +340,45 @@ class Isaac_envs(gym.Env):
     DESCRIPTION: TODO...
     '''
     def render(self, mode="human"):
+
+        print("[env::Isaac_envs::render] START")
+
         return
 
     '''
     DESCRIPTION: TODO...
     '''
     def close(self):
+
+        print("[env::Isaac_envs::close] START")
+
         self._simulation_app.close()
+
+        print("[env::Isaac_envs::close] END")
+
         return
 
     '''
     DESCRIPTION: TODO...
     '''
     def seed(self, seed=None):
+
+        print("[env::Isaac_envs::seed] START")
+
         self.np_random, seed = gym.utils.seeding.np_random(seed)
         np.random.seed(seed)
+
+        print("[env::Isaac_envs::seed] END")
+
         return [seed]
     
     '''
     DESCRIPTION: TODO...
     '''
     def _laser_scan_callback(self, data):
+
+        print("[env::Isaac_envs::_laser_scan_callback] Incoming data...")
+        
         self._laser_scan = data
 
     '''

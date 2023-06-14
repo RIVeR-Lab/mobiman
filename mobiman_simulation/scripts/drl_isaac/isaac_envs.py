@@ -289,9 +289,9 @@ class isaac_envs():
     
     def _get_cam_data(self, type: str = "rgb"):
 
-        #print("[isaac_envs::_get_cam_data] START")
+        print("[isaac_envs::_get_cam_data] START")
 
-        self._my_world.render()
+        #self._my_world.render()
         if type=="depth":
              gt = self.sd_helper.get_groundtruth(["depth"], self.viewport_window, verify_sensor_init=False, wait_for_sensor_data=0)
              #img = gt["depth"][:, :, :1]
@@ -300,7 +300,10 @@ class isaac_envs():
             gt = self.sd_helper.get_groundtruth(["rgb"], self.viewport_window, verify_sensor_init=False, wait_for_sensor_data=0)
             img = gt["rgb"][:, :, :3]
 
-        #print("[isaac_envs::_get_cam_data] END")
+        print("[isaac_envs::_get_cam_data] img")
+        print(img)
+
+        print("[isaac_envs::_get_cam_data] END")
 
         return img
     
@@ -504,7 +507,7 @@ class isaac_envs():
     
     def _robot_pose_random_walk(self,random: bool = False):
 
-        #print("[isaac_envs::_robot_pose_random_walk] START")
+        print("[isaac_envs::_robot_pose_random_walk] START")
 
         if random:
             position = np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (-1.5), 0])
@@ -520,19 +523,19 @@ class isaac_envs():
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (-1.5), 0])
             orientation = np.array([1.0, 0.0, 0.0, 0.0])
 
-        #print("[isaac_envs::_robot_pose_random_walk] END")
+        print("[isaac_envs::_robot_pose_random_walk] END")
 
         return position, orientation
 
     def _target_pos_random_walk(self, random: bool = False):
 
-        #print("[isaac_envs::_target_pos_random_walk] START")
+        print("[isaac_envs::_target_pos_random_walk] START")
 
         if random:
             position=np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (5.5), 0.25])
         else:
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (5.5), 0.25])
-        
-        #print("[isaac_envs::_target_pos_random_walk] END")
+
+        print("[isaac_envs::_target_pos_random_walk] END")
 
         return position
