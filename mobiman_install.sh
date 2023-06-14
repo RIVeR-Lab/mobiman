@@ -29,6 +29,27 @@ eval directory=$directory
 echo $directory
 mkdir -p $directory/src
 cd $directory/src
+### PROTOBUF VERSION CHECK AND INSTALL -- START
+proto=$(protoc --version)
+if [ "$proto" = "libprotoc 3.6.1" ]; then
+  echo "[+] Protoc Version Satisfied"
+else
+  echo "[+] Installing Protoc 3.6.1"
+  wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz
+  tar -xf protobuf-all-3.6.1.tar.gz
+  cd protobuf-3.6.1
+  cmake cmake/.
+  make -j4
+  sudo make install
+  cd ..
+  rm -rf protobuf-3.6.1
+  rm -rf protobuf-all-3.6.1.tar.gz
+fi
+proto=$(protoc --version)
+if [ "$proto" != "libprotoc 3.6.1" ]; then
+  echo "[-] Protoc Installation Failed, please install protoc version 3.6.1 manually!"
+fi
+### PROTOBUF VERSION CHECK AND INSTALL -- END
 # ### Clone mobiman
 git clone git@github.com:RIVeR-Lab/mobiman.git
 
