@@ -51,22 +51,28 @@ class isaac_robot(Robot):
         self._mobiman_path = "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/"
 
         if name=="jetbot":
-            #usd_path = "/Isaac/Robots/Jetbot/jetbot.usd"
-            usd_path = self._mobiman_path + "models/usd/jetbot/jetbot.usd"
+            usd_path = "/Isaac/Robots/Jetbot/jetbot.usd"
+            #usd_path = self._mobiman_path + "models/usd/jetbot/jetbot.usd"
             self._is_differential = True
+
         elif name=="carter_v1":
             usd_path = "/Isaac/Robots/Carter/carter_v1.usd"
             self._is_differential = True
+
         elif name=="kaya":
             usd_path = "/Isaac/Robots/Kaya/kaya.usd"
             self._is_differential = False
+
         elif name=="transporter":
             usd_path = "/Isaac/Robots/Transporter/transporter_sensors.usd"
             self._is_differential = True
+
         elif name=="quadcopter":
             usd_path = "/Isaac/Robots/Quadcopter/quadcopter.usd"
+
         elif name=="jackal_jaco":
             usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_kinova.usd"
+
         else:
             carb.log_error("Could not find robot :(")
         
@@ -83,8 +89,12 @@ class isaac_robot(Robot):
             if self.nucleus_server is None:
                 carb.log_error("[isaac_robots::__init__] ERROR: Could not find nucleus server with /Isaac folder")
                 return
-            #asset_path = self.nucleus_server + usd_path #"/Isaac/Robots/Jetbot/jetbot.usd" "/Isaac/Robots/Carter/carter_v1.usd"
-            asset_path = usd_path
+            
+            if name=="jackal_jaco":
+                asset_path = usd_path
+            else:
+                asset_path = self.nucleus_server + usd_path
+            
             print("[isaac_robots::__init__] asset_path: " + asset_path)
             #print("[isaac_robots::__init__] DEBUG INF")
             #while 1:
@@ -141,11 +151,11 @@ class isaac_robot(Robot):
         
         joint_velocities = self.get_joint_velocities()
 
-        print("[isaac_robots::get_wheel_velocities] joint_velocities len: " + str(len(joint_velocities)))
+        #print("[isaac_robots::get_wheel_velocities] joint_velocities len: " + str(len(joint_velocities)))
 
-        print("[isaac_robots::get_wheel_velocities] DEBUG INF")
-        while 1:
-            continue
+        #print("[isaac_robots::get_wheel_velocities] DEBUG INF")
+        #while 1:
+        #    continue
 
         if self._name=="jetbot" or self._name=="carter_v1" or self._name == "transporter":
             velocities = joint_velocities[self._wheel_dof_indices[0]], joint_velocities[self._wheel_dof_indices[1]]
@@ -165,11 +175,11 @@ class isaac_robot(Robot):
             velocities (Tuple[float, float]): [description]
         """
 
-        print("[isaac_robots::set_wheel_velocities] START")
+        #print("[isaac_robots::set_wheel_velocities] START")
 
-        print("[isaac_robots::set_wheel_velocities] DEBUG INF")
-        while 1:
-            continue
+        #print("[isaac_robots::set_wheel_velocities] DEBUG INF")
+        #while 1:
+        #    continue
 
         self.ar = self.dc.get_articulation(self._prim_path)
         if self._name == "kaya":
@@ -186,6 +196,8 @@ class isaac_robot(Robot):
             self.dc.set_dof_velocity_target(self.wheel_left, velocities[0])
             self.dc.set_dof_velocity_target(self.wheel_right, velocities[1])
         
+        #print("[isaac_robots::set_wheel_velocities] END")
+
         return
     
     def differential_controller(self, velocities: np.array = [float, float]):
@@ -197,9 +209,11 @@ class isaac_robot(Robot):
         Returns:
         """
 
-        print("[isaac_robots::differential_controller] DEBUG INF")
-        while 1:
-            continue
+        #print("[isaac_robots::differential_controller] START")
+
+        #print("[isaac_robots::differential_controller] DEBUG INF")
+        #while 1:
+        #    continue
 
         wheel_radius = 1
         wheel_base   = 5
@@ -234,6 +248,9 @@ class isaac_robot(Robot):
         joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)
 
         self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1]) )
+
+        #print("[isaac_robots::differential_controller] END")
+
         return
     
     def holonomic_controller(self, velocities: np.array = [float, float, float]):
@@ -244,6 +261,8 @@ class isaac_robot(Robot):
 
         Returns:
         """
+
+        print("[isaac_robots::holonomic_controller] START")
         
         if self._name=="kaya":
             wheel_radius = 4.0 
@@ -268,6 +287,8 @@ class isaac_robot(Robot):
         self.dc.set_dof_velocity_target(self.wheel_a, wheel_speed[1])
         self.dc.set_dof_velocity_target(self.wheel_b, wheel_speed[2])
 
+        print("[isaac_robots::holonomic_controller] END")
+
         return
 
     def get_lineal_vel_base(self):
@@ -278,7 +299,13 @@ class isaac_robot(Robot):
         Returns:
             lineal velocity: [float]
         """
+
+        #print("[isaac_robots::get_lineal_vel_base] START")
+
         real_V = np.sqrt( self.get_linear_velocity()[0]**2 + self.get_linear_velocity()[1]**2)
+
+        #print("[isaac_robots::get_lineal_vel_base] END")
+
         return real_V
 
     def get_angular_vel_base(self):
@@ -289,7 +316,12 @@ class isaac_robot(Robot):
         Returns:
             angular velocity: [float]
         """
+        #print("[isaac_robots::get_angular_vel_base] START")
+
         real_W = self.get_angular_velocity()[2]
+        
+        #print("[isaac_robots::get_angular_vel_base] END")
+        
         return real_W
     
     def distance_to(self, target_pos: Tuple[float, float, float]):
@@ -334,9 +366,11 @@ class isaac_robot(Robot):
 
     def set_robot_pose(self, position: np.array = [float, float, float], orientation: np.array = [float, float, float, float]):
         
-        print("[isaac_robots::set_robot_pose] DEBUG INF")
-        while 1:
-            continue
+        print("[isaac_robots::set_robot_pose] START")
+
+        #print("[isaac_robots::set_robot_pose] DEBUG INF")
+        #while 1:
+        #    continue
 
         if self._name=="jetbot":
             chassis_path = self._prim_path+"/chassis"
@@ -360,14 +394,20 @@ class isaac_robot(Robot):
         robot = self.dc.get_rigid_body(chassis_path)
         new_pose = _dynamic_control.Transform( position, orientation)
         self.dc.set_rigid_body_pose(robot, new_pose)
+
+        print("[isaac_robots::set_robot_pose] END")
+
         return
 
     def get_action_space(self, type: str = "continuous"):
+        
+        print("[isaac_robots::get_action_space] START")
+
         action_space = None
 
-        print("[isaac_robots::get_action_space] DEBUG INF")
-        while 1:
-            continue
+        #print("[isaac_robots::get_action_space] DEBUG INF")
+        #while 1:
+        #    continue
 
         if type=="continuous":
             if self._name=="jetbot":
@@ -394,16 +434,26 @@ class isaac_robot(Robot):
 			        high=np.array([10, 10, np.pi/4], dtype=np.float32),
 			        dtype=np.float32)
 
+            if self._name=="jackal_jaco":
+                action_space = spaces.Box(
+                    low=np.array([0,-np.pi/4], dtype=np.float32),
+			        high=np.array([2,np.pi/4], dtype=np.float32),
+			        dtype=np.float32)
+
         elif type=="discrete":
             action_space = spaces.Discrete(3)
+
+        print("[isaac_robots::get_action_space] END")
 
         return action_space
 
     def get_discrete_actions(self):
 
-        print("[isaac_robots::get_discrete_actions] DEBUG INF")
-        while 1:
-            continue
+        print("[isaac_robots::get_discrete_actions] START")
+
+        #print("[isaac_robots::get_discrete_actions] DEBUG INF")
+        #while 1:
+        #    continue
 
         movements = None
         if self._name=="jetbot":
@@ -418,7 +468,9 @@ class isaac_robot(Robot):
         elif self._name=="kaya":
             movements = np.array([[3, 0, 0.785], [5, 0, 0], [3, 0, -0.785]])
 
-        if self._name=="jackal_jaco":
+        elif self._name=="jackal_jaco":
             movements = np.array([[15, 0.785], [25, 0], [15, -0.785]])
         
+        print("[isaac_robots::get_discrete_actions] END")
+
         return movements

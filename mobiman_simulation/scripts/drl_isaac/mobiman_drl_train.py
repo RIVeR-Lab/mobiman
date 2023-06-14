@@ -155,7 +155,9 @@ if __name__ == '__main__':
     total_timesteps = 1000
     name_prefix = "mobiman_policy_checkpoint"
     policy = "MultiInputPolicy"
-    robot_name = "jackal_jaco"
+    
+    robot_name = "jetbot"
+    #robot_name = "jackal_jaco"
 
     ## LOCAL PARAMETERS
     #rospack = rospkg.RosPack()
