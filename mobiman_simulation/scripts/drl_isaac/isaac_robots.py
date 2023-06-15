@@ -71,10 +71,12 @@ class isaac_robot(Robot):
             usd_path = "/Isaac/Robots/Quadcopter/quadcopter.usd"
 
         elif name=="jackal_jaco":
-            usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_jaco.usd"
+            #usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_jaco.usd"
+            # usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_kinova.usd"
+            usd_path = "/Isaac/Robots/Clearpath/Jackal/jackal_basic.usd"
 
         else:
-            carb.log_error("Could not find robot :(")
+            carb.log_error("[isaac_robots::__init__] ERROR: Could not find robot!")
         
         prim = get_prim_at_path(prim_path)
         print("[isaac_robots::__init__] BEFORE prim_path: " + prim_path)
@@ -91,7 +93,8 @@ class isaac_robot(Robot):
                 return
             
             if name=="jackal_jaco":
-                asset_path = usd_path
+                # asset_path = usd_path
+                asset_path = self.nucleus_server + usd_path
             else:
                 asset_path = self.nucleus_server + usd_path
             
@@ -366,7 +369,7 @@ class isaac_robot(Robot):
 
     def set_robot_pose(self, position: np.array = [float, float, float], orientation: np.array = [float, float, float, float]):
         
-        print("[isaac_robots::set_robot_pose] START")
+        #print("[isaac_robots::set_robot_pose] START")
 
         if self._name=="jetbot":
             chassis_path = self._prim_path+"/chassis"
@@ -381,13 +384,13 @@ class isaac_robot(Robot):
             chassis_path = self._prim_path+"/base_link"
 
         elif self._name=="jackal_jaco":
-            chassis_path = self._prim_path+"/chassis_link"
+            chassis_path = self._prim_path+"/base_link"
         
         else:
             carb.log_error("[isaac_robots::set_robot_pose] ERROR: Could not find the selected sensor, maybe there is a lidar already in this robot!")
             return
         
-        print("[isaac_robots::set_robot_pose] chassis_path: " + str(chassis_path))
+        #print("[isaac_robots::set_robot_pose] chassis_path: " + str(chassis_path))
 
         robot = self.dc.get_rigid_body(chassis_path)
         new_pose = _dynamic_control.Transform( position, orientation)
@@ -397,7 +400,7 @@ class isaac_robot(Robot):
         #while 1:
         #    continue
 
-        print("[isaac_robots::set_robot_pose] END")
+        #print("[isaac_robots::set_robot_pose] END")
 
         return
 
@@ -439,7 +442,7 @@ class isaac_robot(Robot):
             if self._name=="jackal_jaco":
                 action_space = spaces.Box(
                     low=np.array([0,-np.pi/4], dtype=np.float32),
-			        high=np.array([2,np.pi/4], dtype=np.float32),
+			        high=np.array([30,np.pi/4], dtype=np.float32),
 			        dtype=np.float32)
 
         elif type=="discrete":
@@ -451,7 +454,7 @@ class isaac_robot(Robot):
 
     def get_discrete_actions(self):
 
-        print("[isaac_robots::get_discrete_actions] START")
+        #print("[isaac_robots::get_discrete_actions] START")
 
         #print("[isaac_robots::get_discrete_actions] DEBUG INF")
         #while 1:
@@ -471,8 +474,8 @@ class isaac_robot(Robot):
             movements = np.array([[3, 0, 0.785], [5, 0, 0], [3, 0, -0.785]])
 
         elif self._name=="jackal_jaco":
-            movements = np.array([[15, 0.785], [25, 0], [15, -0.785]])
+            movements = np.array([[3*15, 3*0.785], [3*25, 0], [3*15, 3*-0.785]])
         
-        print("[isaac_robots::get_discrete_actions] END")
+        #print("[isaac_robots::get_discrete_actions] END")
 
         return movements

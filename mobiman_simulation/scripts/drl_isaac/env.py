@@ -201,8 +201,9 @@ class Isaac_envs(gym.Env):
             elif self._action_type=="discrete":
                 selected_action = self.movements[action]
                 
-                #print("[env::Isaac_envs::step] self.movements:")
-                #print(selected_action)
+                print("[env::Isaac_envs::step] action:")
+                print("[env::Isaac_envs::step] selected_action:")
+                print(selected_action)
                 
                 if self.robot._is_differential:
                     self.robot.differential_controller(np.array([selected_action[0], selected_action[1]]))
@@ -227,6 +228,7 @@ class Isaac_envs(gym.Env):
         ## Reward function and end condition
         done = False
         if self._my_world.current_time_step_index - self._steps_after_reset >= self._max_episode_length:
+            print("[env::Isaac_envs::step] TOO CLOSE!")
             done = True
         
         goal_world_position, _ = self.goal.get_world_pose()
@@ -234,7 +236,8 @@ class Isaac_envs(gym.Env):
 
         #print("[env::Isaac_envs::step] BEFORE _get_lidar_data")
         if self.robot.name == "jackal_jaco":
-            depth_points = self._get_lidar_data()
+            #depth_points = self._get_lidar_data()
+            depth_points = self.isaac_environments._get_lidar_data()
         else:
             depth_points = self.isaac_environments._get_lidar_data()
         depth_points_min = np.amin(depth_points)
@@ -253,21 +256,24 @@ class Isaac_envs(gym.Env):
         #    #done = True
         #    reward -= (0.6-depth_points_min)
 
+        obs_closeness_threshold = 0.155
         #print("[env::Isaac_envs::step] BEFORE depth_points_min")
-        if depth_points_min <= 0.155:
+        if depth_points_min <= obs_closeness_threshold:
+            print("[env::Isaac_envs::step] TOO CLOSE!")
             done = True
             reward -= 10*(0.6-depth_points_min)
         
+        goal_closeness_threshold = 0.5
         #print("[env::Isaac_envs::step] BEFORE current_dist_to_goal")
-        if current_dist_to_goal <= 0.5:
+        if current_dist_to_goal <= goal_closeness_threshold:
+            print("[env::Isaac_envs::step] ARRIBA!")
             done = True
             self.goal_count += 1
-            #print("[env::Isaac_envs::step] ARRIBA!")
             reward += 10 + landing_reward * (1 - (self._my_world.current_time_step_index/self._max_episode_length))
 
         self.step_count = self._my_world.current_time_step_index
 
-        #print("[env::Isaac_envs::step] END")
+        #print("[env::Isaac_envs::step] END done: " + str(done))
 
         return observations, reward, done, info
 
@@ -318,7 +324,8 @@ class Isaac_envs(gym.Env):
 
         ## Lidar Data
         if self.robot.name == "jackal_jaco":  
-            lidar_data = self._get_lidar_data()
+            #lidar_data = self._get_lidar_data()
+            lidar_data = self.isaac_environments._get_lidar_data()
         else:
             lidar_data = self.isaac_environments._get_lidar_data()
 

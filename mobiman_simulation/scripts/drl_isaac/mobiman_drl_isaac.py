@@ -17,7 +17,7 @@ if __name__ == '__main__':
     rospy.init_node('mobiman_drl_isaac', anonymous=True, log_level=rospy.WARN)
 
     ## USER DEFINED PARAMETERS
-    isaac_sim_path = rospy.get_param('isaac_sim_path', "")
+    isaac_sim_path = os.path.expanduser(rospy.get_param('isaac_sim_path', ""))
 
     ## LOCAL PARAMETERS
     rospack = rospkg.RosPack()
