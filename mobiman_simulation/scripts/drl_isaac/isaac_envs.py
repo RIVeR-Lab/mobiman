@@ -252,8 +252,8 @@ class isaac_envs():
             #lidarPath = "/sick_lms1xx_lidar_frame/Lidar"
             parent    = prim_path+"/base_link"
             self._lidar_path = parent+lidarPath
-            min_range = 0.15
-            max_range = 1
+            min_range = 0.3
+            max_range = 2
             #lidarPath = None
             #parent    = None
             #self._lidar_path = None
@@ -320,18 +320,20 @@ class isaac_envs():
         #print("[isaac_envs::_get_lidar_data] self._lidar_path: " + str(self._lidar_path))
         #print("[isaac_envs::_get_lidar_data] lidar_selector: " + str(lidar_selector))
 
-        if lidar_selector==1:
+        if lidar_selector == 1:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path)
-            depth_points = np.resize(depth_points, (1,self.number_lasers))
+            depth_points = np.resize(depth_points, (1, self.number_lasers))
         
-        if lidar_selector==2:
+        if lidar_selector == 2:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path2)
-            depth_points = np.resize(depth_points, (1,self.number_lasers))
+            depth_points = np.resize(depth_points, (1, self.number_lasers))
 
-        laser_shape = (1, 12)
-        lidar_data = np.ones(laser_shape)
+        #print("[isaac_envs::_get_lidar_data] depth_points: ")
+        #print(depth_points)
 
-        depth_points = lidar_data
+        #laser_shape = (1, 12)
+        #lidar_data = np.ones(laser_shape)
+        #depth_points = lidar_data
 
         #print("[isaac_envs::_get_lidar_data] END")
 
@@ -546,13 +548,13 @@ class isaac_envs():
 
     def _target_pos_random_walk(self, random: bool = False):
 
-        print("[isaac_envs::_target_pos_random_walk] START")
+        #print("[isaac_envs::_target_pos_random_walk] START")
 
         if random:
             position=np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (5.5), 0.25])
         else:
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (5.5), 0.25])
 
-        print("[isaac_envs::_target_pos_random_walk] END")
+        #print("[isaac_envs::_target_pos_random_walk] END")
 
         return position

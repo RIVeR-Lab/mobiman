@@ -1,4 +1,4 @@
-#### LAST UPDATE: 2023.06.09
+#### LAST UPDATE: 2023.06.15
 ##
 #### AUTHOR: 
 ## Neset Unver Akmandor (NUA)
@@ -154,11 +154,12 @@ class isaac_robot(Robot):
         
         joint_velocities = self.get_joint_velocities()
 
-        #print("[isaac_robots::get_wheel_velocities] joint_velocities len: " + str(len(joint_velocities)))
+        print("[isaac_robots::get_wheel_velocities] joint_velocities len: " + str(len(joint_velocities)))
+        print(joint_velocities)
 
-        #print("[isaac_robots::get_wheel_velocities] DEBUG INF")
-        #while 1:
-        #    continue
+        print("[isaac_robots::get_wheel_velocities] DEBUG INF")
+        while 1:
+            continue
 
         if self._name=="jetbot" or self._name=="carter_v1" or self._name == "transporter":
             velocities = joint_velocities[self._wheel_dof_indices[0]], joint_velocities[self._wheel_dof_indices[1]]
@@ -189,13 +190,26 @@ class isaac_robot(Robot):
             self.wheel_left = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[0])
             self.wheel_right = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[1])
             self.wheel_back = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[2])
+
             self.dc.set_dof_velocity_target(self.wheel_left , velocities[0])
             self.dc.set_dof_velocity_target(self.wheel_right, velocities[1])
             self.dc.set_dof_velocity_target(self.wheel_back , velocities[3])
+
+        elif self._name == "jackal_jaco":
+            self.wheel_front_left = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[0])
+            self.wheel_front_right = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[1])
+            self.wheel_rear_left = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[2])
+            self.wheel_rear_right = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[3])
+
+            self.dc.set_dof_velocity_target(self.wheel_front_left , velocities[0])
+            self.dc.set_dof_velocity_target(self.wheel_front_right, velocities[1])
+            self.dc.set_dof_velocity_target(self.wheel_rear_left , velocities[2])
+            self.dc.set_dof_velocity_target(self.wheel_rear_right , velocities[3])
     
         else:
             self.wheel_left = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[0])
             self.wheel_right = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[1])
+            
             self.dc.set_dof_velocity_target(self.wheel_left, velocities[0])
             self.dc.set_dof_velocity_target(self.wheel_right, velocities[1])
         
@@ -242,15 +256,23 @@ class isaac_robot(Robot):
             wheel_base   = 32.3
 
         else:
-            carb.log_error("Could not find the robot " + self._name + ", or is not compatible with differential controller, remember, just two wheeled robot allowed!")
+            carb.log_error("[isaac_robots::differential_controller] Could not find the robot " + self._name + ", or is not compatible with differential controller, remember, just two wheeled robot allowed!")
             
         # velocities[0] = velocities[0]*10
 
-        joint_velocities = [0.0, 0.0]
-        joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)
-        joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)
+        if self._name == "jackal_jaco":
+            joint_velocities = [0.0, 0.0, 0.0, 0.0]
+            joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)     # front left
+            joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)     # front right
+            joint_velocities[2] = joint_velocities[0]                                                           # rear left
+            joint_velocities[3] = joint_velocities[1]                                                           # rear right
+            self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1], joint_velocities[2], joint_velocities[3]) )
 
-        self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1]) )
+        else:
+            joint_velocities = [0.0, 0.0]
+            joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)
+            joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)
+            self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1]) )
 
         #print("[isaac_robots::differential_controller] END")
 

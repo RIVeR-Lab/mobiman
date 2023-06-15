@@ -201,9 +201,9 @@ class Isaac_envs(gym.Env):
             elif self._action_type=="discrete":
                 selected_action = self.movements[action]
                 
-                print("[env::Isaac_envs::step] action:")
-                print("[env::Isaac_envs::step] selected_action:")
-                print(selected_action)
+                #print("[env::Isaac_envs::step] action:")
+                #print("[env::Isaac_envs::step] selected_action:")
+                #print(selected_action)
                 
                 if self.robot._is_differential:
                     self.robot.differential_controller(np.array([selected_action[0], selected_action[1]]))
@@ -256,10 +256,10 @@ class Isaac_envs(gym.Env):
         #    #done = True
         #    reward -= (0.6-depth_points_min)
 
-        obs_closeness_threshold = 0.155
+        obs_closeness_threshold = 0.35 # def: 0.155
         #print("[env::Isaac_envs::step] BEFORE depth_points_min")
         if depth_points_min <= obs_closeness_threshold:
-            print("[env::Isaac_envs::step] TOO CLOSE!")
+            print("[env::Isaac_envs::step] TOO CLOSE! depth_points_min: " + str(depth_points_min))
             done = True
             reward -= 10*(0.6-depth_points_min)
         
