@@ -69,3 +69,8 @@ rosrun mobiman_simulation jackal_check_bridge.py
 <img src="https://i.ibb.co/994BChj/jackal.gif" alt="Jackal" width="600" height="400">
 
 <hr>
+
+# MOBIMAN BOT CREDENTIALS
+username: administrator
+
+password: clearpath
