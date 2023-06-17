@@ -4,7 +4,6 @@ import rospy
 import rospkg
 import os
 import csv
-import numpy as np
 import subprocess
 import sys
 
