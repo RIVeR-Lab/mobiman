@@ -1,0 +1,5 @@
+<launch>
+
+<include file="$(find mobiman_simulation)/launch/utilities/tag_continuous_detection.launch" />
+<include file="$(find mobiman_simulation)/launch/utilities/rs_camera.launch" />
+</launch>

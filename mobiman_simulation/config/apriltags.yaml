@@ -21,7 +21,8 @@
 #   ]
 standalone_tags:
   [
-  {id: 0, size: 0.15, name: World_Frame}
+  {id: 0, size: 0.15, name: World_Frame},
+  {id: 1, size: 0.15}
   ]
 # ## Tag bundle definitions
 # ### Remarks
