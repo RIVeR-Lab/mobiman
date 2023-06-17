@@ -109,6 +109,7 @@ class Isaac_envs(gym.Env):
 
         # ROS Subscribers
         rospy.Subscriber("/scan", LaserScan, self._laser_scan_callback)
+        self._laser_scan = None
 
         self.isaac_environments._set_camera(name=self.robot._name, prim_path=self.robot._prim_path, headless=self.headless)
         self.isaac_environments._set_lidar(name=self.robot._name, prim_path=self.robot._prim_path, headless=self.headless)
@@ -179,13 +180,15 @@ class Isaac_envs(gym.Env):
     '''
     def step(self, action):
 
-        print("[env::Isaac_envs::step] START")
+        #print("[env::Isaac_envs::step] START")
 
+        #print("[env::Isaac_envs::step] BEFORE previous_jetbot_position")
         previous_jetbot_position, _ = self.robot.get_world_pose()
 
         #print("[env::Isaac_envs::step] previous_jetbot_position type: " + str(type(previous_jetbot_position)))
         #print("[env::Isaac_envs::step] previous_jetbot_position: " + str(previous_jetbot_position))
 
+        #print("[env::Isaac_envs::step] BEFORE action")
         ## Robot take action and run a simulation step
         for i in range(self._skip_frame):
 
@@ -198,7 +201,8 @@ class Isaac_envs(gym.Env):
             elif self._action_type=="discrete":
                 selected_action = self.movements[action]
                 
-                #print("[env::Isaac_envs::step] self.movements:")
+                #print("[env::Isaac_envs::step] action:")
+                #print("[env::Isaac_envs::step] selected_action:")
                 #print(selected_action)
                 
                 if self.robot._is_differential:
@@ -208,26 +212,37 @@ class Isaac_envs(gym.Env):
             
             self._my_world.step(render=False)
         
+        #print("[env::Isaac_envs::step] BEFORE current_jetbot_position")
         current_jetbot_position, _ = self.robot.get_world_pose()
 
+        #print("[env::Isaac_envs::step] BEFORE distance_count")
         self.distance_count += np.linalg.norm(current_jetbot_position - previous_jetbot_position)
         
+        #print("[env::Isaac_envs::step] BEFORE get_observations")
         ## Observation
         observations = self.get_observations()
 
         info = {}
 
+        #print("[env::Isaac_envs::step] BEFORE done")
         ## Reward function and end condition
         done = False
         if self._my_world.current_time_step_index - self._steps_after_reset >= self._max_episode_length:
+            print("[env::Isaac_envs::step] TOO CLOSE!")
             done = True
         
         goal_world_position, _ = self.goal.get_world_pose()
         current_dist_to_goal = self.robot.distance_to(goal_world_position)
 
-        depth_points = self.isaac_environments._get_lidar_data()
+        #print("[env::Isaac_envs::step] BEFORE _get_lidar_data")
+        if self.robot.name == "jackal_jaco":
+            #depth_points = self._get_lidar_data()
+            depth_points = self.isaac_environments._get_lidar_data()
+        else:
+            depth_points = self.isaac_environments._get_lidar_data()
         depth_points_min = np.amin(depth_points)
         
+        #print("[env::Isaac_envs::step] BEFORE distance_reward")
         step_conservation = 1 - (self._my_world.current_time_step_index/self._max_episode_length)# 1 + (self._my_world.current_time_step_index/self._max_episode_length)#
         landing_reward = 90
         distance_reward = (-current_dist_to_goal)/100 # previous_dist_to_goal - current_dist_to_goal -0.1
@@ -241,19 +256,24 @@ class Isaac_envs(gym.Env):
         #    #done = True
         #    reward -= (0.6-depth_points_min)
 
-        if depth_points_min <= 0.155:
+        obs_closeness_threshold = 0.35 # def: 0.155
+        #print("[env::Isaac_envs::step] BEFORE depth_points_min")
+        if depth_points_min <= obs_closeness_threshold:
+            print("[env::Isaac_envs::step] TOO CLOSE! depth_points_min: " + str(depth_points_min))
             done = True
             reward -= 10*(0.6-depth_points_min)
         
-        if current_dist_to_goal <= 0.5:
+        goal_closeness_threshold = 0.5
+        #print("[env::Isaac_envs::step] BEFORE current_dist_to_goal")
+        if current_dist_to_goal <= goal_closeness_threshold:
+            print("[env::Isaac_envs::step] ARRIBA!")
             done = True
             self.goal_count += 1
-            print("[env::Isaac_envs::step] ARRIBA!")
             reward += 10 + landing_reward * (1 - (self._my_world.current_time_step_index/self._max_episode_length))
 
         self.step_count = self._my_world.current_time_step_index
 
-        print("[env::Isaac_envs::step] END")
+        #print("[env::Isaac_envs::step] END done: " + str(done))
 
         return observations, reward, done, info
 
@@ -266,6 +286,7 @@ class Isaac_envs(gym.Env):
         
         self._my_world.reset()
         if self._env_name=="random_walk":
+            print("[env::Isaac_envs::reset] BEFORE _target_pos_random_walk")
             # randomize goal location in circle around robot
             position = self.isaac_environments._target_pos_random_walk(random=True)
             self.goal.set_world_pose(position)
@@ -291,7 +312,7 @@ class Isaac_envs(gym.Env):
     '''
     def get_observations(self):
 
-        print("[env::Isaac_envs::get_observations] START")
+        #print("[env::Isaac_envs::get_observations] START")
 
         ## Camera Data
         # rgb_data   = self.isaac_environments._get_cam_data(type="rgb")
@@ -303,12 +324,13 @@ class Isaac_envs(gym.Env):
 
         ## Lidar Data
         if self.robot.name == "jackal_jaco":  
-            lidar_data = self._get_lidar_data()
+            #lidar_data = self._get_lidar_data()
+            lidar_data = self.isaac_environments._get_lidar_data()
         else:
             lidar_data = self.isaac_environments._get_lidar_data()
 
-        print("[env::Isaac_envs::get_observations] lidar_data:")
-        print(lidar_data)
+        #print("[env::Isaac_envs::get_observations] lidar_data shape:" + str(lidar_data.shape))
+        #print(lidar_data)
 
         #print("[env::Isaac_envs::get_observations] DEBUG INF")
         #while 1:
@@ -332,7 +354,7 @@ class Isaac_envs(gym.Env):
         obs = {"IR_raleted" : lidar_data, "pos_raleted" : target_relative_to_robot_data, "vel_raleted" : vase_vel_data} 
         #obs = {"h_raleted" : h_state, "vel_raleted" : obs_state}
 
-        print("[env::Isaac_envs::get_observations] END")
+        #print("[env::Isaac_envs::get_observations] END")
 
         return obs
 
@@ -378,28 +400,49 @@ class Isaac_envs(gym.Env):
     def _laser_scan_callback(self, data):
 
         print("[env::Isaac_envs::_laser_scan_callback] Incoming data...")
-        
+        print(data)
+
         self._laser_scan = data
+
+        print(self._laser_scan)
+
+        print("[env::Isaac_envs::_laser_scan_callback] DEBUG INF")
+        while 1:
+            continue
 
     '''
     DESCRIPTION: TODO...
     '''
     def _get_lidar_data(self):
 
-        print("[env::Isaac_envs::_get_lidar_data] END")
+        #print("[env::Isaac_envs::_get_lidar_data] START")
 
         data_raw = self._laser_scan
 
-        print("[env::Isaac_envs::_get_lidar_data] data_raw len: " + str(len(data_raw)))
-        lidar_data = data_raw
+        #print("[env::Isaac_envs::_get_lidar_data] RETRO)")
 
-        if len(data_raw) < 12:
+        if data_raw is None:
+            #print("[env::Isaac_envs::_get_lidar_data] NANIK")
+            
+            laser_shape = (1, 12)
+            lidar_data = np.ones(laser_shape)
+        else:
+            #print("[env::Isaac_envs::_get_lidar_data] WTF data_raw:")
+            #print(data_raw)
+            #print("[env::Isaac_envs::_get_lidar_data] data_raw len: " + str(len(data_raw)))
+            lidar_data = data_raw
+
+        #print("[env::Isaac_envs::_get_lidar_data] lidar_data len: " + str(len(lidar_data)))
+        #print("[env::Isaac_envs::_get_lidar_data] lidar_data size: " + str(lidar_data.size))
+        #print("[env::Isaac_envs::_get_lidar_data] lidar_data type: " + str(type(lidar_data)))
+        #print("[env::Isaac_envs::_get_lidar_data] lidar_data shape: " + str(lidar_data.shape))
+        if lidar_data.size < 12:
             print("[env::Isaac_envs::_get_lidar_data] DEBUG INF")
             while 1:
                 continue
-        elif len(data_raw) > 12:
-            lidar_data = data_raw[0:12]
+        elif len(lidar_data) > 12:
+            lidar_data = lidar_data[0:12]
         
-        print("[env::Isaac_envs::_get_lidar_data] END")
+        #print("[env::Isaac_envs::_get_lidar_data] END")
 
         return lidar_data
