@@ -79,6 +79,13 @@ INSTALL apriltag_ros package from here :
 https://github.com/AprilRobotics/apriltag_ros
 
 # COMMANDS TO RUN IN TERMINAL
+
+First you need to get the serial numbers of the two cameras. Connect the two cameras individually and run :
+```
+roslaunch mobiman_simulation rs_camera.launch
+```
+Note the serial numbers and use them as arguments later on. 
+
 In a new terminal, launch the tag detection. Source the workspace first 
 ```
 roslaunch mobiman_simulation continuous_detection.launch
