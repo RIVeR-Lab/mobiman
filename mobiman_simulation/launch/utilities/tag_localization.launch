@@ -1,5 +1,21 @@
 <launch>
 
 <include file="$(find mobiman_simulation)/launch/utilities/tag_continuous_detection.launch" />
+
+
 <include file="$(find mobiman_simulation)/launch/utilities/rs_camera.launch" />
+<arg name="serial_no" value="044422250566" />
+<arg name="camera" value="cam1" />
+<arg name="manager" value="realsense2_camera_manager1" />
+<!--node pkg="realsense2_camera" name="realsense_camera2"/-->
+<!--remap from="/camera/realsense2_camera_manager" to="/camera/realsense2_camera_manager1" /-->
+
+
+<include file="$(find mobiman_simulation)/launch/utilities/rs_camera.launch" />
+<arg name="serial_no" value="133522250294" />
+<arg name="camera" value="cam2" />
+<arg name="manager" value="realsense2_camera_manager2" />
+<!--node pkg="realsense2_camera" name="realsense_camera2"/-->
+<!--remap from="/camera/realsense2_camera_manager" to="/camera/realsense2_camera_manager2" /-->
+
 </launch>
