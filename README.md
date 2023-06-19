@@ -80,11 +80,17 @@ https://github.com/AprilRobotics/apriltag_ros
 
 # COMMANDS TO RUN IN TERMINAL
 In a new terminal, launch the tag detection. Source the workspace first 
+```
 roslaunch mobiman_simulation continuous_detection.launch
+```
 
 In a new terminal, launch camera 1
+```
 roslaunch mobiman_simulation rs_camera.launch camera:=cam_1 serial_no:=044422250566
+```
 
 In a new terminal launch camera 2 :
+```
 roslaunch mobiman_simulation rs_camera.launch camera:=cam_2 serial_no:=133522250294
+```
 
