@@ -69,3 +69,35 @@ rosrun mobiman_simulation jackal_check_bridge.py
 <img src="https://i.ibb.co/994BChj/jackal.gif" alt="Jackal" width="600" height="400">
 
 <hr>
+
+# LOCALIZATION WITH APRIL TAGS
+#Installations
+INSTALL THE ROS DRIVER FOR REALSENSE FROM HERE	
+https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy
+
+INSTALL apriltag_ros package from here :
+https://github.com/AprilRobotics/apriltag_ros
+
+# COMMANDS TO RUN IN TERMINAL
+
+First you need to get the serial numbers of the two cameras. Connect the two cameras individually and run :
+```
+roslaunch mobiman_simulation rs_camera.launch
+```
+Note the serial numbers and use them as arguments later on. 
+
+In a new terminal, launch the tag detection. Source the workspace first 
+```
+roslaunch mobiman_simulation continuous_detection.launch
+```
+
+In a new terminal, launch camera 1
+```
+roslaunch mobiman_simulation rs_camera.launch camera:=cam_1 serial_no:=044422250566
+```
+
+In a new terminal launch camera 2 :
+```
+roslaunch mobiman_simulation rs_camera.launch camera:=cam_2 serial_no:=133522250294
+```
+
