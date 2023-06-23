@@ -282,6 +282,8 @@ install(TARGETS test_moveit_planner_mobiman DESTINATION ${CATKIN_PACKAGE_BIN_DES
 catkin_install_python(PROGRAMS
   scripts/jackal_check_bridge.py
   scripts/kinova_check_bridge.py
+  scripts/broadcaster.py
+  scripts/world_frame_broadcaster.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

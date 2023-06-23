@@ -1,0 +1,12 @@
+<launch>
+
+
+
+<include file="$(find mobiman_simulation)/launch/utilities/tag_continuous_detection_cam1.launch" />
+<include file="$(find mobiman_simulation)/launch/utilities/tag_continuous_detection_cam2.launch" />
+<include file="$(find mobiman_simulation)/launch/utilities/rs_camera_cam1.launch" />
+<include file="$(find mobiman_simulation)/launch/utilities/rs_camera_cam2.launch" />
+
+<node pkg="mobiman_simulation" name="broadcaster" type="broadcaster.py" output="screen"/>
+<node pkg="mobiman_simulation" name="world_frame_broadcaster" type="world_frame_broadcaster.py" output="screen"/>
+</launch>
