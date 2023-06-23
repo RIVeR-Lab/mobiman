@@ -146,6 +146,9 @@ class isaac_envs():
         elif name=="transporter":
             camera_path = prim_path+"/camera_mount/transporter_camera_first_person"
 
+        if name=="jackal_jaco":
+            camera_path = prim_path+"/base_link/bumblebee_stereo_camera_frame/bumblebee_stereo_left_frame/bumblebee_stereo_left_camera"
+
         else:
             camera_path = None
 
@@ -229,7 +232,6 @@ class isaac_envs():
             lidarPath = "/carter_lidar"
             parent    = prim_path+"/chassis_link"
             self._lidar_path = parent+lidarPath
-            return
         
         elif name=="transporter":
             lidarPath        = "/lidar"
@@ -237,7 +239,6 @@ class isaac_envs():
             parent           = prim_path+"/chassis"
             self._lidar_path = parent+lidarPath
             self._lidar_path = parent+lidarPath2
-            return
         
         elif name=="kaya":
             lidarPath = "/lidar"
@@ -247,11 +248,17 @@ class isaac_envs():
             max_range = 1
         
         elif name=="jackal_jaco":
-            lidarPath = None
-            parent    = None
-            self._lidar_path = None
-            min_range = None
-            max_range = None
+            lidarPath = "/lidar"
+            #lidarPath = "/sick_lms1xx_lidar_frame/Lidar"
+            parent    = prim_path+"/base_link"
+            self._lidar_path = parent+lidarPath
+            min_range = 0.3
+            max_range = 2
+            #lidarPath = None
+            #parent    = None
+            #self._lidar_path = None
+            #min_range = None
+            #max_range = None
 
         else:
             carb.log_error("[isaac_envs::_set_lidar] ERROR: Could not find the selected sensor, maybe there is a lidar already in this robot")
@@ -311,14 +318,22 @@ class isaac_envs():
 
         #print("[isaac_envs::_get_lidar_data] START")
         #print("[isaac_envs::_get_lidar_data] self._lidar_path: " + str(self._lidar_path))
+        #print("[isaac_envs::_get_lidar_data] lidar_selector: " + str(lidar_selector))
 
-        if lidar_selector==1:
+        if lidar_selector == 1:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path)
-            depth_points = np.resize(depth_points, (1,self.number_lasers))
+            depth_points = np.resize(depth_points, (1, self.number_lasers))
         
-        if lidar_selector==2:
+        if lidar_selector == 2:
             depth_points = self.lidarInterface.get_linear_depth_data(self._lidar_path2)
-            depth_points = np.resize(depth_points, (1,self.number_lasers))
+            depth_points = np.resize(depth_points, (1, self.number_lasers))
+
+        #print("[isaac_envs::_get_lidar_data] depth_points: ")
+        #print(depth_points)
+
+        #laser_shape = (1, 12)
+        #lidar_data = np.ones(laser_shape)
+        #depth_points = lidar_data
 
         #print("[isaac_envs::_get_lidar_data] END")
 
@@ -344,6 +359,10 @@ class isaac_envs():
         if name=="transporter":
             map_dist_unit=1.3
             height = 0.4
+
+        if name=="jackal_jaco":
+            map_dist_unit=1.5#50
+            height = 0.5#20
         
         self._map_dimension = map_dimension
         self._map_dist_unit = map_dist_unit
@@ -510,7 +529,7 @@ class isaac_envs():
         print("[isaac_envs::_robot_pose_random_walk] START")
 
         if random:
-            position = np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (-1.5), 0])
+            position = np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (-1.5), 0.3])
             # randomize robot orientation expressed in quaternions with cosine-sine trick to constraint rotation in one axis and make the final vector's magnitude equal to 1
             # ref: https://eater.net/quaternions/video/intro
             a  = np.random.rand()*np.pi # junt pi instead of 2*pi 'cause the angle in doubled in quaternion application
@@ -520,7 +539,7 @@ class isaac_envs():
             q4 = np.cos(a)   # 4th dim axis?
             orientation = np.array([q1, q2, q3, q4])
         else:
-            position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (-1.5), 0])
+            position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (-1.5), 0.3])
             orientation = np.array([1.0, 0.0, 0.0, 0.0])
 
         print("[isaac_envs::_robot_pose_random_walk] END")
@@ -529,13 +548,13 @@ class isaac_envs():
 
     def _target_pos_random_walk(self, random: bool = False):
 
-        print("[isaac_envs::_target_pos_random_walk] START")
+        #print("[isaac_envs::_target_pos_random_walk] START")
 
         if random:
             position=np.array([self._map_dist_unit * np.random.randint(self._map_dimension), self._map_dist_unit * (5.5), 0.25])
         else:
             position=np.array([self._map_dist_unit * (self._map_dimension-1)/2, self._map_dist_unit * (5.5), 0.25])
 
-        print("[isaac_envs::_target_pos_random_walk] END")
+        #print("[isaac_envs::_target_pos_random_walk] END")
 
         return position

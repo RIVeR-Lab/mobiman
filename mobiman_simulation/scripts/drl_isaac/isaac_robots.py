@@ -1,4 +1,4 @@
-#### LAST UPDATE: 2023.06.09
+#### LAST UPDATE: 2023.06.15
 ##
 #### AUTHOR: 
 ## Neset Unver Akmandor (NUA)
@@ -71,10 +71,12 @@ class isaac_robot(Robot):
             usd_path = "/Isaac/Robots/Quadcopter/quadcopter.usd"
 
         elif name=="jackal_jaco":
-            usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_kinova.usd"
+            #usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_jaco.usd"
+            # usd_path = self._mobiman_path + "models/usd/jackal_jaco/jackal_kinova.usd"
+            usd_path = "/Isaac/Robots/Clearpath/Jackal/jackal_basic.usd"
 
         else:
-            carb.log_error("Could not find robot :(")
+            carb.log_error("[isaac_robots::__init__] ERROR: Could not find robot!")
         
         prim = get_prim_at_path(prim_path)
         print("[isaac_robots::__init__] BEFORE prim_path: " + prim_path)
@@ -91,7 +93,8 @@ class isaac_robot(Robot):
                 return
             
             if name=="jackal_jaco":
-                asset_path = usd_path
+                # asset_path = usd_path
+                asset_path = self.nucleus_server + usd_path
             else:
                 asset_path = self.nucleus_server + usd_path
             
@@ -151,11 +154,12 @@ class isaac_robot(Robot):
         
         joint_velocities = self.get_joint_velocities()
 
-        #print("[isaac_robots::get_wheel_velocities] joint_velocities len: " + str(len(joint_velocities)))
+        print("[isaac_robots::get_wheel_velocities] joint_velocities len: " + str(len(joint_velocities)))
+        print(joint_velocities)
 
-        #print("[isaac_robots::get_wheel_velocities] DEBUG INF")
-        #while 1:
-        #    continue
+        print("[isaac_robots::get_wheel_velocities] DEBUG INF")
+        while 1:
+            continue
 
         if self._name=="jetbot" or self._name=="carter_v1" or self._name == "transporter":
             velocities = joint_velocities[self._wheel_dof_indices[0]], joint_velocities[self._wheel_dof_indices[1]]
@@ -186,13 +190,26 @@ class isaac_robot(Robot):
             self.wheel_left = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[0])
             self.wheel_right = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[1])
             self.wheel_back = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[2])
+
             self.dc.set_dof_velocity_target(self.wheel_left , velocities[0])
             self.dc.set_dof_velocity_target(self.wheel_right, velocities[1])
             self.dc.set_dof_velocity_target(self.wheel_back , velocities[3])
+
+        elif self._name == "jackal_jaco":
+            self.wheel_front_left = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[0])
+            self.wheel_front_right = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[1])
+            self.wheel_rear_left = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[2])
+            self.wheel_rear_right = self.dc.find_articulation_dof(self.ar , self._wheel_dof_names[3])
+
+            self.dc.set_dof_velocity_target(self.wheel_front_left , velocities[0])
+            self.dc.set_dof_velocity_target(self.wheel_front_right, velocities[1])
+            self.dc.set_dof_velocity_target(self.wheel_rear_left , velocities[2])
+            self.dc.set_dof_velocity_target(self.wheel_rear_right , velocities[3])
     
         else:
             self.wheel_left = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[0])
             self.wheel_right = self.dc.find_articulation_dof(self.ar, self._wheel_dof_names[1])
+            
             self.dc.set_dof_velocity_target(self.wheel_left, velocities[0])
             self.dc.set_dof_velocity_target(self.wheel_right, velocities[1])
         
@@ -239,15 +256,23 @@ class isaac_robot(Robot):
             wheel_base   = 32.3
 
         else:
-            carb.log_error("Could not find the robot " + self._name + ", or is not compatible with differential controller, remember, just two wheeled robot allowed!")
+            carb.log_error("[isaac_robots::differential_controller] Could not find the robot " + self._name + ", or is not compatible with differential controller, remember, just two wheeled robot allowed!")
             
         # velocities[0] = velocities[0]*10
 
-        joint_velocities = [0.0, 0.0]
-        joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)
-        joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)
+        if self._name == "jackal_jaco":
+            joint_velocities = [0.0, 0.0, 0.0, 0.0]
+            joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)     # front left
+            joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)     # front right
+            joint_velocities[2] = joint_velocities[0]                                                           # rear left
+            joint_velocities[3] = joint_velocities[1]                                                           # rear right
+            self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1], joint_velocities[2], joint_velocities[3]) )
 
-        self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1]) )
+        else:
+            joint_velocities = [0.0, 0.0]
+            joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)
+            joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)
+            self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1]) )
 
         #print("[isaac_robots::differential_controller] END")
 
@@ -366,11 +391,7 @@ class isaac_robot(Robot):
 
     def set_robot_pose(self, position: np.array = [float, float, float], orientation: np.array = [float, float, float, float]):
         
-        print("[isaac_robots::set_robot_pose] START")
-
-        #print("[isaac_robots::set_robot_pose] DEBUG INF")
-        #while 1:
-        #    continue
+        #print("[isaac_robots::set_robot_pose] START")
 
         if self._name=="jetbot":
             chassis_path = self._prim_path+"/chassis"
@@ -388,14 +409,20 @@ class isaac_robot(Robot):
             chassis_path = self._prim_path+"/base_link"
         
         else:
-            carb.log_error("Could not find the selected sensor, maybe there is a lidar already in this robot :p")
+            carb.log_error("[isaac_robots::set_robot_pose] ERROR: Could not find the selected sensor, maybe there is a lidar already in this robot!")
             return
         
+        #print("[isaac_robots::set_robot_pose] chassis_path: " + str(chassis_path))
+
         robot = self.dc.get_rigid_body(chassis_path)
         new_pose = _dynamic_control.Transform( position, orientation)
         self.dc.set_rigid_body_pose(robot, new_pose)
 
-        print("[isaac_robots::set_robot_pose] END")
+        #print("[isaac_robots::set_robot_pose] DEBUG INF")
+        #while 1:
+        #    continue
+
+        #print("[isaac_robots::set_robot_pose] END")
 
         return
 
@@ -437,7 +464,7 @@ class isaac_robot(Robot):
             if self._name=="jackal_jaco":
                 action_space = spaces.Box(
                     low=np.array([0,-np.pi/4], dtype=np.float32),
-			        high=np.array([2,np.pi/4], dtype=np.float32),
+			        high=np.array([30,np.pi/4], dtype=np.float32),
 			        dtype=np.float32)
 
         elif type=="discrete":
@@ -449,7 +476,7 @@ class isaac_robot(Robot):
 
     def get_discrete_actions(self):
 
-        print("[isaac_robots::get_discrete_actions] START")
+        #print("[isaac_robots::get_discrete_actions] START")
 
         #print("[isaac_robots::get_discrete_actions] DEBUG INF")
         #while 1:
@@ -469,8 +496,8 @@ class isaac_robot(Robot):
             movements = np.array([[3, 0, 0.785], [5, 0, 0], [3, 0, -0.785]])
 
         elif self._name=="jackal_jaco":
-            movements = np.array([[15, 0.785], [25, 0], [15, -0.785]])
+            movements = np.array([[3*15, 3*0.785], [3*25, 0], [3*15, 3*-0.785]])
         
-        print("[isaac_robots::get_discrete_actions] END")
+        #print("[isaac_robots::get_discrete_actions] END")
 
         return movements

@@ -1,7 +1,7 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
-isaac_sim_path: "/home/akmandor/.local/share/ov/pkg/isaac_sim-2022.2.1/"
+isaac_sim_path: "~/.local/share/ov/pkg/isaac_sim-2022.2.1/"
 planning_framework: "move_group_interface"
 log_path: "dataset/drl_training_data/mobiman"
 
