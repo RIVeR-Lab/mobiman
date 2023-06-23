@@ -70,6 +70,7 @@ rosrun mobiman_simulation jackal_check_bridge.py
 
 <hr>
 
+<<<<<<< HEAD
 # LOCALIZATION WITH APRIL TAGS
 #Installations
 INSTALL THE ROS DRIVER FOR REALSENSE FROM HERE	
@@ -122,3 +123,9 @@ rostopic echo /tf
 Note the transform of the tag w.r.t. camera_color_optical_frame. It should be fairly constant if the camera is not undergoing any vibrations.
 
 4. Put those transform values (x,y,z) and (x,y,z,w) in the `world_frame_broadcaster.py`. Here the `cam2_color_optical_frame` would be the parent and `world` would be the child.
+=======
+# MOBIMAN BOT CREDENTIALS
+username: administrator
+
+password: clearpath
+>>>>>>> main
