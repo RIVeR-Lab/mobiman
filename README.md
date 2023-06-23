@@ -78,26 +78,47 @@ https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy
 INSTALL apriltag_ros package from here :
 https://github.com/AprilRobotics/apriltag_ros
 
-# COMMANDS TO RUN IN TERMINAL
+# INSTRUCTIONS AND PROCEDURES
 
-First you need to get the serial numbers of the two cameras. Connect the two cameras individually and run :
+First you need to get the serial numbers of the two cameras. Connect the two cameras individually and run the following for both separately :
 ```
 roslaunch mobiman_simulation rs_camera.launch
 ```
-Note the serial numbers and use them as arguments later on. 
+Note the serial numbers and use them as arguments.
+For first camera, add the serial number in rs_camera_cam1.launch like so :
+```
+<arg name="serial_no"           default="044422250566"/>
+```
+Similarly for the second camera, add the serial number in rs_camera_cam2.launch
 
-In a new terminal, launch the tag detection. Source the workspace first 
+```
+<arg name="serial_no"           default="133522250294"/>
+```
+
+In a new terminal do : 
+```
+roslaunch mobiman_simulation tag_localization_dual_camera.launch
+```
+
+
+Notes : Add the tags you are expecting to detect along with their size in the `apriltags.yaml` file. 
+
+## Procedure regarding the world_frame_broadcaster.py
+For, the world_frame_broadcaster.py, here is the procedure before you launch the system :
+1. Designate a tag as the world frame. Tag 0 if possible.
+2. Have camera 2 look at it and broadcast it. 
+For this just connect one of the cameras to the pc and do the following :
+```
+roslaunch mobiman_simulation rs_camera.launch
+```
 ```
 roslaunch mobiman_simulation tag_continuous_detection.launch
 ```
 
-In a new terminal, launch camera 1
+3. In a new terminal, echo the transform.
 ```
-roslaunch mobiman_simulation rs_camera.launch camera:=cam_1 serial_no:=044422250566
+rostopic echo /tf
 ```
+Note the transform of the tag w.r.t. camera_color_optical_frame. It should be fairly constant if the camera is not undergoing any vibrations.
 
-In a new terminal launch camera 2 :
-```
-roslaunch mobiman_simulation rs_camera.launch camera:=cam_2 serial_no:=133522250294
-```
-
+4. Put those transform values (x,y,z) and (x,y,z,w) in the `world_frame_broadcaster.py`. Here the `cam2_color_optical_frame` would be the parent and `world` would be the child.
