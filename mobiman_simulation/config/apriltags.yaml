@@ -21,8 +21,13 @@
 #   ]
 standalone_tags:
   [
-  {id: 0, size: 0.15, name: "world;"},
-  {id: 1, size: 0.15, name: "object 1"
+  {id: 0, size: 0.17145, name: "world"},
+  {id: 1, size: 0.17145, name: "object_1"},
+  {id: 2, size: 0.06, name: "object_2"},
+  {id: 3, size: 0.06, name: "object_3"},
+  {id: 4, size: 0.06, name: "tag_4"},
+  {id: 8, size: 0.17145, name: "tag_8"}
+#  {id: 5, size: 0.06, name: "object_3_side"}
   ]
 # ## Tag bundle definitions
 # ### Remarks
