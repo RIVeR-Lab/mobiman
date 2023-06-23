@@ -88,7 +88,7 @@ Note the serial numbers and use them as arguments later on.
 
 In a new terminal, launch the tag detection. Source the workspace first 
 ```
-roslaunch mobiman_simulation continuous_detection.launch
+roslaunch mobiman_simulation tag_continuous_detection.launch
 ```
 
 In a new terminal, launch camera 1
