@@ -52,6 +52,16 @@ model_information
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/effort_joint_trajectory_controller/command"
+
+  ;armControlMsg                   
+  ;{
+  ;  [0] /joint_1_position_controller/command
+  ;  [1] /joint_2_position_controller/command
+  ;  [2] /joint_3_position_controller/command
+  ;  [3] /joint_4_position_controller/command
+  ;  [4] /joint_5_position_controller/command
+  ;  [5] /joint_6_position_controller/command
+  ;}
 }
 
 model_settings
@@ -115,14 +125,14 @@ rollout
 ; MPC settings
 mpc
 {
-  timeHorizon                     1.0   ; [s] NUA EDIT: def: 1.0
+  timeHorizon                     2.0   ; [s] NUA EDIT: def: 1.0
   solutionTimeWindow              0.5   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
-  mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400
+  mrtDesiredFrequency             10   ; [Hz] NUA EDIT: def: 400
 }
 
 inputCost
@@ -133,7 +143,7 @@ inputCost
     ; input costs for the different types of arm base DOFs
     base
     {
-      scaling 1e-1  ; NUA EDIT: def: 1e-2
+      scaling 1e-2  ; NUA EDIT: def: 1e-2
 
       (0,0)  1.5  ; forward velocity    NUA EDIT: def: 2.5
       (1,1)  1.5  ; turning velocity    NUA EDIT: def: 2.5
@@ -157,20 +167,20 @@ inputCost
 endEffector
 {
   ; end effector quadratic penalty scaling
-  muPosition       5.0 ; NUA EDIT: def: 10.0
+  muPosition       10.0 ; NUA EDIT: def: 10.0
   muOrientation    5.0 ; NUA EDIT: def: 5.0
 }
 
 finalEndEffector
 {
-  muPosition      50.0  ; NUA EDIT: def: 10
-  muOrientation   50.0  ; NUA EDIT: def: 5.0
+  muPosition      30.0  ; NUA EDIT: def: 10
+  muOrientation   15.0  ; NUA EDIT: def: 5.0
 }
 
 selfCollision
 { 
   ; activate self-collision constraint
-  activate  false
+  activate  true
 
   ; Self Collision raw object pairs
   ;collisionObjectPairs
@@ -185,7 +195,7 @@ selfCollision
   {
     [0] "chassis_link, j2n6s300_link_2"
     [1] "chassis_link, j2n6s300_link_3"
-    ;[2] "chassis_link, j2n6s300_link_4"
+    [2] "chassis_link, j2n6s300_link_4"
     ;[4] "chassis_link, j2n6s300_link_5"
     ;[4] "chassis_link, j2n6s300_link_6"
   }
@@ -248,12 +258,12 @@ jointVelocityLimits
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  -3  ; j2n6s300_joint_1 velocity
-      (1,0)  -3  ; j2n6s300_joint_2 velocity
-      (2,0)  -3  ; j2n6s300_joint_3 velocity
-      (3,0)  -3  ; j2n6s300_joint_4 velocity
-      (4,0)  -3  ; j2n6s300_joint_5 velocity
-      (5,0)  -3  ; j2n6s300_joint_6 velocity
+      (0,0)  -1  ; j2n6s300_joint_1 velocity
+      (1,0)  -1  ; j2n6s300_joint_2 velocity
+      (2,0)  -1  ; j2n6s300_joint_3 velocity
+      (3,0)  -1  ; j2n6s300_joint_4 velocity
+      (4,0)  -1  ; j2n6s300_joint_5 velocity
+      (5,0)  -1  ; j2n6s300_joint_6 velocity
     }
   }
 
@@ -269,12 +279,12 @@ jointVelocityLimits
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  3  ; j2n6s300_joint_1 velocity
-      (1,0)  3  ; j2n6s300_joint_2 velocity
-      (2,0)  3  ; j2n6s300_joint_3 velocity
-      (3,0)  3  ; j2n6s300_joint_4 velocity
-      (4,0)  3  ; j2n6s300_joint_5 velocity
-      (5,0)  3  ; j2n6s300_joint_6 velocity
+      (0,0)  1  ; j2n6s300_joint_1 velocity
+      (1,0)  1  ; j2n6s300_joint_2 velocity
+      (2,0)  1  ; j2n6s300_joint_3 velocity
+      (3,0)  1  ; j2n6s300_joint_4 velocity
+      (4,0)  1  ; j2n6s300_joint_5 velocity
+      (5,0)  1  ; j2n6s300_joint_6 velocity
     }
   }
 }

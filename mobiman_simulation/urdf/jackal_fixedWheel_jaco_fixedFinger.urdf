@@ -506,7 +506,7 @@
     <child link="j2n6s300_link_base"/>
     <axis xyz="0 0 0"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <link name="j2n6s300_link_1">
     <visual>
@@ -539,7 +539,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="40" velocity="0.6283185307179586" lower="-300" upper="300"/>
     <origin rpy="0 3.141592653589793 0" xyz="0 0 0.15675"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <transmission name="j2n6s300_joint_1_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -593,7 +593,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="80" lower="0.8203047484373349" upper="5.462880558742252" velocity="0.6283185307179586"/>
     <origin rpy="-1.5707963267948966 0 3.141592653589793" xyz="0 0.0016 -0.11875"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <transmission name="j2n6s300_joint_2_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -647,7 +647,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="40" lower="0.33161255787892263" upper="5.951572749300664" velocity="0.6283185307179586"/>
     <origin rpy="0 3.141592653589793 0" xyz="0 -0.410 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <transmission name="j2n6s300_joint_3_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -701,7 +701,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="20" velocity="0.8377580409572781" lower="-300" upper="300"/>
     <origin rpy="-1.5707963267948966 0 3.141592653589793" xyz="0 0.2073 -0.0114"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <transmission name="j2n6s300_joint_4_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -755,7 +755,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="20" velocity="0.8377580409572781" lower="-300" upper="300"/>
     <origin rpy="1.0471975511965976 0 3.141592653589793" xyz="0 -0.03703 -0.06414"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <transmission name="j2n6s300_joint_5_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -809,7 +809,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="20" velocity="0.8377580409572781" lower="-300" upper="300"/>
     <origin rpy="1.0471975511965976 0 3.141592653589793" xyz="0 -0.03703 -0.06414"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.15"/>
   </joint>
   <transmission name="j2n6s300_joint_6_trans">
     <type>transmission_interface/SimpleTransmission</type>
