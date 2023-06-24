@@ -1,0 +1,22 @@
+-> INSTALL THE ROS DRIVER FOR REALSENSE FROM HERE	
+https://github.com/IntelRealSense/realsense-ros/tree/ros1-legacy
+
+-> LAUNCHING THE INTELREALSENSE CAMERA
+
+roslaunch mobiman_simulation rs_camera.launch
+
+
+-> INSTALLING APRILTAG_ROS LIBRARY
+https://github.com/AprilRobotics/apriltag_ros        [clone the repo from here in your workspace. Follow the instructions on the page. ROS Noetic supported]
+
+TRANSFORM OF CAMERA W.R.T WORLD FRAME
+rosrun tf static_transform_publisher 0.0 0.0 0.0 0.0 0.0 0.0 map camera_link 100       [Optional. Once transform form world frame to camera is fixed, this command can be run in the terminal]
+
+-> LAUNCHING APRIL TAG CONTINUOUS DETECTION USING THE OFFICIAL ROS WRAPPER
+roslaunch mobiman_simulation tag_continuous_detection.launch
+
+RUN RVIZ
+rviz
+Add TF topic. Add camera feed. Specify the fixed frame. 
+
+[Will create a single roslaunch once significant progress done.]
