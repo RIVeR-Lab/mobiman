@@ -48,10 +48,12 @@ model_information
   eeFrame                         "j2n6s300_end_effector"
 
   baseStateMsg                    "/gazebo/link_states"
-  armStateMsg                     "/effort_joint_trajectory_controller/state"
+  armStateMsg                     "/arm_controller/state"
+  ;armStateMsg                     "/effort_joint_trajectory_controller/state"
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
-  armControlMsg                   "/effort_joint_trajectory_controller/command"
+  armControlMsg                   "/arm_controller/command"
+  ;armControlMsg                   "/effort_joint_trajectory_controller/command"
 
   ;armControlMsg                   
   ;{
@@ -80,7 +82,7 @@ ddp
 
   maxNumIterations                1
   minRelCost                      0.1
-  constraintTolerance             1e-3  ; NUA EDIT: def: 1e-3
+  constraintTolerance             5e-2  ; NUA EDIT: def: 1e-3
 
   displayInfo                     false  ; NUA EDIT: def: false
   displayShortSummary             false  ; NUA EDIT: def: false
@@ -125,14 +127,14 @@ rollout
 ; MPC settings
 mpc
 {
-  timeHorizon                     2.0   ; [s] NUA EDIT: def: 1.0
-  solutionTimeWindow              0.5   ; [s] NUA EDIT: def: 0.2
+  timeHorizon                     3.0   ; [s] NUA EDIT: def: 1.0
+  solutionTimeWindow              1.0   ; [s] NUA EDIT: def: 0.2
   coldStart                       false
   
   debugPrint                      false
 
   mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
-  mrtDesiredFrequency             10   ; [Hz] NUA EDIT: def: 400
+  mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400
 }
 
 inputCost
@@ -143,10 +145,10 @@ inputCost
     ; input costs for the different types of arm base DOFs
     base
     {
-      scaling 1e-2  ; NUA EDIT: def: 1e-2
+      scaling 1e-1  ; NUA EDIT: def: 1e-2
 
-      (0,0)  1.5  ; forward velocity    NUA EDIT: def: 2.5
-      (1,1)  1.5  ; turning velocity    NUA EDIT: def: 2.5
+      (0,0)  2.0  ; forward velocity    NUA EDIT: def: 2.5
+      (1,1)  2.0  ; turning velocity    NUA EDIT: def: 2.5
     }
 
     ; input costs for the arm DOFs
@@ -167,14 +169,14 @@ inputCost
 endEffector
 {
   ; end effector quadratic penalty scaling
-  muPosition       10.0 ; NUA EDIT: def: 10.0
+  muPosition       5.0 ; NUA EDIT: def: 10.0
   muOrientation    5.0 ; NUA EDIT: def: 5.0
 }
 
 finalEndEffector
 {
-  muPosition      30.0  ; NUA EDIT: def: 10
-  muOrientation   15.0  ; NUA EDIT: def: 5.0
+  muPosition      80.0  ; NUA EDIT: def: 10
+  muOrientation   80.0  ; NUA EDIT: def: 5.0
 }
 
 selfCollision
@@ -193,11 +195,9 @@ selfCollision
   ; Self Collision pairs
   collisionLinkPairs
   {
-    [0] "chassis_link, j2n6s300_link_2"
-    [1] "chassis_link, j2n6s300_link_3"
-    [2] "chassis_link, j2n6s300_link_4"
-    ;[4] "chassis_link, j2n6s300_link_5"
-    ;[4] "chassis_link, j2n6s300_link_6"
+    [0] "chassis_link, j2n6s300_link_3"
+    [1] "j2n6s300_link_2, j2n6s300_link_5"
+    ;[2] "chassis_link, j2n6s300_link_6"
   }
 
   ; minimum distance allowed between the pairs
@@ -241,7 +241,7 @@ jointPositionLimits
 jointVelocityLimits
 {
   ; relaxed log barrier mu
-  mu      0.1
+  mu      0.05
 
   ; relaxed log barrier delta
   delta   1e-3
@@ -258,12 +258,12 @@ jointVelocityLimits
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  -1  ; j2n6s300_joint_1 velocity
-      (1,0)  -1  ; j2n6s300_joint_2 velocity
-      (2,0)  -1  ; j2n6s300_joint_3 velocity
-      (3,0)  -1  ; j2n6s300_joint_4 velocity
-      (4,0)  -1  ; j2n6s300_joint_5 velocity
-      (5,0)  -1  ; j2n6s300_joint_6 velocity
+      (0,0)  -15  ; j2n6s300_joint_1 velocity
+      (1,0)  -15  ; j2n6s300_joint_2 velocity
+      (2,0)  -15  ; j2n6s300_joint_3 velocity
+      (3,0)  -15  ; j2n6s300_joint_4 velocity
+      (4,0)  -15  ; j2n6s300_joint_5 velocity
+      (5,0)  -15  ; j2n6s300_joint_6 velocity
     }
   }
 
@@ -279,12 +279,12 @@ jointVelocityLimits
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  1  ; j2n6s300_joint_1 velocity
-      (1,0)  1  ; j2n6s300_joint_2 velocity
-      (2,0)  1  ; j2n6s300_joint_3 velocity
-      (3,0)  1  ; j2n6s300_joint_4 velocity
-      (4,0)  1  ; j2n6s300_joint_5 velocity
-      (5,0)  1  ; j2n6s300_joint_6 velocity
+      (0,0)  15  ; j2n6s300_joint_1 velocity
+      (1,0)  15  ; j2n6s300_joint_2 velocity
+      (2,0)  15  ; j2n6s300_joint_3 velocity
+      (3,0)  15  ; j2n6s300_joint_4 velocity
+      (4,0)  15  ; j2n6s300_joint_5 velocity
+      (5,0)  15  ; j2n6s300_joint_6 velocity
     }
   }
 }

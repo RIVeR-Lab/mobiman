@@ -5,7 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-        - /InteractiveMarkers2/Status1
         - /MarkerArray5/Namespaces1
         - /MotionPlanning1/Planned Path1
       Splitter Ratio: 0.5
@@ -328,8 +327,6 @@ Visualization Manager:
           Value: false
         long_pkg:
           Value: true
-        longwide_pkg:
-          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -422,8 +419,6 @@ Visualization Manager:
             {}
           long_pkg:
             {}
-          longwide_pkg:
-            {}
           normal_pkg:
             {}
           red_cube:
@@ -435,7 +430,8 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -466,21 +462,22 @@ Visualization Manager:
       Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: true
+      Enabled: false
       Name: InteractiveMarkers
       Show Axes: false
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /model_mode_marker/update
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        0 - 13: true
       Queue Size: 100
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -767,7 +764,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.29024600982666
+      Distance: 3.9731345176696777
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -775,17 +772,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.6909363865852356
-        Y: -0.9012616872787476
-        Z: 0.44385993480682373
+        X: -0.48475608229637146
+        Y: -0.8584496974945068
+        Z: 0.35774147510528564
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.45479685068130493
+      Pitch: 0.5497968196868896
       Target Frame: <Fixed Frame>
-      Yaw: 1.5741972923278809
+      Yaw: 1.684197187423706
     Saved: ~
 Window Geometry:
   Displays:
