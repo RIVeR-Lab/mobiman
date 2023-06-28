@@ -82,7 +82,7 @@ ddp
 
   maxNumIterations                1
   minRelCost                      0.1
-  constraintTolerance             5e-2  ; NUA EDIT: def: 1e-3
+  constraintTolerance             1e-3  ; NUA EDIT: def: 1e-3
 
   displayInfo                     false  ; NUA EDIT: def: false
   displayShortSummary             false  ; NUA EDIT: def: false
@@ -145,10 +145,10 @@ inputCost
     ; input costs for the different types of arm base DOFs
     base
     {
-      scaling 1e-1  ; NUA EDIT: def: 1e-2
+      scaling 1e-2  ; NUA EDIT: def: 1e-2
 
-      (0,0)  2.0  ; forward velocity    NUA EDIT: def: 2.5
-      (1,1)  2.0  ; turning velocity    NUA EDIT: def: 2.5
+      (0,0)  6.0  ; forward velocity    NUA EDIT: def: 2.5
+      (1,1)  6.0  ; turning velocity    NUA EDIT: def: 2.5
     }
 
     ; input costs for the arm DOFs
@@ -169,14 +169,14 @@ inputCost
 endEffector
 {
   ; end effector quadratic penalty scaling
-  muPosition       5.0 ; NUA EDIT: def: 10.0
+  muPosition       1.0 ; NUA EDIT: def: 10.0
   muOrientation    5.0 ; NUA EDIT: def: 5.0
 }
 
 finalEndEffector
 {
-  muPosition      80.0  ; NUA EDIT: def: 10
-  muOrientation   80.0  ; NUA EDIT: def: 5.0
+  muPosition      50.0  ; NUA EDIT: def: 10
+  muOrientation   50.0  ; NUA EDIT: def: 5.0
 }
 
 selfCollision
@@ -196,8 +196,9 @@ selfCollision
   collisionLinkPairs
   {
     [0] "chassis_link, j2n6s300_link_3"
-    [1] "j2n6s300_link_2, j2n6s300_link_5"
-    ;[2] "chassis_link, j2n6s300_link_6"
+    [1] "j2n6s300_link_2, j2n6s300_link_6"
+    ;[1] "chassis_link, j2n6s300_link_4"
+    ;[3] "chassis_link, j2n6s300_link_6"
   }
 
   ; minimum distance allowed between the pairs
@@ -229,7 +230,7 @@ extCollision
 jointPositionLimits
 { 
   ; activate constraint
-  activate  true
+  activate  false
 
   ; relaxed log barrier mu
   mu      0.01
@@ -241,7 +242,7 @@ jointPositionLimits
 jointVelocityLimits
 {
   ; relaxed log barrier mu
-  mu      0.05
+  mu      0.02
 
   ; relaxed log barrier delta
   delta   1e-3
