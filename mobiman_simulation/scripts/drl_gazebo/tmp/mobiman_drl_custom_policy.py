@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2022.02.23
+LAST UPDATE: 2023.06.28
 
-AUTHOR:     OPENAI_ROS
-            Neset Unver Akmandor (NUA)
+AUTHOR: OPENAI_ROS
+        Neset Unver Akmandor (NUA)
 
 E-MAIL: akmandor.n@northeastern.edu
 
@@ -40,20 +40,20 @@ class laser_image_2DCNN_FC_Policy(BaseFeaturesExtractor):
         # so put something dummy for now. PyTorch requires calling
         # nn.Module.__init__ before adding modules
 
-        print("laser_image_2DCNN_FC_Policy::__init__ -> observation_space: " + str(observation_space))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] observation_space: " + str(observation_space))
 
         super(laser_image_2DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
 
-        print("laser_image_2DCNN_FC_Policy::__init__ -> observation_space.spaces laser_image shape: " + str(observation_space.spaces["laser_image"].shape))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] observation_space.spaces laser_image shape: " + str(observation_space.spaces["laser_image"].shape))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
 
         self.cnn_input_channel_len = observation_space.spaces["laser_image"].shape[0]
         self.cnn_input_data_len = observation_space.spaces["laser_image"].shape[1]
         self.fc_input_extra_data_len = observation_space.spaces["target_action"].shape[0]
 
-        print("laser_image_2DCNN_FC_Policy::__init__ -> cnn_input_channel_len: " + str(self.cnn_input_channel_len))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> cnn_input_data_len: " + str(self.cnn_input_data_len))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] cnn_input_channel_len: " + str(self.cnn_input_channel_len))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] cnn_input_data_len: " + str(self.cnn_input_data_len))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
 
         n_channel_input1 = self.cnn_input_channel_len
         n_channel_output1 = 32
@@ -64,12 +64,12 @@ class laser_image_2DCNN_FC_Policy(BaseFeaturesExtractor):
         n_channel_input3 = n_channel_output2
         n_channel_output3 = 64
 
-        print("laser_image_2DCNN_FC_Policy::__init__ -> n_channel_input1: " + str(n_channel_input1))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> n_channel_output1: " + str(n_channel_output1))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> n_channel_input2: " + str(n_channel_input2))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> n_channel_output2: " + str(n_channel_output2))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> n_channel_input3: " + str(n_channel_input3))
-        print("laser_image_2DCNN_FC_Policy::__init__ -> n_channel_output3: " + str(n_channel_output3))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] n_channel_input1: " + str(n_channel_input1))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] n_channel_output1: " + str(n_channel_output1))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] n_channel_input2: " + str(n_channel_input2))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] n_channel_output2: " + str(n_channel_output2))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] n_channel_input3: " + str(n_channel_input3))
+        print("[laser_image_2DCNN_FC_Policy::__init__ ] n_channel_output3: " + str(n_channel_output3))
         
         self.cnn_net = nn.Sequential(
 
@@ -99,15 +99,15 @@ class laser_image_2DCNN_FC_Policy(BaseFeaturesExtractor):
 
             cnn_input_sample = observation_space.spaces["laser_image"].sample()[None]
 
-            print("laser_image_2DCNN_FC_Policy::__init__ -> cnn_input_sample shape: " + str(cnn_input_sample.shape))
+            print("[laser_image_2DCNN_FC_Policy::__init__ ] cnn_input_sample shape: " + str(cnn_input_sample.shape))
 
             cnn_output = self.cnn_net(th.as_tensor(cnn_input_sample).float())
 
-            print("laser_image_2DCNN_FC_Policy::__init__ -> cnn_output shape: " + str(cnn_output.shape))
+            print("[laser_image_2DCNN_FC_Policy::__init__ ] cnn_output shape: " + str(cnn_output.shape))
 
             n_flatten = cnn_output.shape[1] + self.fc_input_extra_data_len
 
-            print("laser_image_2DCNN_FC_Policy::__init__ -> n_flatten: " + str(n_flatten))
+            print("[laser_image_2DCNN_FC_Policy::__init__ ] n_flatten: " + str(n_flatten))
 
         self.extractors = nn.ModuleDict(extractors)
 
@@ -133,20 +133,20 @@ class laser_rings_2DCNN_FC_Policy(BaseFeaturesExtractor):
         # so put something dummy for now. PyTorch requires calling
         # nn.Module.__init__ before adding modules
 
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> observation_space: " + str(observation_space))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] observation_space: " + str(observation_space))
 
         super(laser_rings_2DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
 
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> observation_space.spaces laser_image shape: " + str(observation_space.spaces["laser_image"].shape))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] observation_space.spaces laser_image shape: " + str(observation_space.spaces["laser_image"].shape))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
 
         self.cnn_input_channel_len = observation_space.spaces["laser_image"].shape[0]
         self.cnn_input_data_len = observation_space.spaces["laser_image"].shape[1]
         self.fc_input_extra_data_len = observation_space.spaces["target_action"].shape[0]
 
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> cnn_input_channel_len: " + str(self.cnn_input_channel_len))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> cnn_input_data_len: " + str(self.cnn_input_data_len))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] cnn_input_channel_len: " + str(self.cnn_input_channel_len))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] cnn_input_data_len: " + str(self.cnn_input_data_len))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
 
         n_channel_input1 = self.cnn_input_channel_len
         n_channel_output1 = 32
@@ -157,12 +157,12 @@ class laser_rings_2DCNN_FC_Policy(BaseFeaturesExtractor):
         n_channel_input3 = n_channel_output2
         n_channel_output3 = 64
 
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> n_channel_input1: " + str(n_channel_input1))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> n_channel_output1: " + str(n_channel_output1))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> n_channel_input2: " + str(n_channel_input2))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> n_channel_output2: " + str(n_channel_output2))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> n_channel_input3: " + str(n_channel_input3))
-        print("laser_rings_2DCNN_FC_Policy::__init__ -> n_channel_output3: " + str(n_channel_output3))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_channel_input1: " + str(n_channel_input1))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_channel_output1: " + str(n_channel_output1))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_channel_input2: " + str(n_channel_input2))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_channel_output2: " + str(n_channel_output2))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_channel_input3: " + str(n_channel_input3))
+        print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_channel_output3: " + str(n_channel_output3))
         
         self.cnn_net = nn.Sequential(
 
@@ -192,15 +192,15 @@ class laser_rings_2DCNN_FC_Policy(BaseFeaturesExtractor):
 
             cnn_input_sample = observation_space.spaces["laser_image"].sample()[None]
 
-            print("laser_rings_2DCNN_FC_Policy::__init__ -> cnn_input_sample shape: " + str(cnn_input_sample.shape))
+            print("[laser_rings_2DCNN_FC_Policy::__init__ ] cnn_input_sample shape: " + str(cnn_input_sample.shape))
 
             cnn_output = self.cnn_net(th.as_tensor(cnn_input_sample).float())
 
-            print("laser_rings_2DCNN_FC_Policy::__init__ -> cnn_output shape: " + str(cnn_output.shape))
+            print("[laser_rings_2DCNN_FC_Policy::__init__ ] cnn_output shape: " + str(cnn_output.shape))
 
             n_flatten = cnn_output.shape[1] + self.fc_input_extra_data_len
 
-            print("laser_rings_2DCNN_FC_Policy::__init__ -> n_flatten: " + str(n_flatten))
+            print("[laser_rings_2DCNN_FC_Policy::__init__ ] n_flatten: " + str(n_flatten))
 
         self.extractors = nn.ModuleDict(extractors)
 
@@ -226,20 +226,20 @@ class laser_1DCNN_FC_Policy(BaseFeaturesExtractor):
         # so put something dummy for now. PyTorch requires calling
         # nn.Module.__init__ before adding modules
 
-        print("laser_1DCNN_FC_Policy::__init__ -> observation_space: " + str(observation_space))
+        print("[laser_1DCNN_FC_Policy::__init__ ] observation_space: " + str(observation_space))
 
         super(laser_1DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
 
-        print("laser_1DCNN_FC_Policy::__init__ -> observation_space.spaces laser shape: " + str(observation_space.spaces["laser"].shape))
-        print("laser_1DCNN_FC_Policy::__init__ -> observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
+        print("[laser_1DCNN_FC_Policy::__init__ ] observation_space.spaces laser shape: " + str(observation_space.spaces["laser"].shape))
+        print("[laser_1DCNN_FC_Policy::__init__ ] observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
 
         self.cnn_input_channel_len = observation_space.spaces["laser"].shape[0]
         self.cnn_input_data_len = observation_space.spaces["laser"].shape[1]
         self.fc_input_extra_data_len = observation_space.spaces["target_action"].shape[0]
 
-        print("laser_1DCNN_FC_Policy::__init__ -> cnn_input_channel_len: " + str(self.cnn_input_channel_len))
-        print("laser_1DCNN_FC_Policy::__init__ -> cnn_input_data_len: " + str(self.cnn_input_data_len))
-        print("laser_1DCNN_FC_Policy::__init__ -> fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
+        print("[laser_1DCNN_FC_Policy::__init__ ] cnn_input_channel_len: " + str(self.cnn_input_channel_len))
+        print("[laser_1DCNN_FC_Policy::__init__ ] cnn_input_data_len: " + str(self.cnn_input_data_len))
+        print("[laser_1DCNN_FC_Policy::__init__ ] fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
 
         n_channel_input1 = self.cnn_input_channel_len
         n_channel_output1 = 32
@@ -250,12 +250,12 @@ class laser_1DCNN_FC_Policy(BaseFeaturesExtractor):
         n_channel_input3 = n_channel_output2
         n_channel_output3 = 32
 
-        print("laser_1DCNN_FC_Policy::__init__ -> n_channel_input1: " + str(n_channel_input1))
-        print("laser_1DCNN_FC_Policy::__init__ -> n_channel_output1: " + str(n_channel_output1))
-        print("laser_1DCNN_FC_Policy::__init__ -> n_channel_input2: " + str(n_channel_input2))
-        print("laser_1DCNN_FC_Policy::__init__ -> n_channel_output2: " + str(n_channel_output2))
-        print("laser_1DCNN_FC_Policy::__init__ -> n_channel_input3: " + str(n_channel_input3))
-        print("laser_1DCNN_FC_Policy::__init__ -> n_channel_output3: " + str(n_channel_output3))
+        print("[laser_1DCNN_FC_Policy::__init__ ] n_channel_input1: " + str(n_channel_input1))
+        print("[laser_1DCNN_FC_Policy::__init__ ] n_channel_output1: " + str(n_channel_output1))
+        print("[laser_1DCNN_FC_Policy::__init__ ] n_channel_input2: " + str(n_channel_input2))
+        print("[laser_1DCNN_FC_Policy::__init__ ] n_channel_output2: " + str(n_channel_output2))
+        print("[laser_1DCNN_FC_Policy::__init__ ] n_channel_input3: " + str(n_channel_input3))
+        print("[laser_1DCNN_FC_Policy::__init__ ] n_channel_output3: " + str(n_channel_output3))
         
         self.cnn_net = nn.Sequential(
 
@@ -285,15 +285,15 @@ class laser_1DCNN_FC_Policy(BaseFeaturesExtractor):
 
             cnn_input_sample = observation_space.spaces["laser"].sample()[None]
 
-            print("laser_1DCNN_FC_Policy::__init__ -> cnn_input_sample shape: " + str(cnn_input_sample.shape))
+            print("[laser_1DCNN_FC_Policy::__init__ ] cnn_input_sample shape: " + str(cnn_input_sample.shape))
 
             cnn_output = self.cnn_net(th.as_tensor(cnn_input_sample).float())
 
-            print("laser_1DCNN_FC_Policy::__init__ -> cnn_output shape: " + str(cnn_output.shape))
+            print("[laser_1DCNN_FC_Policy::__init__ ] cnn_output shape: " + str(cnn_output.shape))
 
             n_flatten = cnn_output.shape[1] + self.fc_input_extra_data_len
 
-            print("laser_1DCNN_FC_Policy::__init__ -> n_flatten: " + str(n_flatten))
+            print("[laser_1DCNN_FC_Policy::__init__ ] n_flatten: " + str(n_flatten))
 
         self.extractors = nn.ModuleDict(extractors)
 
@@ -312,27 +312,27 @@ class laser_1DCNN_FC_Policy(BaseFeaturesExtractor):
 """
 NUA TODO...
 """
-class Tentabot_1DCNN_FC_Policy(BaseFeaturesExtractor):
+class mobiman_1DCNN_FC_Policy(BaseFeaturesExtractor):
 
     def __init__(self, observation_space: gym.spaces.Dict):
         # We do not know features-dim here before going over all the items,
         # so put something dummy for now. PyTorch requires calling
         # nn.Module.__init__ before adding modules
 
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> observation_space: " + str(observation_space))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] observation_space: " + str(observation_space))
 
-        super(Tentabot_1DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
+        super(mobiman_1DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
 
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> observation_space.spaces occupancy shape: " + str(observation_space.spaces["occupancy"].shape))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] observation_space.spaces occupancy shape: " + str(observation_space.spaces["occupancy"].shape))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
 
         self.cnn_input_channel_len = observation_space.spaces["occupancy"].shape[0]
         self.cnn_input_data_len = observation_space.spaces["occupancy"].shape[1]
         self.fc_input_extra_data_len = observation_space.spaces["target_action"].shape[0]
 
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> cnn_input_channel_len: " + str(self.cnn_input_channel_len))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> cnn_input_data_len: " + str(self.cnn_input_data_len))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] cnn_input_channel_len: " + str(self.cnn_input_channel_len))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] cnn_input_data_len: " + str(self.cnn_input_data_len))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
 
         n_channel_input1 = self.cnn_input_channel_len
         n_channel_output1 = 32
@@ -343,12 +343,12 @@ class Tentabot_1DCNN_FC_Policy(BaseFeaturesExtractor):
         n_channel_input3 = n_channel_output2
         n_channel_output3 = 32
 
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> n_channel_input1: " + str(n_channel_input1))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> n_channel_output1: " + str(n_channel_output1))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> n_channel_input2: " + str(n_channel_input2))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> n_channel_output2: " + str(n_channel_output2))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> n_channel_input3: " + str(n_channel_input3))
-        print("Tentabot_1DCNN_FC_Policy::__init__ -> n_channel_output3: " + str(n_channel_output3))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] n_channel_input1: " + str(n_channel_input1))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] n_channel_output1: " + str(n_channel_output1))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] n_channel_input2: " + str(n_channel_input2))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] n_channel_output2: " + str(n_channel_output2))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] n_channel_input3: " + str(n_channel_input3))
+        print("[mobiman_1DCNN_FC_Policy::__init__ ] n_channel_output3: " + str(n_channel_output3))
         
         self.cnn_net = nn.Sequential(
 
@@ -378,15 +378,15 @@ class Tentabot_1DCNN_FC_Policy(BaseFeaturesExtractor):
 
             cnn_input_sample = observation_space.spaces["occupancy"].sample()[None]
 
-            print("Tentabot_1DCNN_FC_Policy::__init__ -> cnn_input_sample shape: " + str(cnn_input_sample.shape))
+            print("[mobiman_1DCNN_FC_Policy::__init__ ] cnn_input_sample shape: " + str(cnn_input_sample.shape))
 
             cnn_output = self.cnn_net(th.as_tensor(cnn_input_sample).float())
 
-            print("Tentabot_1DCNN_FC_Policy::__init__ -> cnn_output shape: " + str(cnn_output.shape))
+            print("[mobiman_1DCNN_FC_Policy::__init__ ] cnn_output shape: " + str(cnn_output.shape))
 
             n_flatten = cnn_output.shape[1] + self.fc_input_extra_data_len
 
-            print("Tentabot_1DCNN_FC_Policy::__init__ -> n_flatten: " + str(n_flatten))
+            print("[mobiman_1DCNN_FC_Policy::__init__ ] n_flatten: " + str(n_flatten))
 
         self.extractors = nn.ModuleDict(extractors)
 
@@ -405,27 +405,27 @@ class Tentabot_1DCNN_FC_Policy(BaseFeaturesExtractor):
 """
 NUA TODO...
 """
-class Tentabot_2DCNN_FC_Policy(BaseFeaturesExtractor):
+class mobiman_2DCNN_FC_Policy(BaseFeaturesExtractor):
 
     def __init__(self, observation_space: gym.spaces.Dict):
         # We do not know features-dim here before going over all the items,
         # so put something dummy for now. PyTorch requires calling
         # nn.Module.__init__ before adding modules
 
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> observation_space: " + str(observation_space))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] observation_space: " + str(observation_space))
 
-        super(Tentabot_2DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
+        super(mobiman_2DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
 
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> observation_space.spaces occupancy shape: " + str(observation_space.spaces["occupancy"].shape))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] observation_space.spaces occupancy shape: " + str(observation_space.spaces["occupancy"].shape))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] observation_space.spaces target_action shape: " + str(observation_space.spaces["target_action"].shape))
 
         self.cnn_input_channel_len = observation_space.spaces["occupancy"].shape[0]
         self.cnn_input_data_len = observation_space.spaces["occupancy"].shape[1]
         self.fc_input_extra_data_len = observation_space.spaces["target_action"].shape[0]
 
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> cnn_input_channel_len: " + str(self.cnn_input_channel_len))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> cnn_input_data_len: " + str(self.cnn_input_data_len))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] cnn_input_channel_len: " + str(self.cnn_input_channel_len))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] cnn_input_data_len: " + str(self.cnn_input_data_len))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
 
         '''
         n_channel_input1 = self.cnn_input_channel_len
@@ -453,16 +453,16 @@ class Tentabot_2DCNN_FC_Policy(BaseFeaturesExtractor):
         n_channel_input3 = n_channel_output2
         n_channel_output3 = 8
 
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_input1: " + str(n_channel_input1))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_output1: " + str(n_channel_output1))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_input2: " + str(n_channel_input2))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_output2: " + str(n_channel_output2))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_input3: " + str(n_channel_input3))
-        print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_output3: " + str(n_channel_output3))
-        #print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_input4: " + str(n_channel_input4))
-        #print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_output4: " + str(n_channel_output4))
-        #print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_input5: " + str(n_channel_input5))
-        #print("Tentabot_2DCNN_FC_Policy::__init__ -> n_channel_output5: " + str(n_channel_output5))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_input1: " + str(n_channel_input1))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_output1: " + str(n_channel_output1))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_input2: " + str(n_channel_input2))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_output2: " + str(n_channel_output2))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_input3: " + str(n_channel_input3))
+        print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_output3: " + str(n_channel_output3))
+        #print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_input4: " + str(n_channel_input4))
+        #print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_output4: " + str(n_channel_output4))
+        #print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_input5: " + str(n_channel_input5))
+        #print("[mobiman_2DCNN_FC_Policy::__init__ ] n_channel_output5: " + str(n_channel_output5))
         
         self.cnn_net = nn.Sequential(
 
@@ -496,15 +496,15 @@ class Tentabot_2DCNN_FC_Policy(BaseFeaturesExtractor):
 
             cnn_input_sample = observation_space.spaces["occupancy"].sample()[None]
 
-            print("Tentabot_2DCNN_FC_Policy::__init__ -> cnn_input_sample shape: " + str(cnn_input_sample.shape))
+            print("[mobiman_2DCNN_FC_Policy::__init__ ] cnn_input_sample shape: " + str(cnn_input_sample.shape))
 
             cnn_output = self.cnn_net(th.as_tensor(cnn_input_sample).float())
 
-            print("Tentabot_2DCNN_FC_Policy::__init__ -> cnn_output shape: " + str(cnn_output.shape))
+            print("[mobiman_2DCNN_FC_Policy::__init__ ] cnn_output shape: " + str(cnn_output.shape))
 
             n_flatten = cnn_output.shape[1] + self.fc_input_extra_data_len
 
-            print("Tentabot_2DCNN_FC_Policy::__init__ -> n_flatten: " + str(n_flatten))
+            print("[mobiman_2DCNN_FC_Policy::__init__ ] n_flatten: " + str(n_flatten))
 
         self.extractors = nn.ModuleDict(extractors)
 
@@ -527,20 +527,20 @@ class laserWayPoints_1DCNN_FC_Policy(BaseFeaturesExtractor):
         # so put something dummy for now. PyTorch requires calling
         # nn.Module.__init__ before adding modules
 
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> observation_space: " + str(observation_space))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] observation_space: " + str(observation_space))
 
         super(laserWayPoints_1DCNN_FC_Policy, self).__init__(observation_space, features_dim=1)
 
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> observation_space.spaces laser shape: " + str(observation_space.spaces["laser"].shape))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> observation_space.spaces waypoints_action shape: " + str(observation_space.spaces["waypoints_action"].shape))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] observation_space.spaces laser shape: " + str(observation_space.spaces["laser"].shape))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] observation_space.spaces waypoints_action shape: " + str(observation_space.spaces["waypoints_action"].shape))
 
         self.cnn_input_channel_len = observation_space.spaces["laser"].shape[0]
         self.cnn_input_data_len = observation_space.spaces["laser"].shape[1]
         self.fc_input_extra_data_len = observation_space.spaces["waypoints_action"].shape[0]
 
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> cnn_input_channel_len: " + str(self.cnn_input_channel_len))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> cnn_input_data_len: " + str(self.cnn_input_data_len))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] cnn_input_channel_len: " + str(self.cnn_input_channel_len))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] cnn_input_data_len: " + str(self.cnn_input_data_len))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] fc_input_extra_data_len: " + str(self.fc_input_extra_data_len))
 
         n_channel_input1 = self.cnn_input_channel_len
         n_channel_output1 = 32
@@ -551,12 +551,12 @@ class laserWayPoints_1DCNN_FC_Policy(BaseFeaturesExtractor):
         n_channel_input3 = n_channel_output2
         n_channel_output3 = 32
 
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> n_channel_input1: " + str(n_channel_input1))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> n_channel_output1: " + str(n_channel_output1))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> n_channel_input2: " + str(n_channel_input2))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> n_channel_output2: " + str(n_channel_output2))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> n_channel_input3: " + str(n_channel_input3))
-        print("laser_WP_1DCNN_FC_Policy::__init__ -> n_channel_output3: " + str(n_channel_output3))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_channel_input1: " + str(n_channel_input1))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_channel_output1: " + str(n_channel_output1))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_channel_input2: " + str(n_channel_input2))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_channel_output2: " + str(n_channel_output2))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_channel_input3: " + str(n_channel_input3))
+        print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_channel_output3: " + str(n_channel_output3))
         
         self.cnn_net = nn.Sequential(
 
@@ -586,15 +586,15 @@ class laserWayPoints_1DCNN_FC_Policy(BaseFeaturesExtractor):
 
             cnn_input_sample = observation_space.spaces["laser"].sample()[None]
 
-            print("laser_WP_1DCNN_FC_Policy::__init__ -> cnn_input_sample shape: " + str(cnn_input_sample.shape))
+            print("[laser_WP_1DCNN_FC_Policy::__init__ ] cnn_input_sample shape: " + str(cnn_input_sample.shape))
 
             cnn_output = self.cnn_net(th.as_tensor(cnn_input_sample).float())
 
-            print("laser_WP_1DCNN_FC_Policy::__init__ -> cnn_output shape: " + str(cnn_output.shape))
+            print("[laser_WP_1DCNN_FC_Policy::__init__ ] cnn_output shape: " + str(cnn_output.shape))
 
             n_flatten = cnn_output.shape[1] + self.fc_input_extra_data_len
 
-            print("laser_WP_1DCNN_FC_Policy::__init__ -> n_flatten: " + str(n_flatten))
+            print("[laser_WP_1DCNN_FC_Policy::__init__ ] n_flatten: " + str(n_flatten))
 
         self.extractors = nn.ModuleDict(extractors)
 

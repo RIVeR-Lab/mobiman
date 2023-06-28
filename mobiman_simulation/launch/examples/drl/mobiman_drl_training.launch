@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Load parameters -->
+    <rosparam command="load" 
+        file="$(find mobiman_simulation)/config/drl/config_mobiman_drl.yaml" 
+        subst_value="True"/>
+
+    <node name="mobiman_drl_training" pkg="mobiman_simulation" type="mobiman_drl_training.py" output="screen" />
+</launch>
