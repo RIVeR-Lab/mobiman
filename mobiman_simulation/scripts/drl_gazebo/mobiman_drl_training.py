@@ -33,7 +33,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import CheckpointCallback
 
 from mobiman_drl_custom_policy import *
-from drl_gazebo.tmp.mobiman_drl_plot_result_training import get_training_result, read_data_size
+from drl_gazebo.mobiman_drl_plot_result_training import get_training_result, read_data_size
 
 '''
 DESCRIPTION: TODO...
@@ -148,10 +148,6 @@ if __name__ == '__main__':
     print("[mobiman_drl_training::__main__ ] plot_title: " + str(plot_title))
     print("[mobiman_drl_training::__main__ ] plot_moving_average_window_size_timesteps: " + str(plot_moving_average_window_size_timesteps))
     print("[mobiman_drl_training::__main__ ] plot_moving_average_window_size_episodes: " + str(plot_moving_average_window_size_episodes))
-    
-    print("[mobiman_drl_training::__main__ ] DEBUG INF")
-    while 1:
-        continue
 
     ## Create the folder name that the data is kept
     data_file_tag = createFileName()
@@ -192,8 +188,15 @@ if __name__ == '__main__':
     write_data(training_log_file, training_log_data)
 
     # Init OpenAI_ROS ENV
+    print("[mobiman_drl_training::__main__ ] BEFORE StartOpenAI_ROS_Environment")
     env = StartOpenAI_ROS_Environment(task_and_robot_environment_name, robot_id=0, max_episode_steps=max_episode_steps, data_folder_path=data_folder_path)
+    
+    print("[mobiman_drl_training::__main__ ] BEFORE Monitor")
     env = Monitor(env, data_folder_path)
+
+    print("[mobiman_drl_training::__main__ ] DEBUG INF")
+    while 1:
+        continue
 
     #obs_space = env.observation_space
     #print("[mobiman_drl_training::__main__ ] shape_obs: " + str(obs_space))

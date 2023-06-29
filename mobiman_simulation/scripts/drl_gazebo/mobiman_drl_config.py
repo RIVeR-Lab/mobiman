@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2022.04.03
+LAST UPDATE: 2023.06.28
 
 AUTHOR: Neset Unver Akmandor (NUA)
         Eric Dusel (ED)
@@ -27,7 +27,7 @@ def write_data(file, data):
     with file_status:
         write = csv.writer(file_status)
         write.writerows(data)
-        print("tentabot_drl_config::write_data -> Data is written in " + str(file))
+        print("mobiman_drl_config::write_data -> Data is written in " + str(file))
 
 '''
 DESCRIPTION: TODO...
@@ -61,14 +61,21 @@ class Config():
 
     def __init__(self, data_folder_path="", odom={}, goal={}):        
 
+        print("[mobiman_drl_config::Config::__init__] START")
+        print("[mobiman_drl_config::Config::__init__] data_folder_path: " + str(data_folder_path))
+
         rospack = rospkg.RosPack()
-        tentabot_path = rospack.get_path('tentabot') + "/"
+        mobiman_path = rospack.get_path('mobiman_simulation') + "/"
 
         ## General
         self.mode = rospy.get_param('mode', "")
 
+        print("[mobiman_drl_config::Config::__init__] mode: " + str(self.mode))
+
         if self.mode == "training":
             
+            print("[mobiman_drl_config::Config::__init__] START training")
+
             self.world_frame_name = rospy.get_param('world_frame_name', "")
             self.max_episode_steps = rospy.get_param('max_episode_steps', 0)
             self.training_timesteps = rospy.get_param('training_timesteps', 0)
@@ -79,9 +86,10 @@ class Config():
             self.laser_error_threshold = rospy.get_param('laser_error_threshold', 0.0)
 
             ## Robots
+            '''
             self.velocity_control_msg = rospy.get_param('robot_velo_control_msg', "")
             self.velocity_control_data_path = rospy.get_param('trajectory_data_path', "")
-            velocity_control_data_str = read_data(tentabot_path + self.velocity_control_data_path + "velocity_control_data.csv")
+            velocity_control_data_str = read_data(mobiman_path + self.velocity_control_data_path + "velocity_control_data.csv")
             self.velocity_control_data = np.zeros(velocity_control_data_str.shape)
 
             for i, row in enumerate(velocity_control_data_str):
@@ -95,6 +103,7 @@ class Config():
             self.min_angular_speed = min(self.velocity_control_data[:,1])               # [rad/s]
             self.max_angular_speed = max(self.velocity_control_data[:,1])               # [rad/s]
             self.init_angular_speed = self.velocity_control_data[0,1]                   # [rad/s]
+            '''
 
             ## Algorithm
             self.observation_space_type = rospy.get_param('observation_space_type', "")
@@ -102,8 +111,8 @@ class Config():
             self.goal_close_threshold = rospy.get_param("goal_close_threshold", 0.0)
             self.obs_min_range = rospy.get_param('obs_min_range', 0.0)
 
-            self.n_actions = len(self.velocity_control_data)
-            self.n_observations = self.n_actions
+            self.n_actions = 3
+            self.n_observations = 333
 
             self.n_obs_stack = rospy.get_param("n_obs_stack", 0.0)
             self.n_skip_obs_stack = rospy.get_param("n_skip_obs_stack", 0.0)
@@ -114,15 +123,6 @@ class Config():
 
             if self.cit_flag == False:
                 self.cnn_obs_shape = (-1,1)
-
-            if self.observation_space_type == "Tentabot_WP_FC" or \
-                self.observation_space_type == "laser_WP_1DCNN_FC":
-
-                self.n_wp = rospy.get_param('n_wp',8)
-                self.look_ahead = rospy.get_param('look_ahead',1.5)
-                self.wp_reached_dist = rospy.get_param('wp_reached_dist',0.2)
-                self.wp_global_dist = rospy.get_param('wp_global_dist',0.025)
-                self.wp_dynamic = rospy.get_param('wp_dynamic',1)
 
             if  self.observation_space_type == "laser_image_2DCNN_FC" or \
                 self.observation_space_type == "laser_rings_2DCNN_FC":
@@ -147,17 +147,17 @@ class Config():
                 training_log_data.append(["world_frame_name", self.world_frame_name])
                 training_log_data.append(["max_episode_steps", self.max_episode_steps])
                 training_log_data.append(["training_timesteps", self.training_timesteps])
-                training_log_data.append(["laser_size_downsampled", self.laser_size_downsampled])
-                training_log_data.append(["laser_normalize_flag", self.laser_normalize_flag])
-                training_log_data.append(["laser_error_threshold", self.laser_error_threshold])
-                training_log_data.append(["velocity_control_msg", self.velocity_control_msg])
-                training_log_data.append(["velocity_control_data_path", self.velocity_control_data_path])
-                training_log_data.append(["min_lateral_speed", self.min_lateral_speed])
-                training_log_data.append(["max_lateral_speed", self.max_lateral_speed])
-                training_log_data.append(["init_lateral_speed", self.init_lateral_speed])
-                training_log_data.append(["min_angular_speed", self.min_angular_speed])
-                training_log_data.append(["max_angular_speed", self.min_angular_speed])
-                training_log_data.append(["init_angular_speed", self.init_angular_speed])
+                #training_log_data.append(["laser_size_downsampled", self.laser_size_downsampled])
+                #training_log_data.append(["laser_normalize_flag", self.laser_normalize_flag])
+                #training_log_data.append(["laser_error_threshold", self.laser_error_threshold])
+                #training_log_data.append(["velocity_control_msg", self.velocity_control_msg])
+                #training_log_data.append(["velocity_control_data_path", self.velocity_control_data_path])
+                #training_log_data.append(["min_lateral_speed", self.min_lateral_speed])
+                #training_log_data.append(["max_lateral_speed", self.max_lateral_speed])
+                #training_log_data.append(["init_lateral_speed", self.init_lateral_speed])
+                #training_log_data.append(["min_angular_speed", self.min_angular_speed])
+                #training_log_data.append(["max_angular_speed", self.min_angular_speed])
+                #training_log_data.append(["init_angular_speed", self.init_angular_speed])
                 training_log_data.append(["observation_space_type", self.observation_space_type])
                 training_log_data.append(["goal_close_threshold", self.goal_close_threshold])
                 training_log_data.append(["obs_min_range", self.obs_min_range])
@@ -174,20 +174,16 @@ class Config():
                 training_log_data.append(["penalty_cumulative_step", self.penalty_cumulative_step])
                 #training_log_data.append(["reward_terminal_mintime", self.reward_terminal_mintime])
 
-                if self.observation_space_type == "Tentabot_WP_FC" or \
-                     self.observation_space_type == "laser_WP_1DCNN_FC":
-
-                    training_log_data.append(["n_wp", self.n_wp])
-                    training_log_data.append(["look_ahead", self.look_ahead])
-                    training_log_data.append(["wp_reached_dist", self.wp_reached_dist])
-                    training_log_data.append(["wp_global_dist", self.wp_global_dist])
-                    training_log_data.append(["wp_dynamic", self.wp_dynamic])
-
                 write_data(training_log_file, training_log_data)
 
+        ### NUA TODO: OUT OF DATE! UPDATE!
         elif self.mode == "testing":
 
-            self.initial_training_path = tentabot_path + rospy.get_param('initial_training_path', "")
+            print("[mobiman_drl_config::Config::__init__] DEBUG INF testing")
+            while 1:
+                continue
+
+            self.initial_training_path = mobiman_path + rospy.get_param('initial_training_path', "")
             self.max_testing_episodes = rospy.get_param('max_testing_episodes', "")
 
             self.world_frame_name = get_training_param(self.initial_training_path, "world_frame_name")
@@ -206,7 +202,7 @@ class Config():
             ## Robots
             self.velocity_control_msg = rospy.get_param('robot_velo_control_msg', "")
             self.velocity_control_data_path = get_training_param(self.initial_training_path, "velocity_control_data_path")
-            velocity_control_data_str = read_data(tentabot_path + self.velocity_control_data_path + "velocity_control_data.csv")
+            velocity_control_data_str = read_data(mobiman_path + self.velocity_control_data_path + "velocity_control_data.csv")
             self.velocity_control_data = np.zeros(velocity_control_data_str.shape)
 
             for i, row in enumerate(velocity_control_data_str):
@@ -245,7 +241,7 @@ class Config():
                 self.cnn_obs_shape = (-1,1)
 
             # Waypoints
-            if self.observation_space_type == "Tentabot_WP_FC" or \
+            if self.observation_space_type == "mobiman_WP_FC" or \
                 self.observation_space_type == "laser_WP_1DCNN_FC":
  
                 self.n_wp = int(get_training_param(self.initial_training_path, "n_wp"))
@@ -274,26 +270,24 @@ class Config():
                 write_data(testing_log_file, testing_log_data)
             '''
 
-        '''
-        print("tentabot_drl_config::__init__ -> world_frame_name: " + str(self.world_frame_name))
-        print("tentabot_drl_config::__init__ -> max_episode_steps: " + str(self.max_episode_steps))
-        print("tentabot_drl_config::__init__ -> training_timesteps: " + str(self.training_timesteps))
-        print("tentabot_drl_config::__init__ -> laser_size_downsampled: " + str(self.laser_size_downsampled))
-        print("tentabot_drl_config::__init__ -> laser_normalize_flag: " + str(self.laser_normalize_flag))
-        print("tentabot_drl_config::__init__ -> laser_error_threshold: " + str(self.laser_error_threshold))
-        print("tentabot_drl_config::__init__ -> velocity_control_data_path: " + str(self.velocity_control_data_path))
-        print("tentabot_drl_config::__init__ -> observation_space_type: " + str(self.observation_space_type))
-        print("tentabot_drl_config::__init__ -> goal_close_threshold: " + str(self.goal_close_threshold))
-        print("tentabot_drl_config::__init__ -> obs_min_range: " + str(self.obs_min_range))
-        print("tentabot_drl_config::__init__ -> n_actions: " + str(self.n_actions))
-        print("tentabot_drl_config::__init__ -> n_observations: " + str(self.n_observations))
-        print("tentabot_drl_config::__init__ -> n_obs_stack: " + str(self.n_obs_stack))
-        print("tentabot_drl_config::__init__ -> n_skip_obs_stack: " + str(self.n_skip_obs_stack))
-        print("tentabot_drl_config::__init__ -> reward_terminal_success: " + str(self.reward_terminal_success))
-        print("tentabot_drl_config::__init__ -> reward_step_scale: " + str(self.reward_step_scale))
-        print("tentabot_drl_config::__init__ -> penalty_terminal_fail: " + str(self.penalty_terminal_fail))
-        print("tentabot_drl_config::__init__ -> penalty_cumulative_step: " + str(self.penalty_cumulative_step))
-        '''
+        print("[mobiman_drl_config::Config::__init__] world_frame_name: " + str(self.world_frame_name))
+        print("[mobiman_drl_config::Config::__init__] max_episode_steps: " + str(self.max_episode_steps))
+        print("[mobiman_drl_config::Config::__init__] training_timesteps: " + str(self.training_timesteps))
+        #print("[mobiman_drl_config::Config::__init__] laser_size_downsampled: " + str(self.laser_size_downsampled))
+        #print("[mobiman_drl_config::Config::__init__] laser_normalize_flag: " + str(self.laser_normalize_flag))
+        #print("[mobiman_drl_config::Config::__init__] laser_error_threshold: " + str(self.laser_error_threshold))
+        #print("[mobiman_drl_config::Config::__init__] velocity_control_data_path: " + str(self.velocity_control_data_path))
+        print("[mobiman_drl_config::Config::__init__] observation_space_type: " + str(self.observation_space_type))
+        print("[mobiman_drl_config::Config::__init__] goal_close_threshold: " + str(self.goal_close_threshold))
+        print("[mobiman_drl_config::Config::__init__] obs_min_range: " + str(self.obs_min_range))
+        print("[mobiman_drl_config::Config::__init__] n_actions: " + str(self.n_actions))
+        print("[mobiman_drl_config::Config::__init__] n_observations: " + str(self.n_observations))
+        print("[mobiman_drl_config::Config::__init__] n_obs_stack: " + str(self.n_obs_stack))
+        print("[mobiman_drl_config::Config::__init__] n_skip_obs_stack: " + str(self.n_skip_obs_stack))
+        print("[mobiman_drl_config::Config::__init__] reward_terminal_success: " + str(self.reward_terminal_success))
+        print("[mobiman_drl_config::Config::__init__] reward_step_scale: " + str(self.reward_step_scale))
+        print("[mobiman_drl_config::Config::__init__] penalty_terminal_fail: " + str(self.penalty_terminal_fail))
+        print("[mobiman_drl_config::Config::__init__] penalty_cumulative_step: " + str(self.penalty_cumulative_step))
 
         if odom:
             self.x = odom["x"]
