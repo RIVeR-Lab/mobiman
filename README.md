@@ -10,7 +10,8 @@ Please follow the instructions in [MANUAL_INSTALLATION](https://github.com/RIVeR
 OR
 
 ```
-wget https://www.dropbox.com/s/buzni9moi17rhdz/mobiman_install.sh
+cd /tmp
+wget https://www.dropbox.com/s/vj4gy18t8ax0bb3/mobiman_install.sh
 chmod +x mobiman_install.sh
 ./mobiman_install.sh -d=mobiman_ws # mobiman_ws is empty in this case, don't run on existing workspace so things don't break.
 ```
