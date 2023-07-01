@@ -226,7 +226,7 @@ class isaac_robot(Robot):
         Returns:
         """
 
-        #print("[isaac_robots::differential_controller] START")
+        print("[isaac_robots::differential_controller] START")
 
         #print("[isaac_robots::differential_controller] DEBUG INF")
         #while 1:
@@ -260,6 +260,9 @@ class isaac_robot(Robot):
             
         # velocities[0] = velocities[0]*10
 
+        print("[isaac_robots::differential_controller] velocities[0]: " + str(velocities[0]))
+        print("[isaac_robots::differential_controller] velocities[1]: " + str(velocities[1]))
+
         if self._name == "jackal_jaco":
             joint_velocities = [0.0, 0.0, 0.0, 0.0]
             joint_velocities[0] = ((2 * velocities[0]) - (velocities[1] * wheel_base)) / (2 * wheel_radius)     # front left
@@ -274,7 +277,13 @@ class isaac_robot(Robot):
             joint_velocities[1] = ((2 * velocities[0]) + (velocities[1] * wheel_base)) / (2 * wheel_radius)
             self.set_wheel_velocities( (joint_velocities[0], joint_velocities[1]) )
 
-        #print("[isaac_robots::differential_controller] END")
+        print("[isaac_robots::differential_controller] joint_velocities[0]: " + str(joint_velocities[0]))
+        print("[isaac_robots::differential_controller] joint_velocities[1]: " + str(joint_velocities[1]))
+        print("[isaac_robots::differential_controller] joint_velocities[2]: " + str(joint_velocities[2]))
+        print("[isaac_robots::differential_controller] joint_velocities[3]: " + str(joint_velocities[3]))
+
+        print("[isaac_robots::differential_controller] END")
+        print("")
 
         return
     
@@ -496,7 +505,8 @@ class isaac_robot(Robot):
             movements = np.array([[3, 0, 0.785], [5, 0, 0], [3, 0, -0.785]])
 
         elif self._name=="jackal_jaco":
-            movements = np.array([[3*15, 3*0.785], [3*25, 0], [3*15, 3*-0.785]])
+            #movements = np.array([[3*15, 3*0.785], [3*25, 0], [3*15, 3*-0.785]])
+            movements = np.array([[75, 2.355], [75, 2.355], [75, 2.355]])
         
         #print("[isaac_robots::get_discrete_actions] END")
 

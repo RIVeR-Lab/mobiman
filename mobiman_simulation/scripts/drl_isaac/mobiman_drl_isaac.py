@@ -29,3 +29,4 @@ if __name__ == '__main__':
     print("[mobiman_drl_isaac::__main__] START mobiman_drl_train")
     #subprocess.run([isaac_sim_path + "python.sh", isaac_sim_path + "DRL_Isaac_lib/train_d.py"], shell=False)
     subprocess.run([isaac_sim_path + "python.sh", tentabot_path + "scripts/drl_isaac/mobiman_drl_train.py"], shell=False)
+    #subprocess.run([isaac_sim_path + "python.sh", tentabot_path + "scripts/drl_isaac/mobiman_env.py"], shell=False)

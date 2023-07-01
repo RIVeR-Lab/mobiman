@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <node name="mobiman_drl_testing" pkg="mobiman" type="mobiman_drl_testing.py" output="screen" />
+</launch>
