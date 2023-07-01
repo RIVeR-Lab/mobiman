@@ -97,6 +97,12 @@ git submodule update --init --recursive
 git checkout noetic-akmandor
 cd ..
 
+### Clone openai-ros
+git clone git@github.com:RIVeR-Lab/openai_ros.git
+cd openai_ros
+git checkout devel_v0
+cd ..
+
 ### Clone Kinova-ROS
 git clone git@github.com:RIVeR-Lab/kinova-ros.git
 cd kinova-ros
