@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.06.28
+LAST UPDATE: 2023.06.30
 
 AUTHOR: Neset Unver Akmandor (NUA)
         Eric Dusel (ED)
@@ -119,17 +119,10 @@ class Config():
 
             self.cnn_obs_shape = (1,-1)
             self.fc_obs_shape = (-1, )
-            self.cit_flag = rospy.get_param("cit_flag", True)
 
-            if self.cit_flag == False:
-                self.cnn_obs_shape = (-1,1)
-
-            if  self.observation_space_type == "laser_image_2DCNN_FC" or \
-                self.observation_space_type == "laser_rings_2DCNN_FC":
-                    
-                    self.laser_image_width = rospy.get_param('laser_image_width',0)
-                    self.laser_image_height = rospy.get_param('laser_image_height',0)
-
+            self.occupancy_image_width = rospy.get_param('occupancy_image_width',0)
+            self.occupancy_image_height = rospy.get_param('occupancy_image_height',0)
+            
             # Rewards
             self.reward_terminal_success = rospy.get_param('reward_terminal_success', 0.0)
             self.reward_step_scale = rospy.get_param('reward_step_scale', 0.0)
@@ -147,17 +140,8 @@ class Config():
                 training_log_data.append(["world_frame_name", self.world_frame_name])
                 training_log_data.append(["max_episode_steps", self.max_episode_steps])
                 training_log_data.append(["training_timesteps", self.training_timesteps])
-                #training_log_data.append(["laser_size_downsampled", self.laser_size_downsampled])
-                #training_log_data.append(["laser_normalize_flag", self.laser_normalize_flag])
-                #training_log_data.append(["laser_error_threshold", self.laser_error_threshold])
-                #training_log_data.append(["velocity_control_msg", self.velocity_control_msg])
-                #training_log_data.append(["velocity_control_data_path", self.velocity_control_data_path])
-                #training_log_data.append(["min_lateral_speed", self.min_lateral_speed])
-                #training_log_data.append(["max_lateral_speed", self.max_lateral_speed])
-                #training_log_data.append(["init_lateral_speed", self.init_lateral_speed])
-                #training_log_data.append(["min_angular_speed", self.min_angular_speed])
-                #training_log_data.append(["max_angular_speed", self.min_angular_speed])
-                #training_log_data.append(["init_angular_speed", self.init_angular_speed])
+                training_log_data.append(["occupancy_image_width", self.occupancy_image_width])
+                training_log_data.append(["occupancy_image_height", self.occupancy_image_height])
                 training_log_data.append(["observation_space_type", self.observation_space_type])
                 training_log_data.append(["goal_close_threshold", self.goal_close_threshold])
                 training_log_data.append(["obs_min_range", self.obs_min_range])
@@ -165,7 +149,6 @@ class Config():
                 training_log_data.append(["n_observations", self.n_observations])
                 training_log_data.append(["n_obs_stack", self.n_obs_stack])
                 training_log_data.append(["n_skip_obs_stack", self.n_skip_obs_stack])
-                training_log_data.append(["cit_flag", self.cit_flag])
                 training_log_data.append(["cnn_obs_shape", self.cnn_obs_shape])
                 training_log_data.append(["fc_obs_shape", self.fc_obs_shape])
                 training_log_data.append(["reward_terminal_success", self.reward_terminal_success])
@@ -231,14 +214,6 @@ class Config():
 
             self.cnn_obs_shape = (1,-1)
             self.fc_obs_shape = (-1, )
-
-            if get_training_param(self.initial_training_path, "cit_flag") == "False":
-                self.cit_flag = False
-            else:
-                self.cit_flag = True
-
-            if self.cit_flag == False:
-                self.cnn_obs_shape = (-1,1)
 
             # Waypoints
             if self.observation_space_type == "mobiman_WP_FC" or \

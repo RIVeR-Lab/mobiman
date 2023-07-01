@@ -2,22 +2,18 @@
 #### NOTE: Be sure that -> drl_service_flag: true
 
 ### Common Parameters for Training and Testing
+gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
 
 ### DRL-Training Parameters
+world_name: "conveyor"
 deep_learning_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
 
 # Options:
-# laser_FC                -> FC(laser_data + target + prev_action)
-# laser_image_2DCNN_FC    -> 2DCNN(Channel: time, Height: image, Width: image) + FC(laser_data + target + prev_action)
-# laser_rings_2DCNN_FC    -> 2DCNN(Channel: time, Height: image, Width: image) + FC(laser_data + target + prev_action)
-# laser_1DCNN_FC          -> 1DCNN(Channel: time, Length: laser_data) + FC(CNN_output + target + prev_action)
 # mobiman_FC             -> FC(occupancy_set + target + prev_action)
-# mobiman_1DCNN_FC       -> 1DCNN(Channel: time, Length: occupancy_set) + FC(CNN_output + target + prev_action), if cit_flag = True 
-# mobiman_1DCNN_FC       -> 1DCNN(Channel: occupancy_set, Length: time) + FC(CNN_output + target + prev_action), if cit_flag = False 
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action)
 observation_space_type: "mobiman_FC"
 
@@ -40,14 +36,22 @@ plot_moving_average_window_size_timesteps: 20
 plot_moving_average_window_size_episodes: 5
 
 ## Data and Sensors
-world_name: "world"
+
+world_frame_name: "world"
+
+odom_msg_name: "/jackal_velocity_controller/odom"
+cmd_velocity_msg_name: "/cmd_vel"
+octomap_msg_name: "/octomap_scan"
+
+goal_status_msg_name: "/goal_status"
+goal_visu_msg_name: "/mobiman_goal"
 
 #laser_size_downsampled: 90
 #laser_normalize_flag: True
 #laser_error_threshold: 0.1
 
-#laser_image_width: 64
-#laser_image_height: 64
+occupancy_image_width: 64
+occupancy_image_height: 64
 
 ## Algorithm: mobiman-DRL Parameters
 obs_min_range: 0.25
