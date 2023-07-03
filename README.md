@@ -71,7 +71,7 @@ rosrun mobiman_simulation jackal_check_bridge.py
 
 <hr>
 
-<<<<<<< HEAD
+
 # LOCALIZATION WITH APRIL TAGS
 #Installations
 INSTALL THE ROS DRIVER FOR REALSENSE FROM HERE	
