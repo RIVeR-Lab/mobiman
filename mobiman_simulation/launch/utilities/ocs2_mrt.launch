@@ -9,16 +9,18 @@
 
       <!-- Set nodes on debug mode -->
       <!--
-            jackal_ur5
             ur5
+            jackal_ur5
+            jackal_jaco
       -->
-      <arg name="robot"       default="jackal_ur5" />
+      <arg name="robot"       default="jackal_jaco" />
 
       <!-- The task file for the mpc. -->
       <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
 
       <!-- The URDF model of the robot -->
-      <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" />
+      <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
+      <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_jaco_fixedFinger.urdf" />
       
       <!-- The library folder to generate CppAD codegen into -->
       <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />
@@ -34,9 +36,9 @@
             output="screen"
             launch-prefix="" /> <!--gnome-terminal - - -->
 
-      <!--node if="$(arg rviz)" 
+      <node if="$(arg rviz)" 
                   pkg="ocs2_mobile_manipulator_ros" 
                   type="mobile_manipulator_target" 
                   name="mobile_manipulator_target" 
-                  output="screen" /-->
+                  output="screen" />
 </launch>
