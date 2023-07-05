@@ -71,6 +71,18 @@ rosrun mobiman_simulation jackal_check_bridge.py
 
 <hr>
 
+# Motion Capture Setup
+
+
+```
+# The required installations will be added in installation script.
+# Navigate to your mobiman_ws directory (~/mobiman_ws in my case)
+sudo apt-get install ros-noetic-vrpn-client-ros
+cd ~/mobiman_ws/src
+git clone git@github.com:RIVeR-Lab/mocap_optitrack.git
+```
+
+<hr>
 
 # LOCALIZATION WITH APRIL TAGS
 #Installations
@@ -129,4 +141,4 @@ Note the transform of the tag w.r.t. camera_color_optical_frame. It should be fa
 username: administrator
 
 password: clearpath
->>>>>>> main
+<!-- >>>>>>> main -->
