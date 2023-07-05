@@ -1,7 +1,7 @@
 #ifndef COMMON_UTILITY_H
 #define COMMON_UTILITY_H
 
-// LAST UPDATE: 2022.05.18
+// LAST UPDATE: 2023.07.05
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -29,6 +29,20 @@ double randdouble(double from, double to)
 {
   double f = (double)rand() / RAND_MAX;
   return from + f * (to - from);  
+}
+
+// DESCRIPTION: TODO...
+double mean(std::vector<double> const& v, bool debug_flag=false)
+{
+  if(v.empty())
+  {
+    return 0.0;
+  }
+
+  auto const count = static_cast<double>(v.size());
+  double total = std::accumulate(v.begin(), v.end(), 0.0);
+
+  return total / count;
 }
 
 // DESCRIPTION: TODO...

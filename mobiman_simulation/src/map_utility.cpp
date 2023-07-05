@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.05.18
+// LAST UPDATE: 2023.07.05
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -1229,21 +1229,6 @@ void MapUtility::toEgridPoint(int ind, geometry_msgs::Point& po)
   po.x = egrid_resolution_ * ((ind % (egrid_vnumx * egrid_vnumy)) % egrid_vnumx - egrid_vnum_x_min) + 0.5 * egrid_resolution_;
   po.y = egrid_resolution_ * ((ind % (egrid_vnumx * egrid_vnumy)) / egrid_vnumx - egrid_vnum_y_min) + 0.5 * egrid_resolution_;
   po.z = egrid_resolution_ * (ind / (egrid_vnumx * egrid_vnumy) - egrid_vnum_z_min) + 0.5 * egrid_resolution_;
-
-  if (ind == 1)
-  {
-    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_min_.x: " << egrid_bbx_min_.x << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_min_.y: " << egrid_bbx_min_.y << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_min_.z: " << egrid_bbx_min_.z << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_max_.x: " << egrid_bbx_max_.x << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_max_.y: " << egrid_bbx_max_.y << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_max_.z: " << egrid_bbx_max_.z << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_vnum_x_min: " << egrid_vnum_x_min << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_vnum_y_min: " << egrid_vnum_y_min << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_vnum_z_min: " << egrid_vnum_z_min << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_vnumx: " << egrid_vnumx << std::endl;
-    std::cout << "[MapUtility::toEgridPoint] egrid_vnumy: " << egrid_vnumy << std::endl;
-  }
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -1281,7 +1266,7 @@ void MapUtility::initializeEgoGrid(std::string egrid_frame_name,
                                    geometry_msgs::Point egrid_bbx_min, 
                                    geometry_msgs::Point egrid_bbx_max)
 {
-  std::cout << "[MapUtility::initializeEgoGrid] START" << std::endl;
+  //std::cout << "[MapUtility::initializeEgoGrid] START" << std::endl;
 
   egrid_frame_name_ = egrid_frame_name;
   egrid_resolution_ = egrid_resolution;
@@ -1302,13 +1287,6 @@ void MapUtility::initializeEgoGrid(std::string egrid_frame_name,
     toEgridPoint(v, po);
     egrid_pos_[v] = po;
 
-    if (v == 0)
-    {
-      std::cout << "[MapUtility::initializeEgoGrid] po.x: " << po.x << std::endl;
-      std::cout << "[MapUtility::initializeEgoGrid] po.y: " << po.y << std::endl;
-      std::cout << "[MapUtility::initializeEgoGrid] po.z: " << po.z << std::endl;
-    }
-
     geometry_msgs::Point32 epo;
     epo.x = po.x;
     epo.y = po.y;
@@ -1316,21 +1294,10 @@ void MapUtility::initializeEgoGrid(std::string egrid_frame_name,
     egrid_pc_msg_.points.push_back(epo);
   }
 
-
-  std::cout << "[MapUtility::initializeEgoGrid] egrid_frame_name_: " << egrid_frame_name_ << std::endl;
-  std::cout << "[MapUtility::initializeEgoGrid] egrid_resolution_: " << egrid_resolution_ << std::endl;
-  std::cout << "[MapUtility::initializeEgoGrid] egrid_vnumx: " << egrid_vnumx << std::endl;
-  std::cout << "[MapUtility::initializeEgoGrid] egrid_vnumy: " << egrid_vnumy << std::endl;
-  std::cout << "[MapUtility::initializeEgoGrid] egrid_vnumz: " << egrid_vnumz << std::endl;
-  std::cout << "[MapUtility::initializeEgoGrid] egrid_pos_ size: " << egrid_pos_.size() << std::endl;
-
-  //std::cout << "[MapUtility::initializeEgoGrid] DEBUG INF" << std::endl;
-  //while(1);
-
   pub_egrid_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_pos", 10);
   pub_egrid_occ_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_occupancy", 10);
 
-  std::cout << "[MapUtility::initializeEgoGrid] END" << std::endl;
+  //std::cout << "[MapUtility::initializeEgoGrid] END" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -2511,31 +2478,13 @@ void MapUtility::updateEgoGrid()
   egrid_hist_.resize(total_voxel_cnt);
   egrid_occ_pc_msg_.points.clear();
 
-  /*
-  int egrid_vnum_x_min = abs(egrid_bbx_min_.x) / egrid_resolution_;
-  int egrid_vnum_y_min = abs(egrid_bbx_min_.y) / egrid_resolution_;
-  int egrid_vnum_z_min = abs(egrid_bbx_min_.z) / egrid_resolution_;
-
-  int egrid_vnumx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
-  int egrid_vnumy = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
-  int egrid_vnumz = abs(egrid_bbx_max_.z - egrid_bbx_min_.z) / egrid_resolution_;
-
-  egrid_dist_x_max = egrid_vdim * status_param.egrid_vnum_x_max;
-  status_param.egrid_dist_x_min = -1 * off_tuning_param.egrid_vdim * status_param.egrid_vnum_x_min;
-  status_param.egrid_dist_y_max = off_tuning_param.egrid_vdim * status_param.egrid_vnum_y_max;
-  status_param.egrid_dist_y_min = -1 * off_tuning_param.egrid_vdim * status_param.egrid_vnum_y_min;
-  status_param.egrid_dist_z_max = off_tuning_param.egrid_vdim * status_param.egrid_vnum_z_max;
-  status_param.egrid_dist_z_min = -1 * off_tuning_param.egrid_vdim * status_param.egrid_vnum_z_min;
-  */
-
   tf::Vector3 egrid_bbx_min(egrid_bbx_min_.x, egrid_bbx_min_.y, egrid_bbx_min_.z);
   tf::Vector3 egrid_bbx_max(egrid_bbx_max_.x, egrid_bbx_max_.y, egrid_bbx_max_.z);
 
-  tf::StampedTransform transform_grid_wrt_world;
   try
   {
     tflistener->waitForTransform(world_frame_name_, egrid_frame_name_, ros::Time::now(), ros::Duration(1.0));
-    tflistener->lookupTransform(world_frame_name_, egrid_frame_name_, ros::Time(0), transform_grid_wrt_world);
+    tflistener->lookupTransform(world_frame_name_, egrid_frame_name_, ros::Time(0), transform_grid_wrt_world_);
   }
   catch (tf::TransformException ex)
   {
@@ -2546,7 +2495,7 @@ void MapUtility::updateEgoGrid()
   for(octomap::ColorOcTree::iterator it = oct->begin(); it != oct->end(); ++it)
   {
     tf::Vector3 op_wrt_world(it.getX(), it.getY(), it.getZ());
-    tf::Vector3 op_wrt_robot = transform_grid_wrt_world.inverse() * op_wrt_world;
+    tf::Vector3 op_wrt_robot = transform_grid_wrt_world_.inverse() * op_wrt_world;
 
     if ( isInBBx(op_wrt_robot, egrid_bbx_min, egrid_bbx_max) && isOccupied(op_wrt_world.x(), op_wrt_world.y(), op_wrt_world.z()) )
     {
@@ -2574,110 +2523,52 @@ void MapUtility::updateEgoGrid()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::updateOccGrid(std::string grid_frame_name, 
-                               double resolution, 
-                               geometry_msgs::Point bbx_min, 
-                               geometry_msgs::Point bbx_max)
+void MapUtility::updateOccGrid()
 {
   //std::cout << "[MapUtility::updateOccGrid] START" << std::endl;
 
   occ_grid_msg_.data.clear();
 
-  tf::StampedTransform tf_grid_wrt_world;
-  try
-  {
-    tflistener->waitForTransform(world_frame_name_, grid_frame_name, ros::Time::now(), ros::Duration(1.0));
-    tflistener->lookupTransform(world_frame_name_, grid_frame_name, ros::Time(0), tf_grid_wrt_world);
-  }
-  catch (tf::TransformException ex)
-  {
-    ROS_INFO("[MapUtility::updateOccGrid] ERROR: Couldn't get transform!");
-    ROS_ERROR("%s", ex.what());
-  }
+  int nx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
+  int ny = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
+  int nz = abs(egrid_bbx_max_.z - egrid_bbx_min_.z) / egrid_resolution_;
 
-  int n_row = abs(bbx_max.y - bbx_min.y) / resolution;
-  int n_column = abs(bbx_max.x - bbx_min.x) / resolution;
-  int n_height = abs(bbx_max.z - bbx_min.z) / resolution;
-
-  int n_row_min = abs(bbx_min.y) / resolution;
-  int n_row_max = abs(bbx_max.y) / resolution;
-  int n_col_min = abs(bbx_min.x) / resolution;
-  int n_col_max = abs(bbx_max.x) / resolution;
-  int n_height_min = abs(bbx_min.z) / resolution;
-  int n_height_max = abs(bbx_max.z) / resolution;
-
-  std::cout << "[MapUtility::updateOccGrid] x: " << tf_grid_wrt_world.getOrigin().x() << std::endl;
-  std::cout << "[MapUtility::updateOccGrid] y: " << tf_grid_wrt_world.getOrigin().y() << std::endl;
-  std::cout << "[MapUtility::updateOccGrid] z: " << tf_grid_wrt_world.getOrigin().z() << std::endl;
-
-  //std::cout << "[MapUtility::updateOccGrid] resolution: " << resolution << std::endl;
-  //std::cout << "[MapUtility::updateOccGrid] n_row: " << n_row << std::endl;
-  //std::cout << "[MapUtility::updateOccGrid] n_column: " << n_column << std::endl;
-  //std::cout << "[MapUtility::updateOccGrid] n_height: " << n_height << std::endl;
-  //std::cout << "[MapUtility::updateOccGrid] n_row_min: " << n_row_min << std::endl;
-
-  //occ_grid_msg_.info.origin.position.x = tf_grid_wrt_world.getOrigin().x() - (n_col_min - 0.5) * resolution;
-  //occ_grid_msg_.info.origin.position.y = tf_grid_wrt_world.getOrigin().y() + (n_row_max - 0.5) * resolution;
-  //occ_grid_msg_.info.origin.position.z = tf_grid_wrt_world.getOrigin().z() - (n_height_min - 0.5) * resolution;
-
-  occ_grid_msg_.info.origin.position.x = tf_grid_wrt_world.getOrigin().x();
-  occ_grid_msg_.info.origin.position.y = tf_grid_wrt_world.getOrigin().y();
-  occ_grid_msg_.info.origin.position.z = tf_grid_wrt_world.getOrigin().z();
-  
-  std::cout << "[MapUtility::updateOccGrid] x origin: " << occ_grid_msg_.info.origin.position.x << std::endl;
-  std::cout << "[MapUtility::updateOccGrid] y origin: " << occ_grid_msg_.info.origin.position.y << std::endl;
-  std::cout << "[MapUtility::updateOccGrid] z origin: " << occ_grid_msg_.info.origin.position.z << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] nx: " << nx << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] ny: " << ny << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] nz: " << nz << std::endl;
 
   occ_grid_msg_.info.map_load_time = ros::Time::now();
-  occ_grid_msg_.info.resolution = resolution;
-  occ_grid_msg_.info.width = n_column;
-  occ_grid_msg_.info.height = n_row;
+  occ_grid_msg_.info.resolution = egrid_resolution_;
+  occ_grid_msg_.info.width = ny;
+  occ_grid_msg_.info.height = nx;
+  occ_grid_msg_.info.origin.position = egrid_pos_[0];
+  //tf::quaternionTFToMsg (transform_grid_wrt_world_.getRotation(), occ_grid_msg_.info.origin.orientation);
 
-  double qp_x, qp_y, qp_z;
-  double occ_val;
-  OcTreeNode* q_node;
   std::vector<double> occ_val_vec;
+  double occ_val;
+  double occ_val_mean;
+  double occ_val_mean_tmp;
+  int offset = 0;
+  int nxy = nx*ny;
+  int nxyz = nx*ny*nz;
+  bool flag;
 
-  int c = 0;
-  for (size_t i = 0; i < n_row; i++)
+  //std::cout << "[MapUtility::updateOccGrid] nxy: " << nxy << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] nxyz: " << nxyz << std::endl;
+
+  for (int i = 0; i < nxy; i++)
   {
-    qp_x = occ_grid_msg_.info.origin.position.x + i * resolution;
-    for (size_t j = 0; j < n_column; j++)
+    occ_val_vec.clear();
+    flag = false;
+    for (int j = 0; j < nz; j++)
     {
-      qp_y = occ_grid_msg_.info.origin.position.y - j * resolution;
-      for (size_t k = 0; k < n_height; k++)
-      {
-        qp_z = occ_grid_msg_.info.origin.position.x + k * resolution;
-
-        //std::cout << "[MapUtility::updateOccGrid] qp_x: " << qp_x << std::endl;
-        //std::cout << "[MapUtility::updateOccGrid] qp_y: " << qp_y << std::endl;
-        //std::cout << "[MapUtility::updateOccGrid] qp_z: " << qp_z << std::endl;
-
-        occ_val_vec.clear();      
-        q_node = oct->search(qp_x, qp_y, qp_z);
-        if (q_node)
-        {
-          occ_val_vec.push_back(q_node->getOccupancy());
-        }
-      }
-      if (occ_val_vec.empty())
-      {
-        c++;
-        occ_grid_msg_.data.push_back(-1);
-      }
-      else
-      {
-        occ_val = *max_element(occ_val_vec.begin(), occ_val_vec.end());
-        std::cout << "[MapUtility::updateOccGrid] occ_val: " << occ_val << std::endl;
-      }
+      offset = j * nxy;
+      occ_val_vec.push_back(egrid_occ_[i + offset]);      
     }
+
+    occ_val = *max_element(occ_val_vec.begin(), occ_val_vec.end()) * 100;
+    occ_grid_msg_.data.push_back(occ_val);
   }
-
-  //std::cout << "[MapUtility::updateOccGrid] c: " << c << std::endl;
-  //std::cout << "[MapUtility::updateOccGrid] occ_grid_msg_.data size: " << occ_grid_msg_.data.size() << std::endl;
-
-  occ_grid_msg_.info.origin.position.z = tf_grid_wrt_world.getOrigin().z();
-  tf::quaternionTFToMsg (tf_grid_wrt_world.getRotation(), occ_grid_msg_.info.origin.orientation);
 
   //std::cout << "[MapUtility::updateOccGrid] END" << std::endl;
 }
@@ -2744,7 +2635,7 @@ void MapUtility::publishEgoGridOccPcMsg()
 void MapUtility::publishOccGridMsg()
 {
   nav_msgs::OccupancyGrid occ_grid_msg = occ_grid_msg_;
-  occ_grid_msg.header.frame_id = world_frame_name_;
+  occ_grid_msg.header.frame_id = egrid_frame_name_;
   //oct_msg.header.seq++;
   occ_grid_msg.header.stamp = ros::Time::now();
   pub_occ_grid_msg_.publish(occ_grid_msg);

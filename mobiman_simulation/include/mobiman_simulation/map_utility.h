@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.07.04
+// LAST UPDATE: 2023.07.05
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -604,10 +604,7 @@ class MapUtility
     void updateEgoGrid();
 
     // DESCRIPTION: TODO...
-    void updateOccGrid(std::string grid_frame_name, 
-                       double resolution, 
-                       geometry_msgs::Point bbx_min, 
-                       geometry_msgs::Point bbx_max);
+    void updateOccGrid();
 
     // DESCRIPTION: TODO...
     void pointcloud2ToOctPc2(const sensor_msgs::PointCloud2& cloud, octomap::Pointcloud& octomapCloud);
@@ -843,13 +840,13 @@ class MapUtility
     double egrid_resolution_;
     geometry_msgs::Point egrid_bbx_min_;
     geometry_msgs::Point egrid_bbx_max_;
+    tf::StampedTransform transform_grid_wrt_world_;
     std::vector<geometry_msgs::Point> egrid_pos_;
     sensor_msgs::PointCloud egrid_pc_msg_;
     std::vector<int> egrid_hist_;
     std::vector<double> egrid_occ_;
     sensor_msgs::PointCloud egrid_occ_pc_msg_;
     
-
     nav_msgs::OccupancyGrid occ_grid_msg_;
 
     ros::Subscriber sub_oct_msg_;

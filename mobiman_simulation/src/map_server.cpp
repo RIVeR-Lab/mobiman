@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.05.18
+// LAST UPDATE: 2023.07.05
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
 
     mu.updateEgoGrid();
 
-    //mu.updateOccGrid();
+    mu.updateOccGrid();
 
     mu.updateMoveitCollisionObjects();
 
@@ -171,8 +171,7 @@ int main(int argc, char** argv)
 
     mu.publishEgoGridPcMsg();
     mu.publishEgoGridOccPcMsg();
-
-    //mu.publishOccGridMsg();
+    mu.publishOccGridMsg();
 
     //cout << "[map_server::main] BEFORE publishMoveitCollisionObjects" << endl;
     // Publish moveit collision objects
