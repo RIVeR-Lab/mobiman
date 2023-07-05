@@ -48,8 +48,8 @@ MapUtility::MapUtility()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 MapUtility::MapUtility(ros::NodeHandle& nh,
-                       string oct_msg_name,
-                       string pub_name_oct_msg)
+                       std::string oct_msg_name,
+                       std::string pub_name_oct_msg)
 {
   cout << "[MapUtility::MapUtility(3)] START" << std::endl;
 
@@ -60,7 +60,7 @@ MapUtility::MapUtility(ros::NodeHandle& nh,
   //sub_map = nh.subscribe(robot_param.local_map_msg, 1000, &Tentabot::mapCallback, this);
 
   cout << "[MapUtility::MapUtility(3)] BEFORE advertise" << std::endl;
-  nh.advertise<octomap_msgs::Octomap>(pub_name_oct_msg, 100);
+  nh.advertise<octomap_msgs::Octomap>(pub_name_oct_msg, 10);
 
   cout << "[MapUtility::MapUtility(3)] END" << std::endl;
 }
@@ -70,14 +70,14 @@ MapUtility::MapUtility(ros::NodeHandle& nh,
 //-------------------------------------------------------------------------------------------------------
 MapUtility::MapUtility(NodeHandle& nh,
                        NodeHandle& pnh,
-                       string& world_frame_name,
-                       string& gz_model_msg,
-                       vector<string>& frame_name_pkgs_ign,
+                       std::string& world_frame_name,
+                       std::string& gz_model_msg,
+                       vector<std::string>& frame_name_pkgs_ign,
                        vector<sensor_msgs::PointCloud2>& pc2_msg_gz_pkgs_ign,
                        vector<geometry_msgs::Point>& vec_obj_bbx_min_ign,
                        vector<geometry_msgs::Point>& vec_obj_bbx_max_ign,
                        vector<geometry_msgs::Point>& vec_obj_dim_ign,
-                       vector<string>& frame_name_pkgs_man,
+                       vector<std::string>& frame_name_pkgs_man,
                        vector<sensor_msgs::PointCloud2>& pc2_msg_gz_pkgs_man,
                        vector<geometry_msgs::Point>& vec_obj_bbx_min_man,
                        vector<geometry_msgs::Point>& vec_obj_bbx_max_man,
@@ -110,8 +110,9 @@ MapUtility::MapUtility(NodeHandle& nh,
   sub_gz_model_ = nh_.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
 
   // Publishers
-  pub_pc2_msg_scan_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan", 100);
-  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 100);
+  pub_pc2_msg_scan_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
+  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 10);
+  pub_occ_grid_msg_ = nh_.advertise<nav_msgs::OccupancyGrid>("occupancy_grid", 10);
 
   pub_pc2_msg_gz_ign_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 10);
   pub_pc2_msg_gz_ign_pkg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 10);
@@ -135,9 +136,9 @@ MapUtility::MapUtility(NodeHandle& nh,
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 MapUtility::MapUtility(NodeHandle& nh, 
-                       string new_map_name,
-                       string new_sensor_pc2_msg_name, 
-                       string new_sensor_laser_msg_name)
+                       std::string new_map_name,
+                       std::string new_sensor_pc2_msg_name, 
+                       std::string new_sensor_laser_msg_name)
 {
   nh_ = nh;
   tflistener = new tf::TransformListener;
@@ -176,15 +177,15 @@ MapUtility::MapUtility(NodeHandle& nh,
   pc2_msg.header.frame_id = world_frame_name_;
 
   // SUBSCRIBE TO THE OCCUPANCY SENSOR DATA (PointCloud2)
-  sub_pc2 = nh.subscribe(sensor_pc2_msg_name, 1000, &MapUtility::pc2Callback, this);
+  sub_pc2 = nh.subscribe(sensor_pc2_msg_name, 100, &MapUtility::pc2Callback, this);
 
   // SUBSCRIBE TO THE OCCUPANCY SENSOR DATA (LaserScan)
-  sub_laser = nh.subscribe(sensor_laser_msg_name, 1000, &MapUtility::laserCallback, this);
+  sub_laser = nh.subscribe(sensor_laser_msg_name, 100, &MapUtility::laserCallback, this);
 
   // NUA TODO: MAP SERVICE
   //ros::ServiceServer service_reset_map_utility = nh.advertiseService("reset_map_utility", &MapUtility::reset_map_utility, this);
 
-  pub_oct_msg_ = nh.advertise<octomap_msgs::Octomap>("octomap_" + map_name, 1000);
+  pub_oct_msg_ = nh.advertise<octomap_msgs::Octomap>("octomap_" + map_name, 10);
   pc_msg_pub = nh.advertise<sensor_msgs::PointCloud>("PC_" + map_name, 10);
   pc2_msg_pub = nh.advertise<sensor_msgs::PointCloud2>("PC2_" + map_name, 10);
   debug_array_visu_pub = nh.advertise<visualization_msgs::MarkerArray>("debug_array_" + map_name, 10);
@@ -257,7 +258,7 @@ MapUtility::~MapUtility()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-MapUtility& MapUtility::operator = (const MapUtility& mu) 
+MapUtility& MapUtility::operator=(const MapUtility& mu) 
 {
   nh_ = mu.nh_;
   tflistener = mu.tflistener;
@@ -311,7 +312,7 @@ MapUtility& MapUtility::operator = (const MapUtility& mu)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getWorldFrameName()
+std::string MapUtility::getWorldFrameName()
 {
   return world_frame_name_;
 }
@@ -319,7 +320,7 @@ string MapUtility::getWorldFrameName()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getMapName()
+std::string MapUtility::getMapName()
 {
   return map_name;
 }
@@ -327,7 +328,7 @@ string MapUtility::getMapName()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getMapFrameName()
+std::string MapUtility::getMapFrameName()
 {
   return map_frame_name;
 }
@@ -335,7 +336,7 @@ string MapUtility::getMapFrameName()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getSensorPC2MsgName()
+std::string MapUtility::getSensorPC2MsgName()
 {
   return sensor_pc2_msg_name;
 }
@@ -343,7 +344,7 @@ string MapUtility::getSensorPC2MsgName()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getSensorPC2Direction()
+std::string MapUtility::getSensorPC2Direction()
 {
   return sensor_pc2_direction;
 }
@@ -351,7 +352,7 @@ string MapUtility::getSensorPC2Direction()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getSensorPC2FrameName()
+std::string MapUtility::getSensorPC2FrameName()
 {
   return sensor_pc2_frame_name;
 }
@@ -391,7 +392,7 @@ double MapUtility::getSensorPC2MaxPitch()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-string MapUtility::getSensorLaserMsgName()
+std::string MapUtility::getSensorLaserMsgName()
 {
   return sensor_laser_msg_name;
 }
@@ -716,7 +717,7 @@ void MapUtility::setNodeHandle(ros::NodeHandle nh)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setWorldFrameName(string world_frame_name)
+void MapUtility::setWorldFrameName(std::string world_frame_name)
 {
   world_frame_name_ = world_frame_name;
 }
@@ -724,7 +725,7 @@ void MapUtility::setWorldFrameName(string world_frame_name)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setMapName(string new_map_name)
+void MapUtility::setMapName(std::string new_map_name)
 {
   map_name = new_map_name;
 }
@@ -732,7 +733,7 @@ void MapUtility::setMapName(string new_map_name)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setMapFrameName(string new_map_frame_name)
+void MapUtility::setMapFrameName(std::string new_map_frame_name)
 {
   map_frame_name = new_map_frame_name;
 }
@@ -740,7 +741,7 @@ void MapUtility::setMapFrameName(string new_map_frame_name)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setSensorPC2MsgName(string new_sensor_pc2_msg_name)
+void MapUtility::setSensorPC2MsgName(std::string new_sensor_pc2_msg_name)
 {
   sensor_pc2_msg_name = new_sensor_pc2_msg_name;
 }
@@ -748,7 +749,7 @@ void MapUtility::setSensorPC2MsgName(string new_sensor_pc2_msg_name)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setSensorPC2Direction(string new_sensor_pc2_direction)
+void MapUtility::setSensorPC2Direction(std::string new_sensor_pc2_direction)
 {
   sensor_pc2_direction = new_sensor_pc2_direction;
 }
@@ -756,7 +757,7 @@ void MapUtility::setSensorPC2Direction(string new_sensor_pc2_direction)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setSensorPC2FrameName(string new_sensor_pc2_frame_name)
+void MapUtility::setSensorPC2FrameName(std::string new_sensor_pc2_frame_name)
 {
   sensor_pc2_frame_name = new_sensor_pc2_frame_name;
 }
@@ -796,7 +797,7 @@ void MapUtility::setSensorPC2MaxPitch(double new_sensor_pc2_max_pitch)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setSensorLaserMsgName(string new_sensor_laser_msg_name)
+void MapUtility::setSensorLaserMsgName(std::string new_sensor_laser_msg_name)
 {
   sensor_laser_msg_name = new_sensor_laser_msg_name;
 }
@@ -1082,7 +1083,7 @@ void MapUtility::setPC2Msg(sensor_msgs::PointCloud2& new_pc2_msg)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setFrameNamePkgsIgn(vector<string> frame_name_pkgs_ign)
+void MapUtility::setFrameNamePkgsIgn(vector<std::string> frame_name_pkgs_ign)
 {
   vec_frame_name_ign_ = frame_name_pkgs_ign;
 }
@@ -1090,7 +1091,7 @@ void MapUtility::setFrameNamePkgsIgn(vector<string> frame_name_pkgs_ign)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setFrameNamePkgsMan(vector<string> frame_name_pkgs_man)
+void MapUtility::setFrameNamePkgsMan(vector<std::string> frame_name_pkgs_man)
 {
   vec_frame_name_man_ = frame_name_pkgs_man;
 }
@@ -1098,7 +1099,7 @@ void MapUtility::setFrameNamePkgsMan(vector<string> frame_name_pkgs_man)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setPubOctMsg(string pub_name_oct_msg)
+void MapUtility::setPubOctMsg(std::string pub_name_oct_msg)
 {
   pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>(pub_name_oct_msg, 100);
 }
@@ -1106,7 +1107,7 @@ void MapUtility::setPubOctMsg(string pub_name_oct_msg)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::setPubOctDistVisu(string pub_name_occ_dist_visu)
+void MapUtility::setPubOctDistVisu(std::string pub_name_occ_dist_visu)
 {
   pub_visu_occ_distance_ = nh_.advertise<visualization_msgs::Marker>(pub_name_occ_dist_visu, 10);
 }
@@ -1125,7 +1126,7 @@ void MapUtility::resetMap()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::initializeGazeboModelCallback(ros::NodeHandle& nh, string gz_model_msg)
+void MapUtility::initializeGazeboModelCallback(ros::NodeHandle& nh, std::string gz_model_msg)
 {
   nh_ = nh;
   sub_gz_model_ = nh_.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
@@ -1139,8 +1140,8 @@ void MapUtility::initializeMoveitCollisionObjects()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::transformPoint(string& frame_from,
-                                string& frame_to,
+void MapUtility::transformPoint(std::string& frame_from,
+                                std::string& frame_to,
                                 geometry_msgs::Point& p_from_to)
 {
   tf::Point p_from_tf;
@@ -1168,8 +1169,8 @@ void MapUtility::transformPoint(string& frame_from,
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::transformPose(string& frame_from,
-                               string& frame_to,
+void MapUtility::transformPose(std::string& frame_from,
+                               std::string& frame_to,
                                geometry_msgs::Pose& p_from_to)
 {
   tf::Pose p_from_tf;
@@ -1207,10 +1208,129 @@ void MapUtility::createColorOcTree(double map_resolution, sensor_msgs::PointClou
 
   for(int i = 0; i < pcd_size; i++)
   {
-    oct -> updateNode(new_pc.points[i].x, new_pc.points[i].y, new_pc.points[i].z, true);
-    oct -> setNodeColor(oct -> coordToKey(new_pc.points[i].x, new_pc.points[i].y, new_pc.points[i].z), color_RGB[0], color_RGB[1], color_RGB[2]);
+    oct->updateNode(new_pc.points[i].x, new_pc.points[i].y, new_pc.points[i].z, true);
+    oct->setNodeColor(oct->coordToKey(new_pc.points[i].x, new_pc.points[i].y, new_pc.points[i].z), color_RGB[0], color_RGB[1], color_RGB[2]);
   }
   fillOctMsgFromOct();
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::toEgridPoint(int ind, geometry_msgs::Point& po)
+{
+  int egrid_vnum_x_min = abs(egrid_bbx_min_.x) / egrid_resolution_;
+  int egrid_vnum_y_min = abs(egrid_bbx_min_.y) / egrid_resolution_;
+  int egrid_vnum_z_min = abs(egrid_bbx_min_.z) / egrid_resolution_;
+
+  int egrid_vnumx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
+  int egrid_vnumy = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
+
+  po.x = egrid_resolution_ * ((ind % (egrid_vnumx * egrid_vnumy)) % egrid_vnumx - egrid_vnum_x_min) + 0.5 * egrid_resolution_;
+  po.y = egrid_resolution_ * ((ind % (egrid_vnumx * egrid_vnumy)) / egrid_vnumx - egrid_vnum_y_min) + 0.5 * egrid_resolution_;
+  po.z = egrid_resolution_ * (ind / (egrid_vnumx * egrid_vnumy) - egrid_vnum_z_min) + 0.5 * egrid_resolution_;
+
+  if (ind == 1)
+  {
+    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_min_.x: " << egrid_bbx_min_.x << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_min_.y: " << egrid_bbx_min_.y << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_min_.z: " << egrid_bbx_min_.z << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_max_.x: " << egrid_bbx_max_.x << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_max_.y: " << egrid_bbx_max_.y << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_bbx_max_.z: " << egrid_bbx_max_.z << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_vnum_x_min: " << egrid_vnum_x_min << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_vnum_y_min: " << egrid_vnum_y_min << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_vnum_z_min: " << egrid_vnum_z_min << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_vnumx: " << egrid_vnumx << std::endl;
+    std::cout << "[MapUtility::toEgridPoint] egrid_vnumy: " << egrid_vnumy << std::endl;
+  }
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+int MapUtility::toEgridIndex(double pos, int egrid_vnum)
+{
+  return egrid_vnum + floor(pos / egrid_resolution_);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+int MapUtility::toEgridLinIndex(tf::Vector3 po)
+{
+  int egrid_vnum_x_min = abs(egrid_bbx_min_.x) / egrid_resolution_;
+  int egrid_vnum_y_min = abs(egrid_bbx_min_.y) / egrid_resolution_;
+  int egrid_vnum_z_min = abs(egrid_bbx_min_.z) / egrid_resolution_;
+
+  int egrid_vnumx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
+  int egrid_vnumy = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
+
+  int ind_x = toEgridIndex(po.x(), egrid_vnum_x_min);
+  int ind_y = toEgridIndex(po.y(), egrid_vnum_y_min);
+  int ind_z = toEgridIndex(po.z(), egrid_vnum_z_min);
+
+  return (ind_x + ind_y * egrid_vnumx + ind_z * egrid_vnumx * egrid_vnumy);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::initializeEgoGrid(std::string egrid_frame_name, 
+                                   double egrid_resolution, 
+                                   geometry_msgs::Point egrid_bbx_min, 
+                                   geometry_msgs::Point egrid_bbx_max)
+{
+  std::cout << "[MapUtility::initializeEgoGrid] START" << std::endl;
+
+  egrid_frame_name_ = egrid_frame_name;
+  egrid_resolution_ = egrid_resolution;
+  egrid_bbx_min_ = egrid_bbx_min;
+  egrid_bbx_max_ = egrid_bbx_max;
+
+  double egrid_vnumx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
+  double egrid_vnumy = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
+  double egrid_vnumz = abs(egrid_bbx_max_.z - egrid_bbx_min_.z) / egrid_resolution_;
+  int total_voxel_cnt = egrid_vnumx * egrid_vnumy * egrid_vnumz;
+
+  egrid_pos_.resize(total_voxel_cnt);
+  egrid_pc_msg_.points.clear();
+
+  for(int v = 0; v < total_voxel_cnt; v++)
+  {
+    geometry_msgs::Point po;
+    toEgridPoint(v, po);
+    egrid_pos_[v] = po;
+
+    if (v == 0)
+    {
+      std::cout << "[MapUtility::initializeEgoGrid] po.x: " << po.x << std::endl;
+      std::cout << "[MapUtility::initializeEgoGrid] po.y: " << po.y << std::endl;
+      std::cout << "[MapUtility::initializeEgoGrid] po.z: " << po.z << std::endl;
+    }
+
+    geometry_msgs::Point32 epo;
+    epo.x = po.x;
+    epo.y = po.y;
+    epo.z = po.z;
+    egrid_pc_msg_.points.push_back(epo);
+  }
+
+
+  std::cout << "[MapUtility::initializeEgoGrid] egrid_frame_name_: " << egrid_frame_name_ << std::endl;
+  std::cout << "[MapUtility::initializeEgoGrid] egrid_resolution_: " << egrid_resolution_ << std::endl;
+  std::cout << "[MapUtility::initializeEgoGrid] egrid_vnumx: " << egrid_vnumx << std::endl;
+  std::cout << "[MapUtility::initializeEgoGrid] egrid_vnumy: " << egrid_vnumy << std::endl;
+  std::cout << "[MapUtility::initializeEgoGrid] egrid_vnumz: " << egrid_vnumz << std::endl;
+  std::cout << "[MapUtility::initializeEgoGrid] egrid_pos_ size: " << egrid_pos_.size() << std::endl;
+
+  //std::cout << "[MapUtility::initializeEgoGrid] DEBUG INF" << std::endl;
+  //while(1);
+
+  pub_egrid_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_pos", 10);
+  pub_egrid_occ_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_occupancy", 10);
+
+  std::cout << "[MapUtility::initializeEgoGrid] END" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -1320,7 +1440,7 @@ vector<geometry_msgs::Point32> MapUtility::extract_pc_from_node_center(geometry_
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::fillOct(sensor_msgs::PointCloud& pc_msg)
 {
-  oct -> clear();
+  oct->clear();
 
   for(int i = 0; i < pc_msg.points.size(); i++)
   {
@@ -1333,11 +1453,11 @@ void MapUtility::fillOct(sensor_msgs::PointCloud& pc_msg)
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::fillOctFromMeasuredPCMsg()
 {
-  oct -> clear();
+  oct->clear();
 
   for(int i = 0; i < measured_pc_msg.points.size(); i++)
   {
-    oct -> updateNode(measured_pc_msg.points[i].x, measured_pc_msg.points[i].y, measured_pc_msg.points[i].z, true);
+    oct->updateNode(measured_pc_msg.points[i].x, measured_pc_msg.points[i].y, measured_pc_msg.points[i].z, true);
   }
 }
 
@@ -1363,7 +1483,7 @@ void MapUtility::fillPCMsgFromOct()
 {
   pc_msg.points.clear();
   
-  for(octomap::ColorOcTree::iterator it = oct -> begin(); it != oct -> end(); ++it)
+  for(octomap::ColorOcTree::iterator it = oct->begin(); it != oct->end(); ++it)
   {
     geometry_msgs::Point32 op;
     op.x = it.getCoordinate().x();
@@ -1382,7 +1502,7 @@ void MapUtility::fillPCMsgFromOctByResolutionScale()
 {
   pc_msg.points.clear();
   
-  for(octomap::ColorOcTree::iterator it = oct -> begin(); it != oct -> end(); ++it)
+  for(octomap::ColorOcTree::iterator it = oct->begin(); it != oct->end(); ++it)
   {
     geometry_msgs::Point op;
     op.x = it.getCoordinate().x();
@@ -1556,10 +1676,10 @@ void MapUtility::clearPCMsg()
 //-------------------------------------------------------------------------------------------------------
 bool MapUtility::isOccupied(double x, double y, double z)
 {
-  OcTreeNode* node = oct -> search(x, y, z);
+  OcTreeNode* node = oct->search(x, y, z);
   if(node)
   {
-    return oct -> isNodeOccupied(node);
+    return oct->isNodeOccupied(node);
   }
   else
   {
@@ -1572,14 +1692,30 @@ bool MapUtility::isOccupied(double x, double y, double z)
 //-------------------------------------------------------------------------------------------------------
 bool MapUtility::isOccupied(geometry_msgs::Point po)
 {
-  OcTreeNode* node = oct -> search(po.x, po.y, po.z);
+  OcTreeNode* node = oct->search(po.x, po.y, po.z);
   if(node)
   {
-    return oct -> isNodeOccupied(node);
+    return oct->isNodeOccupied(node);
   }
   else
   {
     return false;
+  }
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+double MapUtility::getOctOccupancy(tf::Vector3 po)
+{
+  OcTreeNode* node = oct->search(po.x(), po.y(), po.z());
+  if(node)
+  {
+    return node->getOccupancy();
+  }
+  else
+  {
+    return -1.0;
   }
 }
 
@@ -1948,7 +2084,7 @@ void MapUtility::addMoveitCollisionObjects(std::string& obj_id,
 {
   //std::cout << "[MapUtility::addMoveitCollisionObjects(3)] START" << std::endl;
 
-  string base_frame_name = "base_link";
+  std::string base_frame_name = "base_link";
   geometry_msgs::Pose obj_pose_wrt_base = obj_pose_wrt_world;
   transformPose(world_frame_name_, base_frame_name, obj_pose_wrt_base);
 
@@ -1992,7 +2128,7 @@ void MapUtility::updateMoveitCollisionObjects()
 
   gazebo_msgs::ModelStates ms = gz_model_states_;
 
-  string gz_model_name_tmp, tf_name_tmp;
+  std::string gz_model_name_tmp, tf_name_tmp;
 
   for (size_t i = 0; i < ms.name.size(); i++)
   {
@@ -2105,7 +2241,7 @@ void MapUtility::addRandomStaticObstacle(vector<double> new_x_range, vector<doub
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::createRandomMapSet(string mapset_name, int map_cnt, int map_occupancy_count)
+void MapUtility::createRandomMapSet(std::string mapset_name, int map_cnt, int map_occupancy_count)
 {
   vector<double> goal_x_range;
   goal_x_range.push_back(x_range[0] + 4);
@@ -2343,10 +2479,11 @@ void MapUtility::updateOctPC()
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::updateOct()
 {
-  if (pc2_msg_scan_.data.size() > 0)
+  sensor_msgs::PointCloud2 pc2_msg_scan = pc2_msg_scan_;
+  if (pc2_msg_scan.data.size() > 0)
   {
     oct->clear();
-    addToOct(pc2_msg_scan_);
+    addToOct(pc2_msg_scan);
     fillOctMsgFromOct();
   }
 }
@@ -2354,9 +2491,195 @@ void MapUtility::updateOct()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::updateOct(string oct_msg_name)
+void MapUtility::updateOct(std::string oct_msg_name)
 {
   sub_oct_msg_ = nh_.subscribe(oct_msg_name, 100, &MapUtility::octMsgCallback, this);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::updateEgoGrid()
+{
+  //std::cout << "[MapUtility::updateEgoGrid] START" << std::endl;
+
+  int vox_index;
+  int total_voxel_cnt = egrid_pos_.size();
+  egrid_occ_.clear();
+  egrid_hist_.clear();
+  egrid_occ_.resize(total_voxel_cnt);
+  egrid_hist_.resize(total_voxel_cnt);
+  egrid_occ_pc_msg_.points.clear();
+
+  /*
+  int egrid_vnum_x_min = abs(egrid_bbx_min_.x) / egrid_resolution_;
+  int egrid_vnum_y_min = abs(egrid_bbx_min_.y) / egrid_resolution_;
+  int egrid_vnum_z_min = abs(egrid_bbx_min_.z) / egrid_resolution_;
+
+  int egrid_vnumx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
+  int egrid_vnumy = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
+  int egrid_vnumz = abs(egrid_bbx_max_.z - egrid_bbx_min_.z) / egrid_resolution_;
+
+  egrid_dist_x_max = egrid_vdim * status_param.egrid_vnum_x_max;
+  status_param.egrid_dist_x_min = -1 * off_tuning_param.egrid_vdim * status_param.egrid_vnum_x_min;
+  status_param.egrid_dist_y_max = off_tuning_param.egrid_vdim * status_param.egrid_vnum_y_max;
+  status_param.egrid_dist_y_min = -1 * off_tuning_param.egrid_vdim * status_param.egrid_vnum_y_min;
+  status_param.egrid_dist_z_max = off_tuning_param.egrid_vdim * status_param.egrid_vnum_z_max;
+  status_param.egrid_dist_z_min = -1 * off_tuning_param.egrid_vdim * status_param.egrid_vnum_z_min;
+  */
+
+  tf::Vector3 egrid_bbx_min(egrid_bbx_min_.x, egrid_bbx_min_.y, egrid_bbx_min_.z);
+  tf::Vector3 egrid_bbx_max(egrid_bbx_max_.x, egrid_bbx_max_.y, egrid_bbx_max_.z);
+
+  tf::StampedTransform transform_grid_wrt_world;
+  try
+  {
+    tflistener->waitForTransform(world_frame_name_, egrid_frame_name_, ros::Time::now(), ros::Duration(1.0));
+    tflistener->lookupTransform(world_frame_name_, egrid_frame_name_, ros::Time(0), transform_grid_wrt_world);
+  }
+  catch (tf::TransformException ex)
+  {
+    ROS_INFO("[MapUtility::updateEgoGrid] ERROR: Couldn't get transform!");
+    ROS_ERROR("%s", ex.what());
+  }
+
+  for(octomap::ColorOcTree::iterator it = oct->begin(); it != oct->end(); ++it)
+  {
+    tf::Vector3 op_wrt_world(it.getX(), it.getY(), it.getZ());
+    tf::Vector3 op_wrt_robot = transform_grid_wrt_world.inverse() * op_wrt_world;
+
+    if ( isInBBx(op_wrt_robot, egrid_bbx_min, egrid_bbx_max) && isOccupied(op_wrt_world.x(), op_wrt_world.y(), op_wrt_world.z()) )
+    {
+      vox_index = toEgridLinIndex(op_wrt_robot);
+
+      if ( vox_index >= 0 && vox_index < total_voxel_cnt )
+      {
+        egrid_hist_[vox_index] += 1;
+        egrid_occ_[vox_index] = (egrid_occ_[vox_index] + getOctOccupancy(op_wrt_world)) / egrid_hist_[vox_index];
+
+        geometry_msgs::Point32 po;
+        po.x = op_wrt_world.x();
+        po.y = op_wrt_world.y();
+        po.z = op_wrt_world.z();
+        egrid_occ_pc_msg_.points.push_back(po);
+      }
+    }
+
+    
+  }
+
+  //std::cout << "[MapUtility::updateEgoGrid] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::updateOccGrid(std::string grid_frame_name, 
+                               double resolution, 
+                               geometry_msgs::Point bbx_min, 
+                               geometry_msgs::Point bbx_max)
+{
+  //std::cout << "[MapUtility::updateOccGrid] START" << std::endl;
+
+  occ_grid_msg_.data.clear();
+
+  tf::StampedTransform tf_grid_wrt_world;
+  try
+  {
+    tflistener->waitForTransform(world_frame_name_, grid_frame_name, ros::Time::now(), ros::Duration(1.0));
+    tflistener->lookupTransform(world_frame_name_, grid_frame_name, ros::Time(0), tf_grid_wrt_world);
+  }
+  catch (tf::TransformException ex)
+  {
+    ROS_INFO("[MapUtility::updateOccGrid] ERROR: Couldn't get transform!");
+    ROS_ERROR("%s", ex.what());
+  }
+
+  int n_row = abs(bbx_max.y - bbx_min.y) / resolution;
+  int n_column = abs(bbx_max.x - bbx_min.x) / resolution;
+  int n_height = abs(bbx_max.z - bbx_min.z) / resolution;
+
+  int n_row_min = abs(bbx_min.y) / resolution;
+  int n_row_max = abs(bbx_max.y) / resolution;
+  int n_col_min = abs(bbx_min.x) / resolution;
+  int n_col_max = abs(bbx_max.x) / resolution;
+  int n_height_min = abs(bbx_min.z) / resolution;
+  int n_height_max = abs(bbx_max.z) / resolution;
+
+  std::cout << "[MapUtility::updateOccGrid] x: " << tf_grid_wrt_world.getOrigin().x() << std::endl;
+  std::cout << "[MapUtility::updateOccGrid] y: " << tf_grid_wrt_world.getOrigin().y() << std::endl;
+  std::cout << "[MapUtility::updateOccGrid] z: " << tf_grid_wrt_world.getOrigin().z() << std::endl;
+
+  //std::cout << "[MapUtility::updateOccGrid] resolution: " << resolution << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] n_row: " << n_row << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] n_column: " << n_column << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] n_height: " << n_height << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] n_row_min: " << n_row_min << std::endl;
+
+  //occ_grid_msg_.info.origin.position.x = tf_grid_wrt_world.getOrigin().x() - (n_col_min - 0.5) * resolution;
+  //occ_grid_msg_.info.origin.position.y = tf_grid_wrt_world.getOrigin().y() + (n_row_max - 0.5) * resolution;
+  //occ_grid_msg_.info.origin.position.z = tf_grid_wrt_world.getOrigin().z() - (n_height_min - 0.5) * resolution;
+
+  occ_grid_msg_.info.origin.position.x = tf_grid_wrt_world.getOrigin().x();
+  occ_grid_msg_.info.origin.position.y = tf_grid_wrt_world.getOrigin().y();
+  occ_grid_msg_.info.origin.position.z = tf_grid_wrt_world.getOrigin().z();
+  
+  std::cout << "[MapUtility::updateOccGrid] x origin: " << occ_grid_msg_.info.origin.position.x << std::endl;
+  std::cout << "[MapUtility::updateOccGrid] y origin: " << occ_grid_msg_.info.origin.position.y << std::endl;
+  std::cout << "[MapUtility::updateOccGrid] z origin: " << occ_grid_msg_.info.origin.position.z << std::endl;
+
+  occ_grid_msg_.info.map_load_time = ros::Time::now();
+  occ_grid_msg_.info.resolution = resolution;
+  occ_grid_msg_.info.width = n_column;
+  occ_grid_msg_.info.height = n_row;
+
+  double qp_x, qp_y, qp_z;
+  double occ_val;
+  OcTreeNode* q_node;
+  std::vector<double> occ_val_vec;
+
+  int c = 0;
+  for (size_t i = 0; i < n_row; i++)
+  {
+    qp_x = occ_grid_msg_.info.origin.position.x + i * resolution;
+    for (size_t j = 0; j < n_column; j++)
+    {
+      qp_y = occ_grid_msg_.info.origin.position.y - j * resolution;
+      for (size_t k = 0; k < n_height; k++)
+      {
+        qp_z = occ_grid_msg_.info.origin.position.x + k * resolution;
+
+        //std::cout << "[MapUtility::updateOccGrid] qp_x: " << qp_x << std::endl;
+        //std::cout << "[MapUtility::updateOccGrid] qp_y: " << qp_y << std::endl;
+        //std::cout << "[MapUtility::updateOccGrid] qp_z: " << qp_z << std::endl;
+
+        occ_val_vec.clear();      
+        q_node = oct->search(qp_x, qp_y, qp_z);
+        if (q_node)
+        {
+          occ_val_vec.push_back(q_node->getOccupancy());
+        }
+      }
+      if (occ_val_vec.empty())
+      {
+        c++;
+        occ_grid_msg_.data.push_back(-1);
+      }
+      else
+      {
+        occ_val = *max_element(occ_val_vec.begin(), occ_val_vec.end());
+        std::cout << "[MapUtility::updateOccGrid] occ_val: " << occ_val << std::endl;
+      }
+    }
+  }
+
+  //std::cout << "[MapUtility::updateOccGrid] c: " << c << std::endl;
+  //std::cout << "[MapUtility::updateOccGrid] occ_grid_msg_.data size: " << occ_grid_msg_.data.size() << std::endl;
+
+  occ_grid_msg_.info.origin.position.z = tf_grid_wrt_world.getOrigin().z();
+  tf::quaternionTFToMsg (tf_grid_wrt_world.getRotation(), occ_grid_msg_.info.origin.orientation);
+
+  //std::cout << "[MapUtility::updateOccGrid] END" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -2388,8 +2711,43 @@ void MapUtility::publishOctMsg()
   oct_msg.header.frame_id = world_frame_name_;
   //oct_msg.header.seq++;
   oct_msg.header.stamp = ros::Time::now();
-
   pub_oct_msg_.publish(oct_msg);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::publishEgoGridPcMsg()
+{
+  sensor_msgs::PointCloud egrid_pc_msg = egrid_pc_msg_;
+  egrid_pc_msg.header.frame_id = egrid_frame_name_;
+  //oct_msg.header.seq++;
+  egrid_pc_msg.header.stamp = ros::Time::now();
+  pub_egrid_pc_msg_.publish(egrid_pc_msg);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::publishEgoGridOccPcMsg()
+{
+  sensor_msgs::PointCloud egrid_occ_pc_msg = egrid_occ_pc_msg_;
+  egrid_occ_pc_msg.header.frame_id = world_frame_name_;
+  //oct_msg.header.seq++;
+  egrid_occ_pc_msg.header.stamp = ros::Time::now();
+  pub_egrid_occ_pc_msg_.publish(egrid_occ_pc_msg);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::publishOccGridMsg()
+{
+  nav_msgs::OccupancyGrid occ_grid_msg = occ_grid_msg_;
+  occ_grid_msg.header.frame_id = world_frame_name_;
+  //oct_msg.header.seq++;
+  occ_grid_msg.header.stamp = ros::Time::now();
+  pub_occ_grid_msg_.publish(occ_grid_msg);
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -2565,7 +2923,7 @@ void MapUtility::publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::publishWorldFrame(string& world_frame_name, string& origin_frame_name)
+void MapUtility::publishWorldFrame(std::string& world_frame_name, std::string& origin_frame_name)
 {
   //std::cout << "[MapUtility::publishGroundTruthWorldFrame] START" << std::endl;
 
@@ -2591,7 +2949,7 @@ void MapUtility::publishWorldFrame(string& world_frame_name, string& origin_fram
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::publishVirtualFrames(vector<string>& virtual_frame_names, string& origin_frame_name)
+void MapUtility::publishVirtualFrames(vector<std::string>& virtual_frame_names, std::string& origin_frame_name)
 {
   //std::cout << "[MapUtility::publishVirtualFrames] START" << std::endl;
 
@@ -2687,7 +3045,7 @@ void MapUtility::printDataSize()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::saveMap(string filename)
+void MapUtility::saveMap(std::string filename)
 {
   if(filename == "")
   {
@@ -2695,7 +3053,7 @@ void MapUtility::saveMap(string filename)
   }
 
   ofstream map_file;
-  string tentabot_path = ros::package::getPath("tentabot") + "/";
+  std::string tentabot_path = ros::package::getPath("tentabot") + "/";
   map_file.open (tentabot_path + "dataset/map_utility/" + filename + ".csv");
 
   if( map_file.is_open() )
@@ -2727,9 +3085,9 @@ void MapUtility::saveMap(string filename)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::loadMap(string filename)
+void MapUtility::loadMap(std::string filename)
 {
-  string tentabot_path = ros::package::getPath("tentabot") + "/";
+  std::string tentabot_path = ros::package::getPath("tentabot") + "/";
   ifstream map_file(tentabot_path + "dataset/map_utility/" + filename + ".csv");
 
   if( map_file.is_open() )
@@ -2738,11 +3096,11 @@ void MapUtility::loadMap(string filename)
 
     oct -> clear();
 
-    string line = "";
+    std::string line = "";
     bool map_flag = false;
     while( getline(map_file, line) )
     {
-      vector<string> vec;
+      vector<std::string> vec;
       boost::algorithm::split(vec, line, boost::is_any_of(","));
 
       if(vec[0] == "map")
@@ -2858,7 +3216,7 @@ void MapUtility::updateModelPc2Scan()
 
   bool initFlag = true;
   sensor_msgs::PointCloud2 pc2_msg_scan;
-  string gz_model_name_tmp, tf_name_tmp;
+  std::string gz_model_name_tmp, tf_name_tmp;
 
   vec_transform_ign_.clear();
   vec_transform_man_.clear();
@@ -3062,7 +3420,7 @@ double MapUtility::getNearestOccupancyDist(double x, double y, double z, bool pu
   //std::cout << "[MapUtility::getNearestOccupancyDist] START" << std::endl;
 
   double dist_min, dist_tmp;
-  string name_min;
+  std::string name_min;
   int idx_min;
   geometry_msgs::Point collision_p;
   geometry_msgs::Point min_p;

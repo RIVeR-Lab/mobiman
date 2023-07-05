@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.05.23
+// LAST UPDATE: 2023.07.04
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -16,6 +16,7 @@
 #include <tf_conversions/tf_eigen.h>
 #include <tf/message_filter.h>
 #include <tf/transform_broadcaster.h>
+#include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 #include <sensor_msgs/point_cloud_conversion.h>
@@ -24,6 +25,7 @@
 #include <octomap_msgs/conversions.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <nav_msgs/Odometry.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/transforms.h>
 #include <fcl/fcl.h>
@@ -57,16 +59,16 @@ class MapUtility
                NodeHandle& pnh,
                string& world_frame_name,
                string& gz_model_msg,
-               vector<string>& vec_frame_name_ign, 
-               vector<sensor_msgs::PointCloud2>& vec_pc2_msg_ign,
-               vector<geometry_msgs::Point>& vec_obj_bbx_min_ign,
-               vector<geometry_msgs::Point>& vec_obj_bbx_max_ign,
-               vector<geometry_msgs::Point>& vec_obj_dim_ign,
-               vector<string>& vec_frame_name_man,
-               vector<sensor_msgs::PointCloud2>& vec_pc2_msg_man,
-               vector<geometry_msgs::Point>& vec_obj_bbx_min_man,
-               vector<geometry_msgs::Point>& vec_obj_bbx_max_man,
-               vector<geometry_msgs::Point>& vec_obj_dim_man,
+               std::vector<string>& vec_frame_name_ign, 
+               std::vector<sensor_msgs::PointCloud2>& vec_pc2_msg_ign,
+               std::vector<geometry_msgs::Point>& vec_obj_bbx_min_ign,
+               std::vector<geometry_msgs::Point>& vec_obj_bbx_max_ign,
+               std::vector<geometry_msgs::Point>& vec_obj_dim_ign,
+               std::vector<string>& vec_frame_name_man,
+               std::vector<sensor_msgs::PointCloud2>& vec_pc2_msg_man,
+               std::vector<geometry_msgs::Point>& vec_obj_bbx_min_man,
+               std::vector<geometry_msgs::Point>& vec_obj_bbx_max_man,
+               std::vector<geometry_msgs::Point>& vec_obj_dim_man,
                double map_resolution);
 
     // DESCRIPTION: TODO...
@@ -141,13 +143,13 @@ class MapUtility
     geometry_msgs::Pose getMapPose();
 
     // DESCRIPTION: TODO...
-    vector<double> getXRange();
+    std::vector<double> getXRange();
 
     // DESCRIPTION: TODO...
-    vector<double> getYRange();
+    std::vector<double> getYRange();
 
     // DESCRIPTION: TODO...
-    vector<double> getZRange();
+    std::vector<double> getZRange();
 
     // DESCRIPTION: TODO...
     double getBBxXMax();
@@ -381,10 +383,10 @@ class MapUtility
     void setPC2Msg(sensor_msgs::PointCloud2& new_pc2);
 
     // DESCRIPTION: TODO...
-    void setFrameNamePkgsIgn(vector<string> vec_frame_name_ign);
+    void setFrameNamePkgsIgn(std::vector<string> vec_frame_name_ign);
 
     // DESCRIPTION: TODO...
-    void setFrameNamePkgsMan(vector<string> vec_frame_name_man);
+    void setFrameNamePkgsMan(std::vector<string> vec_frame_name_man);
 
     // DESCRIPTION: TODO...
     void setPubOctMsg(string name_oct_msg);
@@ -414,10 +416,25 @@ class MapUtility
     // DESCRIPTION: TODO...
     void createColorOcTree( double map_resolution, 
                             sensor_msgs::PointCloud& new_pc, 
-                            vector<int> color_RGB=vector<int>{155,128,0});
+                            std::vector<int> color_RGB=std::vector<int>{155,128,0});
 
     // DESCRIPTION: TODO...
-    vector<geometry_msgs::Point32> extract_pc_from_node_center(geometry_msgs::Point center);
+    void toEgridPoint(int ind, geometry_msgs::Point& po);
+
+    // DESCRIPTION: TODO...
+    int toEgridIndex(double pos, int egrid_vnum);
+
+    // DESCRIPTION: TODO...
+    int toEgridLinIndex(tf::Vector3 po);
+
+    // DESCRIPTION: TODO...
+    void initializeEgoGrid(std::string egrid_frame_name, 
+                           double egrid_resolution, 
+                           geometry_msgs::Point egrid_bbx_min, 
+                           geometry_msgs::Point egrid_bbx_max);
+
+    // DESCRIPTION: TODO...
+    std::vector<geometry_msgs::Point32> extract_pc_from_node_center(geometry_msgs::Point center);
 
     // DESCRIPTION: TODO...
     void fillOct(sensor_msgs::PointCloud& pc_msg);
@@ -435,10 +452,10 @@ class MapUtility
     void fillPCMsgFromOctByResolutionScale();
 
     // DESCRIPTION: TODO...
-    void fillDebugArrayVisu(vector<tf::Vector3> v);
+    void fillDebugArrayVisu(std::vector<tf::Vector3> v);
 
     // DESCRIPTION: TODO...
-    void fillDebugVisu(vector<tf::Vector3> v);
+    void fillDebugVisu(std::vector<tf::Vector3> v);
 
     // DESCRIPTION: TODO...
     void insertToOctFromOctPC(octomap::point3d sensor_origin);
@@ -471,6 +488,9 @@ class MapUtility
     bool isOccupied(geometry_msgs::Point po);
 
     // DESCRIPTION: TODO...
+    double getOctOccupancy(tf::Point po);
+
+    // DESCRIPTION: TODO...
     void setSensorRangeQuery(float query_point_resolution=0.01);
 
     // DESCRIPTION: TODO...
@@ -489,10 +509,10 @@ class MapUtility
     bool isInCube(geometry_msgs::Point po, geometry_msgs::Point center, double rad);
 
     // DESCRIPTION: TODO...
-    bool isOccupiedByGoal(double x, double y, double z, vector<geometry_msgs::Pose> goal);
+    bool isOccupiedByGoal(double x, double y, double z, std::vector<geometry_msgs::Pose> goal);
 
     // DESCRIPTION: TODO...
-    bool isOccupiedByGoal(geometry_msgs::Point po, vector<geometry_msgs::Pose> goal);
+    bool isOccupiedByGoal(geometry_msgs::Point po, std::vector<geometry_msgs::Pose> goal);
 
     // DESCRIPTION: TODO...
     void addStaticObstacleByResolutionScale2PCMsg(geometry_msgs::Point po);
@@ -502,18 +522,18 @@ class MapUtility
                            double y, 
                            double z, 
                            bool constraint_flag=true, 
-                           vector<geometry_msgs::Pose> goal=vector<geometry_msgs::Pose>{}, 
+                           std::vector<geometry_msgs::Pose> goal=std::vector<geometry_msgs::Pose>{}, 
                            geometry_msgs::Point robot_center=geometry_msgs::Point(), 
                            double robot_free_rad=1, 
-                           vector<int> color_RGB=vector<int>{155,128,0});
+                           std::vector<int> color_RGB=std::vector<int>{155,128,0});
 
     // DESCRIPTION: TODO...
-    vector<bool> addStaticObstacle(sensor_msgs::PointCloud& pcd, 
+    std::vector<bool> addStaticObstacle(sensor_msgs::PointCloud& pcd, 
                                    bool constraint_flag=true, 
-                                   vector<geometry_msgs::Pose> goal=vector<geometry_msgs::Pose>{}, 
+                                   std::vector<geometry_msgs::Pose> goal=std::vector<geometry_msgs::Pose>{}, 
                                    geometry_msgs::Point robot_center=geometry_msgs::Point(), 
                                    double robot_free_rad=1, 
-                                   vector<int> color_RGB=vector<int>{155,128,0});
+                                   std::vector<int> color_RGB=std::vector<int>{155,128,0});
 
     // DESCRIPTION: TODO...
     void addMoveitCollisionObjects();
@@ -529,32 +549,32 @@ class MapUtility
     // DESCRIPTION: TODO...
     void createRandomStaticObstacleMap(int num, 
                                        bool constraint_flag=true, 
-                                       vector<geometry_msgs::Pose> goal=vector<geometry_msgs::Pose>{}, 
+                                       std::vector<geometry_msgs::Pose> goal=std::vector<geometry_msgs::Pose>{}, 
                                        geometry_msgs::Point robot_center=geometry_msgs::Point(), 
                                        double robot_free_rad=1, 
-                                       vector<int> color_RGB=vector<int>{155,128,0});
+                                       std::vector<int> color_RGB=std::vector<int>{155,128,0});
 
     // DESCRIPTION: TODO...
-    void createRandomStaticObstacleMap(vector<double> new_x_range, 
-                                       vector<double> new_y_range, 
-                                       vector<double> new_z_range, 
+    void createRandomStaticObstacleMap(std::vector<double> new_x_range, 
+                                       std::vector<double> new_y_range, 
+                                       std::vector<double> new_z_range, 
                                        int num, 
                                        bool constraint_flag=true, 
-                                       vector<geometry_msgs::Pose> goal=vector<geometry_msgs::Pose>{}, 
+                                       std::vector<geometry_msgs::Pose> goal=std::vector<geometry_msgs::Pose>{}, 
                                        geometry_msgs::Point robot_center=geometry_msgs::Point(), 
                                        double robot_free_rad=1, 
-                                       vector<int> color_RGB=vector<int>{155,128,0});
+                                       std::vector<int> color_RGB=std::vector<int>{155,128,0});
 
     // DESCRIPTION: TODO...
-    void addRandomStaticObstacle(vector<double> new_x_range, 
-                                 vector<double> new_y_range, 
-                                 vector<double> new_z_range, 
+    void addRandomStaticObstacle(std::vector<double> new_x_range, 
+                                 std::vector<double> new_y_range, 
+                                 std::vector<double> new_z_range, 
                                  int num, 
                                  bool constraint_flag=true, 
-                                 vector<geometry_msgs::Pose> goal=vector<geometry_msgs::Pose>{},
+                                 std::vector<geometry_msgs::Pose> goal=std::vector<geometry_msgs::Pose>{},
                                  geometry_msgs::Point robot_center=geometry_msgs::Point(), 
                                  double robot_free_rad=1, 
-                                 vector<int> color_RGB=vector<int>{155,128,0});
+                                 std::vector<int> color_RGB=std::vector<int>{155,128,0});
 
     // DESCRIPTION: TODO...
     void createRandomMapSet(string mapset_name, int map_cnt, int map_occupancy_count);
@@ -581,10 +601,28 @@ class MapUtility
     void updateOct(string oct_msg_name);
 
     // DESCRIPTION: TODO...
+    void updateEgoGrid();
+
+    // DESCRIPTION: TODO...
+    void updateOccGrid(std::string grid_frame_name, 
+                       double resolution, 
+                       geometry_msgs::Point bbx_min, 
+                       geometry_msgs::Point bbx_max);
+
+    // DESCRIPTION: TODO...
     void pointcloud2ToOctPc2(const sensor_msgs::PointCloud2& cloud, octomap::Pointcloud& octomapCloud);
 
     // DESCRIPTION: TODO...
     void publishOctMsg();
+
+    // DESCRIPTION: TODO...
+    void publishEgoGridPcMsg();
+
+    // DESCRIPTION: TODO...
+    void publishEgoGridOccPcMsg();
+
+    // DESCRIPTION: TODO...
+    void publishOccGridMsg();
 
     // DESCRIPTION: TODO...
     void publishPCMsg();
@@ -605,13 +643,13 @@ class MapUtility
     void publishOccDistanceVisu(geometry_msgs::Point p0, geometry_msgs::Point p1);
 
     // DESCRIPTION: TODO...
-    void publishOccDistanceArrayVisu(vector<geometry_msgs::Point> p0_vec, vector<geometry_msgs::Point> p1_vec);
+    void publishOccDistanceArrayVisu(std::vector<geometry_msgs::Point> p0_vec, std::vector<geometry_msgs::Point> p1_vec);
 
     // DESCRIPTION: TODO...
     void publishWorldFrame(string& world_frame_name, string& origin_frame_name);
 
     // DESCRIPTION: TODO...
-    void publishVirtualFrames(vector<string>& virtual_frame_names, string& origin_frame_name);
+    void publishVirtualFrames(std::vector<string>& virtual_frame_names, string& origin_frame_name);
 
     // DESCRIPTION: TODO...
     void publishMoveitCollisionObjects();
@@ -703,9 +741,9 @@ class MapUtility
     tf::StampedTransform transform_sensor_pc2_wrt_world;
     tf::StampedTransform transform_sensor_laser_wrt_world;
 
-    vector<double> x_range; // NUA: deprecated, use bbx variables
-    vector<double> y_range; // NUA: deprecated, use bbx variables
-    vector<double> z_range; // NUA: deprecated, use bbx variables
+    std::vector<double> x_range; // NUA: deprecated, use bbx variables
+    std::vector<double> y_range; // NUA: deprecated, use bbx variables
+    std::vector<double> z_range; // NUA: deprecated, use bbx variables
 
     double bbx_x_max;
     double bbx_x_min;
@@ -778,33 +816,50 @@ class MapUtility
     
     ros::Subscriber sub_gz_model_;
 
-    vector<string> vec_frame_name_ign_;
-    vector<string> vec_frame_name_man_;
+    std::vector<string> vec_frame_name_ign_;
+    std::vector<string> vec_frame_name_man_;
 
-    vector<tf::Transform> vec_transform_ign_;
-    vector<tf::Transform> vec_transform_man_;
+    std::vector<tf::Transform> vec_transform_ign_;
+    std::vector<tf::Transform> vec_transform_man_;
 
-    vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_ign_;
-    vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_man_;
+    std::vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_ign_;
+    std::vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_man_;
 
-    vector<geometry_msgs::Point> vec_obj_bbx_min_ign_;
-    vector<geometry_msgs::Point> vec_obj_bbx_min_man_;
+    std::vector<geometry_msgs::Point> vec_obj_bbx_min_ign_;
+    std::vector<geometry_msgs::Point> vec_obj_bbx_min_man_;
 
-    vector<geometry_msgs::Point> vec_obj_bbx_max_ign_;
-    vector<geometry_msgs::Point> vec_obj_bbx_max_man_;
+    std::vector<geometry_msgs::Point> vec_obj_bbx_max_ign_;
+    std::vector<geometry_msgs::Point> vec_obj_bbx_max_man_;
 
-    vector<geometry_msgs::Point> vec_obj_dim_ign_;
-    vector<geometry_msgs::Point> vec_obj_dim_man_;
+    std::vector<geometry_msgs::Point> vec_obj_dim_ign_;
+    std::vector<geometry_msgs::Point> vec_obj_dim_man_;
 
     std::vector<moveit_msgs::CollisionObject> moveit_collision_objects_;
 
     //visualization_msgs::Marker visu_occ_distance_;
     //visualization_msgs::MarkerArray visu_array_occ_distance_;
 
+    std::string egrid_frame_name_;
+    double egrid_resolution_;
+    geometry_msgs::Point egrid_bbx_min_;
+    geometry_msgs::Point egrid_bbx_max_;
+    std::vector<geometry_msgs::Point> egrid_pos_;
+    sensor_msgs::PointCloud egrid_pc_msg_;
+    std::vector<int> egrid_hist_;
+    std::vector<double> egrid_occ_;
+    sensor_msgs::PointCloud egrid_occ_pc_msg_;
+    
+
+    nav_msgs::OccupancyGrid occ_grid_msg_;
+
     ros::Subscriber sub_oct_msg_;
+    ros::Subscriber sub_occ_grid_msg_;
 
     ros::Publisher pub_pc2_msg_scan_;
     ros::Publisher pub_moveit_collision_object_;
+    ros::Publisher pub_egrid_pc_msg_;
+    ros::Publisher pub_egrid_occ_pc_msg_;
+    ros::Publisher pub_occ_grid_msg_;
 
     // NUA TODO: Find a way to generalize!
     ros::Publisher pub_pc2_msg_gz_ign_conveyor_;

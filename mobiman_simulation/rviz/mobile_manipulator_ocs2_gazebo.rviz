@@ -26,7 +26,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -327,6 +327,8 @@ Visualization Manager:
           Value: false
         long_pkg:
           Value: true
+        longwide_pkg:
+          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -419,6 +421,8 @@ Visualization Manager:
             {}
           long_pkg:
             {}
+          longwide_pkg:
+            {}
           normal_pkg:
             {}
           red_cube:
@@ -430,8 +434,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -474,8 +477,7 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        0 - 12: true
-        0 - 13: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -635,14 +637,14 @@ Visualization Manager:
       Queue Size: 100
       Value: true
     - Class: octomap_rviz_plugin/ColorOccupancyGrid
-      Enabled: true
+      Enabled: false
       Max. Height Display: 3.4028234663852886e+38
       Max. Octree Depth: 16
       Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
       Octomap Topic: /octomap_scan
       Queue Size: 5
-      Value: true
+      Value: false
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
@@ -736,6 +738,72 @@ Visualization Manager:
         {}
       Queue Size: 100
       Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /occupancy_grid
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 0.05000000074505806
+        Min Value: 0.05000000074505806
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud
+      Color: 252; 233; 79
+      Color Transformer: FlatColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 114; 159; 207
+      Name: PointCloud
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.05000000074505806
+      Style: Boxes
+      Topic: /ego_grid_occupancy
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.05000000074505806
+      Style: Boxes
+      Topic: /ego_grid_pos
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -764,7 +832,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.9731345176696777
+      Distance: 6.402034759521484
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -772,17 +840,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.48475608229637146
-        Y: -0.8584496974945068
-        Z: 0.35774147510528564
+        X: -0.5684553384780884
+        Y: -1.6065869331359863
+        Z: 0.25698062777519226
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5497968196868896
+      Pitch: 0.8597971200942993
       Target Frame: <Fixed Frame>
-      Yaw: 1.684197187423706
+      Yaw: 1.5860276222229004
     Saved: ~
 Window Geometry:
   Displays:

@@ -34,6 +34,17 @@ int main(int argc, char** argv)
   std::vector<string> name_pkgs_ign, name_pkgs_man, scan_data_path_pkgs_ign, scan_data_path_pkgs_man;
   double map_resolution;
 
+  std::string egrid_frame_name = "base_link";
+  double egrid_resolution = 0.2; 
+  geometry_msgs::Point egrid_bbx_min;
+  egrid_bbx_min.x = -3;
+  egrid_bbx_min.y = -3;
+  egrid_bbx_min.z = 0;
+  geometry_msgs::Point egrid_bbx_max;
+  egrid_bbx_max.x = 3;
+  egrid_bbx_max.y = 3;
+  egrid_bbx_max.z = 2;
+
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
   if (!pnh.getParam("/name_pkgs_ign", name_pkgs_ign))
@@ -119,6 +130,11 @@ int main(int argc, char** argv)
                 obj_dim_pkgs_man,
                 map_resolution);
 
+  mu.initializeEgoGrid(egrid_frame_name, 
+                       egrid_resolution, 
+                       egrid_bbx_min, 
+                       egrid_bbx_max);
+
   // Initialize Moveit collision objects
   mu.initializeMoveitCollisionObjects();
 
@@ -138,6 +154,12 @@ int main(int argc, char** argv)
     // Update octomap with the recent transformed pc2 data
     mu.updateOct();
 
+    mu.updateEgoGrid();
+
+    //mu.updateOccGrid();
+
+    mu.updateMoveitCollisionObjects();
+
     /// Publishers
     //cout << "[map_server::main] BEFORE publishPC2MsgGzScan" << endl;
     // Publish pc2 data of gazebo models
@@ -147,7 +169,10 @@ int main(int argc, char** argv)
     // Publish Octomap message
     mu.publishOctMsg();
 
-    mu.updateMoveitCollisionObjects();
+    mu.publishEgoGridPcMsg();
+    mu.publishEgoGridOccPcMsg();
+
+    //mu.publishOccGridMsg();
 
     //cout << "[map_server::main] BEFORE publishMoveitCollisionObjects" << endl;
     // Publish moveit collision objects
