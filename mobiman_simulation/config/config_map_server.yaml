@@ -19,3 +19,14 @@ scan_data_path_pkgs_ign: ["models/point_cloud/conveyor_belt.json",
 scan_data_path_pkgs_man: []
 
 map_resolution: 0.1
+
+egrid_frame_name: "base_link"
+egrid_resolution: 0.1
+
+egrid_bbx_min_x: -3
+egrid_bbx_min_y: -3
+egrid_bbx_min_z: 0
+
+egrid_bbx_max_x: 3
+egrid_bbx_max_y: 3
+egrid_bbx_max_z: 2

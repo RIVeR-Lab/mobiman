@@ -434,7 +434,8 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -477,7 +478,8 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        0 - 13: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -760,7 +762,7 @@ Visualization Manager:
       Color: 252; 233; 79
       Color Transformer: FlatColor
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 114; 159; 207
@@ -775,7 +777,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -832,7 +834,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.402034759521484
+      Distance: 4.456089019775391
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -840,17 +842,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.5684553384780884
-        Y: -1.6065869331359863
-        Z: 0.25698062777519226
+        X: -0.06667795032262802
+        Y: -1.3859519958496094
+        Z: 0.15658509731292725
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8597971200942993
+      Pitch: 0.5197977423667908
       Target Frame: <Fixed Frame>
-      Yaw: 1.5860276222229004
+      Yaw: 1.506041169166565
     Saved: ~
 Window Geometry:
   Displays:
