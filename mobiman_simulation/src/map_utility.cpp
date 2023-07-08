@@ -1264,7 +1264,8 @@ int MapUtility::toEgridLinIndex(tf::Vector3 po)
 void MapUtility::initializeEgoGrid(std::string egrid_frame_name, 
                                    double egrid_resolution, 
                                    geometry_msgs::Point egrid_bbx_min, 
-                                   geometry_msgs::Point egrid_bbx_max)
+                                   geometry_msgs::Point egrid_bbx_max,
+                                   double egrid_occ_threshold)
 {
   //std::cout << "[MapUtility::initializeEgoGrid] START" << std::endl;
 
@@ -1272,6 +1273,7 @@ void MapUtility::initializeEgoGrid(std::string egrid_frame_name,
   egrid_resolution_ = egrid_resolution;
   egrid_bbx_min_ = egrid_bbx_min;
   egrid_bbx_max_ = egrid_bbx_max;
+  egrid_occ_threshold_ = egrid_occ_threshold;
 
   double egrid_vnumx = abs(egrid_bbx_max_.x - egrid_bbx_min_.x) / egrid_resolution_;
   double egrid_vnumy = abs(egrid_bbx_max_.y - egrid_bbx_min_.y) / egrid_resolution_;
@@ -2504,7 +2506,7 @@ void MapUtility::updateEgoGrid()
       if ( vox_index >= 0 && vox_index < total_voxel_cnt )
       {
         egrid_hist_[vox_index] += 1;
-        egrid_occ_[vox_index] = (egrid_occ_[vox_index] + getOctOccupancy(op_wrt_world)) / egrid_hist_[vox_index];
+        egrid_occ_[vox_index] += getOctOccupancy(op_wrt_world);
 
         geometry_msgs::Point32 po;
         po.x = op_wrt_world.x();
@@ -2513,9 +2515,16 @@ void MapUtility::updateEgoGrid()
         egrid_occ_pc_msg_.points.push_back(po);
       }
     }
-
-    
   }
+
+  for (size_t i = 0; i < total_voxel_cnt; i++)
+  {
+    if (egrid_hist_[i] > 0)
+    {
+      egrid_occ_[vox_index] /= egrid_hist_[vox_index];
+    }
+  }
+  
 
   //std::cout << "[MapUtility::updateEgoGrid] END" << std::endl;
 }
@@ -2567,7 +2576,19 @@ void MapUtility::updateOccGrid()
     }
 
     occ_val = *max_element(occ_val_vec.begin(), occ_val_vec.end()) * 100;
-    occ_grid_msg_.data.push_back(occ_val);
+
+    if (occ_val >= egrid_occ_threshold_)
+    {
+      occ_grid_msg_.data.push_back(100);
+    }
+    else if (occ_val < 0)
+    {
+      occ_grid_msg_.data.push_back(-1);
+    }
+    else
+    {
+      occ_grid_msg_.data.push_back(0);
+    }
   }
 
   //std::cout << "[MapUtility::updateOccGrid] END" << std::endl;

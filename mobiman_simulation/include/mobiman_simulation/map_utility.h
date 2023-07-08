@@ -431,7 +431,8 @@ class MapUtility
     void initializeEgoGrid(std::string egrid_frame_name, 
                            double egrid_resolution, 
                            geometry_msgs::Point egrid_bbx_min, 
-                           geometry_msgs::Point egrid_bbx_max);
+                           geometry_msgs::Point egrid_bbx_max,
+                           double egrid_occ_threshold);
 
     // DESCRIPTION: TODO...
     std::vector<geometry_msgs::Point32> extract_pc_from_node_center(geometry_msgs::Point center);
@@ -840,6 +841,7 @@ class MapUtility
     double egrid_resolution_;
     geometry_msgs::Point egrid_bbx_min_;
     geometry_msgs::Point egrid_bbx_max_;
+    double egrid_occ_threshold_;
     tf::StampedTransform transform_grid_wrt_world_;
     std::vector<geometry_msgs::Point> egrid_pos_;
     sensor_msgs::PointCloud egrid_pc_msg_;

@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   // INITIALIZE AND SET PARAMETERS
   string world_frame_name, gz_model_msg_name, egrid_frame_name;
   std::vector<string> name_pkgs_ign, name_pkgs_man, scan_data_path_pkgs_ign, scan_data_path_pkgs_man;
-  double map_resolution, egrid_resolution;
+  double map_resolution, egrid_resolution, egrid_occ_threshold;
   geometry_msgs::Point egrid_bbx_min, egrid_bbx_max;
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
@@ -63,7 +63,8 @@ int main(int argc, char** argv)
   pnh.param<double>("/egrid_bbx_max_x", egrid_bbx_max.x, 0.0);
   pnh.param<double>("/egrid_bbx_max_y", egrid_bbx_max.y, 0.0);
   pnh.param<double>("/egrid_bbx_max_z", egrid_bbx_max.z, 0.0);
-
+  pnh.param<double>("/egrid_occ_threshold", egrid_occ_threshold, 0.0);
+  
   cout << "[map_server::main] world_frame_name: " << world_frame_name << endl;
   cout << "[map_server::main] gz_model_msg_name: " << gz_model_msg_name << endl;
   cout << "[map_server::main] name_pkgs_ign: " << endl;
@@ -84,6 +85,7 @@ int main(int argc, char** argv)
   cout << "[map_server::main] egrid_bbx_max_x: " << egrid_bbx_max.x << endl;
   cout << "[map_server::main] egrid_bbx_max_y: " << egrid_bbx_max.y << endl;
   cout << "[map_server::main] egrid_bbx_max_z: " << egrid_bbx_max.z << endl;
+  cout << "[map_server::main] egrid_occ_threshold: " << egrid_occ_threshold << endl;
 
   // Initialize Scan Utility
   ScanUtility su(nh);
@@ -139,7 +141,8 @@ int main(int argc, char** argv)
   mu.initializeEgoGrid(egrid_frame_name, 
                        egrid_resolution, 
                        egrid_bbx_min, 
-                       egrid_bbx_max);
+                       egrid_bbx_max,
+                       egrid_occ_threshold);
 
   // Initialize Moveit collision objects
   mu.initializeMoveitCollisionObjects();

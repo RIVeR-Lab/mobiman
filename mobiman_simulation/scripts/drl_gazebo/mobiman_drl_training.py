@@ -23,9 +23,10 @@ from datetime import datetime
 import time
 
 from openai_ros.openai_ros_common import StartOpenAI_ROS_Environment
+#from openai_ros.scripts.openai_ros.task_envs.jackal_jaco.mobiman_drl_config import *
 
 from stable_baselines3.common.monitor import Monitor
-from stable_baselines3 import PPO
+from stable_baselines3.ppo.ppo import PPO
 from stable_baselines3.common.callbacks import CheckpointCallback
 
 from mobiman_drl_custom_policy import *
@@ -192,7 +193,7 @@ if __name__ == '__main__':
         data_folder_path=data_folder_path)
     
     print("[mobiman_drl_training::__main__] BEFORE Monitor")
-    env = Monitor(env, data_folder_path)
+    env = Monitor(env, data_folder_path) # type: ignore
 
     obs_space = env.observation_space
     print("[mobiman_drl_training::__main__] shape_obs: " + str(obs_space))
@@ -235,15 +236,9 @@ if __name__ == '__main__':
             device="cuda", 
             verbose=1)
 
-    print("[mobiman_drl_training::__main__] DEBUG INF")
-    while 1:
-        continue
-
     if initial_training_path == "":
         total_training_timesteps = training_timesteps
-        print("--------------")
         print("[mobiman_drl_training::__main__] No initial_trained_model is loaded!")
-        print("--------------")
         rospy.logdebug("[mobiman_drl_training::__main__] No initial_trained_model is loaded!")
 
     else:
@@ -252,10 +247,8 @@ if __name__ == '__main__':
         model = PPO.load(initial_trained_model, env=None, tensorboard_log=tensorboard_log_path)
         model.set_env(env)
 
-        total_training_timesteps = int(get_param_value_from_training_log(initial_training_path_specific, "total_training_timesteps")) + training_timesteps
-        print("--------------")
+        total_training_timesteps = int(get_param_value_from_training_log(initial_training_path_specific, "total_training_timesteps")) + training_timesteps # type: ignore
         print("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
-        print("--------------")
         #rospy.logdebug("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
 
     checkpoint_callback = CheckpointCallback(save_freq=training_checkpoint_freq, save_path=data_folder_path + '/training_checkpoints/', name_prefix='trained_model')

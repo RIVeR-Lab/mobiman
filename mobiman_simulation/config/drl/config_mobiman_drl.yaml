@@ -2,10 +2,12 @@
 #### NOTE: Be sure that -> drl_service_flag: true
 
 ### Common Parameters for Training and Testing
+ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
+training_log_name: "training_log"
 
 ### DRL-Training Parameters
 world_name: "conveyor"
@@ -38,27 +40,42 @@ plot_moving_average_window_size_episodes: 5
 ## Data and Sensors
 
 world_frame_name: "world"
+robot_frame_name: "base_link"
+ee_frame_name: "j2n6s300_end_effector"
+goal_frame_name: "/grasp"
 
-odom_msg_name: "/jackal_velocity_controller/odom"
 cmd_velocity_msg_name: "/cmd_vel"
-octomap_msg_name: "/octomap_scan"
-
+occgrid_msg_name: "/occupancy_grid"
 goal_status_msg_name: "/goal_status"
-goal_visu_msg_name: "/mobiman_goal"
+
+occgrid_normalize_flag: True
+occgrid_occ_min: 0
+occgrid_occ_max: 100
 
 #laser_size_downsampled: 90
 #laser_normalize_flag: True
 #laser_error_threshold: 0.1
 
-occupancy_image_width: 64
-occupancy_image_height: 64
-
 ## Algorithm: mobiman-DRL Parameters
-obs_min_range: 0.25
-n_obs_stack: 5
-n_skip_obs_stack: 5
-cit_flag: True # cit = channel is time
-#n_wp: 8
+# [baseMotion, armMotion, wholeBodyMotion]
+n_action_model: 3
+
+# [inputCost, targetCost, targetConstraint, selfCollisionConstraint, extCollisionConstraint, jointPositionConstraint, jointVelocityConstraint]
+n_action_constraint: 7
+
+# 32 fixed poses in robot workspace + 1 goal pose
+n_action_target: 33 
+
+# Collision spheres on robot (NUA TODO: Set it from the subscribed topic!)  
+n_colsphere: 8
+
+goal_range_min: 0.25
+goal_range_max: 10.0
+collision_range_min: 0.25
+collision_range_max: 2.0
+
+n_obs_stack: 1
+n_skip_obs_stack: 1
 
 ## Reward:
 reward_terminal_success: 8
