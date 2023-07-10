@@ -26,13 +26,13 @@ n_robot: 1
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
 learning_rate: 0.0002
-n_steps: 1000
-batch_size: 50
+n_steps: 10 #1000
+batch_size: 5 #50
 ent_coef: 0.001
-training_timesteps: 2000
-max_episode_steps: 2000
+training_timesteps: 20 #10000
+max_episode_steps: 10 #2000
 
-training_checkpoint_freq: 1000
+training_checkpoint_freq: 10 #1000
 plot_title: "Learning Curve"
 plot_moving_average_window_size_timesteps: 20
 plot_moving_average_window_size_episodes: 5

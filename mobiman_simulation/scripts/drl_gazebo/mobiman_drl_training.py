@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.06.30
+LAST UPDATE: 2023.07.10
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -254,11 +254,11 @@ if __name__ == '__main__':
     checkpoint_callback = CheckpointCallback(save_freq=training_checkpoint_freq, save_path=data_folder_path + '/training_checkpoints/', name_prefix='trained_model')
 
     start_learning = time.time()
-    model.learn(total_timesteps=training_timesteps, callback=checkpoint_callback)
+    model.learn(total_timesteps=training_timesteps, callback=checkpoint_callback) # type: ignore
     end_learning = time.time()
     
-    model.save(new_trained_model_file)
-
+    model.save(new_trained_model_file) # type: ignore
+ 
     learning_time = (end_learning - start_learning) / 60
 
     total_training_episodes = read_data_size(data_folder_path + "training_data.csv")
@@ -277,8 +277,9 @@ if __name__ == '__main__':
     ## Write all results into the log file of the training
     write_data(training_log_file, training_log_data)
 
+    ### NUA TODO: REVIEW!!!
+    '''
     ## Save the reward plot
-
     # Plot timestep data
     get_training_result(data_path=data_path_specific,
                         data_name=data_name,
@@ -312,3 +313,4 @@ if __name__ == '__main__':
                         cumulative_flag=True, 
                         plot_title=plot_title,
                         plot_flag=True)
+'''
