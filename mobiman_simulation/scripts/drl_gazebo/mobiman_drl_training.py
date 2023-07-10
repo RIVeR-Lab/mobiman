@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.06.28
+LAST UPDATE: 2023.07.10
 
 AUTHOR: Neset Unver Akmandor (NUA)
-        Eric Dusel (ED)
-        Hongyu Li (LHY)
 
 E-MAIL: akmandor.n@northeastern.edu
-        dusel.e@northeastern.edu
-        li.hongyu1@northeastern.edu
 
 DESCRIPTION: TODO...
 
@@ -27,9 +23,10 @@ from datetime import datetime
 import time
 
 from openai_ros.openai_ros_common import StartOpenAI_ROS_Environment
+#from openai_ros.scripts.openai_ros.task_envs.jackal_jaco.mobiman_drl_config import *
 
 from stable_baselines3.common.monitor import Monitor
-from stable_baselines3 import PPO
+from stable_baselines3.ppo.ppo import PPO
 from stable_baselines3.common.callbacks import CheckpointCallback
 
 from mobiman_drl_custom_policy import *
@@ -129,25 +126,25 @@ if __name__ == '__main__':
     plot_moving_average_window_size_timesteps = rospy.get_param('plot_moving_average_window_size_timesteps', 0)
     plot_moving_average_window_size_episodes = rospy.get_param('plot_moving_average_window_size_episodes', 0)
 
-    print("[mobiman_drl_training::__main__ ] mode: " + str(mode))
-    print("[mobiman_drl_training::__main__ ] deep_learning_algorithm: " + str(deep_learning_algorithm))
-    print("[mobiman_drl_training::__main__ ] motion_planning_algorithm: " + str(motion_planning_algorithm))
-    print("[mobiman_drl_training::__main__ ] observation_space_type: " + str(observation_space_type))
-    print("[mobiman_drl_training::__main__ ] world_name: " + str(world_name))
-    print("[mobiman_drl_training::__main__ ] task_and_robot_environment_name: " + str(task_and_robot_environment_name))
-    print("[mobiman_drl_training::__main__ ] n_robot: " + str(n_robot))
-    print("[mobiman_drl_training::__main__ ] data_path: " + str(data_path))
-    print("[mobiman_drl_training::__main__ ] learning_rate: " + str(learning_rate))
-    print("[mobiman_drl_training::__main__ ] n_steps: " + str(n_steps))
-    print("[mobiman_drl_training::__main__ ] batch_size: " + str(batch_size))
-    print("[mobiman_drl_training::__main__ ] ent_coef: " + str(ent_coef))
-    print("[mobiman_drl_training::__main__ ] training_timesteps: " + str(training_timesteps))
-    print("[mobiman_drl_training::__main__ ] max_episode_steps: " + str(max_episode_steps))
-    print("[mobiman_drl_training::__main__ ] initial_training_path: " + str(initial_training_path))
-    print("[mobiman_drl_training::__main__ ] training_checkpoint_freq: " + str(training_checkpoint_freq))
-    print("[mobiman_drl_training::__main__ ] plot_title: " + str(plot_title))
-    print("[mobiman_drl_training::__main__ ] plot_moving_average_window_size_timesteps: " + str(plot_moving_average_window_size_timesteps))
-    print("[mobiman_drl_training::__main__ ] plot_moving_average_window_size_episodes: " + str(plot_moving_average_window_size_episodes))
+    print("[mobiman_drl_training::__main__] mode: " + str(mode))
+    print("[mobiman_drl_training::__main__] deep_learning_algorithm: " + str(deep_learning_algorithm))
+    print("[mobiman_drl_training::__main__] motion_planning_algorithm: " + str(motion_planning_algorithm))
+    print("[mobiman_drl_training::__main__] observation_space_type: " + str(observation_space_type))
+    print("[mobiman_drl_training::__main__] world_name: " + str(world_name))
+    print("[mobiman_drl_training::__main__] task_and_robot_environment_name: " + str(task_and_robot_environment_name))
+    print("[mobiman_drl_training::__main__] n_robot: " + str(n_robot))
+    print("[mobiman_drl_training::__main__] data_path: " + str(data_path))
+    print("[mobiman_drl_training::__main__] learning_rate: " + str(learning_rate))
+    print("[mobiman_drl_training::__main__] n_steps: " + str(n_steps))
+    print("[mobiman_drl_training::__main__] batch_size: " + str(batch_size))
+    print("[mobiman_drl_training::__main__] ent_coef: " + str(ent_coef))
+    print("[mobiman_drl_training::__main__] training_timesteps: " + str(training_timesteps))
+    print("[mobiman_drl_training::__main__] max_episode_steps: " + str(max_episode_steps))
+    print("[mobiman_drl_training::__main__] initial_training_path: " + str(initial_training_path))
+    print("[mobiman_drl_training::__main__] training_checkpoint_freq: " + str(training_checkpoint_freq))
+    print("[mobiman_drl_training::__main__] plot_title: " + str(plot_title))
+    print("[mobiman_drl_training::__main__] plot_moving_average_window_size_timesteps: " + str(plot_moving_average_window_size_timesteps))
+    print("[mobiman_drl_training::__main__] plot_moving_average_window_size_episodes: " + str(plot_moving_average_window_size_episodes))
 
     ## Create the folder name that the data is kept
     data_file_tag = createFileName()
@@ -188,91 +185,61 @@ if __name__ == '__main__':
     write_data(training_log_file, training_log_data)
 
     # Init OpenAI_ROS ENV
-    print("[mobiman_drl_training::__main__ ] BEFORE StartOpenAI_ROS_Environment")
-    env = StartOpenAI_ROS_Environment(task_and_robot_environment_name, robot_id=0, max_episode_steps=max_episode_steps, data_folder_path=data_folder_path)
+    print("[mobiman_drl_training::__main__] BEFORE StartOpenAI_ROS_Environment")
+    env = StartOpenAI_ROS_Environment(
+        task_and_robot_environment_name, 
+        robot_id=0, 
+        max_episode_steps=max_episode_steps, 
+        data_folder_path=data_folder_path)
     
-    print("[mobiman_drl_training::__main__ ] BEFORE Monitor")
-    env = Monitor(env, data_folder_path)
+    print("[mobiman_drl_training::__main__] BEFORE Monitor")
+    env = Monitor(env, data_folder_path) # type: ignore
 
-    print("[mobiman_drl_training::__main__ ] DEBUG INF")
-    while 1:
-        continue
+    obs_space = env.observation_space
+    print("[mobiman_drl_training::__main__] shape_obs: " + str(obs_space))
 
-    #obs_space = env.observation_space
-    #print("[mobiman_drl_training::__main__ ] shape_obs: " + str(obs_space))
-
-    if observation_space_type == "laser_FC" or \
-        observation_space_type == "mobiman_FC" or \
-        observation_space_type == "mobiman_WP_FC":
+    if observation_space_type == "mobiman_FC":
         
         n_actions = env.action_space.n
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
+        print("[mobiman_drl_training::__main__] n_actions: " + str(n_actions))
 
         policy_kwargs = dict(activation_fn=th.nn.ReLU, net_arch=[dict(pi=[400, 300], vf=[400, 300])])
-        model = PPO("MlpPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
-
-    elif observation_space_type == "laser_image_2DCNN_FC":
-    
-        print("[mobiman_drl_training::__main__ ] observation_space_type: " + str(observation_space_type))
-        n_actions = env.action_space.n
-        #n_actions = env.action_space.shape[-1]
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
-
-        policy_kwargs = dict(features_extractor_class=laser_image_2DCNN_FC_Policy, net_arch=[dict(pi=[600, 400], vf=[600, 400])],)
-        model = PPO("MultiInputPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
-
-    elif observation_space_type == "laser_rings_2DCNN_FC":
-    
-        print("[mobiman_drl_training::__main__ ] observation_space_type: " + str(observation_space_type))
-        n_actions = env.action_space.n
-        #n_actions = env.action_space.shape[-1]
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
-
-        policy_kwargs = dict(features_extractor_class=laser_rings_2DCNN_FC_Policy, net_arch=[dict(pi=[600, 400], vf=[600, 400])],)
-        model = PPO("MultiInputPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
-
-    elif observation_space_type == "laser_1DCNN_FC":
-    
-        print("[mobiman_drl_training::__main__ ] observation_space_type: " + str(observation_space_type))
-        n_actions = env.action_space.n
-        #n_actions = env.action_space.shape[-1]
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
-
-        policy_kwargs = dict(features_extractor_class=laser_1DCNN_FC_Policy, net_arch=[dict(pi=[400, 300], vf=[400, 300])],)
-        model = PPO("MultiInputPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
-
-    elif observation_space_type == "mobiman_1DCNN_FC":
-    
-        n_actions = env.action_space.n
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
-
-        policy_kwargs = dict(features_extractor_class=mobiman_1DCNN_FC_Policy, net_arch=[dict(pi=[400, 300], vf=[400, 300])],)
-        model = PPO("MultiInputPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
+        model = PPO(
+            "MlpPolicy", 
+            env, 
+            learning_rate=learning_rate, 
+            n_steps=n_steps, 
+            batch_size=batch_size, 
+            ent_coef=ent_coef, 
+            tensorboard_log=tensorboard_log_path, 
+            policy_kwargs=policy_kwargs, 
+            device="cuda", 
+            verbose=1)
 
     elif observation_space_type == "mobiman_2DCNN_FC":
     
-        n_actions = env.action_space.n
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
-
-        policy_kwargs = dict(features_extractor_class=mobiman_2DCNN_FC_Policy, net_arch=[dict(pi=[600, 400], vf=[600, 400])],)
-        model = PPO("MultiInputPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
-
-    elif observation_space_type == "laser_WP_1DCNN_FC":
-
-        print("[mobiman_drl_training::__main__ ] observation_space_type: " + str(observation_space_type))
+        print("[mobiman_drl_training::__main__] observation_space_type: " + str(observation_space_type))
         n_actions = env.action_space.n
         #n_actions = env.action_space.shape[-1]
-        print("[mobiman_drl_training::__main__ ] n_actions: " + str(n_actions))
+        print("[mobiman_drl_training::__main__] n_actions: " + str(n_actions))
 
-        policy_kwargs = dict(features_extractor_class=laserWayPoints_1DCNN_FC_Policy, net_arch=[dict(pi=[400, 300], vf=[400, 300])],)
-        model = PPO("MultiInputPolicy", env, learning_rate=learning_rate, n_steps=n_steps, batch_size=batch_size, ent_coef=ent_coef, tensorboard_log=tensorboard_log_path, policy_kwargs=policy_kwargs, device="cuda", verbose=1)
+        policy_kwargs = dict(features_extractor_class=mobiman_2DCNN_FC_Policy, net_arch=[dict(pi=[600, 400], vf=[600, 400])],)
+        model = PPO(
+            "MultiInputPolicy", 
+            env, 
+            learning_rate=learning_rate, 
+            n_steps=n_steps, 
+            batch_size=batch_size, 
+            ent_coef=ent_coef, 
+            tensorboard_log=tensorboard_log_path, 
+            policy_kwargs=policy_kwargs, 
+            device="cuda", 
+            verbose=1)
 
     if initial_training_path == "":
         total_training_timesteps = training_timesteps
-        print("--------------")
-        print("[mobiman_drl_training::__main__ ] No initial_trained_model is loaded!")
-        print("--------------")
-        rospy.logdebug("[mobiman_drl_training::__main__ ] No initial_trained_model is loaded!")
+        print("[mobiman_drl_training::__main__] No initial_trained_model is loaded!")
+        rospy.logdebug("[mobiman_drl_training::__main__] No initial_trained_model is loaded!")
 
     else:
         initial_training_path_specific = mobiman_path + data_path + initial_training_path
@@ -280,20 +247,18 @@ if __name__ == '__main__':
         model = PPO.load(initial_trained_model, env=None, tensorboard_log=tensorboard_log_path)
         model.set_env(env)
 
-        total_training_timesteps = int(get_param_value_from_training_log(initial_training_path_specific, "total_training_timesteps")) + training_timesteps
-        print("--------------")
-        print("[mobiman_drl_training::__main__ ] Loaded initial_trained_model: " + initial_trained_model)
-        print("--------------")
-        #rospy.logdebug("[mobiman_drl_training::__main__ ] Loaded initial_trained_model: " + initial_trained_model)
+        total_training_timesteps = int(get_param_value_from_training_log(initial_training_path_specific, "total_training_timesteps")) + training_timesteps # type: ignore
+        print("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
+        #rospy.logdebug("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
 
     checkpoint_callback = CheckpointCallback(save_freq=training_checkpoint_freq, save_path=data_folder_path + '/training_checkpoints/', name_prefix='trained_model')
 
     start_learning = time.time()
-    model.learn(total_timesteps=training_timesteps, callback=checkpoint_callback)
+    model.learn(total_timesteps=training_timesteps, callback=checkpoint_callback) # type: ignore
     end_learning = time.time()
     
-    model.save(new_trained_model_file)
-
+    model.save(new_trained_model_file) # type: ignore
+ 
     learning_time = (end_learning - start_learning) / 60
 
     total_training_episodes = read_data_size(data_folder_path + "training_data.csv")
@@ -304,16 +269,17 @@ if __name__ == '__main__':
     training_log_data.append(["learning_time[min]", learning_time])
 
     print("--------------")
-    print("[mobiman_drl_training::__main__ ] End of training!")
-    print("[mobiman_drl_training::__main__ ] learning_time[min]: " + str(learning_time))
+    print("[mobiman_drl_training::__main__] End of training!")
+    print("[mobiman_drl_training::__main__] learning_time[min]: " + str(learning_time))
     print("--------------")
-    #rospy.logdebug("[mobiman_drl_training::__main__ ] End of training!")
+    #rospy.logdebug("[mobiman_drl_training::__main__] End of training!")
 
     ## Write all results into the log file of the training
     write_data(training_log_file, training_log_data)
 
+    ### NUA TODO: REVIEW!!!
+    '''
     ## Save the reward plot
-
     # Plot timestep data
     get_training_result(data_path=data_path_specific,
                         data_name=data_name,
@@ -347,3 +313,4 @@ if __name__ == '__main__':
                         cumulative_flag=True, 
                         plot_title=plot_title,
                         plot_flag=True)
+'''

@@ -7,8 +7,9 @@
 
       <!-- Set nodes on debug mode -->
       <!--
-            jackal_ur5
             ur5
+            jackal_ur5
+            jackal_jaco
       -->
       <arg name="robot"       default="jackal_jaco" />
 

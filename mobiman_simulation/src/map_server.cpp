@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.05.18
+// LAST UPDATE: 2023.07.05
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -30,9 +30,10 @@ int main(int argc, char** argv)
   tf::TransformListener* listener = new tf::TransformListener;
 
   // INITIALIZE AND SET PARAMETERS
-  string world_frame_name, gz_model_msg_name;
+  string world_frame_name, gz_model_msg_name, egrid_frame_name;
   std::vector<string> name_pkgs_ign, name_pkgs_man, scan_data_path_pkgs_ign, scan_data_path_pkgs_man;
-  double map_resolution;
+  double map_resolution, egrid_resolution, egrid_occ_threshold;
+  geometry_msgs::Point egrid_bbx_min, egrid_bbx_max;
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
@@ -52,8 +53,18 @@ int main(int argc, char** argv)
   {
     ROS_ERROR("Failed to get parameter from server.");
   }
-  pnh.param<double>("/map_resolution", map_resolution, 0.1);
+  pnh.param<double>("/map_resolution", map_resolution, 0.0);
 
+  pnh.param<string>("/egrid_frame_name", egrid_frame_name, "");
+  pnh.param<double>("/egrid_resolution", egrid_resolution, 0.0);
+  pnh.param<double>("/egrid_bbx_min_x", egrid_bbx_min.x, 0.0);
+  pnh.param<double>("/egrid_bbx_min_y", egrid_bbx_min.y, 0.0);
+  pnh.param<double>("/egrid_bbx_min_z", egrid_bbx_min.z, 0.0);
+  pnh.param<double>("/egrid_bbx_max_x", egrid_bbx_max.x, 0.0);
+  pnh.param<double>("/egrid_bbx_max_y", egrid_bbx_max.y, 0.0);
+  pnh.param<double>("/egrid_bbx_max_z", egrid_bbx_max.z, 0.0);
+  pnh.param<double>("/egrid_occ_threshold", egrid_occ_threshold, 0.0);
+  
   cout << "[map_server::main] world_frame_name: " << world_frame_name << endl;
   cout << "[map_server::main] gz_model_msg_name: " << gz_model_msg_name << endl;
   cout << "[map_server::main] name_pkgs_ign: " << endl;
@@ -66,7 +77,15 @@ int main(int argc, char** argv)
   {
     cout << i << " -> " << name_pkgs_man[i] << endl;
   }
-  cout << "[map_server::main] map_resolution: " << map_resolution << endl;
+  cout << "[map_server::main] egrid_frame_name: " << egrid_frame_name << endl;
+  cout << "[map_server::main] egrid_resolution: " << egrid_resolution << endl;
+  cout << "[map_server::main] egrid_bbx_min_x: " << egrid_bbx_min.x << endl;
+  cout << "[map_server::main] egrid_bbx_min_y: " << egrid_bbx_min.y << endl;
+  cout << "[map_server::main] egrid_bbx_min_z: " << egrid_bbx_min.z << endl;
+  cout << "[map_server::main] egrid_bbx_max_x: " << egrid_bbx_max.x << endl;
+  cout << "[map_server::main] egrid_bbx_max_y: " << egrid_bbx_max.y << endl;
+  cout << "[map_server::main] egrid_bbx_max_z: " << egrid_bbx_max.z << endl;
+  cout << "[map_server::main] egrid_occ_threshold: " << egrid_occ_threshold << endl;
 
   // Initialize Scan Utility
   ScanUtility su(nh);
@@ -119,6 +138,12 @@ int main(int argc, char** argv)
                 obj_dim_pkgs_man,
                 map_resolution);
 
+  mu.initializeEgoGrid(egrid_frame_name, 
+                       egrid_resolution, 
+                       egrid_bbx_min, 
+                       egrid_bbx_max,
+                       egrid_occ_threshold);
+
   // Initialize Moveit collision objects
   mu.initializeMoveitCollisionObjects();
 
@@ -138,6 +163,12 @@ int main(int argc, char** argv)
     // Update octomap with the recent transformed pc2 data
     mu.updateOct();
 
+    mu.updateEgoGrid();
+
+    mu.updateOccGrid();
+
+    mu.updateMoveitCollisionObjects();
+
     /// Publishers
     //cout << "[map_server::main] BEFORE publishPC2MsgGzScan" << endl;
     // Publish pc2 data of gazebo models
@@ -147,7 +178,9 @@ int main(int argc, char** argv)
     // Publish Octomap message
     mu.publishOctMsg();
 
-    mu.updateMoveitCollisionObjects();
+    mu.publishEgoGridPcMsg();
+    mu.publishEgoGridOccPcMsg();
+    mu.publishOccGridMsg();
 
     //cout << "[map_server::main] BEFORE publishMoveitCollisionObjects" << endl;
     // Publish moveit collision objects

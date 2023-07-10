@@ -2,22 +2,20 @@
 #### NOTE: Be sure that -> drl_service_flag: true
 
 ### Common Parameters for Training and Testing
+ros_pkg_name: "mobiman_simulation"
+gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
+training_log_name: "training_log"
 
 ### DRL-Training Parameters
+world_name: "conveyor"
 deep_learning_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
 
 # Options:
-# laser_FC                -> FC(laser_data + target + prev_action)
-# laser_image_2DCNN_FC    -> 2DCNN(Channel: time, Height: image, Width: image) + FC(laser_data + target + prev_action)
-# laser_rings_2DCNN_FC    -> 2DCNN(Channel: time, Height: image, Width: image) + FC(laser_data + target + prev_action)
-# laser_1DCNN_FC          -> 1DCNN(Channel: time, Length: laser_data) + FC(CNN_output + target + prev_action)
 # mobiman_FC             -> FC(occupancy_set + target + prev_action)
-# mobiman_1DCNN_FC       -> 1DCNN(Channel: time, Length: occupancy_set) + FC(CNN_output + target + prev_action), if cit_flag = True 
-# mobiman_1DCNN_FC       -> 1DCNN(Channel: occupancy_set, Length: time) + FC(CNN_output + target + prev_action), if cit_flag = False 
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action)
 observation_space_type: "mobiman_FC"
 
@@ -28,33 +26,56 @@ n_robot: 1
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
 learning_rate: 0.0002
-n_steps: 1000
-batch_size: 50
+n_steps: 10 #1000
+batch_size: 5 #50
 ent_coef: 0.001
-training_timesteps: 2000
-max_episode_steps: 2000
+training_timesteps: 20 #10000
+max_episode_steps: 10 #2000
 
-training_checkpoint_freq: 1000
+training_checkpoint_freq: 10 #1000
 plot_title: "Learning Curve"
 plot_moving_average_window_size_timesteps: 20
 plot_moving_average_window_size_episodes: 5
 
 ## Data and Sensors
-world_name: "world"
+
+world_frame_name: "world"
+robot_frame_name: "base_link"
+ee_frame_name: "j2n6s300_end_effector"
+goal_frame_name: "/grasp"
+
+cmd_velocity_msg_name: "/cmd_vel"
+occgrid_msg_name: "/occupancy_grid"
+goal_status_msg_name: "/goal_status"
+
+occgrid_normalize_flag: True
+occgrid_occ_min: 0
+occgrid_occ_max: 100
 
 #laser_size_downsampled: 90
 #laser_normalize_flag: True
 #laser_error_threshold: 0.1
 
-#laser_image_width: 64
-#laser_image_height: 64
-
 ## Algorithm: mobiman-DRL Parameters
-obs_min_range: 0.25
-n_obs_stack: 5
-n_skip_obs_stack: 5
-cit_flag: True # cit = channel is time
-#n_wp: 8
+# [baseMotion, armMotion, wholeBodyMotion]
+n_action_model: 3
+
+# [inputCost, targetCost, targetConstraint, selfCollisionConstraint, extCollisionConstraint, jointPositionConstraint, jointVelocityConstraint]
+n_action_constraint: 7
+
+# 32 fixed poses in robot workspace + 1 goal pose
+n_action_target: 33 
+
+# Collision spheres on robot (NUA TODO: Set it from the subscribed topic!)  
+n_colsphere: 8
+
+goal_range_min: 0.25
+goal_range_max: 10.0
+collision_range_min: 0.25
+collision_range_max: 2.0
+
+n_obs_stack: 1
+n_skip_obs_stack: 1
 
 ## Reward:
 reward_terminal_success: 8
