@@ -79,6 +79,7 @@ rosrun mobiman_simulation jackal_check_bridge.py
 # ROS_IP
 export ROS_IP=0.0.0.0
 # Before setting ROS_MASTER_URI check the jackal's IP using network scan and change it here.
+export ROS_HOSTNAME= #IP OF COMPUTER
 export ROS_MASTER_URI=http://192.168.0.102:11311
 ```
 
