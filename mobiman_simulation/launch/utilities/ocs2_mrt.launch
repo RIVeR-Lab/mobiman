@@ -36,9 +36,9 @@
             output="screen"
             launch-prefix="" /> <!--gnome-terminal - - -->
 
-      <node if="$(arg rviz)" 
+      <!--node if="$(arg rviz)" 
                   pkg="ocs2_mobile_manipulator_ros" 
                   type="mobile_manipulator_target" 
                   name="mobile_manipulator_target" 
-                  output="screen" />
+                  output="screen" /-->
 </launch>

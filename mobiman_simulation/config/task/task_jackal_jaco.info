@@ -53,17 +53,6 @@ model_information
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
-  ;armControlMsg                   "/effort_joint_trajectory_controller/command"
-
-  ;armControlMsg                   
-  ;{
-  ;  [0] /joint_1_position_controller/command
-  ;  [1] /joint_2_position_controller/command
-  ;  [2] /joint_3_position_controller/command
-  ;  [3] /joint_4_position_controller/command
-  ;  [4] /joint_5_position_controller/command
-  ;  [5] /joint_6_position_controller/command
-  ;}
 }
 
 model_settings
@@ -101,7 +90,7 @@ ddp
 
   preComputeRiccatiTerms          true
 
-  useFeedbackPolicy               true
+  useFeedbackPolicy               false
 
   strategy                        LINE_SEARCH
   lineSearch
@@ -196,7 +185,7 @@ selfCollision
   collisionLinkPairs
   {
     [0] "chassis_link, j2n6s300_link_3"
-    [1] "chassis_link, j2n6s300_link_4"
+    ;[1] "chassis_link, j2n6s300_link_4"
     ;[2] "chassis_link, j2n6s300_link_5"
     ;[3] "chassis_link, j2n6s300_link_6"
     ;[2] "j2n6s300_link_2, j2n6s300_link_6"

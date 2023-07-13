@@ -292,6 +292,8 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        grasp:
+          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -418,6 +420,8 @@ Visualization Manager:
             {}
           conveyor_belt:
             {}
+          grasp:
+            {}
           green_cube:
             {}
           long_pkg:
@@ -467,20 +471,19 @@ Visualization Manager:
       Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: false
+      Enabled: true
       Name: InteractiveMarkers
       Show Axes: false
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /model_mode_marker/update
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
         0 - 12: true
-        0 - 13: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -738,7 +741,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_goal
       Name: MarkerArray
       Namespaces:
-        {}
+        grasp_target_1: true
       Queue Size: 10
       Value: true
     - Alpha: 0.699999988079071
