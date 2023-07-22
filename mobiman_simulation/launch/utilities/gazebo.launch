@@ -51,7 +51,7 @@
         <node name="spawn_conveyor_belt" 
               pkg="gazebo_ros" 
               type="spawn_model" 
-              args="-file $(find mobiman_simulation)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt -x 0.0 -y -2.5 -z 0.15" 
+              args="-file $(find mobiman_simulation)/urdf/conveyor_belt.urdf -urdf -model conveyor_belt -x 0.0 -y -2.5 -z 0.25" 
               respawn="false" 
               output="screen" />
       </group>

@@ -10,7 +10,7 @@
 # conveyor_belt
 # actor
 
-obj_name: "actor"
+obj_name: "conveyor_belt"
 world_frame_name: "world"
 
 data_dir: "models/point_cloud/"

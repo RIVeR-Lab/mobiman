@@ -14,13 +14,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <box size="10.0 0.5 0.2"/>
+        <box size="10.0 0.18 0.4"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <box size="10.0 0.5 0.2"/>
+        <box size="10.0 0.18 0.4"/>
       </geometry>
       <material name="purple"/>
     </visual>
@@ -39,7 +39,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0.0 0.0 0.05"/>
       <geometry>
-        <box size="10.0 0.5 0.2"/>
+        <box size="10.0 0.18 0.4"/>
       </geometry>
     </collision>
   </link>

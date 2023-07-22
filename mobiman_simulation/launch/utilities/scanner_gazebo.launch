@@ -37,7 +37,7 @@
        conveyor_belt
        actor
   -->
-  <arg name="object_name" value="actor"/>
+  <arg name="object_name" value="conveyor_belt"/>
 
   <!-- Load the URDF into the ROS Parameter Server -->
   <param  name="robot_description_object"

@@ -4,8 +4,8 @@
     <xacro:property name="prefix" value="belt" />
     <xacro:property name="parent_link" value="world" />
     <xacro:property name="conveyor_size_x" value="10.0" />
-    <xacro:property name="conveyor_size_y" value="0.5" />
-    <xacro:property name="conveyor_size_z" value="0.2" />
+    <xacro:property name="conveyor_size_y" value="0.18" />
+    <xacro:property name="conveyor_size_z" value="0.4" />
     <xacro:property name="moving_gap_x" value="0.0" />
     <xacro:property name="moving_gap_y" value="0.0" />
     <xacro:property name="moving_gap_z" value="0.05" />
