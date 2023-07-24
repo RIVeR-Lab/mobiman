@@ -71,7 +71,44 @@ rosrun mobiman_simulation jackal_check_bridge.py
 
 <hr>
 
-<<<<<<< HEAD
+# Network Setup
+
+- In `~/.bashrc`, set the ROS_IP and ROS_MASTER_URI
+```
+# END OF .bashrc
+# ROS_IP
+export ROS_IP=0.0.0.0
+# Before setting ROS_MASTER_URI check the jackal's IP using network scan and change it here.
+export ROS_HOSTNAME= #IP OF COMPUTER
+export ROS_MASTER_URI=http://192.168.0.102:11311
+```
+
+- In the `/etc/hosts` (edit with sudo) file before IPv6 add the IP for jackal
+```
+# SOME IP Definitions above
+# Add jackal's IP
+192.168.0.102	jackal
+
+# The following lines are desirable for IPv6 capable hosts
+# Some IPv6 defs
+```
+
+
+<hr/>
+
+# Motion Capture Setup
+
+
+```
+# The required installations will be added in installation script.
+# Navigate to your mobiman_ws directory (~/mobiman_ws in my case)
+sudo apt-get install ros-noetic-vrpn-client-ros
+cd ~/mobiman_ws/src
+git clone git@github.com:RIVeR-Lab/mocap_optitrack.git
+```
+
+<hr>
+
 # LOCALIZATION WITH APRIL TAGS
 #Installations
 INSTALL THE ROS DRIVER FOR REALSENSE FROM HERE	
@@ -124,9 +161,9 @@ rostopic echo /tf
 Note the transform of the tag w.r.t. camera_color_optical_frame. It should be fairly constant if the camera is not undergoing any vibrations.
 
 4. Put those transform values (x,y,z) and (x,y,z,w) in the `world_frame_broadcaster.py`. Here the `cam2_color_optical_frame` would be the parent and `world` would be the child.
-=======
+<!-- ======= -->
 # MOBIMAN BOT CREDENTIALS
 username: administrator
 
 password: clearpath
->>>>>>> main
+<!-- >>>>>>> main -->
