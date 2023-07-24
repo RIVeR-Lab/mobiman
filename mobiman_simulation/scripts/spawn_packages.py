@@ -73,7 +73,7 @@ class PkgSpawner():
 		
 		quat = tf.transformations.quaternion_from_euler(0, 0, 0)
 		orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
-		pose = Pose(Point(x=-4.5, y=-2.5, z=0.5), orient)
+		pose = Pose(Point(x=-4.5, y=-2.5, z=0.6), orient)
 		
 		self.sm(pkg_man_name, pkg_man_urdf, '', pose, 'world')
 		

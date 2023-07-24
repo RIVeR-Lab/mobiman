@@ -435,8 +435,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -467,20 +466,28 @@ Visualization Manager:
       Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: false
+      Enabled: true
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /auto_target_marker/update
+      Value: true
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
       Name: InteractiveMarkers
       Show Axes: false
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /model_mode_marker/update
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        0 - 12: true
-        0 - 13: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -738,7 +745,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_goal
       Name: MarkerArray
       Namespaces:
-        {}
+        grasp_target_1: true
       Queue Size: 10
       Value: true
     - Alpha: 0.699999988079071
@@ -835,7 +842,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.159461975097656
+      Distance: 5.775202751159668
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -843,17 +850,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.3133045732975006
-        Y: -0.9448689222335815
-        Z: -0.5821211338043213
+        X: -0.2905159890651703
+        Y: -1.0821475982666016
+        Z: -0.41893160343170166
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6997975707054138
+      Pitch: 0.7797979712486267
       Target Frame: <Fixed Frame>
-      Yaw: 1.5760406255722046
+      Yaw: 1.5460437536239624
     Saved: ~
 Window Geometry:
   Displays:
