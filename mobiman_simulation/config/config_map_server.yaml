@@ -4,7 +4,7 @@
 world_frame_name: "world"
 gz_model_msg_name: "/gazebo/model_states"
 
-name_pkgs_ign: ["conveyor_belt","normal_pkg","long_pkg","longwide_pkg","red_cube","green_cube","blue_cube", "actor"] 
+name_pkgs_ign: ["conveyor_belt","normal_pkg","long_pkg","longwide_pkg","red_cube","green_cube","blue_cube", "actor", "bin_4_dropping_task"] 
 name_pkgs_man: [] 
 
 scan_data_path_pkgs_ign: ["models/point_cloud/conveyor_belt.json",
@@ -14,7 +14,8 @@ scan_data_path_pkgs_ign: ["models/point_cloud/conveyor_belt.json",
                           "models/point_cloud/red_cube.json",
                           "models/point_cloud/green_cube.json",
                           "models/point_cloud/blue_cube.json",
-                          "models/point_cloud/actor.json"]
+                          "models/point_cloud/actor.json",
+                          "models/point_cloud/bin_4_dropping_task.json"]
 
 scan_data_path_pkgs_man: []
 
