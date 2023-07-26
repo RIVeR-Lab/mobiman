@@ -16,7 +16,7 @@
   <link name="red_cube_base_link">
     <inertial>
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-      <mass value="0.2"/>
+      <mass value="0.1"/>
       <inertia ixx="4.166666666666668e-05" ixy="0.0" ixz="0.0" iyy="4.166666666666668e-05" iyz="0.0" izz="4.166666666666668e-05"/>
       <!--inertia
                     ixx="1.0" ixy="0.0" ixz="0.0"
