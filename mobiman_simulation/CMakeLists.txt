@@ -285,6 +285,7 @@ catkin_install_python(PROGRAMS
   scripts/kinova_check_bridge.py
   scripts/broadcaster.py
   scripts/world_frame_broadcaster.py
+  scripts/jackal_jaco_transform.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
