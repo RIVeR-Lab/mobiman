@@ -21,15 +21,19 @@ chmod +x mobiman_install.sh
 
 In seperate terminals:
 
-1. Start simulation in Gazebo (Default arm is jaco, edit 'robot_arm' for ur5):
+1. Start simulation in Gazebo:
 ```
 roslaunch mobiman_simulation gazebo.launch
 ```
 
-2. Start the motion planning:
+2. Start the target manager:
 ```
-roslaunch mobiman_simulation ocs2_planner_jackal_jaco.launch
-#roslaunch mobiman_simulation ocs2_planner_jackal_ur5.launch #if 'robot_arm = ur5'
+roslaunch mobiman_simulation ocs2_target.launch
+```
+
+3. Start the motion planning:
+```
+roslaunch mobiman_simulation ocs2_m4.launch
 ```
 
 <hr>

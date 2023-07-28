@@ -1,15 +1,31 @@
 #!/usr/bin/env python3
 
+'''
+LAST UPDATE: 2023.07.24
+
+AUTHOR: Neset Unver Akmandor (NUA)
+
+E-MAIL: akmandor.n@northeastern.edu
+
+DESCRIPTION: TODO...
+
+REFERENCES:
+
+NUA TODO:
+'''
+
 import rospy, tf, rospkg, random
 from gazebo_msgs.srv import DeleteModel, SpawnModel, GetModelState
 from gazebo_conveyor.srv import ConveyorBeltControl
 from geometry_msgs.msg import Quaternion, Pose, Point
+from gazebo_ros_link_attacher.srv import Attach, AttachRequest, AttachResponse
 
 class PkgSpawner():
 
 	def __init__(self) -> None:
 		self.rospack = rospkg.RosPack()
 		self.path = self.rospack.get_path('mobiman_simulation') + "/urdf/"
+
 		self.pkgs_ign_name = []
 		self.pkgs_ign_path = []
 		self.pkgs_man_name = []
@@ -52,7 +68,7 @@ class PkgSpawner():
 		with open(pkg_ign_path, "r") as f:
 			pkg_ign_urdf = f.read()
 		
-		quat = tf.transformations.quaternion_from_euler(0, 0, 0)
+		quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
 		orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
 		pose = Pose(Point(x=-4.5, y=-2.5, z=0.5), orient)
 		
@@ -71,7 +87,7 @@ class PkgSpawner():
 		with open(pkg_man_path, "r") as f:
 			pkg_man_urdf = f.read()
 		
-		quat = tf.transformations.quaternion_from_euler(0, 0, 0)
+		quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
 		orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
 		pose = Pose(Point(x=-4.5, y=-2.5, z=0.6), orient)
 		
@@ -119,6 +135,18 @@ if __name__ == "__main__":
 	rospy.wait_for_service("/gazebo/get_model_state")
 	rospy.wait_for_service("/conveyor/control")
 	
+	## Start Gazebo link attach service
+	rospy.loginfo("[spawn_packages::__main__] Creating ServiceProxy to /link_attacher_node/attach")
+	attach_srv = rospy.ServiceProxy('/link_attacher_node/attach', Attach)
+	attach_srv.wait_for_service()
+	rospy.loginfo("[spawn_packages::__main__] Created ServiceProxy to /link_attacher_node/attach")
+
+	## Start Gazebo link detach service
+	rospy.loginfo("[spawn_packages::__main__] Creating ServiceProxy to /link_attacher_node/detach")
+	detach_srv = rospy.ServiceProxy('/link_attacher_node/detach', Attach)
+	detach_srv.wait_for_service()
+	rospy.loginfo(" [spawn_packages::__main__]Created ServiceProxy to /link_attacher_node/detach")
+
 	#r = rospy.Rate(15)
 	ps = PkgSpawner()
 	

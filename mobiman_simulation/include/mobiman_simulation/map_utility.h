@@ -867,6 +867,7 @@ class MapUtility
     ros::Publisher pub_pc2_msg_gz_ign_pkg_blue_cube_;
     ros::Publisher pub_pc2_msg_gz_ign_actor0_;
     ros::Publisher pub_pc2_msg_gz_ign_actor1_;
+    ros::Publisher pub_pc2_msg_gz_ign_bin_;
     ros::Publisher pub_pc2_msg_gz_man_pkg_normal_;
     ros::Publisher pub_pc2_msg_gz_man_pkg_long_;
     ros::Publisher pub_pc2_msg_gz_man_pkg_longwide_;

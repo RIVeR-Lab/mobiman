@@ -28,32 +28,48 @@
   <node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 world base_link 100" />
 
   <!-- Launch object -->
-  <!-- normal_pkg 
-       long_pkg
-       longwide_pkg
-       red_cube
-       green_cube
-       blue_cube
-       conveyor_belt
-       actor
+  <!--
+    custom_flag = true 
+      normal_pkg 
+      long_pkg
+      longwide_pkg
+      red_cube
+      green_cube
+      blue_cube
+      conveyor_belt
+      actor
+    custom_flag = false
+      bin_4_dropping_task
   -->
-  <arg name="object_name" value="conveyor_belt"/>
+  <arg name="custom_flag" value="false"/>
+  <arg name="object_name" value="bin_4_dropping_task"/>
 
-  <!-- Load the URDF into the ROS Parameter Server -->
-  <param  name="robot_description_object"
-          command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/$(arg object_name).urdf.xacro'" />
+  <group if="$(eval arg('custom_flag') == true)">
+    <!-- Load the URDF into the ROS Parameter Server -->
+    <param  name="robot_description_object"
+            command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/$(arg object_name).urdf.xacro'" />
 
-  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-  <node name="urdf_spawner_object" 
-        pkg="gazebo_ros" 
-        type="spawn_model" 
-        respawn="false" 
-        output="screen"
-        args="-urdf 
-              -model $(arg object_name)_gazebo
-              -param robot_description_object 
-              -robot_namespace $(arg robot_namespace)
-              -unpause"/>
+    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+    <node name="urdf_spawner_object" 
+          pkg="gazebo_ros" 
+          type="spawn_model" 
+          respawn="false" 
+          output="screen"
+          args="-urdf 
+                -model $(arg object_name)_gazebo
+                -param robot_description_object 
+                -robot_namespace $(arg robot_namespace)
+                -unpause"/>
+  </group>
+
+  <group if="$(eval arg('custom_flag') == false)">
+    <node name="urdf_spawner_object" 
+          pkg="gazebo_ros" 
+          type="spawn_model" 
+          args="-file /home/akmandor/.gazebo/models/$(arg object_name)/model.sdf -sdf -model bin_4_dropping_task" 
+          respawn="false" 
+          output="screen" />
+  </group>
 
   <!-- Launch scanners -->
   <group ns="$(arg robot_namespace)">

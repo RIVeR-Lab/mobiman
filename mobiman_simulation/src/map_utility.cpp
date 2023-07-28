@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.07.05
+// LAST UPDATE: 2023.07.24
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -110,24 +110,26 @@ MapUtility::MapUtility(NodeHandle& nh,
   sub_gz_model_ = nh_.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
 
   // Publishers
-  pub_pc2_msg_scan_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan", 10);
-  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 10);
-  pub_occ_grid_msg_ = nh_.advertise<nav_msgs::OccupancyGrid>("occupancy_grid", 10);
+  pub_pc2_msg_scan_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan", 5);
+  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 5);
+  pub_occ_grid_msg_ = nh_.advertise<nav_msgs::OccupancyGrid>("occupancy_grid", 5);
 
-  pub_pc2_msg_gz_ign_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 10);
-  pub_pc2_msg_gz_ign_pkg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 10);
-  pub_pc2_msg_gz_ign_pkg_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 10);
-  pub_pc2_msg_gz_ign_pkg_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 10);
-  pub_pc2_msg_gz_ign_actor0_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor0", 10);
-  pub_pc2_msg_gz_ign_actor1_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor1", 10);
-  pub_pc2_msg_gz_man_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 10);
-  pub_pc2_msg_gz_man_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 10);
-  pub_pc2_msg_gz_man_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 10);
+  pub_pc2_msg_gz_ign_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 5);
+  pub_pc2_msg_gz_ign_pkg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 5);
+  pub_pc2_msg_gz_ign_pkg_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 5);
+  pub_pc2_msg_gz_ign_pkg_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 5);
+  pub_pc2_msg_gz_ign_actor0_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor0", 5);
+  pub_pc2_msg_gz_ign_actor1_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor1", 5);
+  pub_pc2_msg_gz_ign_bin_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_bin", 5);
 
-  //pub_moveit_collision_object_ = nh_.advertise<moveit_msgs::CollisionObject>("/collision_object", 10);
+  pub_pc2_msg_gz_man_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 5);
+  pub_pc2_msg_gz_man_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 5);
+  pub_pc2_msg_gz_man_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 5);
 
-  pub_visu_occ_distance_ = nh_.advertise<visualization_msgs::Marker>("occupancy_distance", 10);
-  pub_visu_array_occ_distance_ = nh_.advertise<visualization_msgs::MarkerArray>("occupancy_distance_array", 10);
+  //pub_moveit_collision_object_ = nh_.advertise<moveit_msgs::CollisionObject>("/collision_object", 5);
+
+  pub_visu_occ_distance_ = nh_.advertise<visualization_msgs::Marker>("occupancy_distance", 5);
+  pub_visu_array_occ_distance_ = nh_.advertise<visualization_msgs::MarkerArray>("occupancy_distance_array", 5);
 
   //cout << "[MapUtility::MapUtility(15)] END" << std::endl;
 }
@@ -2731,6 +2733,10 @@ void MapUtility::publishPC2MsgGzPkgIgn(int index_pkg_ign)
 
     case 5:
       pub_pc2_msg_gz_ign_actor1_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      break;
+
+    case 6:
+      pub_pc2_msg_gz_ign_bin_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
       break;
     
     default:

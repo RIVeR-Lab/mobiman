@@ -43,7 +43,7 @@
 
             <inertial>
                 <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
-                <mass value="1"/>
+                <mass value="20"/>
                 <inertia
                     ixx="1.0" ixy="0.0" ixz="0.0"
                     iyy="1.0" iyz="0.0"
@@ -54,7 +54,7 @@
         <link name="${prefix}_moving">
             <inertial>
                 <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
-                <mass value="1"/>
+                <mass value="20"/>
                 <inertia
                     ixx="1.0" ixy="0.0" ixz="0.0"
                     iyy="1.0" iyz="0.0"

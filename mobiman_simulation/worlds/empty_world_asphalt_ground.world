@@ -18,6 +18,7 @@
         <falloff>0</falloff>
       </spot>
     </light>
+    <plugin name="ros_link_attacher_plugin" filename="libgazebo_ros_link_attacher.so"/>
     <plugin name='ActorPosesPlugin' filename='libActorPosesPlugin.so'/>
     <model name='ground_plane'>
       <static>1</static>

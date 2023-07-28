@@ -1,10 +1,14 @@
 <launch>
   <!-- General Parameters -->
+  <arg name="PI" default="3.141592654"/>
+  <arg name="PI_2" default="1.570796327"/>
+
   <!-- Custom -->
   <arg name="flag_gazebo" default="true"/>
   <arg name="flag_robot" default="true"/>
   <arg name="flag_moveit" default="false"/>
   <arg name="flag_conveyor" default="true"/>
+  <arg name="flag_bin" default="true"/>
   <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
   <arg name="flag_map_server" default="true"/>
@@ -56,6 +60,20 @@
               output="screen" />
       </group>
       <node name="spawn_packages" pkg="mobiman_simulation" type="spawn_packages.py" output="screen"/>
+    </group>
+
+    <!-- Launch bin -->
+    <group if="$(eval arg('flag_bin') == true)">
+      <group ns="bin">
+        <node name="spawn_bin" 
+              pkg="gazebo_ros" 
+              type="spawn_model" 
+              args="-file $(find mobiman_simulation)/models/bin_4_dropping_task/model.sdf -sdf -model bin_4_dropping_task 
+                -x 4.0 -y 0.0 -z 0.0
+                -R 0.0 -P 0.0 -Y $(arg PI_2)" 
+              respawn="false" 
+              output="screen" />
+      </group>
     </group>
   </group>
 
