@@ -57,6 +57,9 @@ occgrid_occ_max: 100
 #laser_error_threshold: 0.1
 
 ## Algorithm: mobiman-DRL Parameters
+# Action time horizon [s]
+action_time_horizon: 8
+
 # [baseMotion, armMotion, wholeBodyMotion]
 n_action_model: 3
 
