@@ -25,9 +25,11 @@ In seperate terminals:
 ```
 roslaunch mobiman_simulation gazebo.launch
 ```
-2. Start target manager:
+
+2. Start the target manager:
 ```
 roslaunch mobiman_simulation ocs2_target.launch
+```
 
 3. Start the motion planning:
 ```
