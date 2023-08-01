@@ -6,7 +6,7 @@ from tf2_msgs.msg import TFMessage
 
 def publish_transform(msg):
     known_transform = tf.broadcaster.TransformBroadcaster()
-    known_transform.sendTransform(translation=(0, 0, 0), rotation=(0, 0, 0, 1), time=rospy.Time.now(), child='/root', parent='/base_link')
+    known_transform.sendTransform(translation=(0, 0, 0), rotation=(0, 0, 0, 1), time=rospy.Time.now(), child='/base_link', parent='/jackal_jaco_body/base_link')
 
 
 if __name__ == '__main__':
