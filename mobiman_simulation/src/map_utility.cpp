@@ -1299,6 +1299,7 @@ void MapUtility::initializeEgoGrid(std::string egrid_frame_name,
   }
 
   pub_egrid_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_pos", 10);
+  pub_egrid_target_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_target_pos", 10);
   pub_egrid_occ_pc_msg_ = nh_.advertise<sensor_msgs::PointCloud>("ego_grid_occupancy", 10);
 
   //std::cout << "[MapUtility::initializeEgoGrid] END" << std::endl;
@@ -1307,30 +1308,30 @@ void MapUtility::initializeEgoGrid(std::string egrid_frame_name,
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-vector<geometry_msgs::Point32> MapUtility::extract_pc_from_node_center(geometry_msgs::Point center)
+template <typename T>
+vector<T> MapUtility::extractPointsAroundCenter(T center, double vdim)
 {
-  double half_vdim = 0.5 * map_resolution_;
-  if (pc_resolution_scale <= 0)
-  {
-    ROS_WARN("MapUtility::extract_pc_from_node_center -> pc_resolution_scale has not set. It is set to 1.");
-    pc_resolution_scale = 1;
-  }
-  double pc_resolution = pc_resolution_scale * map_resolution_;
+  double half_vdim = 0.5 * vdim;
+
   vector<geometry_msgs::Point32> opc;
   geometry_msgs::Point minp;
   geometry_msgs::Point maxp;
-  minp.x = center.x - half_vdim;                    // (-x, -y, -z)
+
+  // (-x, -y, -z)
+  minp.x = center.x - half_vdim;                    
   minp.y = center.y - half_vdim;
   minp.z = center.z - half_vdim;
-  maxp.x = center.x + half_vdim;                    // (+x, +y, +z)
+
+  // (+x, +y, +z)
+  maxp.x = center.x + half_vdim;                    
   maxp.y = center.y + half_vdim;
   maxp.z = center.z + half_vdim;
 
-  for(double i = minp.x; i < maxp.x; i += pc_resolution)
+  for(double i = minp.x; i < maxp.x; i += vdim)
   {
-    for(double j = minp.y; j < maxp.y; j += pc_resolution)
+    for(double j = minp.y; j < maxp.y; j += vdim)
     {
-      for(double k = minp.z; k < maxp.z; k += pc_resolution)
+      for(double k = minp.z; k < maxp.z; k += vdim)
       {
         geometry_msgs::Point32 newp;
         newp.x = i;
@@ -1409,6 +1410,35 @@ vector<geometry_msgs::Point32> MapUtility::extract_pc_from_node_center(geometry_
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+void MapUtility::fillEgoTargetPC()
+{
+  std::cout << "[MapUtility::fillEgoTargetPC] START" << std::endl;
+
+  std::vector<double> dist_vec = {1, 2};
+  geometry_msgs::Point32 center;
+  center.x = 0;
+  center.y = 0;
+  center.z = 0;
+
+  egrid_target_pc_msg_.points.clear();
+
+  std::vector<geometry_msgs::Point32> tmp_tps;
+  for (auto d : dist_vec)
+  {
+    tmp_tps = extractPointsAroundCenter(center, d);
+    egrid_target_pc_msg_.points.insert(egrid_target_pc_msg_.points.end(),
+                                       std::make_move_iterator(tmp_tps.begin()),
+                                       std::make_move_iterator(tmp_tps.end()));
+  }
+
+  std::cout << "[MapUtility::fillEgoTargetPC] egrid_target_pc_msg_.points size: " << egrid_target_pc_msg_.points.size() << std::endl;
+
+  std::cout << "[MapUtility::fillEgoTargetPC] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void MapUtility::fillOct(sensor_msgs::PointCloud& pc_msg)
 {
   oct->clear();
@@ -1475,12 +1505,12 @@ void MapUtility::fillPCMsgFromOctByResolutionScale()
   
   for(octomap::ColorOcTree::iterator it = oct->begin(); it != oct->end(); ++it)
   {
-    geometry_msgs::Point op;
+    geometry_msgs::Point32 op;
     op.x = it.getCoordinate().x();
     op.y = it.getCoordinate().y();
     op.z = it.getCoordinate().z();
 
-    vector<geometry_msgs::Point32> opc = extract_pc_from_node_center(op);
+    vector<geometry_msgs::Point32> opc = extractPointsAroundCenter(op, map_resolution_);
     for(int i = 0; i < opc.size(); i++)
     {
       pc_msg.points.push_back(opc[i]);
@@ -1662,6 +1692,22 @@ bool MapUtility::isOccupied(double x, double y, double z)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 bool MapUtility::isOccupied(geometry_msgs::Point po)
+{
+  OcTreeNode* node = oct->search(po.x, po.y, po.z);
+  if(node)
+  {
+    return oct->isNodeOccupied(node);
+  }
+  else
+  {
+    return false;
+  }
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+bool MapUtility::isOccupied(geometry_msgs::Point32 po)
 {
   OcTreeNode* node = oct->search(po.x, po.y, po.z);
   if(node)
@@ -1894,6 +1940,14 @@ bool MapUtility::isInCube(geometry_msgs::Point po, geometry_msgs::Point center, 
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+bool MapUtility::isInCube(geometry_msgs::Point32 po, geometry_msgs::Point center, double rad)
+{
+  return (po.x >= center.x - rad) && (po.x <= center.x + rad) && (po.y >= center.y - rad) && (po.y <= center.y + rad) && (po.z >= center.z - rad) && (po.z <= center.z + rad);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 bool MapUtility::isOccupiedByGoal(double x, double y, double z, vector<geometry_msgs::Pose> goal)
 {
   geometry_msgs::Point po;
@@ -1933,9 +1987,26 @@ bool MapUtility::isOccupiedByGoal(geometry_msgs::Point po, vector<geometry_msgs:
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void MapUtility::addStaticObstacleByResolutionScale2PCMsg(geometry_msgs::Point po)
+bool MapUtility::isOccupiedByGoal(geometry_msgs::Point32 po, vector<geometry_msgs::Pose> goal)
 {
-  vector<geometry_msgs::Point32> opc = extract_pc_from_node_center(po);
+  double free_rad = 2 * map_resolution_;
+
+  for(int i = 0; i < goal.size(); i++)
+  {
+    if( isInCube(po, goal[i].position, free_rad) )
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::addStaticObstacleByResolutionScale2PCMsg(geometry_msgs::Point32 po)
+{
+  vector<geometry_msgs::Point32> opc = extractPointsAroundCenter(po, map_resolution_);
   for(int i = 0; i < opc.size(); i++)
   {
     pc_msg.points.push_back(opc[i]);
@@ -1955,7 +2026,7 @@ bool MapUtility::addStaticObstacle(double x,
                                    double robot_free_rad, 
                                    vector<int> color_RGB)
 {
-  geometry_msgs::Point po;
+  geometry_msgs::Point32 po;
   po.x = x;
   po.y = y;
   po.z = z;
@@ -2190,21 +2261,22 @@ void MapUtility::addRandomStaticObstacle(vector<double> new_x_range, vector<doub
 {
   for(int i = 0; i < num ; i++)
   {
-    geometry_msgs::Pose rp;
-    rp.position.x = randdouble(new_x_range[0], new_x_range[1]);
-    rp.position.y = randdouble(new_y_range[0], new_y_range[1]);
-    rp.position.z = randdouble(new_z_range[0], new_z_range[1]);
+    geometry_msgs::Point32 rp;
+    rp.x = randdouble(new_x_range[0], new_x_range[1]);
+    rp.y = randdouble(new_y_range[0], new_y_range[1]);
+    rp.z = randdouble(new_z_range[0], new_z_range[1]);
 
-    while( isOccupied(rp.position) || (constraint_flag && isOccupiedByGoal(rp.position, goal) || isInCube(rp.position, robot_center, robot_free_rad + map_resolution_)) )    // check for duplicates, goal and initial robot occupancy
+    // Check for duplicates, goal and initial robot occupancy
+    while( isOccupied(rp) || (constraint_flag && isOccupiedByGoal(rp, goal) || isInCube(rp, robot_center, robot_free_rad + map_resolution_)) )
     {
-      rp.position.x = randdouble(new_x_range[0], new_x_range[1]);
-      rp.position.y = randdouble(new_y_range[0], new_y_range[1]);
-      rp.position.z = randdouble(new_z_range[0], new_z_range[1]);
+      rp.x = randdouble(new_x_range[0], new_x_range[1]);
+      rp.y = randdouble(new_y_range[0], new_y_range[1]);
+      rp.z = randdouble(new_z_range[0], new_z_range[1]);
     }
 
-    oct -> updateNode(rp.position.x, rp.position.y, rp.position.z, true);
-    oct -> setNodeColor(oct -> coordToKey(rp.position.x, rp.position.y, rp.position.z), color_RGB[0], color_RGB[1], color_RGB[2]);
-    addStaticObstacleByResolutionScale2PCMsg(rp.position);
+    oct -> updateNode(rp.x, rp.y, rp.z, true);
+    oct -> setNodeColor(oct -> coordToKey(rp.x, rp.y, rp.z), color_RGB[0], color_RGB[1], color_RGB[2]);
+    addStaticObstacleByResolutionScale2PCMsg(rp);
   }
   fillOctMsgFromOct();
 }
@@ -2638,6 +2710,18 @@ void MapUtility::publishEgoGridPcMsg()
   //oct_msg.header.seq++;
   egrid_pc_msg.header.stamp = ros::Time::now();
   pub_egrid_pc_msg_.publish(egrid_pc_msg);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::publishEgoTargetPcMsg()
+{
+  sensor_msgs::PointCloud egrid_target_pc_msg = egrid_target_pc_msg_;
+  egrid_target_pc_msg.header.frame_id = egrid_frame_name_;
+  //oct_msg.header.seq++;
+  egrid_target_pc_msg.header.stamp = ros::Time::now();
+  pub_egrid_target_pc_msg_.publish(egrid_target_pc_msg);
 }
 
 //-------------------------------------------------------------------------------------------------------

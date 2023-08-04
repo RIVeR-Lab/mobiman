@@ -144,6 +144,8 @@ int main(int argc, char** argv)
                        egrid_bbx_max,
                        egrid_occ_threshold);
 
+  mu.fillEgoTargetPC();
+
   // Initialize Moveit collision objects
   mu.initializeMoveitCollisionObjects();
 
@@ -179,6 +181,7 @@ int main(int argc, char** argv)
     mu.publishOctMsg();
 
     mu.publishEgoGridPcMsg();
+    mu.publishEgoTargetPcMsg();
     mu.publishEgoGridOccPcMsg();
     mu.publishOccGridMsg();
 

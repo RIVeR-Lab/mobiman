@@ -255,8 +255,6 @@ Visualization Manager:
           Value: true
         bin_4_dropping_task:
           Value: true
-        blue_cube:
-          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -328,8 +326,6 @@ Visualization Manager:
         jaco_base_link:
           Value: false
         long_pkg:
-          Value: true
-        longwide_pkg:
           Value: true
         mid_mount:
           Value: false
@@ -417,8 +413,6 @@ Visualization Manager:
                                 {}
           bin_4_dropping_task:
             {}
-          blue_cube:
-            {}
           conveyor_belt:
             {}
           grasp:
@@ -426,8 +420,6 @@ Visualization Manager:
           green_cube:
             {}
           long_pkg:
-            {}
-          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -464,9 +456,9 @@ Visualization Manager:
       Value: true
     - Class: octomap_rviz_plugin/ColorOccupancyGrid
       Enabled: true
-      Max. Height Display: inf
+      Max. Height Display: 3.4028234663852886e+38
       Max. Octree Depth: 16
-      Min. Height Display: -inf
+      Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
       Octomap Topic: /octomap_scan
       Queue Size: 5
@@ -474,14 +466,44 @@ Visualization Manager:
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
-    - Class: rviz/Marker
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
       Enabled: true
-      Marker Topic: visualization_marker
-      Name: Marker
-      Namespaces:
-        {}
-      Queue Size: 100
+      Name: Map
+      Topic: /occupancy_grid
+      Unreliable: false
+      Use Timestamp: false
       Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Points
+      Topic: /ego_grid_occupancy
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -510,7 +532,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.231760025024414
+      Distance: 7.089111804962158
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -518,17 +540,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.1268051117658615
-        Y: -1.2206393480300903
-        Z: 0.1688845157623291
+        X: 0.20309898257255554
+        Y: -1.158494234085083
+        Z: 0.34071874618530273
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8947978615760803
+      Pitch: 0.809798538684845
       Target Frame: <Fixed Frame>
-      Yaw: 1.5510483980178833
+      Yaw: 1.5710475444793701
     Saved: ~
 Window Geometry:
   Displays:
