@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.08.04
+LAST UPDATE: 2023.08.05
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -15,6 +15,7 @@ REFERENCES:
 NUA TODO:
 '''
 
+import os
 import math
 import json
 import rospkg
@@ -30,7 +31,7 @@ def plot_log(
         label_x='', label_y='', title='', 
         fig_num=0, save_path='plot_ocs2_log.png'):
     
-    plt.figure(fig_num)
+    fig = plt.figure()
     plt.plot(data_x, data1_y, color=color1, label=label_data1)
 
     if  data2_y is not None:
@@ -48,26 +49,10 @@ def plot_log(
     plt.legend()
     plt.savefig(save_path)
 
-'''
-DESCRIPTION: TODO...
-'''
-if __name__ == '__main__':
-
-    print("[plot_ocs2_log::__main__] START")
-
-    rospy.init_node('plot_ocs2_log', anonymous=True, log_level=rospy.WARN)
-
-    ## Get variables
-    rospack = rospkg.RosPack()
-    mobiman_path = rospack.get_path('mobiman_simulation') + "/"
-    option = rospy.get_param('option', 0)
-    ocs2_log_path = rospy.get_param('ocs2_log_path', "")
-    ocs2_log_name = rospy.get_param('ocs2_log_name', "")
-    ocs2_log_folder_name = rospy.get_param('ocs2_log_folder_name', "")
-    n_round_digit = rospy.get_param('n_round_digit', 2)
-
+def extract_and_plot_log(log_path, log_name, save_prefix='',save_plot_flag=True):
+    
     # Open JSON file
-    f = open(mobiman_path + ocs2_log_path + ocs2_log_name)
+    f = open(log_path + log_name + ".json")
 
     # Get JSON object as a dictionary
     data = json.load(f)
@@ -109,9 +94,12 @@ if __name__ == '__main__':
     input_arm_offset = 2
 
     # Print data
+    print("[plot_ocs2_log::__main__] log_path: " + str(log_path))
+    print("[plot_ocs2_log::__main__] log_name: " + str(log_name))
     print("[plot_ocs2_log::__main__] time_start: " + str(time_start))
     print("[plot_ocs2_log::__main__] time_end: " + str(time_end))
     print("[plot_ocs2_log::__main__] dt: " + str(dt))
+    print("[plot_ocs2_log::__main__] _dt: " + str(_dt))
     print("[plot_ocs2_log::__main__] data_size: " + str(data_size))
     print("[plot_ocs2_log::__main__] state_size: " + str(state_size))
     print("[plot_ocs2_log::__main__] input_size: " + str(input_size))
@@ -119,8 +107,13 @@ if __name__ == '__main__':
     print("[plot_ocs2_log::__main__] input_arm_offset: " + str(input_arm_offset))
 
     # Set time vector
-    time = np.arange(time_start, time_end, dt)
+    time = np.linspace(time_start, time_start + dt*data_size, data_size)
     #print("[plot_ocs2_log::__main__] time: " + str(time))
+
+    if len(time) != data_size:
+        print("[plot_ocs2_log::__main__] PROBLEMATICO 2!")
+        print("[plot_ocs2_log::__main__] time len: " + str(len(time)))
+        print("[plot_ocs2_log::__main__] data_size: " + str(data_size))
 
     # Set joint states and commands wrt the time vector
     state_velo_base = np.zeros((state_velo_base_size, data_size))
@@ -138,42 +131,163 @@ if __name__ == '__main__':
     for i, single_command in enumerate(input_data):
         for j, sc in enumerate(single_command):
             input[j][i] = sc
-            
+
+    state = np.vstack([state_velo_base, state_pos_arm])
+
     if state_velo_base.shape[0] + state_pos_arm.shape[0] != input.shape[0]:
-        print("[plot_ocs2_log::__main__] PROBLEMATICO 2!")
+        print("[plot_ocs2_log::__main__] PROBLEMATICO 3!")
         print("[plot_ocs2_log::__main__] state_velo_base.shape: " + str(state_velo_base.shape))
         print("[plot_ocs2_log::__main__] state_pos_arm.shape: " + str(state_pos_arm.shape))
         print("[plot_ocs2_log::__main__] input.shape: " + str(input.shape))
 
-    state = np.vstack([state_velo_base, state_pos_arm])
-
     if state.shape != input.shape:
-        print("[plot_ocs2_log::__main__] PROBLEMATICO 3!")
+        print("[plot_ocs2_log::__main__] PROBLEMATICO 4!")
         print("[plot_ocs2_log::__main__] state.shape: " + str(state.shape))
         print("[plot_ocs2_log::__main__] input.shape: " + str(input.shape))
 
+    if (save_plot_flag):
+        ### Plots
+
+        _save_prefix = save_prefix
+        if save_prefix:
+            _save_prefix = save_prefix + '_'
+
+        # Create new folder for plots if not exist
+        save_path = log_path + _save_prefix + log_name + "_plots/"
+        isExist = os.path.exists(save_path)
+        if not isExist:
+            os.makedirs(save_path)
+
+        ## Base states (velocity) - input commands
+        plot_log(
+            time, state[0], input[0],
+            label_data1='State', label_data2='Command',
+            label_x="Time", label_y='Lateral velocity [m/s]',
+            fig_num=1,
+            save_path=save_path + 'base_veloX.png')
+        
+        plot_log(
+            time, state[1], input[1],
+            label_data1='State', label_data2='Command',
+            label_x="Time", label_y='Angular velocity [rad/s]',
+            fig_num=2,
+            save_path=save_path + 'base_veloYaw.png')
+        
+        ## Arm states (position) - input commands
+        for i in range(state_arm_size):
+            joint_offset = i
+            idx = input_arm_offset + joint_offset
+
+            state[idx] *= 180 / math.pi
+            input[idx] *= 180 / math.pi
+
+            plot_log(
+                time, state[idx], input[idx],
+                label_data1='State', label_data2='Command',
+                label_x="Time", label_y='Arm joint angle [deg]',
+                fig_num=3+i,
+                save_path=save_path + 'arm_joint' + str(joint_offset) + '.png')
+            
+    return time, state, input
+
+def extract_and_plot_log_in_folder(log_path, save_prefix=''):
+    
+    # Get log files in the folder
+    file_list = os.listdir(log_path)
+    log_list = []
+    for file in file_list:
+        if file.endswith(".json"):
+            log_list.append(file)
+    log_list.sort()
+    print(log_list)
+
+    # Initialize variables
+    input_arm_offset = 2
+
+    time_concat = np.empty((0,0))
+    state_concat = np.empty((0,0))
+    input_concat = np.empty((0,0))
+
+    for k, log_name in enumerate(log_list):
+        
+        log_name_trimmed = log_name
+        log_name_trimmed = log_name_trimmed.replace('.json', '')
+        time, state, input = extract_and_plot_log(log_path, log_name_trimmed)
+        
+        if k == 0:
+            time_concat = time
+            state_concat = state
+            input_concat = input
+        else:
+            time_concat = np.concatenate((time_concat, time), axis=0)
+            state_concat = np.hstack([state_concat, state])
+            input_concat = np.hstack([input_concat, input])
+        
+        print("--------------------------------------------")
+
+    print("[plot_ocs2_log::__main__] time_concat.shape: " + str(time_concat.shape))
+    print("[plot_ocs2_log::__main__] state_concat.shape: " + str(state_concat.shape))
+    print("[plot_ocs2_log::__main__] input_concat.shape: " + str(input_concat.shape))
+    
     ### Plots
-    ## Base states (position or velocity) - input commands
+
+    if save_prefix:
+            save_prefix += '_'
+
+    ## Base states (velocity) - input commands
     plot_log(
-        time, state[0], input[0],
+        time_concat, state_concat[0], input_concat[0],
         label_data1='State', label_data2='Command',
         label_x="Time", label_y='Lateral velocity [m/s]',
         fig_num=1,
-        save_path=mobiman_path + ocs2_log_path + 'plot_base_veloX.png')
+        save_path=log_path + save_prefix + 'base_veloX.png')
     
-    ## Arm states - commands
-    for i in range(state_arm_size):
+    plot_log(
+        time_concat, state_concat[1], input_concat[1],
+        label_data1='State', label_data2='Command',
+        label_x="Time", label_y='Angular velocity [rad/s]',
+        fig_num=2,
+        save_path=log_path + save_prefix + 'base_veloYaw.png')
+    
+    ## Arm states (position) - commands
+    for i in range(state_concat.shape[0]):
         joint_offset = i
         idx = input_arm_offset + joint_offset
 
-        state[idx] *= 180 / math.pi
-        input[idx] *= 180 / math.pi
+        state_concat[idx] *= 180 / math.pi
+        input_concat[idx] *= 180 / math.pi
 
         plot_log(
-            time, state[idx], input[idx],
+            time_concat, state_concat[idx], input_concat[idx],
             label_data1='State', label_data2='Command',
             label_x="Time", label_y='Arm joint angle [deg]',
-            fig_num=2+i,
-            save_path=mobiman_path + ocs2_log_path + 'plot_arm_joint' + str(joint_offset) + '.png')
+            fig_num=3+i,
+            save_path=log_path + save_prefix + 'arm_joint' + str(joint_offset) + '.png')
 
+'''
+DESCRIPTION: TODO...
+'''
+if __name__ == '__main__':
+
+    print("[plot_ocs2_log::__main__] START")
+
+    rospy.init_node('plot_ocs2_log', anonymous=True, log_level=rospy.WARN)
+
+    ## Get variables
+    rospack = rospkg.RosPack()
+    mobiman_path = rospack.get_path('mobiman_simulation') + "/"
+    option = rospy.get_param('option', 0)
+    ocs2_log_path_rel = rospy.get_param('ocs2_log_path_rel', "")
+    ocs2_log_name = rospy.get_param('ocs2_log_name', "")
+    n_round_digit = rospy.get_param('n_round_digit', 2)
+    save_prefix = rospy.get_param('save_prefix', "")
+
+    if option == 0:
+        ocs2_log_path = mobiman_path + ocs2_log_path_rel
+        extract_and_plot_log(ocs2_log_path, ocs2_log_name, save_prefix=save_prefix, save_plot_flag=True) # type: ignore
+        
+    if option == 1:
+        ocs2_log_path = mobiman_path + ocs2_log_path_rel
+        extract_and_plot_log_in_folder(ocs2_log_path, save_prefix=save_prefix) # type: ignore
+        
     print("[plot_ocs2_log::__main__] END")

@@ -506,7 +506,7 @@
     <child link="j2n6s300_link_base"/>
     <axis xyz="0 0 0"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <link name="j2n6s300_link_1">
     <visual>
@@ -537,17 +537,17 @@
     <parent link="j2n6s300_link_base"/>
     <child link="j2n6s300_link_1"/>
     <axis xyz="0 0 1"/>
-    <limit effort="40" velocity="0.6283185307179586" lower="-300" upper="300"/>
+    <limit effort="40" lower="-628.3185307179587" upper="628.3185307179587" velocity="0.6283185307179586"/>
     <origin rpy="0 3.141592653589793 0" xyz="0 0 0.15675"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_1_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_1_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>160</mechanicalReduction>
     </actuator>
   </transmission>
@@ -593,15 +593,15 @@
     <axis xyz="0 0 1"/>
     <limit effort="80" lower="0.8203047484373349" upper="5.462880558742252" velocity="0.6283185307179586"/>
     <origin rpy="-1.5707963267948966 0 3.141592653589793" xyz="0 0.0016 -0.11875"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_2_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_2_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>160</mechanicalReduction>
     </actuator>
   </transmission>
@@ -647,15 +647,15 @@
     <axis xyz="0 0 1"/>
     <limit effort="40" lower="0.33161255787892263" upper="5.951572749300664" velocity="0.6283185307179586"/>
     <origin rpy="0 3.141592653589793 0" xyz="0 -0.410 0"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_3_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_3_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>160</mechanicalReduction>
     </actuator>
   </transmission>
@@ -699,17 +699,17 @@
     <parent link="j2n6s300_link_3"/>
     <child link="j2n6s300_link_4"/>
     <axis xyz="0 0 1"/>
-    <limit effort="20" velocity="0.8377580409572781" lower="-300" upper="300"/>
+    <limit effort="20" lower="-628.3185307179587" upper="628.3185307179587" velocity="0.8377580409572781"/>
     <origin rpy="-1.5707963267948966 0 3.141592653589793" xyz="0 0.2073 -0.0114"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_4_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_4">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_4_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>160</mechanicalReduction>
     </actuator>
   </transmission>
@@ -753,17 +753,17 @@
     <parent link="j2n6s300_link_4"/>
     <child link="j2n6s300_link_5"/>
     <axis xyz="0 0 1"/>
-    <limit effort="20" velocity="0.8377580409572781" lower="-300" upper="300"/>
+    <limit effort="20" lower="-628.3185307179587" upper="628.3185307179587" velocity="0.8377580409572781"/>
     <origin rpy="1.0471975511965976 0 3.141592653589793" xyz="0 -0.03703 -0.06414"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_5_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_5">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_5_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>160</mechanicalReduction>
     </actuator>
   </transmission>
@@ -807,17 +807,17 @@
     <parent link="j2n6s300_link_5"/>
     <child link="j2n6s300_link_6"/>
     <axis xyz="0 0 1"/>
-    <limit effort="20" velocity="0.8377580409572781" lower="-300" upper="300"/>
+    <limit effort="20" lower="-628.3185307179587" upper="628.3185307179587" velocity="0.8377580409572781"/>
     <origin rpy="1.0471975511965976 0 3.141592653589793" xyz="0 -0.03703 -0.06414"/>
-    <dynamics damping="0.0" friction="0.15"/>
+    <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_6_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_6">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_6_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>160</mechanicalReduction>
     </actuator>
   </transmission>
@@ -869,10 +869,10 @@
   <transmission name="j2n6s300_joint_finger_1_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_finger_1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_finger_1_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -906,10 +906,10 @@
   <transmission name="j2n6s300_joint_finger_tip_1_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_finger_tip_1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_finger_tip_1_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -943,10 +943,10 @@
   <transmission name="j2n6s300_joint_finger_2_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_finger_2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_finger_2_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -980,10 +980,10 @@
   <transmission name="j2n6s300_joint_finger_tip_2_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_finger_tip_2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_finger_tip_2_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -1017,10 +1017,10 @@
   <transmission name="j2n6s300_joint_finger_3_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_finger_3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_finger_3_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -1054,10 +1054,10 @@
   <transmission name="j2n6s300_joint_finger_tip_3_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="j2n6s300_joint_finger_tip_3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="j2n6s300_joint_finger_tip_3_actuator">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
