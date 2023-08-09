@@ -233,4 +233,8 @@
   <group if="$(eval arg('flag_rviz') == true)">
     <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_gazebo.launch" />
   </group>
+  <!-- MOCAP Launch -->
+  <include file="$(find mocap_optitrack)/launch/mocap.launch" />
+  <!-- Transform node -->
+  <node pkg="mobiman_simulation" name="jackal_jaco_transform" pkg="jackal_jaco_transform"/>
 </launch>
