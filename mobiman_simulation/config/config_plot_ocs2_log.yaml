@@ -1,8 +1,8 @@
-ocs2_log_path_rel: "dataset/ocs2/tmp2/"
+ocs2_log_path_rel: "dataset/ocs2/tmp4/"
 option: 1
 
 ## OPTION 0: Read the log
-ocs2_log_name: "20230804_150142"
+ocs2_log_name: ""
 
 ## OPTION 1: Read the folder of logs
 

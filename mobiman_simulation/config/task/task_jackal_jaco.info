@@ -90,9 +90,9 @@ ddp
   constraintPenaltyInitialValue   20.0
   constraintPenaltyIncreaseRate   2.0 ; NUA EDIT: def: 2.0
 
-  preComputeRiccatiTerms          true
+  preComputeRiccatiTerms          false
 
-  useFeedbackPolicy               false
+  useFeedbackPolicy               true
 
   strategy                        LINE_SEARCH
   lineSearch

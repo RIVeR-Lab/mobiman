@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.08.05
+LAST UPDATE: 2023.08.07
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -22,6 +22,24 @@ import rospkg
 import rospy
 import numpy as np
 import matplotlib.pyplot as plt
+
+def add_log_data(log_path, log_name, data_name, data_value):
+    
+    logfile = log_path + log_name + ".json"
+    new_data = {data_name: data_value}
+
+    with open(logfile,'r+') as file:
+        # First we load existing data into a dict.
+        file_data = json.load(file)
+
+        # Join new_data with file_data inside emp_details
+        file_data.update(new_data)
+
+        # Sets file's current position at offset.
+        file.seek(0)
+
+        # convert back to json.
+        json.dump(file_data, file, indent = 4)
 
 def plot_log(   
         data_x, data1_y, data2_y=None, 
@@ -48,6 +66,7 @@ def plot_log(
     plt.title(title)
     plt.legend()
     plt.savefig(save_path)
+    plt.close()
 
 def extract_and_plot_log(log_path, log_name, save_prefix='',save_plot_flag=True):
     
@@ -71,6 +90,20 @@ def extract_and_plot_log(log_path, log_name, save_prefix='',save_plot_flag=True)
     state_velo_base_data = data['state_velocity_base']
     input_data = data['command']
 
+    state_arm_offset = None
+    if 'state_arm_offset' not in data.keys():
+        add_log_data(log_path, log_name, "state_arm_offset", 3)
+        state_arm_offset = 3
+    else:
+        state_arm_offset = data['state_arm_offset']
+
+    input_arm_offset = None
+    if 'input_arm_offset' not in data.keys():
+        add_log_data(log_path, log_name, "input_arm_offset", 2)
+        input_arm_offset = 2
+    else:
+        input_arm_offset = data['input_arm_offset']
+    
     # Set data length
     data_size = len(input_data)
     if len(state_pos_data) != len(input_data):
@@ -89,23 +122,19 @@ def extract_and_plot_log(log_path, log_name, save_prefix='',save_plot_flag=True)
     state_velo_base_size = len(state_velo_base_data[0])
     input_size = len(input_data[0])
 
-    # Set offsets
-    state_arm_offset = 3
-    input_arm_offset = 2
-
     # Print data
     print("[plot_ocs2_log::__main__] log_path: " + str(log_path))
     print("[plot_ocs2_log::__main__] log_name: " + str(log_name))
     print("[plot_ocs2_log::__main__] time_start: " + str(time_start))
     print("[plot_ocs2_log::__main__] time_end: " + str(time_end))
+    print("[plot_ocs2_log::__main__] state_arm_offset: " + str(state_arm_offset))
+    print("[plot_ocs2_log::__main__] input_arm_offset: " + str(input_arm_offset))
     print("[plot_ocs2_log::__main__] dt: " + str(dt))
     print("[plot_ocs2_log::__main__] _dt: " + str(_dt))
     print("[plot_ocs2_log::__main__] data_size: " + str(data_size))
     print("[plot_ocs2_log::__main__] state_size: " + str(state_size))
     print("[plot_ocs2_log::__main__] input_size: " + str(input_size))
-    print("[plot_ocs2_log::__main__] state_arm_offset: " + str(state_arm_offset))
-    print("[plot_ocs2_log::__main__] input_arm_offset: " + str(input_arm_offset))
-
+    
     # Set time vector
     time = np.linspace(time_start, time_start + dt*data_size, data_size)
     #print("[plot_ocs2_log::__main__] time: " + str(time))
@@ -175,9 +204,8 @@ def extract_and_plot_log(log_path, log_name, save_prefix='',save_plot_flag=True)
         
         ## Arm states (position) - input commands
         for i in range(state_arm_size):
-            joint_offset = i
-            idx = input_arm_offset + joint_offset
-
+            idx = input_arm_offset + i
+            
             state[idx] *= 180 / math.pi
             input[idx] *= 180 / math.pi
 
@@ -186,9 +214,9 @@ def extract_and_plot_log(log_path, log_name, save_prefix='',save_plot_flag=True)
                 label_data1='State', label_data2='Command',
                 label_x="Time", label_y='Arm joint angle [deg]',
                 fig_num=3+i,
-                save_path=save_path + 'arm_joint' + str(joint_offset) + '.png')
+                save_path=save_path + 'arm_joint' + str(i) + '.png')
             
-    return time, state, input
+    return time, state, input, input_arm_offset
 
 def extract_and_plot_log_in_folder(log_path, save_prefix=''):
     
@@ -202,8 +230,6 @@ def extract_and_plot_log_in_folder(log_path, save_prefix=''):
     print(log_list)
 
     # Initialize variables
-    input_arm_offset = 2
-
     time_concat = np.empty((0,0))
     state_concat = np.empty((0,0))
     input_concat = np.empty((0,0))
@@ -212,16 +238,16 @@ def extract_and_plot_log_in_folder(log_path, save_prefix=''):
         
         log_name_trimmed = log_name
         log_name_trimmed = log_name_trimmed.replace('.json', '')
-        time, state, input = extract_and_plot_log(log_path, log_name_trimmed)
+        time_tmp, state_tmp, input_tmp, input_arm_offset = extract_and_plot_log(log_path, log_name_trimmed)
         
         if k == 0:
-            time_concat = time
-            state_concat = state
-            input_concat = input
+            time_concat = time_tmp
+            state_concat = state_tmp
+            input_concat = input_tmp
         else:
-            time_concat = np.concatenate((time_concat, time), axis=0)
-            state_concat = np.hstack([state_concat, state])
-            input_concat = np.hstack([input_concat, input])
+            time_concat = np.concatenate((time_concat, time_tmp), axis=0)
+            state_concat = np.hstack([state_concat, state_tmp])
+            input_concat = np.hstack([input_concat, input_tmp])
         
         print("--------------------------------------------")
 
@@ -250,19 +276,15 @@ def extract_and_plot_log_in_folder(log_path, save_prefix=''):
         save_path=log_path + save_prefix + 'base_veloYaw.png')
     
     ## Arm states (position) - commands
-    for i in range(state_concat.shape[0]):
-        joint_offset = i
-        idx = input_arm_offset + joint_offset
-
-        state_concat[idx] *= 180 / math.pi
-        input_concat[idx] *= 180 / math.pi
+    for i in range(state_concat.shape[0] - input_arm_offset): # type: ignore
+        idx = input_arm_offset + i # type: ignore
 
         plot_log(
             time_concat, state_concat[idx], input_concat[idx],
             label_data1='State', label_data2='Command',
             label_x="Time", label_y='Arm joint angle [deg]',
             fig_num=3+i,
-            save_path=log_path + save_prefix + 'arm_joint' + str(joint_offset) + '.png')
+            save_path=log_path + save_prefix + 'arm_joint' + str(i) + '.png') # type: ignore
 
 '''
 DESCRIPTION: TODO...
@@ -282,12 +304,12 @@ if __name__ == '__main__':
     n_round_digit = rospy.get_param('n_round_digit', 2)
     save_prefix = rospy.get_param('save_prefix', "")
 
+    ocs2_log_path = mobiman_path + ocs2_log_path_rel
+
     if option == 0:
-        ocs2_log_path = mobiman_path + ocs2_log_path_rel
         extract_and_plot_log(ocs2_log_path, ocs2_log_name, save_prefix=save_prefix, save_plot_flag=True) # type: ignore
         
     if option == 1:
-        ocs2_log_path = mobiman_path + ocs2_log_path_rel
         extract_and_plot_log_in_folder(ocs2_log_path, save_prefix=save_prefix) # type: ignore
-        
+    
     print("[plot_ocs2_log::__main__] END")
