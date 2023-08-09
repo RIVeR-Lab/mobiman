@@ -2487,7 +2487,7 @@ void MapUtility::updateEgoGrid()
 
   try
   {
-    tflistener->waitForTransform(world_frame_name_, egrid_frame_name_, ros::Time::now(), ros::Duration(1.0));
+    tflistener->waitForTransform(world_frame_name_, egrid_frame_name_, ros::Time(0), ros::Duration(5.0));
     tflistener->lookupTransform(world_frame_name_, egrid_frame_name_, ros::Time(0), transform_grid_wrt_world_);
   }
   catch (tf::TransformException ex)
@@ -2876,7 +2876,7 @@ void MapUtility::publishVirtualFrames(vector<std::string>& virtual_frame_names, 
 
   try
   {
-    //tflistener -> waitForTransform(world_frame_name_, origin_frame_name, ros::Time::now(), ros::Duration(1.0));
+    tflistener -> waitForTransform(world_frame_name_, origin_frame_name, ros::Time(0), ros::Duration(5.0));
     tflistener->lookupTransform(world_frame_name_, origin_frame_name, ros::Time(0), stf_virtual);
   }
   catch (tf::TransformException ex)
@@ -3072,7 +3072,7 @@ void MapUtility::pc2Callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
   try
   {
-    //tflistener -> waitForTransform(world_frame_name_, msg -> header.frame_id, ros::Time::now(), ros::Duration(1.0));
+    tflistener -> waitForTransform(world_frame_name_, msg -> header.frame_id, ros::Time(0), ros::Duration(5.0));
     tflistener->lookupTransform(world_frame_name_, msg->header.frame_id, ros::Time(0), measured_transform_sensor_pc2_wrt_world);
   }
   catch (tf::TransformException ex)
