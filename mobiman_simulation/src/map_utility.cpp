@@ -1184,6 +1184,7 @@ void MapUtility::transformPose(std::string& frame_from,
 
   try
   {
+    ros::Time t = ros::Time(0);
     tflistener->transformPose(frame_to, p_from_stamped_tf, p_to_stamped_tf);
   }
   catch(tf::TransformException ex)
