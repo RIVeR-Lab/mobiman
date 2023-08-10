@@ -1,6 +1,7 @@
 ; robot model meta-information
 model_information 
-{
+{             
+  envMode            0          ; Mode of the env, 0: sim, 1: exp
   robotName          "mobiman"  ; Name of the robot in simulation
   robotModelType     2          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
   
@@ -50,7 +51,7 @@ model_information
 
   ;baseStateMsg                    "/gazebo/link_states"
   armStateMsg                     "/arm_controller/state"
-  ;armStateMsg                     "/effort_joint_trajectory_controller/state"
+  ;armStateMsg                     "/joint_states"
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
@@ -90,7 +91,7 @@ ddp
   constraintPenaltyInitialValue   20.0
   constraintPenaltyIncreaseRate   2.0 ; NUA EDIT: def: 2.0
 
-  preComputeRiccatiTerms          false
+  preComputeRiccatiTerms          true
 
   useFeedbackPolicy               false
 
