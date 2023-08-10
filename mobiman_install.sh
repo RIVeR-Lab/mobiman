@@ -57,7 +57,7 @@ git clone git@github.com:RIVeR-Lab/mobiman.git
 ### Clone ocs2
 git clone git@github.com:RIVeR-Lab/ocs2.git
 cd ocs2/
-git checkout noetic-akmandor-v8
+git checkout noetic-akmandor-v9
 cd ..
 
 ### Clone pinocchio
@@ -113,6 +113,9 @@ cd ..
 git clone --recurse-submodules https://github.com/rokokoo/conveyor_demo.git
 ### Clone Optitrack
 git clone git@github.com:RIVeR-Lab/mocap_optitrack.git
+cd mocap_optitrack
+git checkout noetic-mobiman-v1
+cd ..
 ### Clone gazebo_ros_link_attacher
 git clone git@github.com:pal-robotics/gazebo_ros_link_attacher.git
 cd ..
