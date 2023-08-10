@@ -1,0 +1,13 @@
+ocs2_log_path_rel: "dataset/ocs2/tmp3/"
+option: 1
+
+## OPTION 0: Read the log
+ocs2_log_name: ""
+
+## OPTION 1: Read the folder of logs
+
+n_round_digit: 2
+save_prefix: ""
+
+joint_arm_limit_min: []
+joint_arm_limit_max: []

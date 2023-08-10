@@ -435,7 +435,11 @@ class MapUtility
                            double egrid_occ_threshold);
 
     // DESCRIPTION: TODO...
-    std::vector<geometry_msgs::Point32> extract_pc_from_node_center(geometry_msgs::Point center);
+    template <typename T>
+    std::vector<T> extractPointsAroundCenter(T center, double vdim);
+
+    // DESCRIPTION: TODO...
+    void fillEgoTargetPC();
 
     // DESCRIPTION: TODO...
     void fillOct(sensor_msgs::PointCloud& pc_msg);
@@ -489,6 +493,9 @@ class MapUtility
     bool isOccupied(geometry_msgs::Point po);
 
     // DESCRIPTION: TODO...
+    bool isOccupied(geometry_msgs::Point32 po);
+
+    // DESCRIPTION: TODO...
     double getOctOccupancy(tf::Point po);
 
     // DESCRIPTION: TODO...
@@ -510,13 +517,19 @@ class MapUtility
     bool isInCube(geometry_msgs::Point po, geometry_msgs::Point center, double rad);
 
     // DESCRIPTION: TODO...
+    bool isInCube(geometry_msgs::Point32 po, geometry_msgs::Point center, double rad);
+
+    // DESCRIPTION: TODO...
     bool isOccupiedByGoal(double x, double y, double z, std::vector<geometry_msgs::Pose> goal);
 
     // DESCRIPTION: TODO...
     bool isOccupiedByGoal(geometry_msgs::Point po, std::vector<geometry_msgs::Pose> goal);
 
     // DESCRIPTION: TODO...
-    void addStaticObstacleByResolutionScale2PCMsg(geometry_msgs::Point po);
+    bool isOccupiedByGoal(geometry_msgs::Point32 po, std::vector<geometry_msgs::Pose> goal);
+
+    // DESCRIPTION: TODO...
+    void addStaticObstacleByResolutionScale2PCMsg(geometry_msgs::Point32 po);
 
     // DESCRIPTION: TODO...
     bool addStaticObstacle(double x, 
@@ -615,6 +628,9 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void publishEgoGridPcMsg();
+
+    // DESCRIPTION: TODO...
+    void publishEgoTargetPcMsg();
 
     // DESCRIPTION: TODO...
     void publishEgoGridOccPcMsg();
@@ -849,6 +865,8 @@ class MapUtility
     std::vector<double> egrid_occ_;
     sensor_msgs::PointCloud egrid_occ_pc_msg_;
     
+    sensor_msgs::PointCloud egrid_target_pc_msg_;
+
     nav_msgs::OccupancyGrid occ_grid_msg_;
 
     ros::Subscriber sub_oct_msg_;
@@ -857,6 +875,7 @@ class MapUtility
     ros::Publisher pub_pc2_msg_scan_;
     ros::Publisher pub_moveit_collision_object_;
     ros::Publisher pub_egrid_pc_msg_;
+    ros::Publisher pub_egrid_target_pc_msg_;
     ros::Publisher pub_egrid_occ_pc_msg_;
     ros::Publisher pub_occ_grid_msg_;
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Load parameters -->
+    <rosparam command="load" 
+        file="$(find mobiman_simulation)/config/config_plot_ocs2_log.yaml" 
+        subst_value="True"/>
+
+    <!-- Launch the script -->
+    <node pkg="mobiman_simulation" name="plot_ocs2_log" type="plot_ocs2_log.py" output="screen"/>
+</launch>
