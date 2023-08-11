@@ -50,8 +50,8 @@ model_information
   eeFrame                         "j2n6s300_end_effector"
 
   ;baseStateMsg                    "/gazebo/link_states"
-  ;armStateMsg                     "/arm_controller/state"
-  armStateMsg                     "/joint_states"
+  armStateMsg                     "/arm_controller/state"
+  ;armStateMsg                     "/joint_states"
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
