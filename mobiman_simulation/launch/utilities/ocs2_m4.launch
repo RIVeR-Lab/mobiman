@@ -3,6 +3,7 @@
 <launch>
       <!-- Enable rviz visualization -->
       <arg name="rviz"        default="true" />
+      <arg name="simulation"  default="true" />
 
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->
@@ -16,7 +17,12 @@
       <arg name="robot"       default="jackal_jaco" />
 
       <!-- The task file for the mpc. -->
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+      <group if="$(eval arg('simulation') == true)">
+            <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+      </group>
+      <group if="$(eval arg('simulation') == false)">
+            <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/exp_$(arg robot).info" />
+      </group>
 
       <!-- The URDF model of the robot -->
       <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
