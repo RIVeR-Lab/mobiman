@@ -4,7 +4,7 @@
   <arg name="PI_2" default="1.570796327"/>
 
   <!-- Custom -->
-  <arg name="flag_gazebo" default="true"/>
+  <arg name="flag_gazebo" default="false"/>
   <arg name="flag_robot" default="false"/>
   <arg name="flag_moveit" default="false"/>
   <arg name="flag_conveyor" default="true"/>
@@ -234,7 +234,7 @@
     <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_gazebo.launch" />
   </group>
   <!-- MOCAP Launch -->
-  <include file="$(find mocap_optitrack)/launch/mocap.launch" />
+  <!-- <include file="$(find mocap_optitrack)/launch/mocap.launch" /> -->
   <!-- Transform node -->
-  <node pkg="mobiman_simulation" name="jackal_jaco_transform" pkg="jackal_jaco_transform"/>
+  <!-- <node pkg="mobiman_simulation" name="jackal_jaco_transform" pkg="jackal_jaco_transform"/> -->
 </launch>

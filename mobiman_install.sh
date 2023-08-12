@@ -57,7 +57,7 @@ git clone git@github.com:RIVeR-Lab/mobiman.git
 ### Clone ocs2
 git clone git@github.com:RIVeR-Lab/ocs2.git
 cd ocs2/
-git checkout noetic-akmandor-v9
+git checkout noetic-akmandor-v10
 cd ..
 
 ### Clone pinocchio
