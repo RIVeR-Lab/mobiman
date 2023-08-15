@@ -7,14 +7,14 @@
   <arg name="flag_gazebo" default="false"/>
   <arg name="flag_robot" default="false"/>
   <arg name="flag_moveit" default="false"/>
-  <arg name="flag_conveyor" default="true"/>
-  <arg name="flag_bin" default="true"/>
+  <arg name="flag_conveyor" default="false"/>
+  <arg name="flag_bin" default="false"/>
   <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
   <arg name="flag_map_server" default="true"/>
   <arg name="flag_rviz" default="true"/>
   <!-- Gazebo -->
-  <arg name="paused" default="true"/>
+  <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="false"/>
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
