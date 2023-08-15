@@ -3,6 +3,7 @@
 <launch>
       <!-- Enable rviz visualization -->
       <arg name="rviz"        default="true" />
+      <arg name="simulation"  value="false" />
 
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->
@@ -14,9 +15,14 @@
             jackal_jaco
       -->
       <arg name="robot"       default="jackal_jaco" />
-
+      <!-- <arg name="taskFile"    default="" /> -->
       <!-- The task file for the mpc. -->
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+      <group if="$(arg simulation)">
+            <param name="taskFile"    value="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+      </group>
+      <group unless="$(arg simulation)">
+            <param name="taskFile"    value="$(find mobiman_simulation)/config/task/exp_$(arg robot).info" />
+      </group>
 
       <!-- The URDF model of the robot -->
       <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
@@ -26,7 +32,7 @@
       <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />
 
       <!-- make the files into global parameters -->
-      <param name="taskFile"   value="$(arg taskFile)" />
+      <!-- <param name="taskFile"   value="$(arg taskFile)" /> -->
       <param name="urdfFile"   value="$(arg urdfFile)" />
       <param name="libFolder"  value="$(arg libFolder)" />
 
