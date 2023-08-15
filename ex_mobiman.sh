@@ -1,4 +1,4 @@
-tmux send-keys -t mobiman.0 'roslaunch mobiman_simulation gazebo.launch' ENTER
+tmux send-keys -t mobiman.0 'roslaunch mobiman_simulation exp.launch' ENTER
 sleep 5
 tmux send-keys -t mobiman.1 'roslaunch mobiman_simulation ocs2_target.launch' ENTER
 sleep 2
