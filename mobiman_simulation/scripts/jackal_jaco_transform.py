@@ -8,7 +8,7 @@ from tf2_msgs.msg import TFMessage
 if __name__ == '__main__':
     rospy.init_node("jackal_jaco_transform_publisher")
     # rate set to 300 for avoiding conflicts
-    rate = rospy.Rate(300)
+    # rate = rospy.Rate(10000)
     trans = None
     rot = None
     # transform listener and broadcaster
@@ -29,4 +29,4 @@ if __name__ == '__main__':
         # For debugging if needed
         else:
             pass
-        rate.sleep()
+        # rate.sleep()
