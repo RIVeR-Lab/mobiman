@@ -30,6 +30,7 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning_interface
   moveit_ros_perception
   moveit_visual_tools
+  kinova_msgs
 )
 
 #find_package(catkin_simple REQUIRED)
@@ -109,6 +110,7 @@ generate_messages(
   DEPENDENCIES
   std_msgs
   geometry_msgs
+  kinova_msgs
 )
 
 ################################################
@@ -155,6 +157,7 @@ catkin_package(
     moveit_core
     moveit_visual_tools
     moveit_ros_planning_interface
+    kinova_msgs
     ${PACKAGE_DEPENDENCIES}
   DEPENDS 
     Boost 
@@ -227,9 +230,11 @@ add_dependencies(goal_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 
 ## Scanner
 add_executable(scanner src/scanner.cpp)
+add_executable(jaco_utility src/jaco_utility.cpp)
 add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
+add_dependencies(jaco_utility ${catkin_EXPORTED_TARGETS})
 target_link_libraries(scanner ${PCL_LIBRARIES} ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
-
+target_link_libraries(jaco_utility ${catkin_LIBRARIES})
 ## World Frame Server
 add_executable(world_frame_server src/world_frame_server.cpp)
 add_dependencies(world_frame_server ${catkin_EXPORTED_TARGETS})
