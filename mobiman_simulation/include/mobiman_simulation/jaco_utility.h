@@ -9,9 +9,9 @@
 // Global variable current position
 sensor_msgs::JointState jaco_position;
 // Global variable target position
-
+trajectory_msgs::JointTrajectory jaco_trajectory;
 //PID propotions
-float p = 80000.0f;
+float p = 8000.0f;
 float i = 0.0f;
 float d = 0.0f;
 float dt = 0.0f;
@@ -26,3 +26,4 @@ ros::Publisher velocity_publisher;
 void position_listener(trajectory_msgs::JointTrajectory trajectory);
 void jaco_feedback(sensor_msgs::JointState joint_state);
 void shutdown_handler(int sig);
+void pid_callback(const ros::TimerEvent &);
