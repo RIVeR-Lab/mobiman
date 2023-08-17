@@ -1,0 +1,38 @@
+<!--AUTHOR: Neset Unver Akmandor (NUA)-->
+<!--E-MAIL: akmandor.n@northeastern.edu-->
+
+<launch>
+  <!-- CONFIGURATION OPTIONS
+    config_distance_server
+  -->
+  <arg name="config_distance_server"  default="config_distance_server" />
+
+  <!-- Set nodes on debug mode -->
+  <!--
+        ur5
+        jackal_ur5
+        jackal_jaco
+  -->
+  <arg name="robot"       default="jackal_jaco" />
+
+  <!-- PUBLISH CONFIGURATION PARAMETERS -->
+  <rosparam file="$(find mobiman_simulation)/config/$(arg config_distance_server).yaml"/>
+
+  <!-- The URDF model of the robot -->
+  <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
+  <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_jaco_fixedFinger.urdf" />
+  
+  <!-- The library folder to generate CppAD codegen into -->
+  <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />
+
+  <!-- make the files into global parameters -->
+  <param name="taskFile"   value="$(arg taskFile)" />
+  <param name="urdfFile"   value="$(arg urdfFile)" />
+  <param name="libFolder"  value="$(arg libFolder)" />
+
+  <node pkg="ocs2_mobile_manipulator_ros" 
+        type="mobile_manipulator_distance_visualization" 
+        name="mobile_manipulator_distance_visualization" 
+        output="screen"
+        launch-prefix="" />
+</launch>

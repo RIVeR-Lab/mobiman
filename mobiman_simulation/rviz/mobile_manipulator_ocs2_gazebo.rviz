@@ -291,8 +291,6 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        grasp:
-          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -421,8 +419,6 @@ Visualization Manager:
             {}
           conveyor_belt:
             {}
-          grasp:
-            {}
           green_cube:
             {}
           long_pkg:
@@ -502,9 +498,9 @@ Visualization Manager:
       Value: false
     - Class: octomap_rviz_plugin/ColorOccupancyGrid
       Enabled: true
-      Max. Height Display: inf
+      Max. Height Display: 3.4028234663852886e+38
       Max. Octree Depth: 16
-      Min. Height Display: -inf
+      Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
       Octomap Topic: /octomap_scan
       Queue Size: 5
@@ -512,6 +508,47 @@ Visualization Manager:
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /occ_dist_array
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /points_on_robot
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Queue Size: 10
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic: /move_base_simple/goal
+      Unreliable: false
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /mobile_manipulator/optimizedStateTrajectory
+      Name: MarkerArray
+      Namespaces:
+        Base Trajectory: true
+        EE Trajectory: true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -540,7 +577,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.94735860824585
+      Distance: 4.527034759521484
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -548,17 +585,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.20309898257255554
-        Y: -1.158494234085083
-        Z: 0.34071874618530273
+        X: 0.359544962644577
+        Y: -0.12735363841056824
+        Z: 0.8270843625068665
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8497986793518066
+      Pitch: 0.8547976613044739
       Target Frame: <Fixed Frame>
-      Yaw: 1.6560474634170532
+      Yaw: 1.6060612201690674
     Saved: ~
 Window Geometry:
   Displays:
