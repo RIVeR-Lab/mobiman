@@ -3,7 +3,7 @@
 <launch>
       <!-- Enable rviz visualization -->
       <arg name="rviz"        default="true" />
-      <arg name="simulation"  value="false" />
+      <arg name="simulation"  value="true" />
 
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->

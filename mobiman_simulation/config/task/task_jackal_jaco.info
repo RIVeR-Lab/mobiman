@@ -55,6 +55,7 @@ model_information
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
+  logSavePathRel                  "dataset/ocs2/"
 }
 
 model_settings
