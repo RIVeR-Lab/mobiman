@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.08.15
+LAST UPDATE: 2023.08.16
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -41,7 +41,44 @@ def add_log_data(log_path, log_name, data_name, data_value):
         # convert back to json.
         json.dump(file_data, file, indent = 4)
 
-def plot_log(   
+def plot_log_state(   
+        data1_x, data1_y, 
+        data2_x, data2_y,
+        state_index=0, time_index=0,
+        limit_min=None, limit_max=None, 
+        label_data1='', label_data2='',
+        color1='r', color2='g',
+        label_x='', label_y='', title='', 
+        save_path='plot_ocs2_log_state.png'):
+    
+    fig = plt.figure()
+    plt.plot(data1_x, data1_y[state_index], color=color1, label=label_data1)
+
+    if time_index >= 0:
+        data2_x[time_index] = np.reshape(data2_x[time_index], data2_y[time_index][state_index].shape)
+        plt.plot(data2_x[time_index], data2_y[time_index][state_index], color=color2, label=label_data2)
+    else:
+        for i, dat in enumerate(data2_y):
+            data2_x[i] = np.reshape(data2_x[i], dat[state_index].shape)
+            if i == 0:
+                plt.plot(data2_x[i], dat[state_index], color=color2, label=label_data2)
+            else:
+                plt.plot(data2_x[i], dat[state_index], color=color2)
+
+    if limit_min is not None:
+        plt.axhline(limit_min, color='k', linewidth=2, linestyle="--")
+
+    if limit_max is not None:
+        plt.axhline(limit_max, color='k', linewidth=2, linestyle="--")
+
+    plt.xlabel(label_x)
+    plt.ylabel(label_y)
+    plt.title(title)
+    plt.legend()
+    plt.savefig(save_path)
+    plt.close()
+
+def plot_log_input(   
         data_x, data1_y, data2_y=None, 
         data3_x=None, data3_y=None,
         input_index=0, state_index=0, time_index=-1,
@@ -185,6 +222,14 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
         print("[plot_ocs2_log::__main__] data_size: " + str(data_size))
 
     # Set joint states and commands wrt the time vector
+    state_pos_base = np.zeros((state_arm_offset, data_size))
+    for i, single_state in enumerate(state_pos_data):
+        for j in range(state_arm_offset):
+            if j == 2:
+                state_pos_base[j][i] = single_state[j] * 180 / math.pi
+            else:
+                state_pos_base[j][i] = single_state[j]
+
     state_velo_base = np.zeros((state_velo_base_data_size, data_size))
     for i, single_state in enumerate(state_velo_base_data):
         for j, ss in enumerate(single_state):
@@ -207,33 +252,11 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
 
     state = np.vstack([state_velo_base, state_pos_arm])
 
+    print("[plot_ocs2_log::__main__] state_pos_base.shape: " + str(state_pos_base.shape))
     print("[plot_ocs2_log::__main__] state_velo_base.shape: " + str(state_velo_base.shape))
     print("[plot_ocs2_log::__main__] state_pos_arm.shape: " + str(state_pos_arm.shape))
     print("[plot_ocs2_log::__main__] state.shape: " + str(state.shape))
     print("[plot_ocs2_log::__main__] input.shape: " + str(input.shape))
-
-    '''
-    ### NUA NOTE: DEPRICATED!
-    # Set MPC time
-    mpc_time = np.zeros((mpc_time_trajectory_sample_size, mpc_time_trajectory_data_size))
-    for i, traj_sample in enumerate(mpc_time_trajectory_data):
-        for j, ts in enumerate(traj_sample):
-            mpc_time[j][i] = ts
-
-    # Set MPC state
-    mpc_state = np.zeros((mpc_state_trajectory_size, mpc_state_trajectory_sample_size, mpc_state_trajectory_data_size))
-    for i, traj_sample in enumerate(mpc_state_trajectory_data):
-        for j, traj in enumerate(traj_sample):
-            for k, tv in enumerate(traj):
-                mpc_state[k][j][i] = tv
-
-    # Set MPC input
-    mpc_input = np.zeros((mpc_input_trajectory_size, mpc_input_trajectory_sample_size, mpc_input_trajectory_data_size))
-    for i, traj_sample in enumerate(mpc_input_trajectory_data):
-        for j, traj in enumerate(traj_sample):
-            for k, tv in enumerate(traj):
-                mpc_input[k][j][i] = tv
-    '''
 
     # Set MPC time
     mpc_time = []
@@ -254,7 +277,7 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
                 idx = k
                 if model_mode == 1:
                     idx = state_arm_offset + k
-                if idx >= state_arm_offset:
+                if idx >= state_arm_offset or idx == 2:
                     mpc_state_sample_traj[idx,j] = tv * 180 / math.pi
                 else:
                     mpc_state_sample_traj[idx,j] = tv
@@ -285,7 +308,6 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
 
     if (save_plot_flag):
         ### Plots
-
         _save_prefix = save_prefix
         if save_prefix:
             _save_prefix = save_prefix + '_'
@@ -296,8 +318,30 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
         if not isExist:
             os.makedirs(save_path)
 
+        ## Base states (position) - MPC state estimates
+        plot_log_state(
+            time, state_pos_base, mpc_time, mpc_state, 
+            state_index=0, time_index=-1, 
+            label_data1='State', label_data2='MPC state estimate',
+            label_x="Time", label_y='Position x [m]',
+            save_path=save_path + 'base_posX.png')
+        
+        plot_log_state(
+            time, state_pos_base, mpc_time, mpc_state, 
+            state_index=1, time_index=-1, 
+            label_data1='State', label_data2='MPC state estimate',
+            label_x="Time", label_y='Position y [m]',
+            save_path=save_path + 'base_posY.png')
+        
+        plot_log_state(
+            time, state_pos_base, mpc_time, mpc_state, 
+            state_index=2, time_index=-1, 
+            label_data1='State', label_data2='MPC state estimate',
+            label_x="Time", label_y='Yaw angle [deg]',
+            save_path=save_path + 'base_yaw.png')
+
         ## Base states (velocity) - input commands
-        plot_log(
+        plot_log_input(
             time, state, input, mpc_time, mpc_input, 
             input_index=0, state_index=0, time_index=-1, 
             label_data1='State', label_data2='Command input', label_data3='MPC input',
@@ -305,7 +349,7 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
             fig_num=1,
             save_path=save_path + 'base_veloX.png')
 
-        plot_log(
+        plot_log_input(
             time, state, input, mpc_time, mpc_input, 
             input_index=1, state_index=1, time_index=-1,
             label_data1='State', label_data2='Command input', label_data3='MPC input',
@@ -321,7 +365,7 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
             state[idxi] *= 180 / math.pi
             input[idxi] *= 180 / math.pi
 
-            plot_log(
+            plot_log_input(
                 time, state, input, mpc_time, mpc_state, 
                 input_index=idxi, state_index=idxs, time_index=-1,
                 label_data1='State', label_data2='Command input', label_data3='MPC input',
@@ -329,7 +373,7 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
                 fig_num=3+i,
                 save_path=save_path + 'arm_joint' + str(i) + '.png')
             
-    return time, state, input, mpc_time, mpc_state, mpc_input, dt, input_arm_offset, state_arm_offset
+    return time, state, input, state_pos_base, mpc_time, mpc_state, mpc_input, dt, input_arm_offset, state_arm_offset
 
 def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_plot_flag=True):
     
@@ -346,6 +390,7 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
     time_concat = np.empty((0,0))
     state_concat = np.empty((0,0))
     input_concat = np.empty((0,0))
+    state_pos_base_concat = np.empty((0,0))
     mpc_time_concat = []
     mpc_state_concat = []
     mpc_input_concat = []
@@ -357,12 +402,13 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
 
         log_name_trimmed = log_name
         log_name_trimmed = log_name_trimmed.replace('.json', '')
-        time_tmp, state_tmp, input_tmp, mpc_time_tmp, mpc_state_tmp, mpc_input_tmp, dt, input_arm_offset, state_arm_offset = extract_and_plot_log(log_path, log_name_trimmed, mpc_ts_idx=mpc_ts_idx, save_plot_flag=save_plot_flag)
+        time_tmp, state_tmp, input_tmp, state_pos_base_tmp, mpc_time_tmp, mpc_state_tmp, mpc_input_tmp, dt, input_arm_offset, state_arm_offset = extract_and_plot_log(log_path, log_name_trimmed, mpc_ts_idx=mpc_ts_idx, save_plot_flag=save_plot_flag)
         
         if k == 0:
             time_concat = time_tmp
             state_concat = state_tmp
             input_concat = input_tmp
+            state_pos_base_concat = state_pos_base_tmp
             mpc_time_concat = mpc_time_tmp
             mpc_state_concat = mpc_state_tmp
             mpc_input_concat = mpc_input_tmp
@@ -379,6 +425,7 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
             time_concat = np.concatenate((time_concat, time_tmp), axis=0)
             state_concat = np.hstack([state_concat, state_tmp])
             input_concat = np.hstack([input_concat, input_tmp])
+            state_pos_base_concat = np.hstack([state_pos_base_concat, state_pos_base_tmp])
             mpc_time_concat += mpc_time_tmp
             mpc_state_concat += mpc_state_tmp
             mpc_input_concat += mpc_input_tmp
@@ -388,6 +435,7 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
     print("[plot_ocs2_log::__main__] time_concat.shape: " + str(time_concat.shape))
     print("[plot_ocs2_log::__main__] state_concat.shape: " + str(state_concat.shape))
     print("[plot_ocs2_log::__main__] input_concat.shape: " + str(input_concat.shape))
+    print("[plot_ocs2_log::__main__] state_pos_base_concat.shape: " + str(state_pos_base_concat.shape))
     print("[plot_ocs2_log::__main__] mpc_time_concat len: " + str(len(mpc_time_concat)))
     print("[plot_ocs2_log::__main__] mpc_time_concat[0].shape: " + str(mpc_time_concat[0].shape))
     print("[plot_ocs2_log::__main__] mpc_state_concat len: " + str(len(mpc_state_concat)))
@@ -399,8 +447,30 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
     if save_prefix:
             save_prefix += '_'
 
+    ## Base states (position) - MPC state estimates
+    plot_log_state(
+        time_concat, state_pos_base_concat, mpc_time_concat, mpc_state_concat, 
+        state_index=0, time_index=-1, 
+        label_data1='State', label_data2='MPC state estimate',
+        label_x="Time", label_y='Position x [m]',
+        save_path=log_path + save_prefix + 'base_posX.png')
+    
+    plot_log_state(
+        time_concat, state_pos_base_concat, mpc_time_concat, mpc_state_concat, 
+        state_index=1, time_index=-1, 
+        label_data1='State', label_data2='MPC state estimate',
+        label_x="Time", label_y='Position y [m]',
+        save_path=log_path + save_prefix + 'base_posY.png')
+    
+    plot_log_state(
+        time_concat, state_pos_base_concat, mpc_time_concat, mpc_state_concat, 
+        state_index=2, time_index=-1, 
+        label_data1='State', label_data2='MPC state estimate',
+        label_x="Time", label_y='Yaw angle [deg]',
+        save_path=log_path + save_prefix + 'base_yaw.png')
+
     ## Base states (velocity) - input commands
-    plot_log(
+    plot_log_input(
         time_concat, state_concat, input_concat, mpc_time_concat, mpc_input_concat, 
         input_index=0, state_index=0, time_index=-1, 
         label_data1='State', label_data2='Command input', label_data3='MPC input',
@@ -408,7 +478,7 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
         fig_num=1,
         save_path=log_path + save_prefix + 'base_veloX.png')
 
-    plot_log(
+    plot_log_input(
         time_concat, state_concat, input_concat, mpc_time_concat, mpc_input_concat, 
         input_index=1, state_index=1, time_index=-1, 
         label_data1='State', label_data2='Command input', label_data3='MPC input',
@@ -421,7 +491,7 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
         idxi = input_arm_offset + i # type: ignore
         idxs = state_arm_offset + i # type: ignore
         
-        plot_log(
+        plot_log_input(
             time_concat, state_concat, input_concat, mpc_time_concat, mpc_state_concat, 
             input_index=idxi, state_index=idxs, time_index=-1, 
             label_data1='State', label_data2='Command input', label_data3='MPC input',

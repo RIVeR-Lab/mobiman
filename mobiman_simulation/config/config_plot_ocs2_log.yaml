@@ -3,7 +3,7 @@ option: 1
 
 ## OPTION 0: Read the log
 # NOTE: Provide the name without ".json"!
-ocs2_log_name: "20230815_220339"
+ocs2_log_name: "20230815_220157"
 
 ## OPTION 1: Read the folder of logs
 
