@@ -13,5 +13,6 @@ sleep 1
 tmux send-keys -t $session.0 'source ~/.bashrc' ENTER
 tmux send-keys -t $session.1 'source ~/.bashrc' ENTER
 tmux send-keys -t $session.0 'roslaunch kinova_bringup kinova_robot.launch' ENTER
-tmux send-keys -t $session.1 'rosrun kinova_demo jackal_jaco_arm_control.py' ENTER
+sleep 5
+tmux send-keys -t $session.1 'rosrun kinova_demo joints_action_client.py -v j2n6s300 radian -- 0 2.9 1.3 4.2 1.4 0' ENTER
 tmux attach -t jackal

@@ -32,16 +32,18 @@ Eigen::VectorXd propotional(joints_);
 Eigen::VectorXd derivative(joints_);
 Eigen::VectorXd integral(joints_);
 //PID Parameters
-double p = 10.0;
+double p = 20.0;
 double i = 0.0;
 double d = 0.0;
 double dt = 100;
 // Kinova_velocity msg
 kinova_msgs::JointVelocity jaco_velocity;
-double max_ = 15.0;
-double min_ = -15.0;
+double max_ = 20.0;
+double min_ = -20.0;
 ros::Publisher velocity_publisher;
 void position_listener(trajectory_msgs::JointTrajectory trajectory);
 void jaco_feedback(sensor_msgs::JointState joint_state);
 void shutdown_handler(int sig);
 void pid_callback(const ros::TimerEvent &);
+// MRT Fail Safe
+ros::Time time_;

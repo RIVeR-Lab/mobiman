@@ -7,8 +7,8 @@ int main(int argc, char **argv) {
     ros::NodeHandle nh;
     
     ros::Timer timer = nh.createTimer(ros::Duration(1/((int)dt)), pid_callback);
-    ros::Subscriber state_subscriber = nh.subscribe("/j2n6s300_driver/out/joint_state", 100, jaco_feedback);
-    ros::Subscriber trajectory_subscriber = nh.subscribe("/arm_controller/command", 100, position_listener);
+    ros::Subscriber state_subscriber = nh.subscribe("/j2n6s300_driver/out/joint_state", 5, jaco_feedback);
+    ros::Subscriber trajectory_subscriber = nh.subscribe("/arm_controller/command", 5, position_listener);
     velocity_publisher = nh.advertise<kinova_msgs::JointVelocity>("/j2n6s300_driver/in/joint_velocity", 100);
     
     // signal(SIGINT, shutdown_handler);
@@ -30,7 +30,7 @@ void position_listener(trajectory_msgs::JointTrajectory trajectory) {
     // jaco_trajectory = trajectory;
     mrt_target = Eigen::Map<Eigen::Matrix<double, 6, 1>>(trajectory.points[0].positions.data());
     start_pid = true;
-    
+    time_ = ros::Time::now();
 }
 
 void jaco_feedback(sensor_msgs::JointState joint_state) {
@@ -51,11 +51,23 @@ void pid_callback(const ros::TimerEvent &){
     if(!start_pid) {
         return;
     }
+    std::cout << ros::Time::now() - time_ << std::endl;
+    if((ros::Time::now() - time_) > ros::Duration(3.0)) {
+        jaco_velocity.joint1 = 0;
+        jaco_velocity.joint2 = 0;
+        jaco_velocity.joint3 = 0;
+        jaco_velocity.joint4 = 0;
+        jaco_velocity.joint5 = 0;
+        jaco_velocity.joint6 = 0;
+        velocity_publisher.publish(jaco_velocity);
+        return;
+    } 
     try {
         error_ = mrt_target - jaco_state;
         // error_ = mrt_target - jaco_state;
         propotional = error_;
         derivative = (error_ - prev_error_) / dt;
+        prev_error_ = error_;
         integral_ += error_;
         output_ = propotional * p + integral * i + derivative * d;
         // output_.max(10).min(-10);
