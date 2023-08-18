@@ -7,8 +7,15 @@
 #include <stdio.h>
 #include <vector>
 #include <Eigen/Dense>
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <iostream>
+#include <string>
+#include <chrono>
+using json = nlohmann::json;
+json data;
 
-
+void write_data(void);
 // Total Joints
 int joints_ = 6;
 bool start_pid = false;
@@ -47,3 +54,10 @@ void shutdown_handler(int sig);
 void pid_callback(const ros::TimerEvent &);
 // MRT Fail Safe
 ros::Time time_;
+ros::Time data_start_time;
+// JSON Vars
+std::vector<std::vector<double>> data_state_position_;
+std::vector<std::vector<double>> data_target_position_;
+std::vector<double> data_time_;
+std::string file_name;
+std::string file_path = "/home/alpharomeo911/datatset";
