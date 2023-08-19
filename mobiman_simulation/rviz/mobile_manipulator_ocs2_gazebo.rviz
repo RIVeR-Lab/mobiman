@@ -5,6 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
+        - /MarkerArray1
+        - /MarkerArray2
       Splitter Ratio: 0.5
     Tree Height: 790
   - Class: rviz/Selection
@@ -503,17 +505,19 @@ Visualization Manager:
       Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
       Octomap Topic: /octomap_scan
-      Queue Size: 5
+      Queue Size: 100
       Value: true
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /occ_dist_array
+      Marker Topic: /occupancy_distances
       Name: MarkerArray
       Namespaces:
-        {}
+        ccupancy_distance_: true
+        cupancy_distance_: true
+        occupancy_distance_: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -521,7 +525,7 @@ Visualization Manager:
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -577,7 +581,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.527034759521484
+      Distance: 4.945938587188721
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -585,17 +589,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.359544962644577
-        Y: -0.12735363841056824
-        Z: 0.8270843625068665
+        X: 0.25343820452690125
+        Y: -1.588194489479065
+        Z: 0.3961728811264038
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8547976613044739
+      Pitch: 0.544798731803894
       Target Frame: <Fixed Frame>
-      Yaw: 1.6060612201690674
+      Yaw: 1.5610700845718384
     Saved: ~
 Window Geometry:
   Displays:

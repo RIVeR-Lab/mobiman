@@ -79,7 +79,7 @@ def plot_log_state(
     plt.close()
 
 def plot_log_input(   
-        data_x, data1_y, data2_y=None, 
+        data_x=None, data1_y=None, data2_y=None, 
         data3_x=None, data3_y=None,
         input_index=0, state_index=0, time_index=-1,
         limit_min=None, limit_max=None, 
@@ -89,7 +89,8 @@ def plot_log_input(
         fig_num=0, save_path='plot_ocs2_log.png'):
     
     fig = plt.figure()
-    plt.plot(data_x, data1_y[input_index], color=color1, label=label_data1)
+    if  data1_y is not None:
+        plt.plot(data_x, data1_y[input_index], color=color1, label=label_data1)
 
     if  data2_y is not None:
         plt.plot(data_x, data2_y[input_index], color=color2, label=label_data2)
@@ -239,7 +240,7 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
     state_pos_arm = np.zeros((state_arm_size, data_size))
     for i, single_state in enumerate(state_pos_data):
         for j, ss in enumerate(single_state[state_arm_offset:]):
-            state_pos_arm[j][i] = ss
+            state_pos_arm[j][i] = ss * 180 / math.pi
 
     input_size = state_velo_base_data_size + state_arm_size
     ioff = 0
@@ -248,7 +249,7 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
     input = np.zeros((input_size, data_size))
     for i, single_input in enumerate(input_data):
         for j, si in enumerate(single_input):
-            input[ioff+j][i] = si
+            input[ioff+j][i] = si * 180 / math.pi
 
     state = np.vstack([state_velo_base, state_pos_arm])
 
@@ -362,16 +363,24 @@ def extract_and_plot_log(log_path, log_name, mpc_ts_idx=0, save_prefix='',save_p
             idxi = input_arm_offset + i
             idxs = state_arm_offset + i
             
-            state[idxi] *= 180 / math.pi
-            input[idxi] *= 180 / math.pi
+            #state[idxi] *= 180 / math.pi
+            #input[idxi] *= 180 / math.pi
 
             plot_log_input(
                 time, state, input, mpc_time, mpc_state, 
                 input_index=idxi, state_index=idxs, time_index=-1,
-                label_data1='State', label_data2='Command input', label_data3='MPC input',
+                label_data1='State', label_data2='Command input', label_data3='MPC state estimate',
                 label_x="Time", label_y='Arm joint angle [deg]',
                 fig_num=3+i,
-                save_path=save_path + 'arm_joint' + str(i) + '.png')
+                save_path=save_path + 'arm_joint' + str(i+1) + '_pos.png')
+            
+            plot_log_input(
+                data3_x=mpc_time, data3_y=mpc_input, 
+                state_index=idxi, time_index=-1,
+                label_data3='MPC input',
+                label_x="Time", label_y='Arm joint angular velocity [deg/sec]',
+                fig_num=3+i,
+                save_path=save_path + 'arm_joint' + str(i+1) + '_velo.png')
             
     return time, state, input, state_pos_base, mpc_time, mpc_state, mpc_input, dt, input_arm_offset, state_arm_offset
 
@@ -417,8 +426,8 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
                 time_diff = time_concat[-1] - time_tmp[0]
                 time_tmp += time_diff + dt
 
-            if mpc_time_tmp[0][0] <= mpc_time_concat[-1][0]:
-                time_diff = mpc_time_concat[-1][0] - mpc_time_tmp[0][0]
+            if mpc_time_tmp[0][0][0] <= mpc_time_concat[-1][0][0]:
+                time_diff = mpc_time_concat[-1][0][0] - mpc_time_tmp[0][0][0]
                 for tim in time_diff:
                     tim += time_diff + dt
 
@@ -475,7 +484,6 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
         input_index=0, state_index=0, time_index=-1, 
         label_data1='State', label_data2='Command input', label_data3='MPC input',
         label_x="Time", label_y='Lateral velocity [m/s]',
-        fig_num=1,
         save_path=log_path + save_prefix + 'base_veloX.png')
 
     plot_log_input(
@@ -483,10 +491,9 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
         input_index=1, state_index=1, time_index=-1, 
         label_data1='State', label_data2='Command input', label_data3='MPC input',
         label_x="Time", label_y='Angular velocity [rad/s]',
-        fig_num=2,
         save_path=log_path + save_prefix + 'base_veloYaw.png')
     
-    ## Arm states (position) - commands
+    ## Arm states (position and velocity) - commands
     for i in range(state_concat.shape[0] - input_arm_offset): # type: ignore
         idxi = input_arm_offset + i # type: ignore
         idxs = state_arm_offset + i # type: ignore
@@ -494,10 +501,16 @@ def extract_and_plot_log_in_folder(log_path, mpc_ts_idx=0, save_prefix='', save_
         plot_log_input(
             time_concat, state_concat, input_concat, mpc_time_concat, mpc_state_concat, 
             input_index=idxi, state_index=idxs, time_index=-1, 
-            label_data1='State', label_data2='Command input', label_data3='MPC input',
+            label_data1='State', label_data2='Command input', label_data3='MPC state estimate',
             label_x="Time", label_y='Arm joint angle [deg]',
-            fig_num=3+i,
-            save_path=log_path + save_prefix + 'arm_joint' + str(i) + '.png') # type: ignore
+            save_path=log_path + save_prefix + 'arm_joint' + str(i+1) + '_pos.png') # type: ignore
+        
+        plot_log_input(
+            data3_x=mpc_time_concat, data3_y=mpc_input_concat, 
+            state_index=idxi, time_index=-1,
+            label_data3='MPC input',
+            label_x="Time", label_y='Arm joint angular velocity [deg/sec]',
+            save_path=log_path + save_prefix + 'arm_joint' + str(i+1) + '_velo.png')
 
 '''
 DESCRIPTION: TODO...
@@ -523,6 +536,6 @@ if __name__ == '__main__':
         extract_and_plot_log(ocs2_log_path, ocs2_log_name, save_prefix=save_prefix, save_plot_flag=True) # type: ignore
         
     if option == 1:
-        extract_and_plot_log_in_folder(ocs2_log_path, save_prefix=save_prefix, save_plot_flag=True) # type: ignore
+        extract_and_plot_log_in_folder(ocs2_log_path, save_prefix=save_prefix, save_plot_flag=False) # type: ignore
     
     print("[plot_ocs2_log::__main__] END")

@@ -42,6 +42,7 @@ model_information
     [5] j2n6s300_joint_6
   }
 
+  worldFrame                       "world"
   ; base frame of the robot (from URDF)
   baseFrame                       "base_link"
   ; end-effector frame of the robot (from URDF)
@@ -55,6 +56,8 @@ model_information
 
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
+  occupancyDistanceMsg            "occupancy_distances"
+  octomapMsg                      "/octomap_scan"
   logSavePathRel                  "dataset/ocs2/"
 }
 
