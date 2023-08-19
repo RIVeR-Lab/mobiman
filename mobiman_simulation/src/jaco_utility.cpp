@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
     ros::Subscriber state_subscriber = nh.subscribe("/j2n6s300_driver/out/joint_state", 5, jaco_feedback);
     ros::Subscriber trajectory_subscriber = nh.subscribe("/arm_controller/command", 5, position_listener);
     ros::Subscriber velocity_subscriber = nh.subscribe("/arm_controller/velocity", 5, velocity_listener);
+    clear_trajectory_service = nh.serviceClient<kinova_msgs::ClearTrajectories>("/j2n6s300_driver/in/clear_trajectories");
     velocity_publisher = nh.advertise<kinova_msgs::JointVelocity>("/j2n6s300_driver/in/joint_velocity", 100);
 
     data_start_time = ros::Time::now();
@@ -30,6 +31,11 @@ int main(int argc, char **argv) {
 
 void position_listener(trajectory_msgs::JointTrajectory trajectory) {
     // jaco_trajectory = trajectory;
+    if(clear_trajectory_service.call(clear_trajectory)) {
+        std::cout << "[+] Trajectory Cleared" << std::endl;
+    } else {
+        std::cout << "[+] Trajectory not Cleared" << std::endl;
+    }
     mrt_target = Eigen::Map<Eigen::Matrix<double, 6, 1>>(trajectory.points[0].positions.data());
     start_pid = true;
     time_ = ros::Time::now();
@@ -132,6 +138,7 @@ void write_data(void) {
 
 void velocity_listener(kinova_msgs::JointVelocity target_velocity) {
     // target_joint_velocity.clear();
+    target_vel = target_velocity;
     target_joint_velocity[0] = target_velocity.joint1;
     target_joint_velocity[1] = target_velocity.joint2;
     target_joint_velocity[2] = target_velocity.joint3;
