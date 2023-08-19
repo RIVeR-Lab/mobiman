@@ -39,9 +39,9 @@ Eigen::VectorXd propotional(joints_);
 Eigen::VectorXd derivative(joints_);
 Eigen::VectorXd integral(joints_);
 //PID Parameters
-double p = 20.0;
-double i = 0.001;
-double d = 0.1;
+double p = 25.0;
+double i = 0.01;
+double d = 0;
 double dt = 100;
 // Kinova_velocity msg
 kinova_msgs::JointVelocity jaco_velocity;
