@@ -40,8 +40,8 @@ Eigen::VectorXd derivative(joints_);
 Eigen::VectorXd integral(joints_);
 //PID Parameters
 double p = 20.0;
-double i = 0.0;
-double d = 0.0;
+double i = 0.001;
+double d = 0.1;
 double dt = 100;
 // Kinova_velocity msg
 kinova_msgs::JointVelocity jaco_velocity;
@@ -52,12 +52,17 @@ void position_listener(trajectory_msgs::JointTrajectory trajectory);
 void jaco_feedback(sensor_msgs::JointState joint_state);
 void shutdown_handler(int sig);
 void pid_callback(const ros::TimerEvent &);
+void velocity_listener(kinova_msgs::JointVelocity target_velocity);
 // MRT Fail Safe
 ros::Time time_;
 ros::Time data_start_time;
 // JSON Vars
+std::vector<double> target_joint_velocity(6, 0);
 std::vector<std::vector<double>> data_state_position_;
+std::vector<double> current_velocity(6, 0);
 std::vector<std::vector<double>> data_target_position_;
+std::vector<std::vector<double>> data_target_velocity_;
+std::vector<std::vector<double>> data_pid_velocity_;
 std::vector<double> data_time_;
 std::string file_name;
 std::string file_path = "/home/alpharomeo911/datatset";
