@@ -3,7 +3,7 @@
 <launch>
       <!-- Enable rviz visualization -->
       <arg name="rviz"        default="true" />
-      <arg name="simulation"  value="false" />
+      <arg name="simulation"  value="true" />
 
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->
@@ -15,11 +15,13 @@
             jackal_jaco
       -->
       <arg name="robot"       default="jackal_jaco" />
+      
       <!-- <arg name="taskFile"    default="" /> -->
       <!-- The task file for the mpc. -->
       <group if="$(arg simulation)">
             <param name="taskFile"    value="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
       </group>
+
       <group unless="$(arg simulation)">
             <param name="taskFile"    value="$(find mobiman_simulation)/config/task/exp_$(arg robot).info" />
       </group>

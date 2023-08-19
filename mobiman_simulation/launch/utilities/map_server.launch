@@ -12,7 +12,7 @@
   <rosparam file="$(find mobiman_simulation)/config/voxblox.yaml"/>
 
   <node name="map_server" pkg="mobiman_simulation" type="map_server" output="screen" >
-    <remap from="pointcloud" to="pc2_scan"/>
+    <!--remap from="pointcloud" to="pc2_scan"/>
     <remap from="map_server/esdf_map_out" to="esdf_map" />    
     <param name="tsdf_voxel_size" value="0.1" />
     <param name="tsdf_voxels_per_side" value="16" />
@@ -22,6 +22,6 @@
     <param name="allow_clear" value="true" />
     <param name="update_mesh_every_n_sec" value="0.05" />
     <param name="clear_sphere_for_planning" value="false" />
-    <param name="world_frame" value="world" />
+    <param name="world_frame" value="world" /-->
   </node>
 </launch>

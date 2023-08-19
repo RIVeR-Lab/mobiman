@@ -17,6 +17,10 @@
 
   <!-- PUBLISH CONFIGURATION PARAMETERS -->
   <rosparam file="$(find mobiman_simulation)/config/$(arg config_distance_server).yaml"/>
+  <rosparam file="$(find mobiman_simulation)/config/voxblox.yaml"/>
+
+  <!-- The task file for the mpc. -->
+  <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
 
   <!-- The URDF model of the robot -->
   <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
