@@ -39,14 +39,14 @@ Eigen::VectorXd propotional(joints_);
 Eigen::VectorXd derivative(joints_);
 Eigen::VectorXd integral(joints_);
 //PID Parameters
-double p = 25.0;
-double i = 0.01;
+double p = 27.0;
+double i = 0.2;
 double d = 0;
-double dt = 100;
+double dt = 20;
 // Kinova_velocity msg
 kinova_msgs::JointVelocity jaco_velocity;
-double max_ = 20.0;
-double min_ = -20.0;
+double max_ = 18.0;
+double min_ = -18.0;
 ros::Publisher velocity_publisher;
 void position_listener(trajectory_msgs::JointTrajectory trajectory);
 void jaco_feedback(sensor_msgs::JointState joint_state);

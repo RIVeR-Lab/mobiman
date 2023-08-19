@@ -64,7 +64,7 @@ void pid_callback(const ros::TimerEvent &){
         velocity_publisher.publish(jaco_velocity);
         return;
     } 
-    if(ros::Time::now() - data_start_time > ros::Duration(10.0)) {
+    if(ros::Time::now() - data_start_time > ros::Duration(60.0)) {
         write_data();
     }
     try {
