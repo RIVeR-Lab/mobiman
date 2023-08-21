@@ -192,7 +192,8 @@ selfCollision
   collisionLinkPairs
   {
     [0] "chassis_link, j2n6s300_link_3"
-    [1] "j2n6s300_link_3, j2n6s300_link_5"
+    [1] "j2n6s300_link_2, j2n6s300_link_5"
+    ;[2] "j2n6s300_link_2, j2n6s300_link_6"
     ;[2] "chassis_link, j2n6s300_link_5"
     ;[3] "chassis_link, j2n6s300_link_6"
     ;[2] "j2n6s300_link_2, j2n6s300_link_6"
