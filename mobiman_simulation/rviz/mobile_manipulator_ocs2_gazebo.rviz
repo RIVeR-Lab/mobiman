@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /TF1/Frames1
         - /MarkerArray1
+        - /MarkerArray1/Namespaces1
         - /MarkerArray2
       Splitter Ratio: 0.5
     Tree Height: 790
@@ -505,7 +506,7 @@ Visualization Manager:
       Min. Height Display: -3.4028234663852886e+38
       Name: ColorOccupancyGrid
       Octomap Topic: /octomap_scan
-      Queue Size: 100
+      Queue Size: 10
       Value: true
       Voxel Alpha: 1
       Voxel Coloring: Z-Axis
@@ -518,7 +519,8 @@ Visualization Manager:
         ccupancy_distance_: true
         cupancy_distance_: true
         occupancy_distance_: true
-      Queue Size: 100
+        upancy_distance_: true
+      Queue Size: 0
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
@@ -526,7 +528,7 @@ Visualization Manager:
       Name: MarkerArray
       Namespaces:
         "": true
-      Queue Size: 100
+      Queue Size: 0
       Value: true
     - Alpha: 1
       Axes Length: 1
@@ -581,7 +583,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.945938587188721
+      Distance: 3.732578992843628
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -589,17 +591,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.25343820452690125
-        Y: -1.588194489479065
-        Z: 0.3961728811264038
+        X: -0.2314797341823578
+        Y: -1.660662055015564
+        Z: 0.08391179889440536
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.544798731803894
+      Pitch: 0.4247995615005493
       Target Frame: <Fixed Frame>
-      Yaw: 1.5610700845718384
+      Yaw: 1.981073260307312
     Saved: ~
 Window Geometry:
   Displays:
