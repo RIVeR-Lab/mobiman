@@ -119,6 +119,8 @@ cd ..
 ### Clone gazebo_ros_link_attacher
 git clone git@github.com:pal-robotics/gazebo_ros_link_attacher.git
 cd ..
+git clone git@github.com:mazrk7/robot_collision_checking.git
+
 
 sudo apt install ros-noetic-octomap*
 sudo apt install ros-noetic-pointcloud-to-laserscan
