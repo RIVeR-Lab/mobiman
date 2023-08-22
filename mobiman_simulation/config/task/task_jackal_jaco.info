@@ -221,7 +221,7 @@ extCollision
   delta           1e-3 ;1e-4
 
   ; maximum distance to obstacles
-  maxDistance  1.0
+  maxDistance  2.0
 }
 
 ; Only applied for arm joints: limits parsed from URDF

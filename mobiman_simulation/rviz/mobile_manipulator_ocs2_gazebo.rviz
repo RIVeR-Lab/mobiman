@@ -443,13 +443,13 @@ Visualization Manager:
       Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: true
+      Enabled: false
       Name: InteractiveMarkers
       Show Axes: false
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /auto_target_marker/update
-      Value: true
+      Value: false
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
       Enabled: true
@@ -521,13 +521,13 @@ Visualization Manager:
       Queue Size: 0
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 0
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /distance_markers
@@ -590,7 +590,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.675208568572998
+      Distance: 2.5053234100341797
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -598,17 +598,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.41692957282066345
-        Y: -1.2313623428344727
-        Z: 0.27741819620132446
+        X: -0.22231921553611755
+        Y: -0.1511279195547104
+        Z: 0.6524224877357483
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3897996246814728
+      Pitch: 0.504797101020813
       Target Frame: <Fixed Frame>
-      Yaw: 1.1728968620300293
+      Yaw: 1.5378950834274292
     Saved: ~
 Window Geometry:
   Displays:
