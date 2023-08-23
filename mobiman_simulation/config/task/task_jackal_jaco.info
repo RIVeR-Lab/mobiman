@@ -78,7 +78,7 @@ ddp
 
   maxNumIterations                1
   minRelCost                      0.1
-  constraintTolerance             5e-3  ; NUA EDIT: def: 1e-3
+  constraintTolerance             1e-2  ; NUA EDIT: def: 1e-3
 
   displayInfo                     false  ; NUA EDIT: def: false
   displayShortSummary             false  ; NUA EDIT: def: false
@@ -89,7 +89,7 @@ ddp
   AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
   RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
   maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
-  timeStep                        1e-3  ; NUA EDIT: def: 1e-3
+  timeStep                        5e-3  ; NUA EDIT: def: 1e-3
   backwardPassIntegratorType      ODE45
 
   constraintPenaltyInitialValue   20.0
@@ -103,7 +103,7 @@ ddp
   lineSearch
   {
     minStepLength                 1e-2 ; NUA EDIT: def: 1e-2
-    maxStepLength                 1.0 ; NUA EDIT: def: 1.0
+    maxStepLength                 2.0 ; NUA EDIT: def: 1.0
     hessianCorrectionStrategy     DIAGONAL_SHIFT
     hessianCorrectionMultiple     1e-3
   }
@@ -113,7 +113,7 @@ ddp
 rollout
 {
   AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
-  RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
+  RelTolODE                       1e-3 ; NUA EDIT: def: 1e-3
   timeStep                        1e-2 ; NUA EDIT: def: 1e-2
   integratorType                  ODE45
   maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
@@ -141,7 +141,7 @@ inputCost
     ; input costs for the different types of arm base DOFs
     base
     {
-      scaling 1e-1  ; NUA EDIT: def: 1e-2
+      scaling 1e-2  ; NUA EDIT: def: 1e-2
 
       (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
       (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
@@ -165,14 +165,14 @@ inputCost
 endEffector
 {
   ; end effector quadratic penalty scaling
-  muPosition       1.0 ; NUA EDIT: def: 10.0
-  muOrientation    1.0 ; NUA EDIT: def: 5.0
+  muPosition       10.0 ; NUA EDIT: def: 10.0
+  muOrientation    10.0 ; NUA EDIT: def: 5.0
 }
 
 finalEndEffector
 {
-  muPosition      20.0  ; NUA EDIT: def: 10
-  muOrientation   20.0  ; NUA EDIT: def: 5.0
+  muPosition      100.0  ; NUA EDIT: def: 10
+  muOrientation   100.0  ; NUA EDIT: def: 5.0
 }
 
 selfCollision
@@ -212,16 +212,16 @@ selfCollision
 extCollision
 { 
   ; activate external-collision constraint
-  activate  true
+  activate  false
 
   ; relaxed log barrier mu
-  mu              5e-2 ;5e-3
+  mu              5e-5 ;5e-3
   
   ; relaxed log barrier delta
   delta           1e-3 ;1e-4
 
   ; maximum distance to obstacles
-  maxDistance  2.0
+  maxDistance  1.0
 }
 
 ; Only applied for arm joints: limits parsed from URDF
@@ -240,7 +240,7 @@ jointPositionLimits
 jointVelocityLimits
 {
   ; relaxed log barrier mu
-  mu      0.015
+  mu      0.01
 
   ; relaxed log barrier delta
   delta   1e-3
@@ -250,19 +250,19 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      (0,0)  -0.5 ; forward velocity NUA EDIT: def: -0.5
-      (1,0)  -1.0 ; turning velocity NUA EDIT: def: -1.0
+      (0,0)  -0.3 ; forward velocity NUA EDIT: def: -0.5
+      (1,0)  -0.5 ; turning velocity NUA EDIT: def: -1.0
     }
 
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  -15  ; j2n6s300_joint_1 velocity
-      (1,0)  -15  ; j2n6s300_joint_2 velocity
-      (2,0)  -15  ; j2n6s300_joint_3 velocity
-      (3,0)  -15  ; j2n6s300_joint_4 velocity
-      (4,0)  -15  ; j2n6s300_joint_5 velocity
-      (5,0)  -15  ; j2n6s300_joint_6 velocity
+      (0,0)  -1  ; j2n6s300_joint_1 velocity
+      (1,0)  -1  ; j2n6s300_joint_2 velocity
+      (2,0)  -1  ; j2n6s300_joint_3 velocity
+      (3,0)  -1  ; j2n6s300_joint_4 velocity
+      (4,0)  -1  ; j2n6s300_joint_5 velocity
+      (5,0)  -1  ; j2n6s300_joint_6 velocity
     }
   }
 
@@ -271,19 +271,19 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      (0,0)  0.5 ; forward velocity
-      (1,0)  1.0 ; turning velocity
+      (0,0)  0.3 ; forward velocity
+      (1,0)  0.5 ; turning velocity
     }
 
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  15  ; j2n6s300_joint_1 velocity
-      (1,0)  15  ; j2n6s300_joint_2 velocity
-      (2,0)  15  ; j2n6s300_joint_3 velocity
-      (3,0)  15  ; j2n6s300_joint_4 velocity
-      (4,0)  15  ; j2n6s300_joint_5 velocity
-      (5,0)  15  ; j2n6s300_joint_6 velocity
+      (0,0)  1  ; j2n6s300_joint_1 velocity
+      (1,0)  1  ; j2n6s300_joint_2 velocity
+      (2,0)  1  ; j2n6s300_joint_3 velocity
+      (3,0)  1  ; j2n6s300_joint_4 velocity
+      (4,0)  1  ; j2n6s300_joint_5 velocity
+      (5,0)  1  ; j2n6s300_joint_6 velocity
     }
   }
 }

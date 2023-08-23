@@ -256,8 +256,6 @@ Visualization Manager:
           Value: true
         bin_4_dropping_task:
           Value: true
-        blue_cube:
-          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -292,8 +290,6 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        green_cube:
-          Value: true
         imu_link:
           Value: false
         j2n6s300_end_effector:
@@ -326,10 +322,6 @@ Visualization Manager:
           Value: false
         jaco_base_link:
           Value: false
-        long_pkg:
-          Value: true
-        longwide_pkg:
-          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -416,15 +408,7 @@ Visualization Manager:
                                 {}
           bin_4_dropping_task:
             {}
-          blue_cube:
-            {}
           conveyor_belt:
-            {}
-          green_cube:
-            {}
-          long_pkg:
-            {}
-          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -514,27 +498,23 @@ Visualization Manager:
       Marker Topic: /occupancy_distances
       Name: MarkerArray
       Namespaces:
-        ccupancy_distance_: true
-        cupancy_distance_: true
-        occupancy_distance_: true
-        upancy_distance_: true
+        {}
       Queue Size: 0
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 0
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        0 - 12: true
-        11 - 14: true
+        {}
       Queue Size: 0
       Value: true
     - Alpha: 1
@@ -558,8 +538,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -590,7 +569,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.5053234100341797
+      Distance: 4.106362819671631
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -598,17 +577,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.22231921553611755
-        Y: -0.1511279195547104
-        Z: 0.6524224877357483
+        X: -0.4648767411708832
+        Y: -0.2591167390346527
+        Z: 0.8403277397155762
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.504797101020813
+      Pitch: 0.6697967648506165
       Target Frame: <Fixed Frame>
-      Yaw: 1.5378950834274292
+      Yaw: 1.5528953075408936
     Saved: ~
 Window Geometry:
   Displays:
