@@ -58,6 +58,8 @@ model_information
   armControlMsg                   "/arm_controller/command"
   occupancyDistanceMsg            "occupancy_distances"
   octomapMsg                      "/octomap_scan"
+  collisionConstraintPoints       "collision_constraint_points"
+  collisionCheckPoints            "collision_check_points"
   logSavePathRel                  "dataset/ocs2/"
 }
 

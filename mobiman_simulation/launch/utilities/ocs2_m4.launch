@@ -38,6 +38,9 @@
       <param name="urdfFile"   value="$(arg urdfFile)" />
       <param name="libFolder"  value="$(arg libFolder)" />
 
+      <arg name="config_collision_points"  default="config_points_on_robot" />
+      <rosparam file="$(find mobiman_simulation)/config/$(arg config_collision_points).yaml"/>
+
       <node pkg="ocs2_mobile_manipulator_ros" 
             type="mobile_manipulator_node" 
             name="mobile_manipulator_node" 

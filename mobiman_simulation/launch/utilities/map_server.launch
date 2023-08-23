@@ -9,7 +9,6 @@
 
   <!-- PUBLISH CONFIGURATION PARAMETERS -->
   <rosparam file="$(find mobiman_simulation)/config/$(arg config_map_server).yaml"/>
-  <rosparam file="$(find mobiman_simulation)/config/voxblox.yaml"/>
 
   <node name="map_server" pkg="mobiman_simulation" type="map_server" output="screen" >
     <!--remap from="pointcloud" to="pc2_scan"/>
