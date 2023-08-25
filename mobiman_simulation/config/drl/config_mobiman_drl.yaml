@@ -42,11 +42,12 @@ plot_moving_average_window_size_episodes: 5
 world_frame_name: "world"
 robot_frame_name: "base_link"
 ee_frame_name: "j2n6s300_end_effector"
-goal_frame_name: "/grasp"
+goal_frame_name: "grasp"
 
 cmd_velocity_msg_name: "/cmd_vel"
 occgrid_msg_name: "/occupancy_grid"
 goal_status_msg_name: "/goal_status"
+colsphere_msg_name: "/occupancy_distances"
 
 occgrid_normalize_flag: True
 occgrid_occ_min: 0
@@ -60,17 +61,24 @@ occgrid_occ_max: 100
 # Action time horizon [s]
 action_time_horizon: 8
 
+# 0: Discrete
+# 1: Continuous
+action_type: 1
+
+# IF action_type: 0 (Discrete)
 # [baseMotion, armMotion, wholeBodyMotion]
 n_action_model: 3
 
 # [inputCost, targetCost, targetConstraint, selfCollisionConstraint, extCollisionConstraint, jointPositionConstraint, jointVelocityConstraint]
-n_action_constraint: 7
+# [selfCollisionConstraint]
+n_action_constraint: 1
 
 # 32 fixed poses in robot workspace + 1 goal pose
 n_action_target: 33 
 
-# Collision spheres on robot (NUA TODO: Set it from the subscribed topic!)  
-n_colsphere: 8
+# IF action_type: 1 (Continuous)
+# [model(1), constraint(1), target(6)]
+n_action: 8
 
 goal_range_min: 0.25
 goal_range_max: 10.0

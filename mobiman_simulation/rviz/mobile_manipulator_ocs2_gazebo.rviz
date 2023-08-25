@@ -427,13 +427,13 @@ Visualization Manager:
       Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: false
+      Enabled: true
       Name: InteractiveMarkers
       Show Axes: false
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /auto_target_marker/update
-      Value: false
+      Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
       Enabled: true
@@ -502,13 +502,13 @@ Visualization Manager:
       Queue Size: 0
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /points_on_robot
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 0
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /distance_markers
@@ -536,6 +536,22 @@ Visualization Manager:
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /mobile_manipulator_goal
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /mobile_manipulator_target
       Name: MarkerArray
       Namespaces:
         {}
@@ -569,7 +585,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.106362819671631
+      Distance: 7.127542495727539
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -577,17 +593,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.4648767411708832
-        Y: -0.2591167390346527
-        Z: 0.8403277397155762
+        X: -0.08104272186756134
+        Y: -1.5733271837234497
+        Z: -0.21587242186069489
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6697967648506165
+      Pitch: 0.7147982120513916
       Target Frame: <Fixed Frame>
-      Yaw: 1.5528953075408936
+      Yaw: 1.5578866004943848
     Saved: ~
 Window Geometry:
   Displays:

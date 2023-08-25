@@ -41,7 +41,7 @@ model_information
     [4] j2n6s300_joint_5
     [5] j2n6s300_joint_6
   }
-
+  
   worldFrame                       "world"
   ; base frame of the robot (from URDF)
   baseFrame                       "base_link"
@@ -53,11 +53,13 @@ model_information
   ;baseStateMsg                    "/gazebo/link_states"
   ;armStateMsg                     "/arm_controller/state"
   armStateMsg                     "/joint_states"
-
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
   occupancyDistanceMsg            "occupancy_distances"
   octomapMsg                      "/octomap_scan"
+  modelModeMsg                    "/mobile_manipulator_model_mode"
+  targetMsg                       "/mobile_manipulator_mpc_target"
+
   collisionConstraintPoints       "collision_constraint_points"
   collisionCheckPoints            "collision_check_points"
   logSavePathRel                  "dataset/ocs2/"
@@ -65,7 +67,8 @@ model_information
 
 model_settings
 {
-  drlFlag                         false   ; NUA NOTE: make true when made some changes (for example self-collision pairs)
+  drlFlag                         false    ;
+  drlActionType                   1       ; 0: Discrete, 1: Continuous 
   usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
   recompileLibraries              true    ; NUA NOTE: make true when made some changes (for example self-collision pairs)
 }
@@ -143,7 +146,7 @@ inputCost
     ; input costs for the different types of arm base DOFs
     base
     {
-      scaling 1e-2  ; NUA EDIT: def: 1e-2
+      scaling 1e-1  ; NUA EDIT: def: 1e-2
 
       (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
       (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
