@@ -13,6 +13,8 @@
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <geometry_msgs/Twist.h>
+
 
 using json = nlohmann::json;
 json data;
@@ -54,6 +56,7 @@ void position_listener(trajectory_msgs::JointTrajectory trajectory);
 void jaco_feedback(sensor_msgs::JointState joint_state);
 void shutdown_handler(int sig);
 void pid_callback(const ros::TimerEvent &);
+void base_vel(geometry_msgs::Twist base_vel_msg);
 void velocity_listener(kinova_msgs::JointVelocity target_velocity);
 // MRT Fail Safe
 ros::Time time_;
@@ -71,3 +74,5 @@ std::string file_path = "/home/alpharomeo911/datatset";
 kinova_msgs::JointVelocity target_vel;
 kinova_msgs::ClearTrajectories clear_trajectory;
 ros::ServiceClient clear_trajectory_service;
+std::vector<std::vector<double>> data_base_velocity;
+geometry_msgs::Twist bvel;

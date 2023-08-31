@@ -265,8 +265,8 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      (0,0)  0.5 ; forward velocity
-      (1,0)  1.0 ; turning velocity
+      (0,0)  0.2 ; forward velocity
+      (1,0)  0.3 ; turning velocity
     }
 
     ; velocity limits for the arm DOFs

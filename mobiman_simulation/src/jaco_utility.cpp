@@ -10,6 +10,8 @@ int main(int argc, char **argv) {
     ros::Subscriber state_subscriber = nh.subscribe("/j2n6s300_driver/out/joint_state", 5, jaco_feedback);
     ros::Subscriber trajectory_subscriber = nh.subscribe("/arm_controller/command", 5, position_listener);
     ros::Subscriber velocity_subscriber = nh.subscribe("/arm_controller/velocity", 5, velocity_listener);
+    ros::Subscriber base_velo = nh.subscribe("/cmd_vel", 5, base_vel);
+    
     clear_trajectory_service = nh.serviceClient<kinova_msgs::ClearTrajectories>("/j2n6s300_driver/in/clear_trajectories");
     velocity_publisher = nh.advertise<kinova_msgs::JointVelocity>("/j2n6s300_driver/in/joint_velocity", 100);
 
@@ -94,6 +96,14 @@ void pid_callback(const ros::TimerEvent &){
         current_velocity[3] = jaco_velocity.joint4;
         current_velocity[4] = jaco_velocity.joint5;
         current_velocity[5] = jaco_velocity.joint6;
+        std::vector<double> base_velo_v(6, 0);
+        base_velo_v[0] = bvel.linear.x;
+        base_velo_v[1] = bvel.linear.y;
+        base_velo_v[2] = bvel.linear.z;
+        base_velo_v[3] = bvel.angular.x;
+        base_velo_v[4] = bvel.angular.y;
+        base_velo_v[5] = bvel.angular.z;
+        data_base_velocity.push_back(base_velo_v);
         std::vector<double> jstate(jaco_state.data(), jaco_state.data() + jaco_state.rows() * jaco_state.cols());
         std::vector<double> jtarget(mrt_target.data(), mrt_target.data() + mrt_target.rows() * mrt_target.cols());
         data_state_position_.push_back(jstate);
@@ -121,7 +131,9 @@ void write_data(void) {
     data["target"] = data_target_position_;
     data["pid_velocity"] = data_pid_velocity_;
     data["target_velocity"] = data_target_velocity_;
+    data["base_velocity"] = data_base_velocity;
     data_state_position_.clear();
+    data_base_velocity.clear();
     data_target_position_.clear();
     data_time_.clear();
     data_pid_velocity_.clear();
@@ -145,4 +157,8 @@ void velocity_listener(kinova_msgs::JointVelocity target_velocity) {
     target_joint_velocity[3] = target_velocity.joint4;
     target_joint_velocity[4] = target_velocity.joint5;
     target_joint_velocity[5] = target_velocity.joint6;
+}
+
+void base_vel(geometry_msgs::Twist base_vel_msg) {
+    bvel = base_vel_msg;
 }
