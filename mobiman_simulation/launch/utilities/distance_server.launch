@@ -6,6 +6,7 @@
     config_distance_server
   -->
   <arg name="config_distance_server"  default="config_distance_server" />
+  <arg name="config_collision_points"  default="config_points_on_robot" />
 
   <!-- Set nodes on debug mode -->
   <!--
@@ -17,7 +18,7 @@
 
   <!-- PUBLISH CONFIGURATION PARAMETERS -->
   <rosparam file="$(find mobiman_simulation)/config/$(arg config_distance_server).yaml"/>
-  <rosparam file="$(find mobiman_simulation)/config/voxblox.yaml"/>
+  <rosparam file="$(find mobiman_simulation)/config/$(arg config_collision_points).yaml"/>
 
   <!-- The task file for the mpc. -->
   <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />

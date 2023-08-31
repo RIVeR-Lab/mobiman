@@ -64,12 +64,12 @@
 
     <!-- Launch bin -->
     <group if="$(eval arg('flag_bin') == true)">
-      <group ns="bin">
+      <group ns="bin_4_dropping_task">
         <node name="spawn_bin" 
               pkg="gazebo_ros" 
               type="spawn_model" 
               args="-file $(find mobiman_simulation)/models/bin_4_dropping_task/model.sdf -sdf -model bin_4_dropping_task 
-                -x 4.0 -y 0.0 -z 0.0
+                -x 4.0 -y 0.0 -z 0.1
                 -R 0.0 -P 0.0 -Y $(arg PI_2)" 
               respawn="false" 
               output="screen" />

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.07.10
+LAST UPDATE: 2023.08.23
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -148,7 +148,7 @@ if __name__ == '__main__':
 
     ## Create the folder name that the data is kept
     data_file_tag = createFileName()
-    data_folder_tag = data_file_tag + "_" + deep_learning_algorithm + "_mobiman"
+    data_folder_tag = data_file_tag + "_" + deep_learning_algorithm + "_mobiman" # type: ignore
     data_name = data_folder_tag + "/"
     data_path_specific = mobiman_path + data_path
     data_folder_path = data_path_specific + data_name
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     env = StartOpenAI_ROS_Environment(
         task_and_robot_environment_name, 
         robot_id=0, 
-        max_episode_steps=max_episode_steps, 
+        max_episode_steps=max_episode_steps, # type: ignore
         data_folder_path=data_folder_path)
     
     print("[mobiman_drl_training::__main__] BEFORE Monitor")
@@ -200,17 +200,17 @@ if __name__ == '__main__':
 
     if observation_space_type == "mobiman_FC":
         
-        n_actions = env.action_space.n
+        n_actions = env.action_space
         print("[mobiman_drl_training::__main__] n_actions: " + str(n_actions))
 
         policy_kwargs = dict(activation_fn=th.nn.ReLU, net_arch=[dict(pi=[400, 300], vf=[400, 300])])
         model = PPO(
             "MlpPolicy", 
             env, 
-            learning_rate=learning_rate, 
-            n_steps=n_steps, 
-            batch_size=batch_size, 
-            ent_coef=ent_coef, 
+            learning_rate=learning_rate, # type: ignore
+            n_steps=n_steps, # type: ignore
+            batch_size=batch_size, # type: ignore
+            ent_coef=ent_coef, # type: ignore
             tensorboard_log=tensorboard_log_path, 
             policy_kwargs=policy_kwargs, 
             device="cuda", 
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     elif observation_space_type == "mobiman_2DCNN_FC":
     
         print("[mobiman_drl_training::__main__] observation_space_type: " + str(observation_space_type))
-        n_actions = env.action_space.n
+        n_actions = env.action_space
         #n_actions = env.action_space.shape[-1]
         print("[mobiman_drl_training::__main__] n_actions: " + str(n_actions))
 
@@ -227,10 +227,10 @@ if __name__ == '__main__':
         model = PPO(
             "MultiInputPolicy", 
             env, 
-            learning_rate=learning_rate, 
-            n_steps=n_steps, 
-            batch_size=batch_size, 
-            ent_coef=ent_coef, 
+            learning_rate=learning_rate, # type: ignore
+            n_steps=n_steps, # type: ignore
+            batch_size=batch_size, # type: ignore
+            ent_coef=ent_coef, # type: ignore
             tensorboard_log=tensorboard_log_path, 
             policy_kwargs=policy_kwargs, 
             device="cuda", 
@@ -243,7 +243,7 @@ if __name__ == '__main__':
 
     else:
         initial_training_path_specific = mobiman_path + data_path + initial_training_path
-        initial_trained_model = initial_training_path + "trained_model"
+        initial_trained_model = initial_training_path + "trained_model" # type: ignore
         model = PPO.load(initial_trained_model, env=None, tensorboard_log=tensorboard_log_path)
         model.set_env(env)
 
@@ -251,7 +251,7 @@ if __name__ == '__main__':
         print("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
         #rospy.logdebug("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
 
-    checkpoint_callback = CheckpointCallback(save_freq=training_checkpoint_freq, save_path=data_folder_path + '/training_checkpoints/', name_prefix='trained_model')
+    checkpoint_callback = CheckpointCallback(save_freq=training_checkpoint_freq, save_path=data_folder_path + '/training_checkpoints/', name_prefix='trained_model') # type: ignore
 
     start_learning = time.time()
     model.learn(total_timesteps=training_timesteps, callback=checkpoint_callback) # type: ignore
