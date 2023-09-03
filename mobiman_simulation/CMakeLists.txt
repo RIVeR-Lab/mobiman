@@ -96,6 +96,7 @@ catkin_python_setup()
 add_service_files(
   FILES
   getNearestOccDist.srv
+  resetMobiman.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -291,6 +292,7 @@ catkin_install_python(PROGRAMS
   scripts/broadcaster.py
   scripts/world_frame_broadcaster.py
   scripts/jackal_jaco_transform.py
+  scripts/reset_mobiman.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
