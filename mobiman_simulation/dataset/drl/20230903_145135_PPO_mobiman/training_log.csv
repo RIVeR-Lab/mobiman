@@ -1,0 +1,19 @@
+mode,training
+deep_learning_algorithm,PPO
+motion_planning_algorithm,ocs2
+observation_space_type,mobiman_FC
+world_name,conveyor
+task_and_robot_environment_name,JackalJaco_mobiman_drl-v00
+n_robot,1
+data_path,dataset/drl/
+learning_rate,0.0002
+n_steps,10
+batch_size,5
+ent_coef,0.001
+training_timesteps,20
+max_episode_steps,10
+initial_training_path,
+training_checkpoint_freq,10
+plot_title,Learning Curve
+plot_moving_average_window_size_timesteps,20
+plot_moving_average_window_size_episodes,5

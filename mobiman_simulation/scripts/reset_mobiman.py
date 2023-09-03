@@ -6,7 +6,7 @@ import rosservice
 from gazebo_msgs.srv import DeleteModelRequest, DeleteModel, SpawnModel, SpawnModelRequest, SetModelConfiguration, SetModelConfigurationRequest
 from controller_manager_msgs.srv import LoadController, SwitchController, LoadControllerRequest, SwitchControllerRequest
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from mobiman_simulation.srv import resetMobiman
+from mobiman_simulation.srv import resetMobiman, resetMobimanResponse
 import sys
 import subprocess
 
@@ -17,6 +17,7 @@ import subprocess
 
 def handleResetMobiman(req):
     # Set Pose and other variables
+    success = True
     pose = Pose()
     pose.position.z=0.2
     joint_names = [f'j2n6s300_joint_{str(a)}' for a in range(1,7)]
@@ -26,11 +27,17 @@ def handleResetMobiman(req):
     unpause_physics_client = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
     controller_list = ['arm_controller', 'joint_state_controller', 'jackal_velocity_controller', 'joint_group_position_controller']
     # Delete Current Model
-    delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
-    delete_model(DeleteModelRequest('mobiman'))
+    try:
+        delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
+        delete_model(DeleteModelRequest('mobiman'))
+    except Exception as e:
+        success = False
     # Spawn model
-    spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
-    spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=robot_model, robot_namespace='', initial_pose=pose, reference_frame='world'))
+    try:
+        spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
+        spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=robot_model, robot_namespace='', initial_pose=pose, reference_frame='world'))
+    except Exception as e:
+        success = False
     # Pause physics and change configuration
     pause_physics_client(EmptyRequest())
     set_configuration = rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
@@ -52,7 +59,7 @@ def handleResetMobiman(req):
         # print(res)
     for i in range(1, 10):
         unpause_physics_client(EmptyRequest())
-    return
+    return resetMobimanResponse(success)
 
 
 if __name__ == '__main__':
