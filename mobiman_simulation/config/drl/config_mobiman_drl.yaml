@@ -59,7 +59,7 @@ occgrid_occ_max: 100
 
 ## Algorithm: mobiman-DRL Parameters
 # Action time horizon [s]
-action_time_horizon: 8
+action_time_horizon: 5
 
 # 0: Discrete
 # 1: Continuous
@@ -80,8 +80,11 @@ n_action_target: 33
 # [model(1), constraint(1), target(6)]
 n_action: 8
 
-goal_range_min: 0.25
-goal_range_max: 10.0
+goal_distance_threshold: 0.1
+goal_range_min: 0.5
+goal_range_max_x: 5.0
+goal_range_max_y: 5.0
+goal_range_max_z: 2.0
 collision_range_min: 0.25
 collision_range_max: 2.0
 

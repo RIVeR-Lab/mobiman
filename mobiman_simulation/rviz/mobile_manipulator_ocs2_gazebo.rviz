@@ -253,6 +253,8 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
+        bin_4_dropping_task:
+          Value: true
         blue_cube:
           Value: true
         chassis_link:
@@ -289,6 +291,8 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        grasp:
+          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -324,6 +328,8 @@ Visualization Manager:
         jaco_base_link:
           Value: false
         long_pkg:
+          Value: true
+        longwide_pkg:
           Value: true
         mid_mount:
           Value: false
@@ -409,13 +415,19 @@ Visualization Manager:
                             j2n6s300_link_finger_3:
                               j2n6s300_link_finger_tip_3:
                                 {}
+          bin_4_dropping_task:
+            {}
           blue_cube:
             {}
           conveyor_belt:
             {}
+          grasp:
+            {}
           green_cube:
             {}
           long_pkg:
+            {}
+          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -505,7 +517,12 @@ Visualization Manager:
       Marker Topic: /occupancy_distances
       Name: MarkerArray
       Namespaces:
-        {}
+        ancy_distance_: true
+        ccupancy_distance_: true
+        cupancy_distance_: true
+        occupancy_distance_: true
+        pancy_distance_: true
+        upancy_distance_: true
       Queue Size: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -521,7 +538,8 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        11 - 14: true
       Queue Size: 0
       Value: true
     - Alpha: 1
@@ -592,7 +610,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.370357513427734
+      Distance: 5.977059841156006
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -600,17 +618,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.4903049170970917
-        Y: -1.12375807762146
-        Z: -0.08349534869194031
+        X: -0.04126027971506119
+        Y: -2.0942931175231934
+        Z: 0.08977921307086945
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6647977232933044
+      Pitch: 0.44979721307754517
       Target Frame: <Fixed Frame>
-      Yaw: 1.5878957509994507
+      Yaw: 1.6679017543792725
     Saved: ~
 Window Geometry:
   Displays:
