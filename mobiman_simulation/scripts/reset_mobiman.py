@@ -6,7 +6,7 @@ import rosservice
 from gazebo_msgs.srv import DeleteModelRequest, DeleteModel, SpawnModel, SpawnModelRequest, SetModelConfiguration, SetModelConfigurationRequest
 from controller_manager_msgs.srv import LoadController, SwitchController, LoadControllerRequest, SwitchControllerRequest
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from mobiman_simulation.srv import resetMobiman
+from mobiman_simulation.srv import resetMobiman, resetMobimanResponse, resetMobimanRequest
 import sys
 import subprocess
 
@@ -17,20 +17,33 @@ import subprocess
 
 def handleResetMobiman(req):
     # Set Pose and other variables
+    success = True
     pose = Pose()
-    pose.position.z=0.2
+    pose.position.x=req.x
+    pose.position.y=req.y
+    pose.position.z=req.z
+    pose.orientation.w = req.quat_w
+    pose.orientation.x = req.quat_x
+    pose.orientation.y = req.quat_y
+    pose.orientation.z = req.quat_z
     joint_names = [f'j2n6s300_joint_{str(a)}' for a in range(1,7)]
-    joint_positions = [0.0, 2.9, 1.3, 4.2, 1.4, 0.0]
+    joint_positions = [req.joint_1, req.joint_2, req.joint_3, req.joint_4, req.joint_5, req.joint_6]
     robot_model = rospy.get_param('/robot_description')
     pause_physics_client = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
     unpause_physics_client = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
     controller_list = ['arm_controller', 'joint_state_controller', 'jackal_velocity_controller', 'joint_group_position_controller']
     # Delete Current Model
-    delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
-    delete_model(DeleteModelRequest('mobiman'))
+    try:
+        delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
+        delete_model(DeleteModelRequest('mobiman'))
+    except Exception as e:
+        success = False
     # Spawn model
-    spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
-    spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=robot_model, robot_namespace='', initial_pose=pose, reference_frame='world'))
+    try:
+        spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
+        spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=robot_model, robot_namespace='', initial_pose=pose, reference_frame='world'))
+    except Exception as e:
+        success = False
     # Pause physics and change configuration
     pause_physics_client(EmptyRequest())
     set_configuration = rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
@@ -52,7 +65,7 @@ def handleResetMobiman(req):
         # print(res)
     for i in range(1, 10):
         unpause_physics_client(EmptyRequest())
-    return
+    return resetMobimanResponse(success)
 
 
 if __name__ == '__main__':
