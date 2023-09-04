@@ -1,2 +1,15 @@
+float64 x
+float64 y
+float64 z
+float64 quat_x
+float64 quat_y
+float64 quat_z
+float64 quat_w
+float64 joint_1
+float64 joint_2
+float64 joint_3
+float64 joint_4
+float64 joint_5
+float64 joint_6
 ---
 bool success

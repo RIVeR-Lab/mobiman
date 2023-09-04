@@ -6,7 +6,7 @@ import rosservice
 from gazebo_msgs.srv import DeleteModelRequest, DeleteModel, SpawnModel, SpawnModelRequest, SetModelConfiguration, SetModelConfigurationRequest
 from controller_manager_msgs.srv import LoadController, SwitchController, LoadControllerRequest, SwitchControllerRequest
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from mobiman_simulation.srv import resetMobiman, resetMobimanResponse
+from mobiman_simulation.srv import resetMobiman, resetMobimanResponse, resetMobimanRequest
 import sys
 import subprocess
 
@@ -19,9 +19,15 @@ def handleResetMobiman(req):
     # Set Pose and other variables
     success = True
     pose = Pose()
-    pose.position.z=0.2
+    pose.position.x=req.x
+    pose.position.y=req.y
+    pose.position.z=req.z
+    pose.orientation.w = req.quat_w
+    pose.orientation.x = req.quat_x
+    pose.orientation.y = req.quat_y
+    pose.orientation.z = req.quat_z
     joint_names = [f'j2n6s300_joint_{str(a)}' for a in range(1,7)]
-    joint_positions = [0.0, 2.9, 1.3, 4.2, 1.4, 0.0]
+    joint_positions = [req.joint_1, req.joint_2, req.joint_3, req.joint_4, req.joint_5, req.joint_6]
     robot_model = rospy.get_param('/robot_description')
     pause_physics_client = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
     unpause_physics_client = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
