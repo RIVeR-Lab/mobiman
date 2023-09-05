@@ -1,4 +1,19 @@
 #!/usr/bin/python3
+
+'''
+LAST UPDATE: 2023.09.04
+
+AUTHOR: Sarvesh Prajapati (SP)
+
+E-MAIL: prajapati.s@northeastern.edu
+DESCRIPTION: TODO...
+
+REFERENCES:
+[1] 
+
+NUA TODO:
+'''
+
 import rospy
 from geometry_msgs.msg import Pose
 from std_srvs.srv import Empty, EmptyRequest, SetBoolResponse
@@ -11,9 +26,6 @@ import sys
 import subprocess
 
 # from std_msgs.msg import Empty as EmptyMsg
-
-
-
 
 def handleResetMobiman(req):
     # Set Pose and other variables
@@ -32,27 +44,32 @@ def handleResetMobiman(req):
     pause_physics_client = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
     unpause_physics_client = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
     controller_list = ['arm_controller', 'joint_state_controller', 'jackal_velocity_controller', 'joint_group_position_controller']
+    
     # Delete Current Model
     try:
         delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
         delete_model(DeleteModelRequest('mobiman'))
     except Exception as e:
         success = False
+    
     # Spawn model
     try:
         spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
         spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=robot_model, robot_namespace='', initial_pose=pose, reference_frame='world'))
     except Exception as e:
         success = False
+    
     # Pause physics and change configuration
     pause_physics_client(EmptyRequest())
     set_configuration = rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
     for i in range(1,100):
         set_configuration(SetModelConfigurationRequest(model_name='mobiman', urdf_param_name='robot_description', joint_names=joint_names, joint_positions=joint_positions))
+    
     # Load Controllers
     for controller in controller_list:
         load_controller = rospy.ServiceProxy('/controller_manager/load_controller', LoadController)
         load_controller(LoadControllerRequest(controller))
+    
     # Switch Controller
     switch_controller_req = SwitchControllerRequest()
     switch_controller_req.start_asap = True
@@ -66,7 +83,6 @@ def handleResetMobiman(req):
     for i in range(1, 10):
         unpause_physics_client(EmptyRequest())
     return resetMobimanResponse(success)
-
 
 if __name__ == '__main__':
     rospy.init_node('reset_mobiman')

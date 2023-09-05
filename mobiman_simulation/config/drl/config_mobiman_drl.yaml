@@ -84,7 +84,7 @@ goal_distance_threshold: 0.1
 goal_range_min: 0.5
 goal_range_max_x: 5.0
 goal_range_max_y: 5.0
-goal_range_max_z: 2.0
+goal_range_max_z: 1.5
 collision_range_min: 0.25
 collision_range_max: 2.0
 
