@@ -45,9 +45,15 @@ ee_frame_name: "j2n6s300_end_effector"
 goal_frame_name: "grasp"
 
 cmd_velocity_msg_name: "/cmd_vel"
+imu_msg_name: "/cmd_vel"
+target_msg_name: "/mobile_manipulator_target"
 occgrid_msg_name: "/occupancy_grid"
+selfcoldistance_msg_name: "/distance_markers"
+selfcoldistance_n_coeff: 5
+extcoldistance_msg_name: "/occupancy_distances"
+pointsonrobot_msg_name: "/points_on_robot"
+
 goal_status_msg_name: "/goal_status"
-colsphere_msg_name: "/occupancy_distances"
 
 occgrid_normalize_flag: True
 occgrid_occ_min: 0
@@ -84,9 +90,16 @@ goal_distance_threshold: 0.1
 goal_range_min: 0.5
 goal_range_max_x: 5.0
 goal_range_max_y: 5.0
-goal_range_max_z: 1.5
-collision_range_min: 0.25
-collision_range_max: 2.0
+goal_range_max_z: 1
+
+self_collision_range_min: 0.05
+self_collision_range_max: 1.0
+
+ext_collision_range_min: 0.25
+ext_collision_range_max: 2.0
+
+rollover_pitch_threshold: 0.2
+rollover_roll_threshold: 0.2
 
 n_obs_stack: 1
 n_skip_obs_stack: 1

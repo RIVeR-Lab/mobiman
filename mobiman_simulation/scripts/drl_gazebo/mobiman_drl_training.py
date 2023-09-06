@@ -188,7 +188,7 @@ if __name__ == '__main__':
     print("[mobiman_drl_training::__main__] BEFORE StartOpenAI_ROS_Environment")
     env = StartOpenAI_ROS_Environment(
         task_and_robot_environment_name, 
-        robot_id=0, 
+        robot_id=0, # type: ignore
         max_episode_steps=max_episode_steps, # type: ignore
         data_folder_path=data_folder_path)
     
@@ -244,7 +244,7 @@ if __name__ == '__main__':
     else:
         initial_training_path_specific = mobiman_path + data_path + initial_training_path
         initial_trained_model = initial_training_path + "trained_model" # type: ignore
-        model = PPO.load(initial_trained_model, env=None, tensorboard_log=tensorboard_log_path)
+        model = PPO.load(initial_trained_model, env=None, tensorboard_log=tensorboard_log_path) # type: ignore
         model.set_env(env)
 
         total_training_timesteps = int(get_param_value_from_training_log(initial_training_path_specific, "total_training_timesteps")) + training_timesteps # type: ignore
