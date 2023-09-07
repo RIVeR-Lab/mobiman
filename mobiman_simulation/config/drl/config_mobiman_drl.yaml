@@ -105,6 +105,26 @@ n_obs_stack: 1
 n_skip_obs_stack: 1
 
 ## Reward:
+reward_terminal_goal: 10
+reward_terminal_collision: -10
+reward_terminal_roll: -10
+reward_terminal_max_step: -10
+
+reward_step_goal: 2
+reward_step_target: 1
+reward_step_mode0: -0.3
+reward_step_mode1: -0.6
+reward_step_mode2: -0.9
+reward_step_mpc: -2
+
+alpha_step_goal_base: 1
+alpha_step_goal_ee: 1
+alpha_step_target: 1
+alpha_step_mode: 1
+alpha_step_mpc: 1
+
+
+
 reward_terminal_success: 8
 reward_step_scale: 0.5
 penalty_terminal_fail: -5
