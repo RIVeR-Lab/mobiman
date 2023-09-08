@@ -15,6 +15,8 @@ NUA TODO:
 '''
 
 import rospy
+import rospkg
+import tf
 from geometry_msgs.msg import Pose
 from std_srvs.srv import Empty, EmptyRequest, SetBoolResponse
 import rosservice
@@ -23,12 +25,54 @@ from controller_manager_msgs.srv import LoadController, SwitchController, LoadCo
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from mobiman_simulation.srv import resetMobiman, resetMobimanResponse, resetMobimanRequest
 import sys
+from geometry_msgs.msg import Quaternion, Pose, Point
 import subprocess
+
+
 
 # from std_msgs.msg import Empty as EmptyMsg
 
 def handleResetMobiman(req):
     # Set Pose and other variables
+    rospack = rospkg.RosPack()
+    path = rospack.get_path('mobiman_simulation') + "/urdf/"
+    pkgs_ign_name = []
+    pkgs_ign_path = []
+    # pkgs_man_name = []
+    # pkgs_man_path = []
+    pkgs_ign_name.append("red_cube")
+    pkgs_ign_path.append(path + "red_cube.urdf")
+    pkgs_ign_name.append("normal_pkg")
+    pkgs_ign_path.append(path + "normal_pkg.urdf")
+    pkgs_ign_name.append("green_cube")
+    pkgs_ign_path.append(path + "green_cube.urdf")
+    pkgs_ign_name.append("long_pkg")
+    pkgs_ign_path.append(path + "long_pkg.urdf")
+    pkgs_ign_name.append("blue_cube")
+    pkgs_ign_path.append(path + "blue_cube.urdf")
+    pkgs_ign_name.append("longwide_pkg")
+    pkgs_ign_path.append(path + "longwide_pkg.urdf")
+    path = rospack.get_path('mobiman_simulation') + "/urdf/"
+    sm = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
+
+    try:
+        dm = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
+        for pkg in pkgs_ign_name:
+            dm(pkg)
+    except Exception as e:
+        pass
+    
+        
+    quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
+    orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
+    pose = Pose(Point(x=5, y=-2.5, z=0.5), orient)
+    for idx, pkg in enumerate(pkgs_ign_name):
+        print(pkg, pkgs_ign_path[0])
+        with open(pkgs_ign_path[idx], 'r') as f:
+            pose.position.x -= 1.5
+            xmls = f.read()
+        sm(pkg, xmls, '', pose, 'world')
+    
     success = True
     pose = Pose()
     pose.position.x=req.x
