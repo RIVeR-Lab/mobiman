@@ -4,3 +4,4 @@ events.out.tfevents*
 mobiman_simulation/dataset/drl_training_data/
 mobiman_simulation/dataset/ocs2/
 mobiman_simulation/dataset/drl/
+mobiman_simulation/dataset/analysis/
