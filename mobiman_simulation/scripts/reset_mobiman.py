@@ -30,29 +30,22 @@ import subprocess
 
 
 
+pkgs_ign_name = []
+pkgs_ign_path = []
+jackal_jacko_xml = None
+urdfs_xmls = []
+# pkgs_man_name = []
+# pkgs_man_path = []
+
+    
+
 # from std_msgs.msg import Empty as EmptyMsg
 
 def handleResetMobiman(req):
     # Set Pose and other variables
-    rospack = rospkg.RosPack()
-    path = rospack.get_path('mobiman_simulation') + "/urdf/"
-    pkgs_ign_name = []
-    pkgs_ign_path = []
-    # pkgs_man_name = []
-    # pkgs_man_path = []
-    pkgs_ign_name.append("red_cube")
-    pkgs_ign_path.append(path + "red_cube.urdf")
-    pkgs_ign_name.append("normal_pkg")
-    pkgs_ign_path.append(path + "normal_pkg.urdf")
-    pkgs_ign_name.append("green_cube")
-    pkgs_ign_path.append(path + "green_cube.urdf")
-    pkgs_ign_name.append("long_pkg")
-    pkgs_ign_path.append(path + "long_pkg.urdf")
-    pkgs_ign_name.append("blue_cube")
-    pkgs_ign_path.append(path + "blue_cube.urdf")
-    pkgs_ign_name.append("longwide_pkg")
-    pkgs_ign_path.append(path + "longwide_pkg.urdf")
-    path = rospack.get_path('mobiman_simulation') + "/urdf/"
+    
+    
+    
     sm = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
 
     try:
@@ -68,10 +61,9 @@ def handleResetMobiman(req):
     pose = Pose(Point(x=5, y=-2.5, z=0.5), orient)
     for idx, pkg in enumerate(pkgs_ign_name):
         print(pkg, pkgs_ign_path[0])
-        with open(pkgs_ign_path[idx], 'r') as f:
-            pose.position.x -= 1.5
-            xmls = f.read()
-        sm(pkg, xmls, '', pose, 'world')
+        
+        pose.position.x -= 1.5
+        sm(pkg, urdfs_xmls[idx], '', pose, 'world')
     
     success = True
     pose = Pose()
@@ -99,7 +91,7 @@ def handleResetMobiman(req):
     # Spawn model
     try:
         spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
-        spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=robot_model, robot_namespace='', initial_pose=pose, reference_frame='world'))
+        spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=jackal_jacko_xml, robot_namespace='', initial_pose=pose, reference_frame='world'))
     except Exception as e:
         success = False
     
@@ -130,5 +122,30 @@ def handleResetMobiman(req):
 
 if __name__ == '__main__':
     rospy.init_node('reset_mobiman')
+    rospack = rospkg.RosPack()
+    path = rospack.get_path('mobiman_simulation') + "/urdf/"
+    pkgs_ign_name.append("red_cube")
+    pkgs_ign_path.append(path + "red_cube.urdf")
+    pkgs_ign_name.append("normal_pkg")
+    pkgs_ign_path.append(path + "normal_pkg.urdf")
+    pkgs_ign_name.append("green_cube")
+    pkgs_ign_path.append(path + "green_cube.urdf")
+    pkgs_ign_name.append("long_pkg")
+    pkgs_ign_path.append(path + "long_pkg.urdf")
+    pkgs_ign_name.append("blue_cube")
+    pkgs_ign_path.append(path + "blue_cube.urdf")
+    pkgs_ign_name.append("longwide_pkg")
+    pkgs_ign_path.append(path + "longwide_pkg.urdf")
+    jackal_jaco_urdf = path + "jackal_jaco.urdf"
+    
+    
+    with open(jackal_jaco_urdf, 'r') as f:
+        jackal_jacko_xml = f.read()
+    
+    for i,j in enumerate(pkgs_ign_path):
+        # print(j)
+        with open(j, 'r') as f:
+            urdfs_xmls.append((f.read()))
+
     s = rospy.Service('reset_mobiman', resetMobiman, handleResetMobiman)
     rospy.spin()
