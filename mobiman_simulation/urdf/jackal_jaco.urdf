@@ -538,7 +538,7 @@
     <child link="j2n6s300_link_1"/>
     <axis xyz="0 0 1"/>
     <limit effort="40" lower="-628.3185307179587" upper="628.3185307179587" velocity="0.6283185307179586"/>
-    <origin rpy="0 3.141592653589793 0" xyz="0 0 0.16075"/>
+    <origin rpy="0 3.141592653589793 0" xyz="0 0 0.16575"/>
     <dynamics damping="0.0" friction="0.1"/>
   </joint>
   <transmission name="j2n6s300_joint_1_trans">
