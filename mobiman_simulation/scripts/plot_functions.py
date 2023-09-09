@@ -126,27 +126,18 @@ if __name__ == '__main__':
 
     n_data = 101
 
+    # Step Reward: base to goal
     dist_min = 0.0
     dist_max = 5.0
-    
-    reward_min = 0.0
-    reward_max = float(reward_step_goal) # type: ignore
-    
-    dist = np.linspace(-2*dist_max, 2*dist_max, n_data)
-    
-    reward = np.zeros(n_data)
-    for i in range(n_data):
-        reward[i] = reward_func(dist_min, dist_max, reward_min, reward_max, dist[i])
-
-
-    # Step Reward: base to goal
-    current_base_distance2goal = np.linspace(-2*dist_max, 2*dist_max, n_data)
+    current_base_distance2goal = np.linspace(dist_min, 2*dist_max, n_data)
     reward_step_goal_base_val = np.zeros(n_data)
     for i in range(n_data):
-        reward_step_goal_base_val[i] = reward_func(0, goal_range_max_x, 0, reward_step_goal, current_base_distance2goal)
+        reward_step_goal_base_val[i] = reward_func(0, goal_range_max_x, 0, reward_step_goal, current_base_distance2goal[i])
     reward_step_goal_base = alpha_step_goal_base * reward_step_goal_base_val # type: ignore
 
-    plot_func(dist, reward, save_path=save_path+'reward_step_goal_base.png')
-    #plot_func(dist, reward, save_path=save_path+'reward_step_goal_base.png')
+    plot_func(current_base_distance2goal, reward_step_goal_base, save_path=save_path+'reward_step_goal_base.png')
+    
+    # Step Reward: ee to goal
+
     
     print("[plot_functions::__main__] END")

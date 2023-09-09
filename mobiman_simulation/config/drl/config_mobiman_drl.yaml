@@ -108,13 +108,13 @@ n_skip_obs_stack: 1
 reward_terminal_goal: 10
 reward_terminal_collision: -10
 reward_terminal_roll: -10
-reward_terminal_max_step: -10
+reward_terminal_max_step: -5
 
 reward_step_goal: 2
 reward_step_target: 1
-reward_step_mode0: -0.3
-reward_step_mode1: -0.6
-reward_step_mode2: -0.9
+reward_step_mode0: -0.6
+reward_step_mode1: -1.2
+reward_step_mode2: -1.8
 reward_step_mpc: -2
 
 alpha_step_goal_base: 1
@@ -124,6 +124,6 @@ alpha_step_mode: 1
 alpha_step_mpc: 1
 
 ### DRL-Testing Parameters
-max_testing_episode_timesteps: 2000
-max_testing_episodes: 2
-goal_status_msg: "/goal_reaching_status"
+#max_testing_episode_timesteps: 2000
+#max_testing_episodes: 2
+#goal_status_msg: "/goal_reaching_status"
