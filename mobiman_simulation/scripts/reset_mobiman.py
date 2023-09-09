@@ -56,14 +56,7 @@ def handleResetMobiman(req):
         pass
     
         
-    quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
-    orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
-    pose = Pose(Point(x=5, y=-2.5, z=0.5), orient)
-    for idx, pkg in enumerate(pkgs_ign_name):
-        print(pkg, pkgs_ign_path[0])
-        
-        pose.position.x -= 1.5
-        sm(pkg, urdfs_xmls[idx], '', pose, 'world')
+    
     
     success = True
     pose = Pose()
@@ -85,18 +78,30 @@ def handleResetMobiman(req):
     try:
         delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
         delete_model(DeleteModelRequest('mobiman'))
+        rospy.wait_for_service('/gazebo/delete_model')
     except Exception as e:
         success = False
     
     # Spawn model
     try:
+        rospy.wait_for_service('/gazebo/spawn_urdf_model')
         spawn_model = rospy.ServiceProxy('/gazebo/spawn_urdf_model', SpawnModel)
         spawn_model(SpawnModelRequest(model_name='mobiman', model_xml=jackal_jacko_xml, robot_namespace='', initial_pose=pose, reference_frame='world'))
+        rospy.wait_for_service('/gazebo/spawn_urdf_model')
     except Exception as e:
         success = False
+    pause_physics_client(EmptyRequest())
+    quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
+    orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
+    pose = Pose(Point(x=5, y=-2.5, z=0.5), orient)
+    for idx, pkg in enumerate(pkgs_ign_name):
+        print(pkg, pkgs_ign_path[0])
+        
+        pose.position.x -= 1.5
+        sm(pkg, urdfs_xmls[idx], '', pose, 'world')
     
     # Pause physics and change configuration
-    pause_physics_client(EmptyRequest())
+    
     set_configuration = rospy.ServiceProxy('/gazebo/set_model_configuration', SetModelConfiguration)
     for i in range(1,100):
         set_configuration(SetModelConfigurationRequest(model_name='mobiman', urdf_param_name='robot_description', joint_names=joint_names, joint_positions=joint_positions))
