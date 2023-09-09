@@ -17,6 +17,7 @@ NUA TODO:
 import rospy
 import rospkg
 import tf
+import datetime
 from geometry_msgs.msg import Pose
 from std_srvs.srv import Empty, EmptyRequest, SetBoolResponse
 import rosservice
@@ -46,14 +47,14 @@ def handleResetMobiman(req):
     
     
     
-    sm = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
+    # sm = rospy.ServiceProxy("/gazebo/spawn_urdf_model", SpawnModel)
 
-    try:
-        dm = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
-        for pkg in pkgs_ign_name:
-            dm(pkg)
-    except Exception as e:
-        pass
+    # try:
+    #     dm = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
+    #     for pkg in pkgs_ign_name:
+    #         dm(pkg)
+    # except Exception as e:
+    #     pass
     
         
     
@@ -90,15 +91,26 @@ def handleResetMobiman(req):
         rospy.wait_for_service('/gazebo/spawn_urdf_model')
     except Exception as e:
         success = False
+    # print("[+] [RESET SCRIPT] Before Sleep")
+    # rospy.sleep(1)
+    # print("[+] [RESET SCRIPT] After Sleep")
+
     pause_physics_client(EmptyRequest())
-    quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
-    orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
-    pose = Pose(Point(x=5, y=-2.5, z=0.5), orient)
-    for idx, pkg in enumerate(pkgs_ign_name):
-        print(pkg, pkgs_ign_path[0])
+    current_time = datetime.datetime.now().second
+    while datetime.datetime.now().second <= current_time + 1:
+        continue
+    # while True:
+    #     continue
+    # pause_physics_client(EmptyRequest())
+    # pause_physics_client(EmptyRequest())
+    # quat = tf.transformations.quaternion_from_euler(0, 0, 0) # type: ignore
+    # orient = Quaternion(quat[0], quat[1], quat[2], quat[3])
+    # pose = Pose(Point(x=5, y=-2.5, z=0.5), orient)
+    # for idx, pkg in enumerate(pkgs_ign_name):
+    #     print(pkg, pkgs_ign_path[0])
         
-        pose.position.x -= 1.5
-        sm(pkg, urdfs_xmls[idx], '', pose, 'world')
+    #     pose.position.x -= 1.5
+    #     sm(pkg, urdfs_xmls[idx], '', pose, 'world')
     
     # Pause physics and change configuration
     

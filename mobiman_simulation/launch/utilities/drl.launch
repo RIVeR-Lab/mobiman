@@ -7,8 +7,8 @@
   <arg name="flag_gazebo" default="true"/>
   <arg name="flag_robot" default="true"/>
   <arg name="flag_moveit" default="false"/>
-  <arg name="flag_conveyor" default="true"/>
-  <arg name="flag_bin" default="true"/>
+  <arg name="flag_conveyor" default="false"/>
+  <arg name="flag_bin" default="false"/>
   <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
   <arg name="flag_map_server" default="true"/>
@@ -40,7 +40,7 @@
   <!-- Launch the Gazebo world -->
   <group if="$(eval arg('flag_gazebo') == true)">
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-      <arg name="world_name" value="$(find mobiman_simulation)/worlds/empty_world_asphalt_ground.world"/>
+      <arg name="world_name" value="$(find mobiman_simulation)/worlds/drl.world"/>
       <arg name="paused" value="$(arg paused)"/>
       <arg name="use_sim_time" value="$(arg use_sim_time)"/>
       <arg name="gui" value="$(arg gui)" />
