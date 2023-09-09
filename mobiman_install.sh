@@ -124,6 +124,7 @@ git clone git@github.com:mazrk7/robot_collision_checking.git
 
 sudo apt install ros-noetic-octomap*
 sudo apt install ros-noetic-pointcloud-to-laserscan
+sudo apt-get install ros-noetic-jackal-simulator ros-noetic-jackal-desktop ros-noetic-jackal-navigation
 sudo apt-get install nlohmann-json3-dev
 sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
 sudo apt install ros-noetic-pybind11-catkin
