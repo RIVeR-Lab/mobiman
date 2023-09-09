@@ -26,16 +26,16 @@ n_robot: 1
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
 learning_rate: 0.0002
-n_steps: 10 #1000
+n_steps: 3 #1000
 batch_size: 5 #50
-ent_coef: 0.001
-training_timesteps: 20 #10000
+ent_coef: 0.0001
+training_timesteps: 500 #10000
 max_episode_steps: 10 #2000
 
 training_checkpoint_freq: 10 #1000
 plot_title: "Learning Curve"
-plot_moving_average_window_size_timesteps: 20
-plot_moving_average_window_size_episodes: 5
+plot_moving_average_window_size_timesteps: 5
+plot_moving_average_window_size_episodes: 1
 
 ## Data and Sensors
 
@@ -65,7 +65,7 @@ occgrid_occ_max: 100
 
 ## Algorithm: mobiman-DRL Parameters
 # Action time horizon [s]
-action_time_horizon: 5
+action_time_horizon: 3
 
 # 0: Discrete
 # 1: Continuous
@@ -122,13 +122,6 @@ alpha_step_goal_ee: 1
 alpha_step_target: 1
 alpha_step_mode: 1
 alpha_step_mpc: 1
-
-
-
-reward_terminal_success: 8
-reward_step_scale: 0.5
-penalty_terminal_fail: -5
-penalty_cumulative_step: -5
 
 ### DRL-Testing Parameters
 max_testing_episode_timesteps: 2000

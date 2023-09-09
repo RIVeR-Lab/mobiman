@@ -1,3 +1,20 @@
+save_path_rel: "dataset/analysis/"
+
+goal_distance_threshold: 0.1
+goal_range_min: 0.5
+goal_range_max_x: 5.0
+goal_range_max_y: 5.0
+goal_range_max_z: 1
+
+self_collision_range_min: 0.05
+self_collision_range_max: 1.0
+
+ext_collision_range_min: 0.25
+ext_collision_range_max: 2.0
+
+rollover_pitch_threshold: 0.2
+rollover_roll_threshold: 0.2
+
 ## Reward:
 reward_terminal_goal: 10
 reward_terminal_collision: -10
