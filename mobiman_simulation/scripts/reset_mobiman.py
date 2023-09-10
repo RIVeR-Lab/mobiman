@@ -138,6 +138,7 @@ def handleResetMobiman(req):
         command = 'sleep 0.5 && rosservice call /gazebo/unpause_physics "{}"'
         subprocess.Popen(command, stdout=subprocess.PIPE, shell=True, stderr=subprocess.STDOUT)
         switch_controller_req.start_controllers = [controller]
+        switch_controller_req.strictness = switch_controller_req.BEST_EFFORT
         switch_controller = rospy.ServiceProxy('/controller_manager/switch_controller', SwitchController)
         res = switch_controller(switch_controller_req)
         # print(res)
