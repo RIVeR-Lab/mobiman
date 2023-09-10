@@ -74,7 +74,11 @@ def handleResetMobiman(req):
     pause_physics_client = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
     unpause_physics_client = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
     controller_list = ['arm_controller', 'joint_state_controller', 'jackal_velocity_controller', 'joint_group_position_controller']
-    
+    try:
+        rospy.wait_for_service('/gazebo/pause_physics')
+        pause_physics_client(EmptyRequest())
+    except Exception as e:
+        pass
     # Delete Current Model
     try:
         delete_model = rospy.ServiceProxy('/gazebo/delete_model', DeleteModel)
@@ -95,7 +99,7 @@ def handleResetMobiman(req):
     # rospy.sleep(1)
     # print("[+] [RESET SCRIPT] After Sleep")
 
-    pause_physics_client(EmptyRequest())
+    
     current_time = datetime.datetime.now().second
     while datetime.datetime.now().second <= current_time + 1:
         continue
@@ -119,10 +123,14 @@ def handleResetMobiman(req):
         set_configuration(SetModelConfigurationRequest(model_name='mobiman', urdf_param_name='robot_description', joint_names=joint_names, joint_positions=joint_positions))
     
     # Load Controllers
+    load_controller = rospy.ServiceProxy('/controller_manager/load_controller', LoadController)
     for controller in controller_list:
-        load_controller = rospy.ServiceProxy('/controller_manager/load_controller', LoadController)
-        load_controller(LoadControllerRequest(controller))
-    
+        rospy.wait_for_service('/controller_manager/load_controller')
+        try:
+            load_controller(LoadControllerRequest(controller))
+        except Exception as e:
+            pass
+
     # Switch Controller
     switch_controller_req = SwitchControllerRequest()
     switch_controller_req.start_asap = True
@@ -134,7 +142,11 @@ def handleResetMobiman(req):
         res = switch_controller(switch_controller_req)
         # print(res)
     for i in range(1, 10):
-        unpause_physics_client(EmptyRequest())
+        try:
+            rospy.wait_for_service('/gazebo/unpause_physics')
+            unpause_physics_client(EmptyRequest())
+        except Exception as e:
+            pass
     return resetMobimanResponse(success)
 
 if __name__ == '__main__':
