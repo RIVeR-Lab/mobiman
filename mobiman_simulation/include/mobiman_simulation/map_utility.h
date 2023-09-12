@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.07.05
+// LAST UPDATE: 2023.09.11
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -451,6 +451,9 @@ class MapUtility
     void fillOctMsgFromOct();
 
     // DESCRIPTION: TODO...
+    void fillOctMsgFromOct(std::string octMsgName);
+
+    // DESCRIPTION: TODO...
     void fillPCMsgFromOct();
 
     // DESCRIPTION: TODO...
@@ -470,6 +473,9 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void addToOct(sensor_msgs::PointCloud2& pc2_msg);
+
+    // DESCRIPTION: TODO...
+    void updateObjectOct(sensor_msgs::PointCloud2& pc2_msg, std::string objName);
 
     // DESCRIPTION: TODO...
     void addToOctFromMeasuredPCMsg();
@@ -611,8 +617,10 @@ class MapUtility
     // DESCRIPTION: TODO...
     void updateOct();
 
+    void updateOct(std::string oct_msg_name);
+
     // DESCRIPTION: TODO...
-    void updateOct(string oct_msg_name);
+    void updateObjectOct();
 
     // DESCRIPTION: TODO...
     void updateEgoGrid();
@@ -625,6 +633,9 @@ class MapUtility
 
     // DESCRIPTION: TODO...
     void publishOctMsg();
+
+    // DESCRIPTION: TODO...
+    void publishObjectOctMsg();
 
     // DESCRIPTION: TODO...
     void publishEgoGridPcMsg();
@@ -839,6 +850,9 @@ class MapUtility
     std::vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_ign_;
     std::vector<sensor_msgs::PointCloud2> vec_pc2_msg_gz_man_;
 
+    std::vector<string> vec_frame_name_obj_;
+    std::vector<sensor_msgs::PointCloud2> vec_pc2_msg_obj_wrt_world_;
+
     std::vector<geometry_msgs::Point> vec_obj_bbx_min_ign_;
     std::vector<geometry_msgs::Point> vec_obj_bbx_min_man_;
 
@@ -880,13 +894,50 @@ class MapUtility
     ros::Publisher pub_occ_grid_msg_;
 
     // NUA TODO: Find a way to generalize!
-    ros::Publisher pub_pc2_msg_gz_ign_conveyor_;
-    ros::Publisher pub_pc2_msg_gz_ign_pkg_red_cube_;
-    ros::Publisher pub_pc2_msg_gz_ign_pkg_green_cube_;
-    ros::Publisher pub_pc2_msg_gz_ign_pkg_blue_cube_;
-    ros::Publisher pub_pc2_msg_gz_ign_actor0_;
-    ros::Publisher pub_pc2_msg_gz_ign_actor1_;
-    ros::Publisher pub_pc2_msg_gz_ign_bin_;
+    shared_ptr<octomap::ColorOcTree> oct_conveyor_;
+    shared_ptr<octomap::ColorOcTree> oct_pkg_normal_;
+    shared_ptr<octomap::ColorOcTree> oct_pkg_long_;
+    shared_ptr<octomap::ColorOcTree> oct_pkg_longwide_;
+    shared_ptr<octomap::ColorOcTree> oct_red_cube_;
+    shared_ptr<octomap::ColorOcTree> oct_green_cube_;
+    shared_ptr<octomap::ColorOcTree> oct_blue_cube_;
+    shared_ptr<octomap::ColorOcTree> oct_actor0_;
+    shared_ptr<octomap::ColorOcTree> oct_actor1_;
+    shared_ptr<octomap::ColorOcTree> oct_bin_;
+
+    octomap_msgs::Octomap oct_msg_conveyor_;
+    octomap_msgs::Octomap oct_msg_pkg_normal_;
+    octomap_msgs::Octomap oct_msg_pkg_long_;
+    octomap_msgs::Octomap oct_msg_pkg_longwide_;
+    octomap_msgs::Octomap oct_msg_red_cube_;
+    octomap_msgs::Octomap oct_msg_green_cube_;
+    octomap_msgs::Octomap oct_msg_blue_cube_;
+    octomap_msgs::Octomap oct_msg_actor0_;
+    octomap_msgs::Octomap oct_msg_actor1_;
+    octomap_msgs::Octomap oct_msg_bin_;
+
+    ros::Publisher pub_pc2_msg_conveyor_;
+    ros::Publisher pub_pc2_msg_pkg_normal_;
+    ros::Publisher pub_pc2_msg_pkg_long_;
+    ros::Publisher pub_pc2_msg_pkg_longwide_;
+    ros::Publisher pub_pc2_msg_red_cube_;
+    ros::Publisher pub_pc2_msg_green_cube_;
+    ros::Publisher pub_pc2_msg_blue_cube_;
+    ros::Publisher pub_pc2_msg_actor0_;
+    ros::Publisher pub_pc2_msg_actor1_;
+    ros::Publisher pub_pc2_msg_bin_;
+
+    ros::Publisher pub_oct_msg_conveyor_;
+    ros::Publisher pub_oct_msg_pkg_normal_;
+    ros::Publisher pub_oct_msg_pkg_long_;
+    ros::Publisher pub_oct_msg_pkg_longwide_;
+    ros::Publisher pub_oct_msg_red_cube_;
+    ros::Publisher pub_oct_msg_green_cube_;
+    ros::Publisher pub_oct_msg_blue_cube_;
+    ros::Publisher pub_oct_msg_actor0_;
+    ros::Publisher pub_oct_msg_actor1_;
+    ros::Publisher pub_oct_msg_bin_;
+
     ros::Publisher pub_pc2_msg_gz_man_pkg_normal_;
     ros::Publisher pub_pc2_msg_gz_man_pkg_long_;
     ros::Publisher pub_pc2_msg_gz_man_pkg_longwide_;

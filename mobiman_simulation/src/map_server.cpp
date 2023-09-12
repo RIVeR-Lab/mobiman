@@ -138,6 +138,7 @@ int main(int argc, char** argv)
                 obj_dim_pkgs_man,
                 map_resolution);
 
+  /*
   mu.initializeEgoGrid(egrid_frame_name, 
                        egrid_resolution, 
                        egrid_bbx_min, 
@@ -148,6 +149,7 @@ int main(int argc, char** argv)
 
   // Initialize Moveit collision objects
   mu.initializeMoveitCollisionObjects();
+  */
 
   // Add moveit collision objects
   //mu.addMoveitCollisionObjects();
@@ -164,12 +166,13 @@ int main(int argc, char** argv)
     //cout << "[map_server::main] BEFORE updateOct" << endl;
     // Update octomap with the recent transformed pc2 data
     mu.updateOct();
+    mu.updateObjectOct();
 
-    mu.updateEgoGrid();
+    //mu.updateEgoGrid();
 
-    mu.updateOccGrid();
+    //mu.updateOccGrid();
 
-    mu.updateMoveitCollisionObjects();
+    //mu.updateMoveitCollisionObjects();
 
     /// Publishers
     //cout << "[map_server::main] BEFORE publishPC2MsgGzScan" << endl;
@@ -179,15 +182,16 @@ int main(int argc, char** argv)
     //cout << "[map_server::main] BEFORE publishOctMsg" << endl;
     // Publish Octomap message
     mu.publishOctMsg();
+    mu.publishObjectOctMsg();
 
-    mu.publishEgoGridPcMsg();
-    mu.publishEgoTargetPcMsg();
-    mu.publishEgoGridOccPcMsg();
-    mu.publishOccGridMsg();
+    //mu.publishEgoGridPcMsg();
+    //mu.publishEgoTargetPcMsg();
+    //mu.publishEgoGridOccPcMsg();
+    //mu.publishOccGridMsg();
 
     //cout << "[map_server::main] BEFORE publishMoveitCollisionObjects" << endl;
     // Publish moveit collision objects
-    mu.publishMoveitCollisionObjects();
+    //mu.publishMoveitCollisionObjects();
 
     //cout << "[map_server::main] BEFORE spinOnce" << endl;
     ros::spinOnce();

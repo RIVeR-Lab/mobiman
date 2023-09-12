@@ -176,36 +176,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        j2n6s300_link_finger_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_finger_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_finger_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_finger_tip_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_finger_tip_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_finger_tip_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         jaco_base_link:
           Alpha: 1
           Show Axes: false
@@ -255,6 +225,8 @@ Visualization Manager:
           Value: true
         bin_4_dropping_task:
           Value: true
+        blue_cube:
+          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -289,6 +261,8 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        green_cube:
+          Value: true
         imu_link:
           Value: false
         j2n6s300_end_effector:
@@ -307,24 +281,18 @@ Visualization Manager:
           Value: false
         j2n6s300_link_base:
           Value: true
-        j2n6s300_link_finger_1:
-          Value: false
-        j2n6s300_link_finger_2:
-          Value: false
-        j2n6s300_link_finger_3:
-          Value: false
-        j2n6s300_link_finger_tip_1:
-          Value: false
-        j2n6s300_link_finger_tip_2:
-          Value: false
-        j2n6s300_link_finger_tip_3:
-          Value: false
         jaco_base_link:
           Value: false
+        long_pkg:
+          Value: true
+        longwide_pkg:
+          Value: true
         mid_mount:
           Value: false
         navsat_link:
           Value: false
+        normal_pkg:
+          Value: true
         rear_fender_link:
           Value: false
         rear_left_wheel_link:
@@ -394,18 +362,19 @@ Visualization Manager:
                           j2n6s300_link_6:
                             j2n6s300_end_effector:
                               {}
-                            j2n6s300_link_finger_1:
-                              j2n6s300_link_finger_tip_1:
-                                {}
-                            j2n6s300_link_finger_2:
-                              j2n6s300_link_finger_tip_2:
-                                {}
-                            j2n6s300_link_finger_3:
-                              j2n6s300_link_finger_tip_3:
-                                {}
           bin_4_dropping_task:
             {}
+          blue_cube:
+            {}
           conveyor_belt:
+            {}
+          green_cube:
+            {}
+          long_pkg:
+            {}
+          longwide_pkg:
+            {}
+          normal_pkg:
             {}
           red_cube:
             {}
@@ -442,12 +411,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: Map
       Topic: /occupancy_grid
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -472,6 +441,34 @@ Visualization Manager:
       Size (m): 0.009999999776482582
       Style: Points
       Topic: /ego_grid_occupancy
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /pc2_scan_bin
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -580,7 +577,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.502898693084717
+      Distance: 7.6974310874938965
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -588,17 +585,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.2403453290462494
-        Y: -1.87698233127594
-        Z: -0.24697521328926086
+        X: 0.41613274812698364
+        Y: -1.858665943145752
+        Z: -0.2968772351741791
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6097970604896545
+      Pitch: 0.7097970247268677
       Target Frame: <Fixed Frame>
-      Yaw: 1.5729018449783325
+      Yaw: 1.5879018306732178
     Saved: ~
 Window Geometry:
   Displays:

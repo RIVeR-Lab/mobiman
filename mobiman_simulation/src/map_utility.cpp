@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.07.24
+// LAST UPDATE: 2023.09.11
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -107,24 +107,52 @@ MapUtility::MapUtility(NodeHandle& nh,
   oct = std::make_shared<octomap::ColorOcTree>(map_resolution_);
 
   // Subscribers
-  sub_gz_model_ = nh_.subscribe(gz_model_msg, 100, &MapUtility::gazeboModelCallback, this);
+  sub_gz_model_ = nh_.subscribe(gz_model_msg, 10, &MapUtility::gazeboModelCallback, this);
 
   // Publishers
   pub_pc2_msg_scan_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan", 5);
   pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 5);
   pub_occ_grid_msg_ = nh_.advertise<nav_msgs::OccupancyGrid>("occupancy_grid", 5);
 
-  pub_pc2_msg_gz_ign_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 5);
-  pub_pc2_msg_gz_ign_pkg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 5);
-  pub_pc2_msg_gz_ign_pkg_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 5);
-  pub_pc2_msg_gz_ign_pkg_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 5);
-  pub_pc2_msg_gz_ign_actor0_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor0", 5);
-  pub_pc2_msg_gz_ign_actor1_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor1", 5);
-  pub_pc2_msg_gz_ign_bin_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_bin", 5);
+  /// NUA TODO: MAKE IT GENERALIZABLE!
+  oct_conveyor_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_pkg_normal_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_pkg_long_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_pkg_longwide_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_red_cube_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_green_cube_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_blue_cube_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_actor0_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_actor1_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
+  oct_bin_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
 
-  pub_pc2_msg_gz_man_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 5);
-  pub_pc2_msg_gz_man_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 5);
-  pub_pc2_msg_gz_man_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 5);
+  pub_pc2_msg_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 5);
+  pub_pc2_msg_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 5);
+  pub_pc2_msg_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 5);
+  pub_pc2_msg_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 5);
+  pub_pc2_msg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 5);
+  pub_pc2_msg_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 5);
+  pub_pc2_msg_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 5);
+  pub_pc2_msg_actor0_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor0", 5);
+  pub_pc2_msg_actor1_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor1", 5);
+  pub_pc2_msg_bin_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_bin", 5);
+
+  pub_oct_msg_conveyor_ = nh_.advertise<octomap_msgs::Octomap>("oct_conveyor", 5);
+  pub_oct_msg_pkg_normal_ = nh_.advertise<octomap_msgs::Octomap>("oct_normal_pkg", 5);
+  pub_oct_msg_pkg_long_ = nh_.advertise<octomap_msgs::Octomap>("oct_long_pkg", 5);
+  pub_oct_msg_pkg_longwide_ = nh_.advertise<octomap_msgs::Octomap>("oct_longwide_pkg", 5);
+  pub_oct_msg_red_cube_ = nh_.advertise<octomap_msgs::Octomap>("oct_red_cube", 5);
+  pub_oct_msg_green_cube_ = nh_.advertise<octomap_msgs::Octomap>("oct_green_cube", 5);
+  pub_oct_msg_blue_cube_ = nh_.advertise<octomap_msgs::Octomap>("oct_blue_cube", 5);
+  pub_oct_msg_actor0_ = nh_.advertise<octomap_msgs::Octomap>("oct_actor0", 5);
+  pub_oct_msg_actor1_ = nh_.advertise<octomap_msgs::Octomap>("oct_actor1", 5);
+  pub_oct_msg_bin_ = nh_.advertise<octomap_msgs::Octomap>("oct_bin", 5);
+
+  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 5);
+
+  //pub_pc2_msg_gz_man_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 5);
+  //pub_pc2_msg_gz_man_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 5);
+  //pub_pc2_msg_gz_man_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 5);
 
   //pub_moveit_collision_object_ = nh_.advertise<moveit_msgs::CollisionObject>("/collision_object", 5);
 
@@ -1446,7 +1474,7 @@ void MapUtility::fillOct(sensor_msgs::PointCloud& pc_msg)
 
   for(int i = 0; i < pc_msg.points.size(); i++)
   {
-    oct -> updateNode(pc_msg.points[i].x, pc_msg.points[i].y, pc_msg.points[i].z, true);
+    oct->updateNode(pc_msg.points[i].x, pc_msg.points[i].y, pc_msg.points[i].z, true);
   }
 }
 
@@ -1476,6 +1504,110 @@ void MapUtility::fillOctMsgFromOct()
   oct_msg.resolution = map_resolution_;
   octomap_msgs::fullMapToMsg(*oct, oct_msg);
   //cout << "[MapUtility::fillOctMsgFromOct] END" << endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::fillOctMsgFromOct(std::string octMsgName)
+{
+  //cout << "[MapUtility::fillOctMsgFromOct(1)] START" << endl;
+  //cout << "[MapUtility::fillOctMsgFromOct(1)] octMsgName: " << octMsgName << endl;
+  
+  if (octMsgName == "conveyor_belt")
+  {
+    oct_msg_conveyor_.data.clear();
+    oct_msg_conveyor_.header.frame_id = world_frame_name_;
+    oct_msg_conveyor_.binary = false;
+    oct_msg_conveyor_.id = map_name;
+    oct_msg_conveyor_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_conveyor_, oct_msg_conveyor_);
+  }
+  else if (octMsgName == "normal_pkg")
+  {
+    oct_msg_pkg_normal_.data.clear();
+    oct_msg_pkg_normal_.header.frame_id = world_frame_name_;
+    oct_msg_pkg_normal_.binary = false;
+    oct_msg_pkg_normal_.id = map_name;
+    oct_msg_pkg_normal_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_pkg_normal_, oct_msg_pkg_normal_);
+  }
+  else if (octMsgName == "long_pkg")
+  {
+    oct_msg_pkg_long_.data.clear();
+    oct_msg_pkg_long_.header.frame_id = world_frame_name_;
+    oct_msg_pkg_long_.binary = false;
+    oct_msg_pkg_long_.id = map_name;
+    oct_msg_pkg_long_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_pkg_long_, oct_msg_pkg_long_);
+  }
+  else if (octMsgName == "longwide_pkg")
+  {
+    oct_msg_pkg_longwide_.data.clear();
+    oct_msg_pkg_longwide_.header.frame_id = world_frame_name_;
+    oct_msg_pkg_longwide_.binary = false;
+    oct_msg_pkg_longwide_.id = map_name;
+    oct_msg_pkg_longwide_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_pkg_longwide_, oct_msg_pkg_longwide_);
+  }
+  else if (octMsgName == "red_cube")
+  {
+    oct_msg_red_cube_.data.clear();
+    oct_msg_red_cube_.header.frame_id = world_frame_name_;
+    oct_msg_red_cube_.binary = false;
+    oct_msg_red_cube_.id = map_name;
+    oct_msg_red_cube_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_red_cube_, oct_msg_red_cube_);
+  }
+  else if (octMsgName == "green_cube")
+  {
+    oct_msg_green_cube_.data.clear();
+    oct_msg_green_cube_.header.frame_id = world_frame_name_;
+    oct_msg_green_cube_.binary = false;
+    oct_msg_green_cube_.id = map_name;
+    oct_msg_green_cube_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_green_cube_, oct_msg_green_cube_);
+  }
+  else if (octMsgName == "blue_cube")
+  {
+    oct_msg_blue_cube_.data.clear();
+    oct_msg_blue_cube_.header.frame_id = world_frame_name_;
+    oct_msg_blue_cube_.binary = false;
+    oct_msg_blue_cube_.id = map_name;
+    oct_msg_blue_cube_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_blue_cube_, oct_msg_blue_cube_);
+  }
+  else if (octMsgName == "actor0")
+  {
+    oct_msg_actor0_.data.clear();
+    oct_msg_actor0_.header.frame_id = world_frame_name_;
+    oct_msg_actor0_.binary = false;
+    oct_msg_actor0_.id = map_name;
+    oct_msg_actor0_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_actor0_, oct_msg_actor0_);
+  }
+  else if (octMsgName == "actor1")
+  {
+    oct_msg_actor1_.data.clear();
+    oct_msg_actor1_.header.frame_id = world_frame_name_;
+    oct_msg_actor1_.binary = false;
+    oct_msg_actor1_.id = map_name;
+    oct_msg_actor1_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_actor1_, oct_msg_actor1_);
+  }
+  else if (octMsgName == "bin_4_dropping_task")
+  {
+    oct_msg_bin_.data.clear();
+    oct_msg_bin_.header.frame_id = world_frame_name_;
+    oct_msg_bin_.binary = false;
+    oct_msg_bin_.id = map_name;
+    oct_msg_bin_.resolution = map_resolution_;
+    octomap_msgs::fullMapToMsg(*oct_bin_, oct_msg_bin_);
+
+    //cout << "[MapUtility::fillOctMsgFromOct(1)] oct_msg_bin_.data size: " << oct_msg_bin_.data.size() << endl;
+  }
+
+  //cout << "[MapUtility::fillOctMsgFromOct(1)] END" << endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -1604,7 +1736,7 @@ void MapUtility::addToOct(sensor_msgs::PointCloud& pc_msg)
 {
   for(int i = 0; i < pc_msg.points.size(); i++)
   {
-    oct -> updateNode(pc_msg.points[i].x, pc_msg.points[i].y, pc_msg.points[i].z, true);
+    oct->updateNode(pc_msg.points[i].x, pc_msg.points[i].y, pc_msg.points[i].z, true);
   }
 }
 
@@ -1622,9 +1754,83 @@ void MapUtility::addToOct(sensor_msgs::PointCloud2& pc2_msg)
     // Check if the point is invalid
     if (!std::isnan (*iter_x) && !std::isnan (*iter_y) && !std::isnan (*iter_z))
     {
-      oct -> updateNode(*iter_x, *iter_y, *iter_z, true);
+      oct->updateNode(*iter_x, *iter_y, *iter_z, true);
     }
   }
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::updateObjectOct(sensor_msgs::PointCloud2& pc2_msg, std::string objName)
+{
+  //std::cout << "[MapUtility::updateObjectOct] START" << std::endl;
+
+  oct_conveyor_->clear();
+  oct_pkg_normal_->clear();
+  oct_pkg_long_->clear();
+  oct_pkg_longwide_->clear();
+  oct_red_cube_->clear();
+  oct_green_cube_->clear();
+  oct_blue_cube_->clear();
+  oct_actor0_->clear();
+  oct_actor1_->clear();
+  oct_bin_->clear();
+
+  sensor_msgs::PointCloud2ConstIterator<float> iter_x(pc2_msg, "x");
+  sensor_msgs::PointCloud2ConstIterator<float> iter_y(pc2_msg, "y");
+  sensor_msgs::PointCloud2ConstIterator<float> iter_z(pc2_msg, "z");
+
+  /// NUA TODO: GENERALIZE!
+  for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z)
+  {
+    // Check if the point is invalid
+    if (!std::isnan (*iter_x) && !std::isnan (*iter_y) && !std::isnan (*iter_z))
+    {
+      if (objName == "conveyor_belt") 
+      {
+        oct_conveyor_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "normal_pkg") 
+      {
+        oct_pkg_normal_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "long_pkg") 
+      {
+        oct_pkg_long_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "longwide_pkg") 
+      { 
+        oct_pkg_longwide_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "red_cube") 
+      { 
+        oct_red_cube_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "green_cube") 
+      {
+        oct_green_cube_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "blue_cube") 
+      {
+        oct_blue_cube_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "actor0") 
+      {
+        oct_actor0_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "actor1") 
+      {
+        oct_actor1_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+      else if (objName == "bin_4_dropping_task") 
+      {
+        oct_bin_->updateNode(*iter_x, *iter_y, *iter_z, true);
+      }
+    }
+  }
+
+  //std::cout << "[MapUtility::updateObjectOct] END" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -2537,7 +2743,23 @@ void MapUtility::updateOct()
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::updateOct(std::string oct_msg_name)
 {
-  sub_oct_msg_ = nh_.subscribe(oct_msg_name, 100, &MapUtility::octMsgCallback, this);
+  sub_oct_msg_ = nh_.subscribe(oct_msg_name, 10, &MapUtility::octMsgCallback, this);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void MapUtility::updateObjectOct()
+{
+  for (size_t i = 0; i < vec_pc2_msg_obj_wrt_world_.size(); i++)
+  {
+    sensor_msgs::PointCloud2 pc2_msg_scan = vec_pc2_msg_obj_wrt_world_[i];
+    if (pc2_msg_scan.data.size() > 0)
+    {
+      updateObjectOct(pc2_msg_scan, vec_frame_name_obj_[i]);
+      fillOctMsgFromOct(vec_frame_name_obj_[i]);
+    }
+  }
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -2704,6 +2926,52 @@ void MapUtility::publishOctMsg()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+void MapUtility::publishObjectOctMsg()
+{
+  oct_msg_conveyor_.header.frame_id = world_frame_name_;
+  oct_msg_conveyor_.header.stamp = ros::Time::now();
+  pub_oct_msg_conveyor_.publish(oct_msg_conveyor_);
+
+  oct_msg_pkg_normal_.header.frame_id = world_frame_name_;
+  oct_msg_pkg_normal_.header.stamp = ros::Time::now();
+  pub_oct_msg_pkg_normal_.publish(oct_msg_pkg_normal_);
+
+  oct_msg_pkg_long_.header.frame_id = world_frame_name_;
+  oct_msg_pkg_long_.header.stamp = ros::Time::now();
+  pub_oct_msg_pkg_long_.publish(oct_msg_pkg_long_);
+
+  oct_msg_pkg_longwide_.header.frame_id = world_frame_name_;
+  oct_msg_pkg_longwide_.header.stamp = ros::Time::now();
+  pub_oct_msg_pkg_longwide_.publish(oct_msg_pkg_longwide_);
+
+  oct_msg_red_cube_.header.frame_id = world_frame_name_;
+  oct_msg_red_cube_.header.stamp = ros::Time::now();
+  pub_oct_msg_red_cube_.publish(oct_msg_red_cube_);
+
+  oct_msg_green_cube_.header.frame_id = world_frame_name_;
+  oct_msg_green_cube_.header.stamp = ros::Time::now();
+  pub_oct_msg_green_cube_.publish(oct_msg_green_cube_);
+
+  oct_msg_blue_cube_.header.frame_id = world_frame_name_;
+  oct_msg_blue_cube_.header.stamp = ros::Time::now();
+  pub_oct_msg_blue_cube_.publish(oct_msg_blue_cube_);
+
+  oct_msg_actor0_.header.frame_id = world_frame_name_;
+  oct_msg_actor0_.header.stamp = ros::Time::now();
+  pub_oct_msg_actor0_.publish(oct_msg_actor0_);
+
+  oct_msg_actor1_.header.frame_id = world_frame_name_;
+  oct_msg_actor1_.header.stamp = ros::Time::now();
+  pub_oct_msg_actor1_.publish(oct_msg_actor1_);
+
+  oct_msg_bin_.header.frame_id = world_frame_name_;
+  oct_msg_bin_.header.stamp = ros::Time::now();
+  pub_oct_msg_bin_.publish(oct_msg_bin_);
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void MapUtility::publishEgoGridPcMsg()
 {
   sensor_msgs::PointCloud egrid_pc_msg = egrid_pc_msg_;
@@ -2788,40 +3056,66 @@ void MapUtility::publishPC2MsgGzScan()
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+/// NUA TODO: MAKE IT GENERALIZABLE!!!
 void MapUtility::publishPC2MsgGzPkgIgn(int index_pkg_ign)
 {
+  //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] START" << std::endl;
+
   vec_pc2_msg_gz_ign_[index_pkg_ign].header.frame_id = vec_frame_name_ign_[index_pkg_ign];
-  vec_pc2_msg_gz_ign_[index_pkg_ign].header.seq++;
+  //vec_pc2_msg_gz_ign_[index_pkg_ign].header.seq++;
   vec_pc2_msg_gz_ign_[index_pkg_ign].header.stamp = ros::Time::now();
 
   switch (index_pkg_ign)
   {
     case 0:
-      pub_pc2_msg_gz_ign_conveyor_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_conveyor_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 0 END" << std::endl;
       break;
 
     case 1:
-      pub_pc2_msg_gz_ign_pkg_red_cube_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_pkg_normal_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 1 END" << std::endl;
       break;
 
     case 2:
-      pub_pc2_msg_gz_ign_pkg_green_cube_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_pkg_long_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 2 END" << std::endl;
       break;
 
     case 3:
-      pub_pc2_msg_gz_ign_pkg_blue_cube_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_pkg_longwide_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 3 END" << std::endl;
       break;
 
     case 4:
-      pub_pc2_msg_gz_ign_actor0_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_red_cube_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 4 END" << std::endl;
       break;
 
     case 5:
-      pub_pc2_msg_gz_ign_actor1_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_green_cube_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 5 END" << std::endl;
       break;
 
     case 6:
-      pub_pc2_msg_gz_ign_bin_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      pub_pc2_msg_blue_cube_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 6 END" << std::endl;
+      break;
+
+    case 7:
+      pub_pc2_msg_actor0_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 7 END" << std::endl;
+      break;
+
+    /*
+    case 8:
+      pub_pc2_msg_actor1_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      break;
+    */
+
+    case 8:
+      pub_pc2_msg_bin_.publish(vec_pc2_msg_gz_ign_[index_pkg_ign]);
+      //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] 8 END" << std::endl;
       break;
     
     default:
@@ -3157,7 +3451,7 @@ void MapUtility::pc2Callback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
   try
   {
-    tflistener -> waitForTransform(world_frame_name_, msg -> header.frame_id, ros::Time(0), ros::Duration(5.0));
+    tflistener->waitForTransform(world_frame_name_, msg->header.frame_id, ros::Time(0), ros::Duration(5.0));
     tflistener->lookupTransform(world_frame_name_, msg->header.frame_id, ros::Time(0), measured_transform_sensor_pc2_wrt_world);
   }
   catch (tf::TransformException ex)
@@ -3223,6 +3517,8 @@ void MapUtility::updateModelPc2Scan()
 
   vec_transform_ign_.clear();
   vec_transform_man_.clear();
+  vec_frame_name_obj_.clear();
+  vec_pc2_msg_obj_wrt_world_.clear();
 
   for (size_t i = 0; i < ms.name.size(); i++)
   {
@@ -3253,7 +3549,16 @@ void MapUtility::updateModelPc2Scan()
         static tf::TransformBroadcaster br_gz_pkg_ign;
         br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name_, tf_name_tmp));
 
-        //publishPC2MsgGzPkgIgn(j);
+        vec_frame_name_obj_.push_back(tf_name_tmp);
+        vec_pc2_msg_obj_wrt_world_.push_back(vec_pc2_msg_gz_ign_wrt_world);
+
+        vec_frame_name_obj_.push_back(tf_name_tmp);
+        vec_pc2_msg_obj_wrt_world_.push_back(vec_pc2_msg_gz_ign_wrt_world);
+
+        //cout << "[MapUtility::updateModelPc2Scan] BEFORE publishPC2MsgGzPkgIgn " << tf_name_tmp << std::endl;
+        publishPC2MsgGzPkgIgn(j);
+        //cout << "[MapUtility::updateModelPc2Scan] AFTER publishPC2MsgGzPkgIgn " << tf_name_tmp << std::endl << std::endl;
+
         if (initFlag)
         {
           pc2_msg_scan = vec_pc2_msg_gz_ign_wrt_world;
