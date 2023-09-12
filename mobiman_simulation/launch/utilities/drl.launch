@@ -151,14 +151,6 @@
         <arg name="init_arm_joint_pos_5" value="1.4"/>
         <arg name="init_arm_joint_pos_6" value="0.0"/>
 
-        <arg name="name_finger_joint_1" value="j2n6s300_joint_finger_1"/>
-        <arg name="name_finger_joint_2" value="j2n6s300_joint_finger_2"/>
-        <arg name="name_finger_joint_3" value="j2n6s300_joint_finger_3"/>
-
-        <arg name="init_finger_joint_pos_1" value="1.0"/>
-        <arg name="init_finger_joint_pos_2" value="1.0"/>
-        <arg name="init_finger_joint_pos_3" value="1.0"/>
-
         <node name="urdf_spawner" 
               pkg="gazebo_ros" 
               type="spawn_model" 
@@ -180,9 +172,6 @@
                     -J $(arg name_arm_joint_4) $(arg init_arm_joint_pos_4)
                     -J $(arg name_arm_joint_5) $(arg init_arm_joint_pos_5)
                     -J $(arg name_arm_joint_6) $(arg init_arm_joint_pos_6)
-                    -J $(arg name_finger_joint_1) $(arg init_finger_joint_pos_1)
-                    -J $(arg name_finger_joint_2) $(arg init_finger_joint_pos_2)
-                    -J $(arg name_finger_joint_3) $(arg init_finger_joint_pos_3)
                     -unpause"/>
         </group>
 

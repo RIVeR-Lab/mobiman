@@ -30,12 +30,12 @@
         output="screen"/>
 
       <!-- load other controllers -->
-      <node name="ros_control_controller_manager" 
+      <!--node name="ros_control_controller_manager" 
             pkg="controller_manager" 
             type="controller_manager" 
             respawn="false" 
             output="screen" 
-            args="load joint_group_position_controller" />
+            args="load joint_group_position_controller" /-->
 
       <!--node name="controller_spawner" 
             pkg="controller_manager" 
