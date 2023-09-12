@@ -261,6 +261,8 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        grasp:
+          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -367,6 +369,8 @@ Visualization Manager:
           blue_cube:
             {}
           conveyor_belt:
+            {}
+          grasp:
             {}
           green_cube:
             {}
@@ -490,8 +494,28 @@ Visualization Manager:
       Marker Topic: /occupancy_distances
       Name: MarkerArray
       Namespaces:
-        {}
+        ancy_distance_: true
+        ccupancy_distance_: true
+        cupancy_distance_: true
+        occupancy_distance_: true
+        pancy_distance_: true
+        upancy_distance_: true
       Queue Size: 0
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /occupancy_distances2
+      Name: MarkerArray
+      Namespaces:
+        ancy_distance2_: true
+        ccupancy_distance2_: true
+        cupancy_distance2_: true
+        cy_distance2_: true
+        ncy_distance2_: true
+        occupancy_distance2_: true
+        pancy_distance2_: true
+        upancy_distance2_: true
+      Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
       Enabled: false
@@ -506,7 +530,8 @@ Visualization Manager:
       Marker Topic: /distance_markers
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        11 - 14: true
       Queue Size: 0
       Value: true
     - Alpha: 1
@@ -538,7 +563,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_goal
       Name: MarkerArray
       Namespaces:
-        {}
+        goal_1: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
