@@ -1,5 +1,4 @@
-#### DRL Parameters 
-#### NOTE: Be sure that -> drl_service_flag: true
+#### DRL Parameters
 
 ### Common Parameters for Training and Testing
 ros_pkg_name: "mobiman_simulation"
@@ -14,7 +13,7 @@ world_name: "conveyor"
 deep_learning_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
 
-# Options:
+# Options: ### NUA TODO: UPDATE! 
 # mobiman_FC             -> FC(occupancy_set + target + prev_action)
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action)
 observation_space_type: "mobiman_FC"
@@ -26,19 +25,18 @@ n_robot: 1
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
 learning_rate: 0.0002
-n_steps: 3 #1000
-batch_size: 5 #50
+n_steps: 50 #1000
+batch_size: 10 #50
 ent_coef: 0.0001
 training_timesteps: 5000 #10000
-max_episode_steps: 10 #2000
+max_episode_steps: 20 #2000
 
-training_checkpoint_freq: 10 #1000
+training_checkpoint_freq: 50 #1000
 plot_title: "Learning Curve"
 plot_moving_average_window_size_timesteps: 5
 plot_moving_average_window_size_episodes: 1
 
 ## Data and Sensors
-
 world_frame_name: "world"
 robot_frame_name: "base_link"
 ee_frame_name: "j2n6s300_end_effector"
@@ -71,6 +69,7 @@ action_time_horizon: 3
 # 1: Continuous
 action_type: 1
 
+# --------------------------- ### NUA TODO: NOT FUNCTIONAL! 
 # IF action_type: 0 (Discrete)
 # [baseMotion, armMotion, wholeBodyMotion]
 n_action_model: 3
@@ -81,16 +80,29 @@ n_action_constraint: 1
 
 # 32 fixed poses in robot workspace + 1 goal pose
 n_action_target: 33 
+# ---------------------------
 
 # IF action_type: 1 (Continuous)
 # [model(1), constraint(1), target(6)]
 n_action: 8
 
-goal_distance_threshold: 0.1
-goal_range_min: 0.5
+# Ablation modes
+# 0: Close to the goal -> first complete drl action, then whole-body mpc where target is goal (Comment: Only arm mode becoming redundant.)
+# 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
+ablation_mode: 0
+
+last_step_distance_threshold: 1.0
+goal_distance_pos_threshold: 0.1
+goal_distance_ori_threshold: 0.1
+
+goal_range_min_x: -5.0
 goal_range_max_x: 5.0
-goal_range_max_y: 5.0
-goal_range_max_z: 1
+
+goal_range_min_y: -2.5
+goal_range_max_y: 2.0
+
+goal_range_min_z: 0.5
+goal_range_max_z: 1.0
 
 self_collision_range_min: 0.05
 self_collision_range_max: 1.0
@@ -105,23 +117,23 @@ n_obs_stack: 1
 n_skip_obs_stack: 1
 
 ## Reward:
-reward_terminal_goal: 10
-reward_terminal_collision: -10
-reward_terminal_roll: -10
-reward_terminal_max_step: -5
+reward_terminal_goal: 50
+reward_terminal_collision: -50
+reward_terminal_roll: -50
+reward_terminal_max_step: -50
 
 reward_step_goal: 2
 reward_step_target: 1
 reward_step_mode0: -0.6
 reward_step_mode1: -1.2
 reward_step_mode2: -1.8
-reward_step_mpc: -2
+reward_step_mpc_exit: -2
 
 alpha_step_goal_base: 1
 alpha_step_goal_ee: 1
 alpha_step_target: 1
 alpha_step_mode: 1
-alpha_step_mpc: 1
+alpha_step_mpc_exit: 1
 
 ### DRL-Testing Parameters
 #max_testing_episode_timesteps: 2000

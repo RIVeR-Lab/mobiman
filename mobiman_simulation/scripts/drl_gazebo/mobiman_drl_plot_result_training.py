@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2022.03.10
+LAST UPDATE: 2023.09.13
 
 AUTHOR:	Neset Unver Akmandor (NUA)	
 		Eric Dusel (ED)
@@ -19,12 +19,14 @@ NUA TODO:
 
 import sys
 import rospy
+import rospkg
 import os
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
-from stable_baselines3.common.results_plotter import load_results, ts2xy
+from stable_baselines3.common.results_plotter import ts2xy
+from stable_baselines3.common.monitor import load_results
 
 '''
 DESCRIPTION: TODO...
@@ -68,7 +70,7 @@ def print_training_log(log_path):
 		line_count = 0
 
 		print("----------")
-		print("tentabot_drl_plot_result_training::print_training_log ->")
+		print("mobiman_drl_plot_result_training::print_training_log ->")
 		for row in csv_reader:
 			print(str(line_count) + " -> " + str(row[0]) + ": " + str(row[1]))
 			line_count += 1
@@ -127,7 +129,7 @@ def get_training_result(data_path,
 	while(current_path != ""):
 
 		#print("")
-		#print("get_training_result -> current_path: " + str(current_path))
+		#print("[mobiman_drl_plot_result_training::get_training_result] current_path: " + str(current_path))
 		#print("")
 
 		if episode_flag:
@@ -152,10 +154,9 @@ def get_training_result(data_path,
 			data_size_array = np.insert(data_size_array, 0, data_size, axis=0)
 			
 		else:
-
 			x, y = ts2xy(load_results(current_path), 'timesteps')
 			
-			data_size = int(get_param_value_from_training_log(current_path, "total_training_timesteps"))
+			data_size = int(get_param_value_from_training_log(current_path, "total_training_timesteps")) # type: ignore
 			step_add_data = np.insert(step_add_data, 0, data_size, axis=0)
 
 			if cumulative_flag and plot_name == "":
@@ -343,16 +344,26 @@ DESCRIPTION: TODO...
 '''
 if __name__ == '__main__':
 
-	rospy.init_node('tentabot_drl_plot_result_training', anonymous=True, log_level=rospy.ERROR)
+	print("[mobiman_drl_plot_result_training::__main__] START")
+	rospy.init_node('mobiman_drl_plot_result_training', anonymous=True, log_level=rospy.ERROR)
+
+	rospack = rospkg.RosPack()
+	mobiman_path = rospack.get_path('mobiman_simulation') + "/"
+
+	print("[mobiman_drl_plot_result_training::__main__] mobiman_path: " + str(mobiman_path))
 
 	data_cnt = rospy.get_param('data_cnt')
 
+	print("[mobiman_drl_plot_result_training::__main__] data_cnt: " + str(data_cnt))
+
 	data_path_array = []
 	data_name_array = []
-	for i in range(data_cnt):
+	for i in range(data_cnt): # type: ignore
 		data_path_array.append(rospy.get_param('data_path' + str(i+1)))
 		data_name_array.append(rospy.get_param('data_name' + str(i+1)))
 
+	print("[mobiman_drl_plot_result_training::__main__] data_path_array: " + str(data_path_array))
+	print("[mobiman_drl_plot_result_training::__main__] data_name_array: " + str(data_name_array))
 
 	multi_flag = rospy.get_param('multi_flag')
 	multi_plot_path = rospy.get_param('multi_plot_path')
@@ -367,54 +378,56 @@ if __name__ == '__main__':
 
 		plot_multi_training_result(	data_path_array=data_path_array, 
 									data_name_array=data_name_array,
-									plot_moving_average_window_size_timesteps=plot_moving_average_window_size_timesteps,
-									plot_moving_average_window_size_episodes=plot_moving_average_window_size_episodes,
+									plot_moving_average_window_size_timesteps=plot_moving_average_window_size_timesteps, # type: ignore
+									plot_moving_average_window_size_episodes=plot_moving_average_window_size_episodes, # type: ignore
 									plot_title='Learning Curve',
-									plot_flag=plot_flag,
-									plot_path=multi_plot_path)
+									plot_flag=plot_flag,# type: ignore 
+									plot_path=multi_plot_path) # type: ignore
 
 	else:
 
-		print_training_log(data_path_array[0] + data_name_array[0])
+		log_path = mobiman_path + data_path_array[0] + data_name_array[0]
+		print_training_log(log_path)
 
+		data_path = mobiman_path + data_path_array[0]
 		# Plot timestep data
-		get_training_result(data_path=data_path_array[0],
+		get_training_result(data_path=data_path,
 							data_name=data_name_array[0],
-							moving_average_window_size=plot_moving_average_window_size_timesteps,
+							moving_average_window_size=plot_moving_average_window_size_timesteps, # type: ignore
 							episode_flag=False,
 							cumulative_flag=False,
-							print_flag=print_flag,
-							plot_title=plot_title, 
-							plot_flag=plot_flag, 
-							plot_path=plot_path)
+							print_flag=print_flag, # type: ignore
+							plot_title=plot_title, # type: ignore
+							plot_flag=plot_flag, # type: ignore
+							plot_path=plot_path) # type: ignore
 		
-		get_training_result(data_path=data_path_array[0],
+		get_training_result(data_path=data_path,
 							data_name=data_name_array[0], 	
-							moving_average_window_size=plot_moving_average_window_size_timesteps,
+							moving_average_window_size=plot_moving_average_window_size_timesteps, # type: ignore
 							episode_flag=False,
 							cumulative_flag=True, 
-							print_flag=print_flag,
-							plot_title=plot_title,
-							plot_flag=plot_flag, 
-							plot_path=plot_path)
+							print_flag=print_flag, # type: ignore
+							plot_title=plot_title, # type: ignore
+							plot_flag=plot_flag, # type: ignore
+							plot_path=plot_path) # type: ignore
 
 		# Plot episode data
-		get_training_result(data_path=data_path_array[0],
+		get_training_result(data_path=data_path,
 							data_name=data_name_array[0],  
-							moving_average_window_size=plot_moving_average_window_size_episodes,
+							moving_average_window_size=plot_moving_average_window_size_episodes, # type: ignore
 							episode_flag=True,
 							cumulative_flag=False,
-							print_flag=print_flag,
-							plot_title=plot_title,
-							plot_flag=plot_flag, 
-							plot_path=plot_path)
+							print_flag=print_flag, # type: ignore
+							plot_title=plot_title, # type: ignore
+							plot_flag=plot_flag, # type: ignore
+							plot_path=plot_path) # type: ignore
 
-		get_training_result(data_path=data_path_array[0],
+		get_training_result(data_path=data_path,
 							data_name=data_name_array[0], 	
-							moving_average_window_size=plot_moving_average_window_size_episodes,
+							moving_average_window_size=plot_moving_average_window_size_episodes, # type: ignore
 							episode_flag=True,
 							cumulative_flag=True,
-							print_flag=print_flag, 
-							plot_title=plot_title,
-							plot_flag=plot_flag, 
-							plot_path=plot_path)
+							print_flag=print_flag, # type: ignore
+							plot_title=plot_title, # type: ignore
+							plot_flag=plot_flag, # type: ignore
+							plot_path=plot_path) # type: ignore

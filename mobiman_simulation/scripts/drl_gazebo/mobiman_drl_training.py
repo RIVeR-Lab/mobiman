@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.08.23
+LAST UPDATE: 2023.09.13
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         task_and_robot_environment_name, 
         robot_id=0, # type: ignore
         max_episode_steps=max_episode_steps, # type: ignore
-        data_folder_path=data_folder_path)
+        data_folder_path=data_folder_path) # type: ignore
     
     print("[mobiman_drl_training::__main__] BEFORE Monitor")
     env = Monitor(env, data_folder_path) # type: ignore
