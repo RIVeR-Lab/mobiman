@@ -555,7 +555,8 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -571,7 +572,9 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_target
       Name: MarkerArray
       Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -602,7 +605,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.6974310874938965
+      Distance: 8.980184555053711
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -610,17 +613,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.41613274812698364
-        Y: -1.858665943145752
-        Z: -0.2968772351741791
+        X: 0.2603520452976227
+        Y: -1.5548133850097656
+        Z: -0.6760838031768799
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7097970247268677
+      Pitch: 0.8697969913482666
       Target Frame: <Fixed Frame>
-      Yaw: 1.5879018306732178
+      Yaw: 1.5979033708572388
     Saved: ~
 Window Geometry:
   Displays:

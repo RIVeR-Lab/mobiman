@@ -93,7 +93,8 @@ ablation_mode: 0
 
 last_step_distance_threshold: 1.0
 goal_distance_pos_threshold: 0.1
-goal_distance_ori_threshold: 0.1
+goal_distance_ori_threshold_yaw: 0.1
+goal_distance_ori_threshold_quat: 0.1
 
 goal_range_min_x: -5.0
 goal_range_max_x: 5.0
