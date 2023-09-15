@@ -91,10 +91,10 @@ n_action: 8
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
 ablation_mode: 0
 
-last_step_distance_threshold: 1.0
+last_step_distance_threshold: 2.0
 goal_distance_pos_threshold: 0.1
 goal_distance_ori_threshold_yaw: 0.1
-goal_distance_ori_threshold_quat: 0.1
+goal_distance_ori_threshold_quat: 0.05
 
 goal_range_min_x: -5.0
 goal_range_max_x: 5.0
@@ -108,8 +108,8 @@ goal_range_max_z: 1.0
 self_collision_range_min: 0.05
 self_collision_range_max: 1.0
 
-ext_collision_range_min: 0.25
-ext_collision_range_max: 2.0
+ext_collision_range_min: 0.05
+ext_collision_range_max: 5.0
 
 rollover_pitch_threshold: 0.2
 rollover_roll_threshold: 0.2
