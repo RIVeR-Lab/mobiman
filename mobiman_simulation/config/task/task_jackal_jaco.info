@@ -71,7 +71,7 @@ model_information
 
 model_settings
 {
-  drlFlag                         false    ;
+  drlFlag                         true    ;
   drlActionType                   1       ; 0: Discrete, 1: Continuous
   usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
   recompileLibraries              true    ; NUA NOTE: make true when made some changes (for example self-collision pairs)
