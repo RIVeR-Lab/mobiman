@@ -39,6 +39,7 @@ plot_moving_average_window_size_episodes: 1
 ## Data and Sensors
 world_frame_name: "world"
 robot_frame_name: "base_link"
+arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j2n6s300_joint_4", "j2n6s300_joint_5", "j2n6s300_joint_6"]
 ee_frame_name: "j2n6s300_end_effector"
 goal_frame_name: "grasp"
 
@@ -47,9 +48,9 @@ imu_msg_name: "/imu/data"
 arm_state_msg_name: "/joint_states"
 target_msg_name: "/mobile_manipulator_target"
 occgrid_msg_name: "/occupancy_grid"
-selfcoldistance_msg_name: "/distance_markers"
-selfcoldistance_n_coeff: 5  ### NUA NOTE: This is because of the visualization info!
-extcoldistance_n_coeff: 2  ### NUA NOTE: This is because of the visualization info!
+selfcoldistance_msg_name: "/self_collision_distances"
+#selfcoldistance_n_coeff: 5  ### NUA NOTE: This is because of the visualization info!
+#extcoldistance_n_coeff: 2  ### NUA NOTE: This is because of the visualization info!
 extcoldistance_base_msg_name: "/occupancy_distances_base"
 extcoldistance_arm_msg_name: "/occupancy_distances_arm"
 pointsonrobot_msg_name: "/points_on_robot"
