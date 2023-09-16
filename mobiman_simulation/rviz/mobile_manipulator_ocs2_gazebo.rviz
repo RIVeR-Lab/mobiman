@@ -3,8 +3,7 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /MarkerArray1/Namespaces1
+      Expanded: ~
       Splitter Ratio: 0.5
     Tree Height: 787
   - Class: rviz/Selection
@@ -261,8 +260,6 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        grasp:
-          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -369,8 +366,6 @@ Visualization Manager:
           blue_cube:
             {}
           conveyor_belt:
-            {}
-          grasp:
             {}
           green_cube:
             {}
@@ -491,22 +486,10 @@ Visualization Manager:
       Voxel Rendering: Occupied Voxels
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /occupancy_distances
+      Marker Topic: /occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        ancy_distance_: true
-        ccupancy_distance_: true
-        cupancy_distance_: true
-        occupancy_distance_: true
-        pancy_distance_: true
-        upancy_distance_: true
-      Queue Size: 0
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /occupancy_distances2
-      Name: MarkerArray
-      Namespaces:
+        "": true
         ancy_distance2_: true
         ccupancy_distance2_: true
         cupancy_distance2_: true
@@ -515,6 +498,19 @@ Visualization Manager:
         occupancy_distance2_: true
         pancy_distance2_: true
         upancy_distance2_: true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /occupancy_distances_arm_visu
+      Name: MarkerArray
+      Namespaces:
+        "": true
+        ccupancy_distance_: true
+        cupancy_distance_: true
+        occupancy_distance_: true
+        pancy_distance_: true
+        upancy_distance_: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -527,7 +523,7 @@ Visualization Manager:
       Value: false
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /distance_markers
+      Marker Topic: /self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
         0 - 12: true
@@ -555,8 +551,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -572,9 +567,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_target
       Name: MarkerArray
       Namespaces:
-        target_1: true
-        target_2: true
-        target_3: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -605,7 +598,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.980184555053711
+      Distance: 5.12820291519165
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -613,17 +606,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.2603520452976227
-        Y: -1.5548133850097656
-        Z: -0.6760838031768799
+        X: 0.3499586284160614
+        Y: -1.1241828203201294
+        Z: -0.4175390601158142
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8697969913482666
+      Pitch: 0.7547972202301025
       Target Frame: <Fixed Frame>
-      Yaw: 1.5979033708572388
+      Yaw: 1.6229034662246704
     Saved: ~
 Window Geometry:
   Displays:

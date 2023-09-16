@@ -55,10 +55,14 @@ model_information
   armStateMsg                     "/joint_states"
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
-  occupancyDistanceMsg            "occupancy_distances"
+  selfCollisionMsg                "/self_collision_distances"
+  occupancyDistanceBaseMsg        "/occupancy_distances_base"
+  occupancyDistanceArmMsg         "/occupancy_distances_arm"
+  pointsOnRobotMsg                "points_on_robot"
   octomapMsg                      "/octomap_scan"
   modelModeMsg                    "/mobile_manipulator_model_mode"
   targetMsg                       "/mobile_manipulator_mpc_target"
+  goalMsg                         "/mobile_manipulator_mpc_goal"
 
   collisionConstraintPoints       "collision_constraint_points"
   collisionCheckPoints            "collision_check_points"
@@ -67,7 +71,7 @@ model_information
 
 model_settings
 {
-  drlFlag                         true    ;
+  drlFlag                         false    ;
   drlActionType                   1       ; 0: Discrete, 1: Continuous
   usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
   recompileLibraries              true    ; NUA NOTE: make true when made some changes (for example self-collision pairs)

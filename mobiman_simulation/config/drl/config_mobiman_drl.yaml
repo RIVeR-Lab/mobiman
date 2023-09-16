@@ -5,7 +5,7 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
-initial_training_path: ""
+initial_training_path: "20230915_003006_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Training Parameters
@@ -43,12 +43,15 @@ ee_frame_name: "j2n6s300_end_effector"
 goal_frame_name: "grasp"
 
 cmd_velocity_msg_name: "/cmd_vel"
-imu_msg_name: "/cmd_vel"
+imu_msg_name: "/imu/data"
+arm_state_msg_name: "/joint_states"
 target_msg_name: "/mobile_manipulator_target"
 occgrid_msg_name: "/occupancy_grid"
 selfcoldistance_msg_name: "/distance_markers"
-selfcoldistance_n_coeff: 5
-extcoldistance_msg_name: "/occupancy_distances"
+selfcoldistance_n_coeff: 5  ### NUA NOTE: This is because of the visualization info!
+extcoldistance_n_coeff: 2  ### NUA NOTE: This is because of the visualization info!
+extcoldistance_base_msg_name: "/occupancy_distances_base"
+extcoldistance_arm_msg_name: "/occupancy_distances_arm"
 pointsonrobot_msg_name: "/points_on_robot"
 
 goal_status_msg_name: "/goal_status"
@@ -89,7 +92,7 @@ n_action: 8
 # Ablation modes
 # 0: Close to the goal -> first complete drl action, then whole-body mpc where target is goal (Comment: Only arm mode becoming redundant.)
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
-ablation_mode: 0
+ablation_mode: 1
 
 last_step_distance_threshold: 2.0
 goal_distance_pos_threshold: 0.1
@@ -108,7 +111,8 @@ goal_range_max_z: 1.0
 self_collision_range_min: 0.05
 self_collision_range_max: 1.0
 
-ext_collision_range_min: 0.05
+ext_collision_range_base_min: 0.25
+ext_collision_range_arm_min: 0.05
 ext_collision_range_max: 5.0
 
 rollover_pitch_threshold: 0.2

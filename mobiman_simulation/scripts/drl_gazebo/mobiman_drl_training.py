@@ -242,12 +242,13 @@ if __name__ == '__main__':
         rospy.logdebug("[mobiman_drl_training::__main__] No initial_trained_model is loaded!")
 
     else:
-        initial_training_path_specific = mobiman_path + data_path + initial_training_path
-        initial_trained_model = initial_training_path + "trained_model" # type: ignore
+        initial_trained_model_path = mobiman_path + data_path + initial_training_path + "trained_model" # type: ignore
+        initial_trained_model = initial_trained_model_path
         model = PPO.load(initial_trained_model, env=None, tensorboard_log=tensorboard_log_path) # type: ignore
         model.set_env(env)
 
-        total_training_timesteps = int(get_param_value_from_training_log(initial_training_path_specific, "total_training_timesteps")) + training_timesteps # type: ignore
+        training_log_path = mobiman_path + data_path + initial_training_path
+        total_training_timesteps = int(get_param_value_from_training_log(training_log_path, "total_training_timesteps")) + training_timesteps # type: ignore
         print("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
         #rospy.logdebug("[mobiman_drl_training::__main__] Loaded initial_trained_model: " + initial_trained_model)
 
