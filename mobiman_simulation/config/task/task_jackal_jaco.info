@@ -61,8 +61,9 @@ model_information
   pointsOnRobotMsg                "points_on_robot"
   octomapMsg                      "/octomap_scan"
   modelModeMsg                    "/mobile_manipulator_model_mode"
-  targetMsg                       "/mobile_manipulator_mpc_target"
-  goalMsg                         "/mobile_manipulator_mpc_goal"
+  mpcTargetMsg                    "/mobile_manipulator_mpc_target"
+  targetMsg                       "/mobile_manipulator_target"
+  goalMsg                         "/mobile_manipulator_goal"
 
   collisionConstraintPoints       "collision_constraint_points"
   collisionCheckPoints            "collision_check_points"

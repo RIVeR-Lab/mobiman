@@ -3,7 +3,8 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /MarkerArray2/Namespaces1
       Splitter Ratio: 0.5
     Tree Height: 787
   - Class: rviz/Selection
@@ -260,6 +261,8 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        grasp:
+          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -366,6 +369,8 @@ Visualization Manager:
           blue_cube:
             {}
           conveyor_belt:
+            {}
+          grasp:
             {}
           green_cube:
             {}
@@ -489,15 +494,7 @@ Visualization Manager:
       Marker Topic: /occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        "": true
-        ancy_distance2_: true
-        ccupancy_distance2_: true
-        cupancy_distance2_: true
-        cy_distance2_: true
-        ncy_distance2_: true
-        occupancy_distance2_: true
-        pancy_distance2_: true
-        upancy_distance2_: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -505,12 +502,7 @@ Visualization Manager:
       Marker Topic: /occupancy_distances_arm_visu
       Name: MarkerArray
       Namespaces:
-        "": true
-        ccupancy_distance_: true
-        cupancy_distance_: true
-        occupancy_distance_: true
-        pancy_distance_: true
-        upancy_distance_: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -526,8 +518,7 @@ Visualization Manager:
       Marker Topic: /self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        0 - 12: true
-        11 - 14: true
+        {}
       Queue Size: 0
       Value: true
     - Alpha: 1
@@ -570,6 +561,14 @@ Visualization Manager:
         {}
       Queue Size: 100
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /debug_visu
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -598,7 +597,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.12820291519165
+      Distance: 10.257243156433105
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -606,17 +605,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.3499586284160614
-        Y: -1.1241828203201294
-        Z: -0.4175390601158142
+        X: -0.007417971268296242
+        Y: -2.375546932220459
+        Z: -1.6193106174468994
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7547972202301025
+      Pitch: 0.9947974681854248
       Target Frame: <Fixed Frame>
-      Yaw: 1.6229034662246704
+      Yaw: 1.582909107208252
     Saved: ~
 Window Geometry:
   Displays:

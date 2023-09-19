@@ -149,7 +149,7 @@ if __name__ == '__main__':
     ## Create the folder name that the data is kept
     data_file_tag = createFileName()
     data_folder_tag = data_file_tag + "_" + deep_learning_algorithm + "_mobiman" # type: ignore
-    data_name = data_folder_tag + "/"
+    data_name = data_folder_tag + "/" # type: ignore
     data_path_specific = mobiman_path + data_path
     data_folder_path = data_path_specific + data_name
 
