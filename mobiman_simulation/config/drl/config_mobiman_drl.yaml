@@ -30,7 +30,7 @@ n_steps: 50 #1000
 batch_size: 10 #50
 ent_coef: 0.0001
 training_timesteps: 5000 #10000
-max_episode_steps: 20 #2000
+max_episode_steps: 10 #2000
 
 training_checkpoint_freq: 50 #1000
 plot_title: "Learning Curve"
@@ -96,7 +96,7 @@ n_action: 8
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
 ablation_mode: 0
 
-last_step_distance_threshold: 5.0
+last_step_distance_threshold: 2.0
 goal_distance_pos_threshold: 0.1
 goal_distance_ori_threshold_yaw: 0.1
 goal_distance_ori_threshold_quat: 0.05
