@@ -261,6 +261,8 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
+        grasp:
+          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -368,6 +370,8 @@ Visualization Manager:
             {}
           conveyor_belt:
             {}
+          grasp:
+            {}
           green_cube:
             {}
           long_pkg:
@@ -400,13 +404,13 @@ Visualization Manager:
       Value: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: true
+      Enabled: false
       Name: InteractiveMarkers
       Show Axes: false
       Show Descriptions: true
       Show Visual Aids: false
       Update Topic: /model_mode_marker/update
-      Value: true
+      Value: false
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
@@ -490,7 +494,15 @@ Visualization Manager:
       Marker Topic: /occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
+        0: true
+        1: true
+        2: true
+        3: true
+        4: true
+        5: true
+        6: true
+        7: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -498,7 +510,18 @@ Visualization Manager:
       Marker Topic: /occupancy_distances_arm_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
+        0: true
+        1: true
+        10: true
+        2: true
+        3: true
+        4: true
+        5: true
+        6: true
+        7: true
+        8: true
+        9: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -514,7 +537,8 @@ Visualization Manager:
       Marker Topic: /self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        11 - 14: true
       Queue Size: 0
       Value: true
     - Alpha: 1
@@ -538,7 +562,8 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -546,7 +571,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_goal
       Name: MarkerArray
       Namespaces:
-        {}
+        goal_1: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -554,7 +579,9 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_target
       Name: MarkerArray
       Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -562,7 +589,8 @@ Visualization Manager:
       Marker Topic: /debug_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        0: true
+        1: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -593,7 +621,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.840553283691406
+      Distance: 8.154891014099121
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -601,17 +629,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.06037994474172592
-        Y: -2.2103114128112793
-        Z: -1.6955480575561523
+        X: 1.7281765937805176
+        Y: -1.2957872152328491
+        Z: -2.2219460010528564
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0397977828979492
+      Pitch: 1.0147978067398071
       Target Frame: <Fixed Frame>
-      Yaw: 1.5729094743728638
+      Yaw: 1.5129095315933228
     Saved: ~
 Window Geometry:
   Displays:

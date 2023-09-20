@@ -1,6 +1,6 @@
 ## General Parameters
 multi_flag: False
-multi_plot_path: "dataset/drl/Others/"
+multi_plot_path: "dataset/drl/my/"
 
 plot_path: ""
 plot_flag: True
@@ -12,7 +12,7 @@ print_flag: False
 
 data_cnt: 1
 
-data_path1: "dataset/drl/OTHERS/20230912_222808_PPO_mobiman/"
+data_path1: "dataset/drl/my/20230919_225553_PPO_mobiman/"
 data_name1: ""
 
 #data_path2: "$(find tentabot)/dataset/benchmark/2022_IROS/training_data/IROS22_laser_FC/"
