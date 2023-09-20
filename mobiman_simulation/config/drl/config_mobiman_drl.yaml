@@ -6,7 +6,7 @@ gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
-#initial_training_path: "20230915_003006_PPO_mobiman/"
+#initial_training_path: "20230918_224639_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Training Parameters
@@ -68,7 +68,7 @@ occgrid_occ_max: 100
 
 ## Algorithm: mobiman-DRL Parameters
 # Action time horizon [s]
-action_time_horizon: 6
+action_time_horizon: 6.0
 
 # 0: Discrete
 # 1: Continuous
@@ -96,7 +96,7 @@ n_action: 8
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
 ablation_mode: 0
 
-last_step_distance_threshold: 2.0
+last_step_distance_threshold: 5.0
 goal_distance_pos_threshold: 0.1
 goal_distance_ori_threshold_yaw: 0.1
 goal_distance_ori_threshold_quat: 0.05

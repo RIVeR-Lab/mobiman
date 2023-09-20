@@ -261,8 +261,6 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        grasp:
-          Value: true
         green_cube:
           Value: true
         imu_link:
@@ -369,8 +367,6 @@ Visualization Manager:
           blue_cube:
             {}
           conveyor_belt:
-            {}
-          grasp:
             {}
           green_cube:
             {}
@@ -550,7 +546,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_goal
       Name: MarkerArray
       Namespaces:
-        goal_1: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -562,13 +558,13 @@ Visualization Manager:
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /debug_visu
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -597,7 +593,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10.257243156433105
+      Distance: 10.840553283691406
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -605,17 +601,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.007417971268296242
-        Y: -2.375546932220459
-        Z: -1.6193106174468994
+        X: 0.06037994474172592
+        Y: -2.2103114128112793
+        Z: -1.6955480575561523
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9947974681854248
+      Pitch: 1.0397977828979492
       Target Frame: <Fixed Frame>
-      Yaw: 1.582909107208252
+      Yaw: 1.5729094743728638
     Saved: ~
 Window Geometry:
   Displays:
