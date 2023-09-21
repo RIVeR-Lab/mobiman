@@ -1,35 +1,33 @@
 save_path_rel: "dataset/analysis/"
 
-goal_distance_threshold: 0.1
-goal_range_min: 0.5
+action_time_horizon: 6.0
+
+goal_range_min_x: -5.0
 goal_range_max_x: 5.0
-goal_range_max_y: 5.0
-goal_range_max_z: 1
 
-self_collision_range_min: 0.05
-self_collision_range_max: 1.0
+goal_range_min_y: -2.5
+goal_range_max_y: 2.0
 
-ext_collision_range_min: 0.25
-ext_collision_range_max: 2.0
-
-rollover_pitch_threshold: 0.2
-rollover_roll_threshold: 0.2
+goal_range_min_z: 0.5
+goal_range_max_z: 1.0
 
 ## Reward:
-reward_terminal_goal: 10
-reward_terminal_collision: -10
-reward_terminal_roll: -10
-reward_terminal_max_step: -10
+reward_terminal_goal: 50
+reward_terminal_collision: -50
+reward_terminal_roll: -50
+reward_terminal_max_step: -50
 
 reward_step_goal: 2
 reward_step_target: 1
-reward_step_mode0: -0.3
-reward_step_mode1: -0.6
-reward_step_mode2: -0.9
-reward_step_mpc: -2
+reward_step_mode0: -0.6
+reward_step_mode1: -1.2
+reward_step_mode2: -1.8
+reward_step_mpc_exit: -2
+reward_step_time_horizon_min: -20
+reward_step_time_horizon_max: 10
 
 alpha_step_goal_base: 1
 alpha_step_goal_ee: 1
 alpha_step_target: 1
 alpha_step_mode: 1
-alpha_step_mpc: 1
+alpha_step_mpc_exit: 1
