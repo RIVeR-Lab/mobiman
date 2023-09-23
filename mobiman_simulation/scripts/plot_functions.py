@@ -56,6 +56,38 @@ def reward_func(x_min, x_max, y_min, y_max, x_query):
         reward = (y_min - y_max) * (x_query - x_min) / (x_max - x_min) + y_max
     return reward
 
+def linear_function(query_point, x_min, x_max, y_min, y_max):
+    # Ensure query_point is within the specified range
+    query_point = max(x_min, min(x_max, query_point))
+    
+    # Calculate the slope (m) and y-intercept (b) of the linear function
+    m = (y_max - y_min) / (x_max - x_min)
+    b = y_min - m * x_min
+    
+    # Calculate the y-value for the query point
+    y_value = m * query_point + b
+    
+    # Ensure the y_value is within the specified range
+    y_value = max(y_min, min(y_max, y_value))
+    
+    return y_value
+
+def linear_decreasing_function(query_point, x_min, x_max, y_min, y_max):
+    # Ensure query_point is within the specified range
+    query_point = max(x_min, min(x_max, query_point))
+    
+    # Calculate the slope (m) and y-intercept (b) of the linear function
+    m = (y_min - y_max) / (x_min - x_max)  # Note the reversed x_min and x_max
+    b = y_max - m * x_max  # Note the use of x_max
+    
+    # Calculate the y-value for the query point
+    y_value = m * query_point + b
+    
+    # Ensure the y_value is within the specified range
+    y_value = min(y_max, max(y_min, y_value))
+    
+    return y_value
+
 '''
 DESCRIPTION: TODO...
 '''
