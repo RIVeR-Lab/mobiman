@@ -6,6 +6,7 @@ import os
 import sys
 import rospy
 import numpy as np
+import time
 
 
 class PlotMobiman(object):
@@ -90,6 +91,7 @@ class PlotMobiman(object):
         plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_episodic.png')
         if self.plot_flag:
             plt.show()
+        plt.close()
 
 
     def plot_action(self):
@@ -110,6 +112,7 @@ class PlotMobiman(object):
                 plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_action_{i}.png')
                 if self.plot_flag:
                     plt.show()
+                plt.close()
                 
         else:
             for i in self.action_sequences:
@@ -120,6 +123,7 @@ class PlotMobiman(object):
                 plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_action_{i}.png')
                 if self.plot_flag:
                     plt.show()
+                plt.close()
     
     def plot_observations(self):
         columns = [f'o{a}' for a in range(0,74)]
@@ -138,6 +142,7 @@ class PlotMobiman(object):
                 plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_observation_{i}.png')
                 if self.plot_flag:
                     plt.show()
+                plt.close()
                 
         else:
             for i in self.observation_sequences:
@@ -148,6 +153,7 @@ class PlotMobiman(object):
                 plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_observation_{i}.png')
                 if self.plot_flag:
                     plt.show()
+                plt.close()
 
 
 if __name__ == '__main__':

@@ -5,8 +5,8 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
-#initial_training_path: ""
-initial_training_path: "20230922_111705_PPO_mobiman/"
+initial_training_path: ""
+# initial_training_path: "20230922_111705_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Training Parameters
