@@ -3,16 +3,18 @@ plot_flag: False
 ### "" defaults to data path
 plot_path: ""
 
-data_path: "/home/akmandor/sarvesh_drl_result/20230922_212129_PPO_mobiman/"
+data_path: "/home/akmandor/ros_workspaces/mobiman_ws/src/mobiman/mobiman_simulation/dataset/drl/my/good_run/20230922_201556_PPO_mobiman"
 
 continue_initial: True
 continue_initial_count: 0
 
 
 ### Sequences -1 means all, otherwise specify seperated by comma.
-observation_sequences: -1
-action_sequences: -1
+observation_sequences: "0,1,2,3"
+# observation_sequences: -1
+action_sequences: "0,4,5,6"
+# action_sequences: -1
 
 
 ### Window size for Rewards
-window_episodic: 200
+window_episodic: 20
