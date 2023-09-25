@@ -9,7 +9,7 @@ import numpy as np
 
 
 class PlotMobiman(object):
-    def __init__(self, data_folder:str, plot_flag:str, plot_path:str, observation_sequences:list, action_sequences:list, continue_initial: bool, continue_initial_count: int):
+    def __init__(self, data_folder:str, plot_flag:str, plot_path:str, observation_sequences:list, action_sequences:list, continue_initial: bool, continue_initial_count: int, window_episodic: int):
         self.data_folder = data_folder
         self.plot_flag = plot_flag
         self.plot_path = plot_path
@@ -17,6 +17,7 @@ class PlotMobiman(object):
         self.action_sequences = action_sequences
         self.continue_initial = continue_initial
         self.continue_initial_count = continue_initial_count
+        self.window_episodic = window_episodic
         self.df = None
         try:
             os.chdir(self.data_folder)
@@ -28,6 +29,10 @@ class PlotMobiman(object):
     def create_dataset(self):
         data_paths = []
         self.df = pd.read_csv(os.path.join(os.getcwd(), 'oar_data.csv'))
+        if self.plot_path == "":
+            self.plot_path = os.path.join(os.getcwd(), 'plots')
+        if not os.path.exists(self.plot_path):
+            os.makedirs(self.plot_path)
         data_paths.append(os.path.join(os.getcwd(), 'oar_data.csv'))
         self.df = self.df[0:0]
         if continue_initial == True:
@@ -57,7 +62,7 @@ class PlotMobiman(object):
 
     def plot_rewards(self):
         clean_data = self.df.dropna()
-        window_size = 200
+        window_size = self.window_episodic
         clean_data['Reward'] = clean_data['Reward'].apply(lambda x: float(x))
         clean_data['Reward'] = clean_data['Reward'].round(4)
         clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
@@ -72,7 +77,7 @@ class PlotMobiman(object):
     def plot_episodic_reward(self):
         episodic_reward = []
         prev_counter = 0
-        window_size = 1
+        window_size = self.window_episodic
         for i in range(len(self.df)):
             if self.df['Reward'].iloc[i] == '[]':
                 episodic_reward.append(self.df['Reward'].iloc[prev_counter:i].apply(lambda x: float(x)).sum())
@@ -82,27 +87,38 @@ class PlotMobiman(object):
         plt.title(f'Rolling average of Episodic reward, window size {window_size}')
         plt.xlabel('Episodes')
         plt.ylabel('Reward')
-        plt.show()
+        if self.plot_flag:
+            plt.show()
+        plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-1]}_episodic.png')
 
 
     def plot_action(self):
         columns = ['a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
         columns_ = ['model_mode','self_collision_flag','target_pos_x', 'target_pos_y',
                    'target_pos_z', 'target_pos_roll', 'target_pos_pitch', 'target_pos_yaw']
-        print(self.df['Action'].iloc[0])
-        self.df['Action'] = self.df['Action'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(' ') if a != ''])
-        print(self.df['Action'].iloc[0])
-        self.df[columns] = pd.DataFrame(self.df['Action'].tolist(), index=self.df.index)
+        new_df = self.df.copy()
+        new_df['Action'] = new_df['Action'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(' ') if a != ''])
+        new_df[columns] = pd.DataFrame(new_df['Action'].tolist(), index=new_df.index)
         self.df.dropna(inplace=True)
         print(self.action_sequences, '****')
         if self.action_sequences == [-1]:
             for i in range(0,8):
-                self.df[f'a{i}'].hist()
+                new_df[f'a{i}'].hist()
                 plt.title(f'Action {columns_[i]} Histogram')
                 plt.xlabel(f'{columns_[i]}')
                 plt.ylabel('Count')
-                plt.show()
-        
+                if self.plot_flag:
+                    plt.show()
+                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-1]}_action_{i}.png')
+        else:
+            for i in self.action_sequences:
+                new_df[f'a{i}'].hist()
+                plt.title(f'Action {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                if self.plot_flag:
+                    plt.show()
+                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-1]}_action_{i}.png')
 
 
 if __name__ == '__main__':
@@ -115,5 +131,6 @@ if __name__ == '__main__':
     continue_initial_count = rospy.get_param('continue_initial_count')
     plot_flag = rospy.get_param('plot_flag')
     plot_path = rospy.get_param('plot_path')
-    plot_mobiman = PlotMobiman(data_path,plot_flag, plot_path, observation_sequences, action_sequences, continue_initial, continue_initial_count)
+    window_episodic = rospy.get_param('window_episodic')
+    plot_mobiman = PlotMobiman(data_path,plot_flag, plot_path, observation_sequences, action_sequences, continue_initial, continue_initial_count, window_episodic)
     plot_mobiman.plot_action()
