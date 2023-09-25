@@ -1,0 +1,14 @@
+## General Parameters
+plot_flag: True
+### "" defaults to data path
+plot_path: ""
+
+data_path: "$(find mobiman_simulation)/dataset/drl/20230923_132538_PPO_mobiman/"
+
+continue_initial: True
+continue_initial_count: 0
+
+
+### Sequences -1 means all, otherwise specify seperated by comma.
+observation_sequences: -1
+action_sequences: -1

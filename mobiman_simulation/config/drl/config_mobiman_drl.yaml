@@ -5,8 +5,8 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
-initial_training_path: ""
-#initial_training_path: "20230920_161858_PPO_mobiman/"
+initial_training_path: "20230922_212129_PPO_mobiman/"
+#initial_training_path: "20230918_224639_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Training Parameters
@@ -135,8 +135,6 @@ reward_step_mode0: -0.6
 reward_step_mode1: -1.2
 reward_step_mode2: -1.8
 reward_step_mpc_exit: -2
-reward_step_time_horizon_min: -20
-reward_step_time_horizon_max: 10
 
 alpha_step_goal_base: 1
 alpha_step_goal_ee: 1
