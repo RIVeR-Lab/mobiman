@@ -87,9 +87,9 @@ class PlotMobiman(object):
         plt.title(f'Rolling average of Episodic reward, window size {window_size}')
         plt.xlabel('Episodes')
         plt.ylabel('Reward')
+        plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_episodic.png')
         if self.plot_flag:
             plt.show()
-        plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-1]}_episodic.png')
 
 
     def plot_action(self):
@@ -107,18 +107,47 @@ class PlotMobiman(object):
                 plt.title(f'Action {columns_[i]} Histogram')
                 plt.xlabel(f'{columns_[i]}')
                 plt.ylabel('Count')
+                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_action_{i}.png')
                 if self.plot_flag:
                     plt.show()
-                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-1]}_action_{i}.png')
+                
         else:
             for i in self.action_sequences:
                 new_df[f'a{i}'].hist()
                 plt.title(f'Action {columns_[i]} Histogram')
                 plt.xlabel(f'{columns_[i]}')
                 plt.ylabel('Count')
+                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_action_{i}.png')
                 if self.plot_flag:
                     plt.show()
-                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-1]}_action_{i}.png')
+    
+    def plot_observations(self):
+        columns = [f'o{a}' for a in range(0,74)]
+        columns_ = columns
+        new_df = self.df.copy()
+        new_df['Observation'] = new_df['Observation'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(',') if a != ''])
+        new_df[columns] = pd.DataFrame(new_df['Observation'].tolist(), index=new_df.index)
+        self.df.dropna(inplace=True)
+        print(self.observation_sequences, '****')
+        if self.observation_sequences == [-1]:
+            for i in range(0,74):
+                new_df[f'o{i}'].hist()
+                plt.title(f'Observation {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_observation_{i}.png')
+                if self.plot_flag:
+                    plt.show()
+                
+        else:
+            for i in self.observation_sequences:
+                new_df[f'o{i}'].hist()
+                plt.title(f'Observation {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_observation_{i}.png')
+                if self.plot_flag:
+                    plt.show()
 
 
 if __name__ == '__main__':
@@ -133,4 +162,6 @@ if __name__ == '__main__':
     plot_path = rospy.get_param('plot_path')
     window_episodic = rospy.get_param('window_episodic')
     plot_mobiman = PlotMobiman(data_path,plot_flag, plot_path, observation_sequences, action_sequences, continue_initial, continue_initial_count, window_episodic)
+    plot_mobiman.plot_episodic_reward()
     plot_mobiman.plot_action()
+    plot_mobiman.plot_observations()

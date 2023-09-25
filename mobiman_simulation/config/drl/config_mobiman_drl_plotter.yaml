@@ -1,5 +1,5 @@
 ## General Parameters
-plot_flag: True
+plot_flag: False
 ### "" defaults to data path
 plot_path: ""
 

@@ -1,13 +1,3 @@
-<!-- <?xml version="1.0" encoding="UTF-8"?> -->
-<!-- <launch> -->
-    <!-- Load parameters -->
-    <!-- <rosparam command="load"  -->
-        <!-- file="$(find mobiman_simulation)/config/drl/config_mobiman_drl_plot_result_training.yaml"  -->
-        <!-- subst_value="False"/> -->
-
-    <!-- Launch the script -->
-    <!-- <node pkg="mobiman_simulation" name="mobiman_drl_plot_result_training" type="mobiman_drl_plot_result_training.py" output="screen"/> -->
-<!-- </launch> -->
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- Load parameters -->
