@@ -185,21 +185,8 @@ if __name__ == '__main__':
     for i in range(n_data):
         curr_target2goal[i] = prev_target2goal[i] - diff_target2goal[i]
 
-        #reward_step_target2goal_data_convex[i] = -reward_step_target2goal * diff_target2goal[i] / prev_target2goal[i] * ((curr_target2goal[i] / reward_step_target2goal_threshold) + 1)
-        
-        #slope = -reward_step_target2goal * (prev_target2goal[i] / (reward_step_target2goal_threshold * prev_target2goal[i]))
-        #intercept = -slope * min(curr_target2goal) - (reward_step_target2goal * diff_target2goal[i] / prev_target2goal[i]) * ((min(curr_target2goal) / reward_step_target2goal_threshold) + 1)
-        #reward_step_target2goal_data_convex[i] = slope * curr_target2goal[i] + intercept
-
-        #if curr_target2goal[i] < 0:
-        #    print("[plot_functions::__main__] DEBUG INF")
-        #    print("curr_target2goal: " + str(curr_target2goal[i]))
-            #while(1):
-            #    continue
-
         if (curr_target2goal[i] <= reward_step_target2goal_threshold):
             reward_step_target2goal_data[i] = linear_function(0, reward_step_target2goal_threshold, 0, reward_step_target2goal, curr_target2goal[i], -1)
-            #reward_step_target2goal_data_analytical[i] = -reward_step_target2goal * diff_target2goal[i] * (curr_target2goal[i] + reward_step_target2goal_threshold) / (prev_target2goal[i] * reward_step_target2goal_threshold)
         else:
             reward_step_target2goal_data[i] = linear_function(reward_step_target2goal_threshold, 2*reward_step_target2goal_threshold, -reward_step_target2goal, 0.0, curr_target2goal[i], -1) # type: ignore
 
@@ -207,106 +194,20 @@ if __name__ == '__main__':
         diff_target2goal_abs = abs(diff_target2goal[i])
         if diff_target2goal_abs < 2 * reward_step_target2goal_threshold: # type: ignore
             scale = (diff_target2goal_abs + reward_step_target2goal_scale_beta *reward_step_target2goal_threshold) / (3*reward_step_target2goal_threshold) # type: ignore
-
-        '''
-        scale = 1
-        if diff_target2goal[i] > 0:
-            scale = 0.5 * (abs(float(diff_target2goal[i])) / float(prev_target2goal[i])) + prev_target2goal[i]
-        else:
-            scale = 0.5 * (abs(float(diff_target2goal[i])) / float(curr_target2goal[i])) + curr_target2goal[i]
-        '''
         
         reward_step_target2goal_scaled_data[i] = scale * reward_step_target2goal_data[i]
-
-        '''
-        if 0 <= diff_target2goal[i] < 2.5:
-
-            if curr_target2goal[i] < 0:
-                print("[plot_functions::__main__] DEBUG INF")
-                print("curr_target2goal: " + str(curr_target2goal[i]))
-
-            print("curr_target2goal: " + str(curr_target2goal[i]))
-            print("prev_target2goal: " + str(prev_target2goal[i]))
-            print("diff_target2goal: " + str(diff_target2goal[i]))
-            print("scale: " + str(scale))
-            print("reward_step_target2goal_data: " + str(reward_step_target2goal_data[i]))
-            print("reward_step_target2goal_scaled_data: " + str(reward_step_target2goal_scaled_data[i]))
-            print("")
-        '''
-
-    idx = 0
-
-    print("diff_target2goal [" + str(idx) + "]: " + str(diff_target2goal[idx]))
-    print("prev_target2goal [" + str(idx) + "]: " + str(prev_target2goal[idx]))
-    print("curr_target2goal [" + str(idx) + "]: " + str(curr_target2goal[idx]))
-
-    #print("curr_target2goal:")
-    #print(curr_target2goal)
 
     for i in range(n_data):
         scale = 1
         diff_target2goal_abs = abs(diff_target2goal[i])
         if diff_target2goal_abs < 2 * reward_step_target2goal_threshold: # type: ignore
             scale = (diff_target2goal_abs + reward_step_target2goal_scale_beta *reward_step_target2goal_threshold) / (3*reward_step_target2goal_threshold) # type: ignore
-
-        if scale > 1:
-            print("scale: " + str(scale))
-            print("reward_step_target2goal_threshold: " + str(reward_step_target2goal_threshold))
-            print("reward_step_target2goal_scale_beta: " + str(reward_step_target2goal_scale_beta))
-            print("diff_target2goal_abs: " + str(diff_target2goal_abs))
-            print("")
-        '''
-        if diff_target2goal[i] > 0:
-
-            if abs(float(diff_target2goal[i])) > abs(float(prev_target2goal[i])):
-                print("WTF1 diff_target2goal: " + str(diff_target2goal[i]))
-                print("WTF1 prev_target2goal: " + str(prev_target2goal[i]))
-
-            scale = 0.5 * (abs(float(diff_target2goal[i])) / float(prev_target2goal[i])) + prev_target2goal[i]
-        else:
-
-            if abs(float(diff_target2goal[i])) > abs(float(curr_target2goal[i])):
-                print("WTF2 diff_target2goal: " + str(diff_target2goal[i]))
-                print("WTF2 curr_target2goal: " + str(curr_target2goal[i]))
-
-            scale = 0.5 * (abs(float(diff_target2goal[i])) / float(curr_target2goal[i])) + curr_target2goal[i]
-        '''
         scale_data[i] = scale
 
         if curr_target2goal[i] > 2*reward_step_target2goal_threshold: # type: ignore
             reward_step_target2goal_data_analytical[i] = scale * -reward_step_target2goal # type: ignore
         else:
             reward_step_target2goal_data_analytical[i] = scale * (-reward_step_target2goal * (curr_target2goal[i] - reward_step_target2goal_threshold) / reward_step_target2goal_threshold) # type: ignore
-        
-        '''
-        if (curr_target2goal[i] <= prev_target2goal[i] <= reward_step_target2goal_threshold) or (curr_target2goal[i] <= reward_step_target2goal_threshold <= prev_target2goal[i]):
-            reward_step_target2goal_data_analytical[i] = -reward_step_target2goal * diff_target2goal[i] * (curr_target2goal[i] - reward_step_target2goal_threshold) / (prev_target2goal[i] * reward_step_target2goal_threshold)
-        
-        elif prev_target2goal[i] <= curr_target2goal[i] <= reward_step_target2goal_threshold:
-            reward_step_target2goal_data_analytical[i] = reward_step_target2goal * diff_target2goal[i] * (curr_target2goal[i] - reward_step_target2goal_threshold) / (curr_target2goal[i] * reward_step_target2goal_threshold)
-    
-        elif reward_step_target2goal_threshold <= curr_target2goal[i] <= prev_target2goal[i]:
-            reward_step_target2goal_data_analytical[i] = -reward_step_target2goal * diff_target2goal[i] * (curr_target2goal[i] - reward_step_target2goal_threshold) / (prev_target2goal[i] * reward_step_target2goal_threshold)
-
-        elif (reward_step_target2goal_threshold <= prev_target2goal[i] <= curr_target2goal[i]) or (prev_target2goal[i] <= reward_step_target2goal_threshold <= curr_target2goal[i]):
-            reward_step_target2goal_data_analytical[i] = reward_step_target2goal * diff_target2goal[i] * (curr_target2goal[i] - reward_step_target2goal_threshold) / (curr_target2goal[i] * reward_step_target2goal_threshold)
-    
-        else:
-            print("reward_step_target2goal_threshold: " + str(reward_step_target2goal_threshold))
-            print("curr_target2goal: " + str(curr_target2goal[i]))
-            print("prev_target2goal: " + str(prev_target2goal[i]))
-            print("diff_target2goal: " + str(diff_target2goal[i]))
-            print("")
-        '''
-
-    print("curr_target2goal:")
-    print(curr_target2goal)
-
-    print("scale_data:")
-    print(scale_data)
-
-    print("reward_step_target2goal_data_analytical:")
-    print(reward_step_target2goal_data_analytical)
 
     #plot_func(prev_target2goal, reward_step_target2goal_data, save_path=save_path+extra_tag+'reward_step_target2goal_wrt_prev_target2goal.png')
     title = "Step Reward 1: target to goal \n (considers both \"previous vs. current\" and \"current target to goal\") \n diff_target2goal range = [" + str(diff_target2goal[0]) + ", " + str(diff_target2goal[-1]) + "], prev_target = " + str(prev_target2goal[0]) # type: ignore
@@ -315,7 +216,10 @@ if __name__ == '__main__':
               title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data.png')
     plot_func(diff_target2goal, reward_step_target2goal_scaled_data, 
               label_x="diff_target2goal [m]", label_y="reward_step_target2goal_scaled_data", 
-              title="", save_path=save_path+extra_tag+'reward_step_target2goal_scaled_data.png')
+              title="", save_path=save_path+extra_tag+'reward_step_target2goal_scaled_data_wrt_diff.png')
+    plot_func(curr_target2goal, reward_step_target2goal_scaled_data, 
+              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_scaled_data", 
+              title="", save_path=save_path+extra_tag+'reward_step_target2goal_scaled_data_wrt_curr.png')
     plot_func(diff_target2goal, scale_data, 
               label_x="diff_target2goal [m]", label_y="scale_data", 
               title=title, save_path=save_path+extra_tag+'scale_data_wrt_diff.png')

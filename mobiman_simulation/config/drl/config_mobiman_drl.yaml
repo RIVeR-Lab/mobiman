@@ -94,7 +94,7 @@ n_action: 8
 # Ablation modes
 # 0: Close to the goal -> first complete drl action, then whole-body mpc where target is goal (Comment: Only arm mode becoming redundant.)
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
-ablation_mode: 1
+ablation_mode: 0
 
 last_step_distance_threshold: 2.0
 goal_distance_pos_threshold: 0.1
@@ -123,31 +123,33 @@ rollover_roll_threshold: 0.2
 n_obs_stack: 1
 n_skip_obs_stack: 1
 
-## Reward:
+## Reward Function:
+# Terminal:
 reward_terminal_goal: 50
 reward_terminal_collision: -50
 reward_terminal_roll: -50
 reward_terminal_max_step: -50
 
-reward_step_target2goal: 10
+# Target-to-goal
+reward_step_target2goal: 5
 reward_step_target2goal_threshold: 2
 reward_step_target2goal_scale_beta: 1
 
+# Model mode
 reward_step_mode0: -0.9
 reward_step_mode1: -1.8
 reward_step_mode2: -2.7
 
-reward_step_mpc_exit: -20
+# MPC result
+reward_step_mpc_exit: -10
+reward_step_target_reached: 5
+reward_step_time_horizon_min: -10
+reward_step_time_horizon_max: 0
 
-reward_step_time_horizon_min: -20
-reward_step_time_horizon_max: 10
-
-alpha_step_goal_base: 1
-alpha_step_goal_ee: 1
-alpha_step_target_pos: 1
-alpha_step_target_ori: 1
+# Cost weights
+alpha_step_target2goal: 1
 alpha_step_mode: 1
-alpha_step_mpc_exit: 1
+alpha_step_mpc_result: 1
 
 ### DRL-Testing Parameters
 #max_testing_episode_timesteps: 2000
