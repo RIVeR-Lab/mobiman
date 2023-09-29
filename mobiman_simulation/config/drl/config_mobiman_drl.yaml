@@ -94,7 +94,7 @@ n_action: 8
 # Ablation modes
 # 0: Close to the goal -> first complete drl action, then whole-body mpc where target is goal (Comment: Only arm mode becoming redundant.)
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
-ablation_mode: 1
+ablation_mode: 0
 
 last_step_distance_threshold: 2.0
 goal_distance_pos_threshold: 0.1
