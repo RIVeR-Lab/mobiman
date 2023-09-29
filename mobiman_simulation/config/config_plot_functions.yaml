@@ -14,8 +14,8 @@ goal_range_max_z: 1.0
 ## Reward Function:
 # Terminal:
 reward_terminal_goal: 50
-reward_terminal_collision: -50
-reward_terminal_roll: -50
+reward_terminal_collision: -10
+reward_terminal_roll: -10
 reward_terminal_max_step: -50
 
 # Target-to-goal
@@ -29,8 +29,8 @@ reward_step_mode1: -1.8
 reward_step_mode2: -2.7
 
 # MPC result
-reward_step_mpc_exit: -10
-reward_step_target_reached: 5
+reward_step_mpc_exit: -5
+reward_step_target_reached: 2
 reward_step_time_horizon_min: -10
 reward_step_time_horizon_max: 0
 

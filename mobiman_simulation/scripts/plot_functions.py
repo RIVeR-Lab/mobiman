@@ -64,6 +64,9 @@ def plot_bar(
     plt.savefig(save_path)
     plt.close()
 
+'''
+DESCRIPTION: TODO...
+'''
 def linear_function(x_min, x_max, y_min, y_max, query_x, slope_sign=1):
     if x_min <= query_x <= x_max:
         slope = slope_sign * (y_max - y_min) / (x_max - x_min)
@@ -80,6 +83,12 @@ def linear_function(x_min, x_max, y_min, y_max, query_x, slope_sign=1):
                 return y_min
             else:
                 return y_max
+
+'''
+DESCRIPTION: TODO...
+'''     
+def sigmoid_function(x, gamma):
+    return (1 / (1 + np.exp(-gamma*x)))
 
 '''
 DESCRIPTION: TODO...
@@ -174,46 +183,62 @@ if __name__ == '__main__':
 
     # Step Reward 1: target to goal (considers both "previous vs. current" and "current target to goal")
     curr_target2goal = np.zeros(n_data)
-    prev_target2goal = 0.5 * dist_max * np.ones(n_data)
-    diff_target2goal = 5 * np.linspace(-1.0, 1.0, n_data) # type: ignore
+    prev_target2goal = 10 * np.ones(n_data)
+    diff_target2goal = 10 * np.linspace(-1.0, 1.0, n_data) # type: ignore
     
     scale_data = np.zeros(n_data)
     reward_step_target2goal_data = np.zeros(n_data)
+    reward_step_target2goal_data_exp_curr = np.zeros(n_data)
     reward_step_target2goal_scaled_data = np.zeros(n_data)
     reward_step_target2goal_data_analytical = np.zeros(n_data)
+    reward_step_target2goal_data_sigmoid_diff = np.zeros(n_data)
+    reward_step_target2goal_data_sigmoid_curr = np.zeros(n_data)
+    reward_step_target2goal_data_sigmoid_scaled = np.zeros(n_data)
+    reward_step_target2goal_data_sigmoid_scaled_exp = np.zeros(n_data)
 
     for i in range(n_data):
         curr_target2goal[i] = prev_target2goal[i] - diff_target2goal[i]
 
-        if (curr_target2goal[i] <= reward_step_target2goal_threshold):
-            reward_step_target2goal_data[i] = linear_function(0, reward_step_target2goal_threshold, 0, reward_step_target2goal, curr_target2goal[i], -1)
+        if (curr_target2goal[i] <= 2*reward_step_target2goal_threshold): # type: ignore
+            reward_step_target2goal_data[i] = linear_function(0, 2*reward_step_target2goal_threshold, 0, reward_step_target2goal, curr_target2goal[i], -1) # type: ignore
         else:
-            reward_step_target2goal_data[i] = linear_function(reward_step_target2goal_threshold, 2*reward_step_target2goal_threshold, -reward_step_target2goal, 0.0, curr_target2goal[i], -1) # type: ignore
+            reward_step_target2goal_data[i] = linear_function(2*reward_step_target2goal_threshold, 4*reward_step_target2goal_threshold, -reward_step_target2goal, 0.0, curr_target2goal[i], -1) # type: ignore
+
+        reward_step_target2goal_data_sigmoid_diff[i] = 2 * reward_step_target2goal * sigmoid_function(diff_target2goal[i], reward_step_target2goal_threshold) - reward_step_target2goal # type: ignore
+
+        reward_step_target2goal_data_exp_curr[i] = np.exp(-curr_target2goal[i])
+        #reward_step_target2goal_data_exp_curr[i] = 0.5 * reward_step_target2goal * np.exp(-curr_target2goal[i])
+
+        #scale2 = reward_step_target2goal_data_exp_curr[i] / 
 
         scale = 1
+        scale2 = 1
         diff_target2goal_abs = abs(diff_target2goal[i])
         if diff_target2goal_abs < 2 * reward_step_target2goal_threshold: # type: ignore
             scale = (diff_target2goal_abs + reward_step_target2goal_scale_beta *reward_step_target2goal_threshold) / (3*reward_step_target2goal_threshold) # type: ignore
-        
-        reward_step_target2goal_scaled_data[i] = scale * reward_step_target2goal_data[i]
+            scale2 = np.exp(-curr_target2goal[i])
 
-    for i in range(n_data):
-        scale = 1
-        diff_target2goal_abs = abs(diff_target2goal[i])
-        if diff_target2goal_abs < 2 * reward_step_target2goal_threshold: # type: ignore
-            scale = (diff_target2goal_abs + reward_step_target2goal_scale_beta *reward_step_target2goal_threshold) / (3*reward_step_target2goal_threshold) # type: ignore
         scale_data[i] = scale
+        reward_step_target2goal_scaled_data[i] = scale * pow(-reward_step_target2goal_data[i], 3) / pow(reward_step_target2goal, 2) # type: ignore
+        reward_step_target2goal_data_sigmoid_scaled[i] = scale * reward_step_target2goal_data_sigmoid_diff[i] # type: ignore
+        reward_step_target2goal_data_sigmoid_scaled_exp[i] = scale2 * reward_step_target2goal_data_sigmoid_diff[i] # type: ignore
 
         if curr_target2goal[i] > 2*reward_step_target2goal_threshold: # type: ignore
-            reward_step_target2goal_data_analytical[i] = scale * -reward_step_target2goal # type: ignore
+            reward_step_target2goal_data_analytical[i] = scale * pow(-reward_step_target2goal, 3) / pow(reward_step_target2goal, 2) # type: ignore
         else:
-            reward_step_target2goal_data_analytical[i] = scale * (-reward_step_target2goal * (curr_target2goal[i] - reward_step_target2goal_threshold) / reward_step_target2goal_threshold) # type: ignore
+            reward_step_target2goal_data_analytical[i] = scale * pow(-reward_step_target2goal * (curr_target2goal[i] - reward_step_target2goal_threshold) / reward_step_target2goal_threshold, 3) / pow(reward_step_target2goal, 2) # type: ignore
 
     #plot_func(prev_target2goal, reward_step_target2goal_data, save_path=save_path+extra_tag+'reward_step_target2goal_wrt_prev_target2goal.png')
     title = "Step Reward 1: target to goal \n (considers both \"previous vs. current\" and \"current target to goal\") \n diff_target2goal range = [" + str(diff_target2goal[0]) + ", " + str(diff_target2goal[-1]) + "], prev_target = " + str(prev_target2goal[0]) # type: ignore
     plot_func(curr_target2goal, reward_step_target2goal_data, 
               label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data", 
               title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data.png')
+    plot_func(curr_target2goal, reward_step_target2goal_data_exp_curr, 
+              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_exp_curr", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_exp_curr.png')
+    plot_func(diff_target2goal, reward_step_target2goal_data_sigmoid_diff, 
+              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_diff", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_diff.png')
     plot_func(diff_target2goal, reward_step_target2goal_scaled_data, 
               label_x="diff_target2goal [m]", label_y="reward_step_target2goal_scaled_data", 
               title="", save_path=save_path+extra_tag+'reward_step_target2goal_scaled_data_wrt_diff.png')
@@ -232,6 +257,19 @@ if __name__ == '__main__':
     plot_func(curr_target2goal, reward_step_target2goal_data_analytical, 
               label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_analytical", 
               title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_analytical_wrt_curr.png')
+    plot_func(diff_target2goal, reward_step_target2goal_data_sigmoid_scaled, 
+              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_wrt_diff.png')
+    plot_func(curr_target2goal, reward_step_target2goal_data_sigmoid_scaled, 
+              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_wrt_curr.png')
+    
+    plot_func(diff_target2goal, reward_step_target2goal_data_sigmoid_scaled_exp, 
+              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled_exp", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_exp_wrt_diff.png')
+    plot_func(curr_target2goal, reward_step_target2goal_data_sigmoid_scaled_exp, 
+              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_exp_wrt_curr.png')
     
     # Step Reward 2: model mode
     reward_step_mode0_vec = reward_step_mode0 * np.ones(n_data) # type: ignore

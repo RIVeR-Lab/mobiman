@@ -25,11 +25,11 @@ n_robot: 1
 # JackalJaco_mobiman_drl-v0
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
-learning_rate: 0.0001
+learning_rate: 0.0002
 n_steps: 50 #1000
 batch_size: 10 #50
 ent_coef: 0.0001
-training_timesteps: 5000 #10000
+training_timesteps: 3000 #10000
 max_episode_steps: 10 #2000
 
 training_checkpoint_freq: 50 #1000
@@ -94,7 +94,7 @@ n_action: 8
 # Ablation modes
 # 0: Close to the goal -> first complete drl action, then whole-body mpc where target is goal (Comment: Only arm mode becoming redundant.)
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
-ablation_mode: 0
+ablation_mode: 1
 
 last_step_distance_threshold: 2.0
 goal_distance_pos_threshold: 0.1
@@ -126,8 +126,8 @@ n_skip_obs_stack: 1
 ## Reward Function:
 # Terminal:
 reward_terminal_goal: 50
-reward_terminal_collision: -50
-reward_terminal_roll: -50
+reward_terminal_collision: -10
+reward_terminal_roll: -10
 reward_terminal_max_step: -50
 
 # Target-to-goal
@@ -141,13 +141,14 @@ reward_step_mode1: -1.8
 reward_step_mode2: -2.7
 
 # MPC result
-reward_step_mpc_exit: -10
-reward_step_target_reached: 5
+reward_step_mpc_exit: -5
+reward_step_target_reached: 3
 reward_step_time_horizon_min: -10
 reward_step_time_horizon_max: 0
 
 # Cost weights
-alpha_step_target2goal: 1
+alpha_step_target2goal_diff: 0.5
+alpha_step_target2goal_curr: 1
 alpha_step_mode: 1
 alpha_step_mpc_result: 1
 
