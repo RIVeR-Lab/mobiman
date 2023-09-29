@@ -71,7 +71,7 @@ roslaunch mobiman_simulation ocs2_m4.launch
 
 4. 2. Wait until you see the following message on the terminal screen:
 ```
-waitForService: Service [/set_mrt_ready] has not been advertised, waiting...
+[MobileManipulatorInterface::runMPC] START DRL TRAINING!!!
 ```
 
 5. Start the DRL training:
