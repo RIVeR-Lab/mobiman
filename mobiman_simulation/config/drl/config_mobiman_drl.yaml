@@ -6,7 +6,7 @@ gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
-# initial_training_path: "20230922_111705_PPO_mobiman/"
+#initial_training_path: "20230930_123659_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Training Parameters
@@ -96,7 +96,7 @@ n_action: 8
 # 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
 ablation_mode: 0
 
-last_step_distance_threshold: 2.0
+last_step_distance_threshold: 1.0
 goal_distance_pos_threshold: 0.1
 goal_distance_ori_threshold_yaw: 0.1
 goal_distance_ori_threshold_quat: 0.05
@@ -132,13 +132,15 @@ reward_terminal_max_step: -50
 
 # Target-to-goal
 reward_step_target2goal: 5
-reward_step_target2goal_threshold: 2
-reward_step_target2goal_scale_beta: 1
+reward_step_target2goal_mu_regular: 2
+reward_step_target2goal_sigma_regular: 2
+reward_step_target2goal_mu_last_step: 0.75
+reward_step_target2goal_sigma_last_step: 0.5
 
 # Model mode
-reward_step_mode0: -0.9
-reward_step_mode1: -1.8
-reward_step_mode2: -2.7
+reward_step_mode0: -1.5
+reward_step_mode1: -3.0
+reward_step_mode2: -4.5
 
 # MPC result
 reward_step_mpc_exit: -5
@@ -147,8 +149,7 @@ reward_step_time_horizon_min: -10
 reward_step_time_horizon_max: 0
 
 # Cost weights
-alpha_step_target2goal_diff: 0.5
-alpha_step_target2goal_curr: 1
+alpha_step_target2goal: 1
 alpha_step_mode: 1
 alpha_step_mpc_result: 1
 

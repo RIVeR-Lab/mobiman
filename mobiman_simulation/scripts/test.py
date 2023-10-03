@@ -1,36 +1,33 @@
 import numpy as np
-
-# Given data
-d0 = 5
-d1_min = 0.5
-r_max = 10
-d_th = 2
-
-# Calculate d1_max
-d1_max = 9.5
-
-# Calculate the slope of the tangent line at d1_min
-slope = -r_max * (d0 / (d_th * d0))  # derivative of the function with respect to d1
-
-# Calculate the intercept of the tangent line
-intercept = -slope * d1_min + (r_max * (d0 - d1_min) / d0) * ((d1_min / d_th) + 1)
-
-# Define the convex lower bound function
-def convex_lower_bound(d1):
-    return slope * d1 + intercept
-
-# Test the function
-d1_test = np.linspace(d1_min, d1_max, 100)
-lower_bound_values = convex_lower_bound(d1_test)
-
-# Plot the original function and its convex lower bound
+import scipy.stats as stats
 import matplotlib.pyplot as plt
 
-r_values = -r_max * (d0 - d1_test) / d0 * ((d1_test / d_th) + 1)
+def scaled_gamma_pdf_single(x, shape, scale):
+    gamma_pdf = stats.gamma.pdf(x, shape, scale=scale)
+    min_pdf = np.min(gamma_pdf)
+    max_pdf = np.max(gamma_pdf)
+    normalized_pdf = -1 + 2 * ((gamma_pdf - min_pdf) / (max_pdf - min_pdf))
+    return normalized_pdf
 
-plt.plot(d1_test, r_values, label='Original Function')
-plt.plot(d1_test, lower_bound_values, label='Convex Lower Bound', linestyle='--')
-plt.xlabel('d1')
-plt.ylabel('r')
-plt.legend()
+# Define shape and scale parameters
+shape = 2
+scale = 1
+
+# Choose an x value
+x_value = 5
+
+# Calculate normalized PDF for the chosen x value
+normalized_pdf_value = scaled_gamma_pdf_single(x_value, shape, scale)
+
+# Print the result
+print(f"For x = {x_value}, normalized PDF = {normalized_pdf_value}")
+
+# Plotting the scaled gamma distribution
+x_values = np.linspace(0, 10, 1000)
+normalized_pdf = [scaled_gamma_pdf_single(x, shape, scale) for x in x_values]
+
+plt.plot(x_values, normalized_pdf)
+plt.xlabel('x')
+plt.ylabel('Normalized PDF')
+plt.title(f'Scaled Gamma Distribution (shape={shape}, scale={scale})')
 plt.show()

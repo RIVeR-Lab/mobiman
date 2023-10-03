@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.09.28
+LAST UPDATE: 2023.10.02
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -22,6 +22,7 @@ import rospkg
 import rospy
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.stats as stats
 
 def plot_func(   
         data_x, data_y,
@@ -83,12 +84,56 @@ def linear_function(x_min, x_max, y_min, y_max, query_x, slope_sign=1):
                 return y_min
             else:
                 return y_max
-
+            
 '''
 DESCRIPTION: TODO...
 '''     
 def sigmoid_function(x, gamma):
-    return (1 / (1 + np.exp(-gamma*x)))
+    return (1 / (1 + np.exp(-gamma * x))) # type: ignore
+
+'''
+DESCRIPTION: TODO...
+'''
+def gaussian_function(x, sigma):
+    """ Return the scaled Gaussian with standard deviation sigma. """
+    gaussian = np.exp(- (x / sigma)**2)
+    scaled_result = 2 * gaussian - 1
+    return scaled_result
+
+'''
+DESCRIPTION: TODO...
+'''
+def reward_step_target2goal_diff_func(curr_target2goal, prev_target2goal, reward_step_target2goal, reward_step_target2goal_mu, reward_step_target2goal_sigma):
+    diff_target2goal = prev_target2goal - curr_target2goal
+    reward_step_target2goal = reward_step_target2goal * gaussian_function(diff_target2goal-reward_step_target2goal_mu, reward_step_target2goal_sigma)
+    return reward_step_target2goal
+
+'''
+DESCRIPTION: TODO...
+'''
+def reward_step_target2goal_curr_func(curr_target2goal, reward_step_target2goal, reward_step_target2goal_mu, reward_step_target2goal_sigma):
+    reward_step_target2goal = reward_step_target2goal * gaussian_function(curr_target2goal-reward_step_target2goal_mu, reward_step_target2goal_sigma)
+    return reward_step_target2goal
+
+'''
+DESCRIPTION: TODO...
+'''
+def reward_step_time_horizon_func(dt_action, action_time_horizon, reward_step_time_horizon_max, reward_step_time_horizon_min):
+    reward_step_mpc_time_horizon = 0
+    if dt_action <= action_time_horizon:
+        reward_step_mpc_time_horizon = linear_function(0.0, action_time_horizon, 
+                                                       0.0, reward_step_time_horizon_max, 
+                                                       dt_action, slope_sign=-1) # type: ignore
+    elif dt_action <= 2*action_time_horizon: # type: ignore
+        reward_step_mpc_time_horizon = linear_function(action_time_horizon, 2*action_time_horizon,  # type: ignore
+                                                       reward_step_time_horizon_min, 0.0, 
+                                                       dt_action, slope_sign=-1) # type: ignore
+    else:
+        if  dt_action > 2*action_time_horizon: # type: ignore
+            reward_step_mpc_time_horizon = reward_step_time_horizon_min
+        else:
+            reward_step_mpc_time_horizon = reward_step_time_horizon_max
+    return reward_step_mpc_time_horizon
 
 '''
 DESCRIPTION: TODO...
@@ -124,8 +169,10 @@ if __name__ == '__main__':
     reward_terminal_max_step = rospy.get_param('reward_terminal_max_step', 0.0)
 
     reward_step_target2goal = rospy.get_param('reward_step_target2goal', 0.0)
-    reward_step_target2goal_threshold = rospy.get_param('reward_step_target2goal_threshold', 0.0)
-    reward_step_target2goal_scale_beta = rospy.get_param('reward_step_target2goal_scale_beta', 0.0)
+    reward_step_target2goal_mu_regular = rospy.get_param('reward_step_target2goal_mu_regular', 0.0)
+    reward_step_target2goal_sigma_regular = rospy.get_param('reward_step_target2goal_sigma_regular', 0.0)
+    reward_step_target2goal_mu_last_step = rospy.get_param('reward_step_target2goal_mu_last_step', 0.0)
+    reward_step_target2goal_sigma_last_step = rospy.get_param('reward_step_target2goal_sigma_last_step', 0.0)
     reward_step_mode0 = rospy.get_param('reward_step_mode0', 0.0)
     reward_step_mode1 = rospy.get_param('reward_step_mode1', 0.0)
     reward_step_mode2 = rospy.get_param('reward_step_mode2', 0.0)
@@ -138,7 +185,7 @@ if __name__ == '__main__':
     alpha_step_target_pos = rospy.get_param('alpha_step_target_pos', 0.0)
     alpha_step_target_ori = rospy.get_param('alpha_step_target_ori', 0.0)
     alpha_step_mode = rospy.get_param('alpha_step_mode', 0.0)
-    alpha_step_mpc_exit = rospy.get_param('alpha_step_mpc_exit', 0.0)
+    alpha_step_mpc_result = rospy.get_param('alpha_step_mpc_result', 0.0)
 
     print("[plot_functions::__main__] save_path: " + str(save_path))
 
@@ -156,8 +203,10 @@ if __name__ == '__main__':
     print("[plot_functions::__main__] reward_terminal_roll: " + str(reward_terminal_roll))
     print("[plot_functions::__main__] reward_terminal_max_step: " + str(reward_terminal_max_step))
     print("[plot_functions::__main__] reward_step_target2goal: " + str(reward_step_target2goal))
-    print("[plot_functions::__main__] reward_step_target2goal_threshold: " + str(reward_step_target2goal_threshold))
-    print("[plot_functions::__main__] reward_step_target2goal_scale_beta: " + str(reward_step_target2goal_scale_beta))
+    print("[plot_functions::__main__] reward_step_target2goal_mu_regular: " + str(reward_step_target2goal_mu_regular))
+    print("[plot_functions::__main__] reward_step_target2goal_sigma_regular: " + str(reward_step_target2goal_sigma_regular))
+    print("[plot_functions::__main__] reward_step_target2goal_mu_last_step: " + str(reward_step_target2goal_mu_last_step))
+    print("[plot_functions::__main__] reward_step_target2goal_sigma_last_step: " + str(reward_step_target2goal_sigma_last_step))
     print("[plot_functions::__main__] reward_step_mode0: " + str(reward_step_mode0))
     print("[plot_functions::__main__] reward_step_mode1: " + str(reward_step_mode1))
     print("[plot_functions::__main__] reward_step_mode2: " + str(reward_step_mode2))
@@ -170,7 +219,7 @@ if __name__ == '__main__':
     print("[plot_functions::__main__] alpha_step_target_pos: " + str(alpha_step_target_pos))
     print("[plot_functions::__main__] alpha_step_target_ori: " + str(alpha_step_target_ori))
     print("[plot_functions::__main__] alpha_step_mode: " + str(alpha_step_mode))
-    print("[plot_functions::__main__] alpha_step_mpc_exit: " + str(alpha_step_mpc_exit))
+    print("[plot_functions::__main__] alpha_step_mpc_result: " + str(alpha_step_mpc_result))
 
     n_data = 101
     dist_min = 0.0
@@ -185,91 +234,29 @@ if __name__ == '__main__':
     curr_target2goal = np.zeros(n_data)
     prev_target2goal = 10 * np.ones(n_data)
     diff_target2goal = 10 * np.linspace(-1.0, 1.0, n_data) # type: ignore
-    
-    scale_data = np.zeros(n_data)
-    reward_step_target2goal_data = np.zeros(n_data)
-    reward_step_target2goal_data_exp_curr = np.zeros(n_data)
-    reward_step_target2goal_scaled_data = np.zeros(n_data)
-    reward_step_target2goal_data_analytical = np.zeros(n_data)
-    reward_step_target2goal_data_sigmoid_diff = np.zeros(n_data)
-    reward_step_target2goal_data_sigmoid_curr = np.zeros(n_data)
-    reward_step_target2goal_data_sigmoid_scaled = np.zeros(n_data)
-    reward_step_target2goal_data_sigmoid_scaled_exp = np.zeros(n_data)
+
+    reward_step_target2goal_regular = np.zeros(n_data)
+    reward_step_target2goal_last_step = np.zeros(n_data)
 
     for i in range(n_data):
         curr_target2goal[i] = prev_target2goal[i] - diff_target2goal[i]
 
-        if (curr_target2goal[i] <= 2*reward_step_target2goal_threshold): # type: ignore
-            reward_step_target2goal_data[i] = linear_function(0, 2*reward_step_target2goal_threshold, 0, reward_step_target2goal, curr_target2goal[i], -1) # type: ignore
-        else:
-            reward_step_target2goal_data[i] = linear_function(2*reward_step_target2goal_threshold, 4*reward_step_target2goal_threshold, -reward_step_target2goal, 0.0, curr_target2goal[i], -1) # type: ignore
+        reward_step_target2goal_regular[i] = reward_step_target2goal_diff_func(curr_target2goal[i], prev_target2goal[i], reward_step_target2goal, reward_step_target2goal_mu_regular, reward_step_target2goal_sigma_regular)
+        reward_step_target2goal_last_step[i] = reward_step_target2goal_curr_func(curr_target2goal[i], reward_step_target2goal, reward_step_target2goal_mu_last_step, reward_step_target2goal_sigma_last_step)
 
-        reward_step_target2goal_data_sigmoid_diff[i] = 2 * reward_step_target2goal * sigmoid_function(diff_target2goal[i], reward_step_target2goal_threshold) - reward_step_target2goal # type: ignore
-
-        reward_step_target2goal_data_exp_curr[i] = np.exp(-curr_target2goal[i])
-        #reward_step_target2goal_data_exp_curr[i] = 0.5 * reward_step_target2goal * np.exp(-curr_target2goal[i])
-
-        #scale2 = reward_step_target2goal_data_exp_curr[i] / 
-
-        scale = 1
-        scale2 = 1
-        diff_target2goal_abs = abs(diff_target2goal[i])
-        if diff_target2goal_abs < 2 * reward_step_target2goal_threshold: # type: ignore
-            scale = (diff_target2goal_abs + reward_step_target2goal_scale_beta *reward_step_target2goal_threshold) / (3*reward_step_target2goal_threshold) # type: ignore
-            scale2 = np.exp(-curr_target2goal[i])
-
-        scale_data[i] = scale
-        reward_step_target2goal_scaled_data[i] = scale * pow(-reward_step_target2goal_data[i], 3) / pow(reward_step_target2goal, 2) # type: ignore
-        reward_step_target2goal_data_sigmoid_scaled[i] = scale * reward_step_target2goal_data_sigmoid_diff[i] # type: ignore
-        reward_step_target2goal_data_sigmoid_scaled_exp[i] = scale2 * reward_step_target2goal_data_sigmoid_diff[i] # type: ignore
-
-        if curr_target2goal[i] > 2*reward_step_target2goal_threshold: # type: ignore
-            reward_step_target2goal_data_analytical[i] = scale * pow(-reward_step_target2goal, 3) / pow(reward_step_target2goal, 2) # type: ignore
-        else:
-            reward_step_target2goal_data_analytical[i] = scale * pow(-reward_step_target2goal * (curr_target2goal[i] - reward_step_target2goal_threshold) / reward_step_target2goal_threshold, 3) / pow(reward_step_target2goal, 2) # type: ignore
-
-    #plot_func(prev_target2goal, reward_step_target2goal_data, save_path=save_path+extra_tag+'reward_step_target2goal_wrt_prev_target2goal.png')
     title = "Step Reward 1: target to goal \n (considers both \"previous vs. current\" and \"current target to goal\") \n diff_target2goal range = [" + str(diff_target2goal[0]) + ", " + str(diff_target2goal[-1]) + "], prev_target = " + str(prev_target2goal[0]) # type: ignore
-    plot_func(curr_target2goal, reward_step_target2goal_data, 
-              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data.png')
-    plot_func(curr_target2goal, reward_step_target2goal_data_exp_curr, 
-              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_exp_curr", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_exp_curr.png')
-    plot_func(diff_target2goal, reward_step_target2goal_data_sigmoid_diff, 
-              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_diff", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_diff.png')
-    plot_func(diff_target2goal, reward_step_target2goal_scaled_data, 
-              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_scaled_data", 
-              title="", save_path=save_path+extra_tag+'reward_step_target2goal_scaled_data_wrt_diff.png')
-    plot_func(curr_target2goal, reward_step_target2goal_scaled_data, 
-              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_scaled_data", 
-              title="", save_path=save_path+extra_tag+'reward_step_target2goal_scaled_data_wrt_curr.png')
-    plot_func(diff_target2goal, scale_data, 
-              label_x="diff_target2goal [m]", label_y="scale_data", 
-              title=title, save_path=save_path+extra_tag+'scale_data_wrt_diff.png')
-    plot_func(curr_target2goal, scale_data, 
-              label_x="curr_target2goal [m]", label_y="scale_data", 
-              title=title, save_path=save_path+extra_tag+'scale_data_wrt_curr.png')
-    plot_func(diff_target2goal, reward_step_target2goal_data_analytical, 
-              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_analytical", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_analytical_wrt_diff.png')
-    plot_func(curr_target2goal, reward_step_target2goal_data_analytical, 
-              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_analytical", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_analytical_wrt_curr.png')
-    plot_func(diff_target2goal, reward_step_target2goal_data_sigmoid_scaled, 
-              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_wrt_diff.png')
-    plot_func(curr_target2goal, reward_step_target2goal_data_sigmoid_scaled, 
-              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_wrt_curr.png')
-    
-    plot_func(diff_target2goal, reward_step_target2goal_data_sigmoid_scaled_exp, 
-              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled_exp", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_exp_wrt_diff.png')
-    plot_func(curr_target2goal, reward_step_target2goal_data_sigmoid_scaled_exp, 
-              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_data_sigmoid_scaled", 
-              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_data_sigmoid_scaled_exp_wrt_curr.png')
+    plot_func(curr_target2goal, reward_step_target2goal_regular, 
+              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_regular", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_regular_wrt_curr.png')
+    plot_func(diff_target2goal, reward_step_target2goal_regular, 
+              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_regular", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_regular_wrt_diff.png')
+    plot_func(curr_target2goal, reward_step_target2goal_last_step, 
+              label_x="curr_target2goal [m]", label_y="reward_step_target2goal_last_step", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_last_step_wrt_curr.png')
+    plot_func(diff_target2goal, reward_step_target2goal_last_step, 
+              label_x="diff_target2goal [m]", label_y="reward_step_target2goal_last_step", 
+              title=title, save_path=save_path+extra_tag+'reward_step_target2goal_last_step_wrt_diff.png')
     
     # Step Reward 2: model mode
     reward_step_mode0_vec = reward_step_mode0 * np.ones(n_data) # type: ignore
@@ -286,86 +273,14 @@ if __name__ == '__main__':
 
     # Step Reward 3: mpc result : time horizon
     dt_action = np.linspace(0, 3*action_time_horizon, n_data) # type: ignore
-    reward_step_mpc_time_horizon = np.zeros(n_data) # type: ignore
-    reward_step_mpc_time_horizon_plus = np.zeros(int(0.5*n_data)+1) # type: ignore
-    reward_step_mpc_time_horizon_minus = np.zeros(int(0.5*n_data)) # type: ignore
-    coeff = reward_step_time_horizon_max / reward_step_time_horizon_min # type: ignore
+    reward_step_time_horizon = np.zeros(n_data) # type: ignore
     for i in range(n_data):
-        if dt_action[i] <= action_time_horizon:
-            reward_step_mpc_time_horizon[i] = linear_function(0, action_time_horizon, 0.0, reward_step_time_horizon_max, dt_action[i], -1)
-        elif dt_action[i] <= 2*action_time_horizon: # type: ignore
-            reward_step_mpc_time_horizon[i] = linear_function(action_time_horizon, 2*action_time_horizon, reward_step_time_horizon_min, 0.0, dt_action[i], -1) # type: ignore
-        else:
-            if  dt_action[i] > 2*action_time_horizon: # type: ignore
-                reward_step_mpc_time_horizon[i] = reward_step_time_horizon_min
-            else:
-                reward_step_mpc_time_horizon[i] = reward_step_time_horizon_max
-    weighted_reward_step_mpc_time_horizon = alpha_step_mpc_exit * reward_step_mpc_time_horizon # type: ignore
+        reward_step_time_horizon[i] = reward_step_time_horizon_func(dt_action[i], action_time_horizon, reward_step_time_horizon_max, reward_step_time_horizon_min)
+    weighted_reward_step_mpc_time_horizon = alpha_step_mpc_result * reward_step_time_horizon # type: ignore
 
     title = "Step Reward 3: mpc result : time horizon"
-    plot_func(dt_action, reward_step_mpc_time_horizon, 
-              label_x="dt_action [s]", label_y="reward_step_mpc_time_horizon", 
-              title=title, save_path=save_path+extra_tag+'reward_step_mpc_time_horizon.png')
-
-    ### OTHER IDEAS:
-    extra_tag = "other_"
-
-    # Step Reward 1: base to goal
-    current_base_distance2goal = np.linspace(dist_min, 2*dist_max, n_data)
-    reward_step_goal_base = np.zeros(n_data)
-    for i in range(n_data):
-        reward_step_goal_base[i] = linear_function(0, goal_range_max_x, 0, reward_step_target2goal, current_base_distance2goal[i], -1)
-    weighted_reward_step_goal_base = alpha_step_goal_base * reward_step_goal_base # type: ignore
-    plot_func(current_base_distance2goal, reward_step_goal_base, save_path=save_path+extra_tag+'reward_step_goal_base.png')
-
-    # Step Reward 2: ee to goal
-    current_ee_distance2goal = np.linspace(dist_min, 2*dist_max, n_data)
-    reward_step_goal_ee = np.zeros(n_data)
-    for i in range(n_data):
-        reward_step_goal_ee[i] = linear_function(0, goal_range_max_x, 0, reward_step_target2goal, current_ee_distance2goal[i], -1)
-    weighted_reward_step_goal_ee = alpha_step_goal_ee * reward_step_goal_ee # type: ignore
-    plot_func(current_ee_distance2goal, reward_step_goal_base, save_path=save_path+extra_tag+'reward_step_goal_ee.png')
-
-    # Step Reward 3: ee to target
-    current_ee_distance2target_pos = np.linspace(dist_min, 2*dist_max, n_data)
-    current_ee_distance2target_ori = np.linspace(0.0, 1.0, n_data)
-    reward_step_target_pos = np.zeros(n_data)
-    reward_step_target_ori = np.zeros(n_data)
-    for i in range(n_data):
-        #reward_step_target_pos = reward_func(0, goal_range_max_x + math.pi, 0, reward_step_target, current_ee_distance2target + current_ee_oridistance2target_yaw) # type: ignore
-        #reward_step_target_mode12[i] = reward_func(0, goal_range_max_x + 1.0, 0, reward_step_target, current_ee_distance2target + current_ee_oridistance2target_quat) # type: ignore
-        reward_step_target_pos[i] = linear_function(0, goal_range_max_x, 0, reward_step_target2goal, current_ee_distance2target_pos[i], -1) # type: ignore
-        reward_step_target_ori[i] = linear_function(0, 1.0, 0, reward_step_target2goal, current_ee_distance2target_ori[i], -1) # type: ignore
-    weighted_reward_step_target_pos = alpha_step_target_pos * reward_step_target_pos # type: ignore
-    weighted_reward_step_target_ori = alpha_step_target_ori * reward_step_target_ori # type: ignore
-    plot_func(current_ee_distance2target_pos, reward_step_target_pos, save_path=save_path+extra_tag+'reward_step_target_pos.png')
-    plot_func(current_ee_distance2target_ori, reward_step_target_ori, save_path=save_path+extra_tag+'reward_step_target_ori.png')
-
-    # Step Reward 4: model mode
-    reward_step_mode0_vec = reward_step_mode0 * np.ones(n_data) # type: ignore
-    reward_step_mode1_vec = reward_step_mode1 * np.ones(n_data) # type: ignore
-    reward_step_mode2_vec = reward_step_mode2 * np.ones(n_data) # type: ignore
-    weighted_reward_step_mode0 = alpha_step_mode * reward_step_mode0_vec # type: ignore
-    weighted_reward_step_mode1 = alpha_step_mode * reward_step_mode1_vec # type: ignore
-    weighted_reward_step_mode2 = alpha_step_mode * reward_step_mode2_vec # type: ignore
-
-    # Step Reward 5: mpc time horizon
-    dt_action = np.linspace(0, 3*action_time_horizon, n_data) # type: ignore
-    reward_step_mpc_time_horizon = np.zeros(n_data) # type: ignore
-    reward_step_mpc_time_horizon_plus = np.zeros(int(0.5*n_data)+1) # type: ignore
-    reward_step_mpc_time_horizon_minus = np.zeros(int(0.5*n_data)) # type: ignore
-    coeff = reward_step_time_horizon_max / reward_step_time_horizon_min # type: ignore
-    for i in range(n_data):
-        if dt_action[i] <= action_time_horizon:
-            reward_step_mpc_time_horizon[i] = linear_function(0, action_time_horizon, 0.0, reward_step_time_horizon_max, dt_action[i], -1)
-        elif dt_action[i] <= 2*action_time_horizon: # type: ignore
-            reward_step_mpc_time_horizon[i] = linear_function(action_time_horizon, 2*action_time_horizon, reward_step_time_horizon_min, 0.0, dt_action[i], -1) # type: ignore
-        else:
-            if  dt_action[i] > 2*action_time_horizon: # type: ignore
-                reward_step_mpc_time_horizon[i] = reward_step_time_horizon_min
-            else:
-                reward_step_mpc_time_horizon[i] = reward_step_time_horizon_max
-    weighted_reward_step_mpc_time_horizon = alpha_step_mpc_exit * reward_step_mpc_time_horizon # type: ignore
-    plot_func(dt_action, reward_step_mpc_time_horizon, save_path=save_path+extra_tag+'reward_step_mpc_time_horizon.png')
+    plot_func(dt_action, reward_step_time_horizon, 
+              label_x="dt_action [s]", label_y="reward_step_time_horizon", 
+              title=title, save_path=save_path+extra_tag+'reward_step_time_horizon.png')
 
     print("[plot_functions::__main__] END")
