@@ -12,7 +12,7 @@
   <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
   <arg name="flag_map_server" default="true"/>
-  <arg name="flag_rviz" default="true"/>
+  <arg name="flag_rviz" default="false"/>
 
   <!-- Gazebo -->
   <arg name="paused" default="true"/>

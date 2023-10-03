@@ -38,10 +38,12 @@
       <arg name="debug" value="$(arg debug)"/>
   </include-->
 
-  <node name="rviz" 
+  <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_gazebo.launch" />
+
+  <!--node name="rviz" 
         pkg="rviz" 
         type="rviz" 
         args="-d $(arg rvizconfig)" 
-        required="true" />
+        required="true" /-->
 
 </launch>
