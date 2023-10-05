@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /MarkerArray2/Namespaces1
       Splitter Ratio: 0.5
-    Tree Height: 787
+    Tree Height: 441
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -494,7 +494,15 @@ Visualization Manager:
       Marker Topic: /occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
+        0: true
+        1: true
+        2: true
+        3: true
+        4: true
+        5: true
+        6: true
+        7: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -502,7 +510,18 @@ Visualization Manager:
       Marker Topic: /occupancy_distances_arm_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
+        0: true
+        1: true
+        10: true
+        2: true
+        3: true
+        4: true
+        5: true
+        6: true
+        7: true
+        8: true
+        9: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -518,7 +537,8 @@ Visualization Manager:
       Marker Topic: /self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        11 - 14: true
       Queue Size: 0
       Value: true
     - Alpha: 1
