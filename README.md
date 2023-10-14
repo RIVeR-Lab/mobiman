@@ -4,18 +4,11 @@
 ## Gazebo:
 
 ## Installation: 
-
-Please follow the instructions in [MANUAL_INSTALLATION](https://github.com/RIVeR-Lab/mobiman/blob/main/MANUAL_INSTALLATION).
-
-OR
-
 ```
-cd /tmp
-wget https://www.dropbox.com/s/vj4gy18t8ax0bb3/mobiman_install.sh
-chmod +x mobiman_install.sh
-./mobiman_install.sh -d=mobiman_ws # mobiman_ws is empty in this case, don't run on existing workspace so things don't break.
+git clone git@github.com:RIVeR-Lab/mobiman.git
+cd mobiman
+./mobiman_install.sh
 ```
-
 
 ## Run (Manual mode):
 
