@@ -225,8 +225,6 @@ Visualization Manager:
           Value: true
         bin_4_dropping_task:
           Value: true
-        blue_cube:
-          Value: true
         chassis_link:
           Value: false
         conveyor_belt:
@@ -253,8 +251,6 @@ Visualization Manager:
           Value: false
         d435_cam1camera_right_ir_optical_frame:
           Value: false
-        drop:
-          Value: true
         front_fender_link:
           Value: false
         front_left_wheel_link:
@@ -263,10 +259,6 @@ Visualization Manager:
           Value: false
         front_right_wheel_link:
           Value: false
-        grasp:
-          Value: true
-        green_cube:
-          Value: true
         imu_link:
           Value: false
         j2n6s300_end_effector:
@@ -287,10 +279,6 @@ Visualization Manager:
           Value: true
         jaco_base_link:
           Value: false
-        long_pkg:
-          Value: true
-        longwide_pkg:
-          Value: true
         mid_mount:
           Value: false
         navsat_link:
@@ -368,19 +356,7 @@ Visualization Manager:
                               {}
           bin_4_dropping_task:
             {}
-          blue_cube:
-            {}
           conveyor_belt:
-            {}
-          drop:
-            {}
-          grasp:
-            {}
-          green_cube:
-            {}
-          long_pkg:
-            {}
-          longwide_pkg:
             {}
           normal_pkg:
             {}
@@ -522,8 +498,7 @@ Visualization Manager:
       Marker Topic: /self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        0 - 12: true
-        11 - 14: true
+        {}
       Queue Size: 0
       Value: true
     - Alpha: 1
@@ -555,7 +530,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_goal
       Name: MarkerArray
       Namespaces:
-        goal_1: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -563,9 +538,7 @@ Visualization Manager:
       Marker Topic: /mobile_manipulator_target
       Name: MarkerArray
       Namespaces:
-        target_1: true
-        target_2: true
-        target_3: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -604,7 +577,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.3425774574279785
+      Distance: 7.178091526031494
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -612,17 +585,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.3216626048088074
-        Y: 0.3708857297897339
-        Z: 0.28060632944107056
+        X: -0.5024343132972717
+        Y: -0.053024258464574814
+        Z: 0.4660704433917999
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2197970747947693
+      Pitch: 1.1697964668273926
       Target Frame: <Fixed Frame>
-      Yaw: 4.472911834716797
+      Yaw: 1.5779154300689697
     Saved: ~
 Window Geometry:
   Displays:
