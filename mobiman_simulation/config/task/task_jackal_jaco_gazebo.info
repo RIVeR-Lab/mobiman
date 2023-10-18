@@ -1,0 +1,301 @@
+; robot model meta-information
+model_information 
+{             
+  envMode            0          ; Mode of the env, 0: sim, 1: exp
+  sim                "gazebo"   ; Simulator, Default: "gazebo", Others: "igibson" 
+  ns                 ""         ; Namespace 
+  robotName          "mobiman"  ; Name of the robot in simulation
+  robotModelType     2          ; 0: Mobile base, 1: Arm, 2: Mobile manipulator
+  
+  ; motion joints in the URDF to consider fixed
+  removeJoints 
+  {
+    [0] front_left_wheel
+    [1] front_right_wheel
+    [2] rear_left_wheel
+    [3] rear_right_wheel
+    [4] j2n6s300_joint_finger_1
+    [5] j2n6s300_joint_finger_2
+    [6] j2n6s300_joint_finger_3
+    [7] j2n6s300_joint_finger_tip_1
+    [8] j2n6s300_joint_finger_tip_2
+    [9] j2n6s300_joint_finger_tip_3
+  }
+
+  ; Name of the parent link of the joint frames
+  armJointFrameNames
+  {
+    [0] j2n6s300_link_1
+    [1] j2n6s300_link_2
+    [2] j2n6s300_link_3
+    [3] j2n6s300_link_4
+    [4] j2n6s300_link_5
+    [5] j2n6s300_link_6
+  }
+
+  ; Name of the parent link of the joint frames
+  armJointNames
+  {
+    [0] j2n6s300_joint_1
+    [1] j2n6s300_joint_2
+    [2] j2n6s300_joint_3
+    [3] j2n6s300_joint_4
+    [4] j2n6s300_joint_5
+    [5] j2n6s300_joint_6
+  }
+  
+  worldFrame                       "world"
+  ; base frame of the robot (from URDF)
+  baseFrame                       "base_link"
+  ; end-effector frame of the robot (from URDF)
+  armBaseFrame                    "j2n6s300_link_base"
+  ; end-effector frame of the robot (from URDF)
+  eeFrame                         "j2n6s300_end_effector"
+
+  ;baseStateMsg                    "/gazebo/link_states"
+  ;armStateMsg                     "/arm_controller/state"
+  armStateMsg                     "/joint_states"
+  baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
+  armControlMsg                   "/arm_controller/command"
+  selfCollisionMsg                "/self_collision_distances"
+  occupancyDistanceBaseMsg        "/occupancy_distances_base"
+  occupancyDistanceArmMsg         "/occupancy_distances_arm"
+  pointsOnRobotMsg                "points_on_robot"
+  octomapMsg                      "/octomap_scan"
+  modelModeMsg                    "/mobile_manipulator_model_mode"
+  mpcTargetMsg                    "/mobile_manipulator_mpc_target"
+  targetMsg                       "/mobile_manipulator_target"
+  goalFrame                       "grasp"
+
+  collisionConstraintPoints       "collision_constraint_points"
+  collisionCheckPoints            "collision_check_points"
+  logSavePathRel                  "" ; If empty, not saved. Ex: "dataset/ocs2/"
+}
+
+model_settings
+{
+  drlFlag                         false    ;
+  drlActionType                   1       ; 0: Discrete, 1: Continuous
+  usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
+  recompileLibraries              true    ; NUA NOTE: make true when made some changes (for example self-collision pairs)
+}
+
+; DDP settings
+ddp
+{
+  algorithm                       SLQ ; NUA EDIT: def: SLQ
+
+  nThreads                        1
+  threadPriority                  50
+
+  maxNumIterations                1
+  minRelCost                      0.1
+  constraintTolerance             5e-3  ; NUA EDIT: def: 1e-3
+
+  displayInfo                     false  ; NUA EDIT: def: false
+  displayShortSummary             false  ; NUA EDIT: def: false
+  checkNumericalStability         false  ; NUA EDIT: def: false
+  debugPrintRollout               false  ; NUA EDIT: def: false
+  debugCaching                    false  ; NUA EDIT: def: false
+
+  AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
+  maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
+  timeStep                        1e-3  ; NUA EDIT: def: 1e-3
+  backwardPassIntegratorType      ODE45
+
+  constraintPenaltyInitialValue   20.0
+  constraintPenaltyIncreaseRate   2.0 ; NUA EDIT: def: 2.0
+
+  preComputeRiccatiTerms          true
+
+  useFeedbackPolicy               false
+
+  strategy                        LINE_SEARCH
+  lineSearch
+  {
+    minStepLength                 1e-2 ; NUA EDIT: def: 1e-2
+    maxStepLength                 1.0 ; NUA EDIT: def: 1.0
+    hessianCorrectionStrategy     DIAGONAL_SHIFT
+    hessianCorrectionMultiple     1e-3
+  }
+}
+
+; Rollout settings
+rollout
+{
+  AbsTolODE                       1e-3 ; NUA EDIT: def: 1e-5
+  RelTolODE                       1e-2 ; NUA EDIT: def: 1e-3
+  timeStep                        1e-2 ; NUA EDIT: def: 1e-2
+  integratorType                  ODE45
+  maxNumStepsPerSecond            100000 ; NUA EDIT: def: 100000
+  checkNumericalStability         false
+}
+
+; MPC settings
+mpc
+{
+  timeHorizon                     3.0   ; [s] NUA EDIT: def: 1.0
+  solutionTimeWindow              1.0   ; [s] NUA EDIT: def: 0.2
+  coldStart                       false
+  
+  debugPrint                      false
+
+  mpcDesiredFrequency             -1   ; [Hz] NUA EDIT: def: 100
+  mrtDesiredFrequency             20   ; [Hz] NUA EDIT: def: 400
+}
+
+inputCost
+{
+  ; control weight matrix
+  R
+  {
+    ; input costs for the different types of arm base DOFs
+    base
+    {
+      scaling 1e-1  ; NUA EDIT: def: 1e-2
+
+      (0,0)  2.5  ; forward velocity    NUA EDIT: def: 2.5
+      (1,1)  2.5  ; turning velocity    NUA EDIT: def: 2.5
+    }
+
+    ; input costs for the arm DOFs
+    arm
+    {
+      scaling 1e-2
+
+      (0,0)  1.0  ; j2n6s300_joint_1 velocity
+      (1,1)  1.0  ; j2n6s300_joint_2 velocity
+      (2,2)  1.0  ; j2n6s300_joint_3 velocity
+      (3,3)  1.0  ; j2n6s300_joint_4 velocity
+      (4,4)  1.0  ; j2n6s300_joint_5 velocity
+      (5,5)  1.0  ; j2n6s300_joint_6 velocity
+    }
+  }
+}
+
+endEffector
+{
+  ; end effector quadratic penalty scaling
+  muPosition       1.0 ; NUA EDIT: def: 10.0
+  muOrientation    1.0 ; NUA EDIT: def: 5.0
+}
+
+finalEndEffector
+{
+  muPosition      20.0  ; NUA EDIT: def: 10
+  muOrientation   20.0  ; NUA EDIT: def: 5.0
+}
+
+selfCollision
+{ 
+  ; activate self-collision constraint
+  activate  true
+
+  ; Self Collision raw object pairs
+  ;collisionObjectPairs
+  ;{
+  ;  [0] "1, 4"
+  ;  [1] "1, 6"
+  ;  [2] "1, 9"
+  ;}
+
+  ; Self Collision pairs
+  collisionLinkPairs
+  {
+    [0] "chassis_link, j2n6s300_link_3"
+    [1] "j2n6s300_link_2, j2n6s300_link_5"
+    ;[2] "j2n6s300_link_2, j2n6s300_link_6"
+    ;[2] "chassis_link, j2n6s300_link_5"
+    ;[3] "chassis_link, j2n6s300_link_6"
+    ;[2] "j2n6s300_link_2, j2n6s300_link_6"
+  }
+
+  ; minimum distance allowed between the pairs
+  minimumDistance  0.01
+
+  ; relaxed log barrier mu
+  mu     2e-3 ; NUA EDIT: def: 1e-2
+
+  ; relaxed log barrier delta
+  delta  1e-5
+}
+
+extCollision
+{ 
+  ; activate external-collision constraint
+  activate  false
+
+  ; relaxed log barrier mu
+  mu              5e-5 ;5e-3
+  
+  ; relaxed log barrier delta
+  delta           1e-3 ;1e-4
+
+  ; maximum distance to obstacles
+  maxDistance  1.0
+}
+
+; Only applied for arm joints: limits parsed from URDF
+jointPositionLimits
+{ 
+  ; activate constraint
+  activate  true
+
+  ; relaxed log barrier mu
+  mu      5e-3
+
+  ; relaxed log barrier delta
+  delta   1e-2
+}
+
+jointVelocityLimits
+{
+  ; relaxed log barrier mu
+  mu      0.015
+
+  ; relaxed log barrier delta
+  delta   1e-3
+
+  lowerBound
+  {
+    ; velocity limits for the different types of arm base DOFs
+    base
+    {
+      (0,0)  -0.3 ; forward velocity NUA EDIT: def: -0.5
+      (1,0)  -0.6 ; turning velocity NUA EDIT: def: -1.0
+    }
+
+    ; velocity limits for the arm DOFs
+    arm
+    {
+      (0,0)  -15  ; j2n6s300_joint_1 velocity
+      (1,0)  -15  ; j2n6s300_joint_2 velocity
+      (2,0)  -15  ; j2n6s300_joint_3 velocity
+      (3,0)  -15  ; j2n6s300_joint_4 velocity
+      (4,0)  -15  ; j2n6s300_joint_5 velocity
+      (5,0)  -15  ; j2n6s300_joint_6 velocity
+    }
+  }
+
+  upperBound
+  {
+    ; velocity limits for the different types of arm base DOFs
+    base
+    {
+      (0,0)  0.3 ; forward velocity
+      (1,0)  0.6 ; turning velocity
+    }
+
+    ; velocity limits for the arm DOFs
+    arm
+    {
+      (0,0)  15  ; j2n6s300_joint_1 velocity
+      (1,0)  15  ; j2n6s300_joint_2 velocity
+      (2,0)  15  ; j2n6s300_joint_3 velocity
+      (3,0)  15  ; j2n6s300_joint_4 velocity
+      (4,0)  15  ; j2n6s300_joint_5 velocity
+      (5,0)  15  ; j2n6s300_joint_6 velocity
+    }
+  }
+}

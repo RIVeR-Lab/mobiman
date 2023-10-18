@@ -7,6 +7,12 @@
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->
 
+      <!--
+            gazebo
+            igibson
+      -->
+      <arg name="sim"        default="gazebo" />
+
       <!-- Set nodes on debug mode -->
       <!--
             jackal_ur5
@@ -16,7 +22,7 @@
       <arg name="robot"       default="jackal_jaco" />
 
       <!-- The task file for the mpc. -->
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot)_$(arg sim).info" />
 
       <!-- The URDF model of the robot -->
       <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
@@ -32,6 +38,6 @@
 
       <node pkg="ocs2_mobile_manipulator_ros" 
             type="mobile_manipulator_target" 
-            name="mobile_manipulator_target" 
+            name="mobile_manipulator_target_node" 
             output="screen" />
 </launch>

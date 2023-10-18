@@ -5,6 +5,13 @@
       <arg name="rviz"        default="true" />
       <arg name="simulation"  value="true" />
 
+      <!--
+            gazebo
+            igibson
+      -->
+      <arg name="sim"        default="gazebo" />
+      
+
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->
 
@@ -19,7 +26,7 @@
       <!-- <arg name="taskFile"    default="" /> -->
       <!-- The task file for the mpc. -->
       <group if="$(arg simulation)">
-            <param name="taskFile"    value="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+            <param name="taskFile"    value="$(find mobiman_simulation)/config/task/task_$(arg robot)_$(arg sim).info" />
       </group>
 
       <group unless="$(arg simulation)">

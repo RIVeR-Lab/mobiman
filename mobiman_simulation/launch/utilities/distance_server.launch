@@ -8,6 +8,12 @@
   <arg name="config_distance_server"  default="config_distance_server" />
   <arg name="config_collision_points"  default="config_points_on_robot" />
 
+  <!--
+        gazebo
+        igibson
+  -->
+  <arg name="sim"        default="gazebo" />
+
   <!-- Set nodes on debug mode -->
   <!--
         ur5
@@ -21,7 +27,7 @@
   <rosparam file="$(find mobiman_simulation)/config/$(arg config_collision_points).yaml"/>
 
   <!-- The task file for the mpc. -->
-  <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot).info" />
+  <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot)_$(arg sim).info" />
 
   <!-- The URDF model of the robot -->
   <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
