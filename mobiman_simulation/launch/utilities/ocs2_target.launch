@@ -11,7 +11,7 @@
             gazebo
             igibson
       -->
-      <arg name="sim"        default="gazebo" />
+      <arg name="sim"        default="igibson" />
 
       <!-- Set nodes on debug mode -->
       <!--

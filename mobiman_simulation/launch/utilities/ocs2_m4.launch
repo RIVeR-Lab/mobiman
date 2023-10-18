@@ -9,7 +9,7 @@
             gazebo
             igibson
       -->
-      <arg name="sim"        default="gazebo" />
+      <arg name="sim"        default="igibson" />
       
 
       <!-- Set nodes on debug mode -->
@@ -53,4 +53,9 @@
             name="mobile_manipulator_node" 
             output="screen"
             launch-prefix="" />
+
+      <!-- Run Rviz visualization -->
+      <group if="$(eval arg('rviz') == true)">
+            <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_$(arg sim).launch" />
+      </group>
 </launch>

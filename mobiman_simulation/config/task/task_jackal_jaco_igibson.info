@@ -54,7 +54,7 @@ model_information
 
   ;baseStateMsg                    "/gazebo/link_states"
   ;armStateMsg                     "/arm_controller/state"
-  armStateMsg                     "/joint_states"
+  armStateMsg                     "/jackalJaco_0/gibson_ros/joint_states"
   baseControlMsg                  "/jackal_velocity_controller/cmd_vel"
   armControlMsg                   "/arm_controller/command"
   selfCollisionMsg                "/self_collision_distances"
