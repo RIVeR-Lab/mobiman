@@ -10,9 +10,36 @@ cd mobiman
 ./mobiman_install.sh
 ```
 
+## Run (Manual mode in iGibson):
+
+0. Make sure that 'drlFlag' is set false in [task config file](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/task/task_jackal_jaco_igibson.info).
+
+In seperate terminals:
+
+1. Start simulation in iGibson:
+```
+roslaunch igibson-ros mobiman_jackal_jaco.launch
+```
+
+2. Start the map server:
+```
+roslaunch mobiman_simulation map_server.launch
+```
+
+3. Start the target manager:
+```
+roslaunch mobiman_simulation ocs2_target.launch
+```
+
+4. Start the motion planning:
+```
+roslaunch mobiman_simulation ocs2_m4.launch
+```
+
+
 ## Run (Manual mode):
 
-0. Make sure that 'drlFlag' is set false in [task config file](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/task/task_jackal_jaco.info).
+0. Make sure that 'drlFlag' is set false in [task config file](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/task/task_jackal_jaco_gazebo.info).
 
 In seperate terminals:
 
