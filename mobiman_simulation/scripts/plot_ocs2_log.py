@@ -528,6 +528,7 @@ if __name__ == '__main__':
     ocs2_log_path_rel = rospy.get_param('ocs2_log_path_rel', "")
     ocs2_log_name = rospy.get_param('ocs2_log_name', "")
     n_round_digit = rospy.get_param('n_round_digit', 2)
+    mpc_flag = rospy.get_param('mpc_flag', 2)
     save_prefix = rospy.get_param('save_prefix', "")
 
     ocs2_log_path = mobiman_path + ocs2_log_path_rel

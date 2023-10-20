@@ -1,14 +1,15 @@
-ocs2_log_path_rel: "dataset/ocs2/tmp/"
-option: 1
+ocs2_log_path_rel: "dataset/ocs2/"
+option: 0
 
 ## OPTION 0: Read the log
 # NOTE: Provide the name without ".json"!
-ocs2_log_name: "20230815_220157"
+ocs2_log_name: "20231019_101425"
 
 ## OPTION 1: Read the folder of logs
 
 n_round_digit: 2
 save_prefix: ""
+mpc_flag: false
 
 joint_arm_limit_min: []
 joint_arm_limit_max: []
