@@ -7,7 +7,7 @@
 ```
 git clone git@github.com:RIVeR-Lab/mobiman.git
 cd mobiman
-./mobiman_install.sh
+./install_mobiman.sh
 ```
 
 ## Run (Manual mode in iGibson):
