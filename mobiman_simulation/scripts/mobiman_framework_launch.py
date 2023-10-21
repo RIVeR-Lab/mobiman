@@ -74,6 +74,7 @@ if __name__=="__main__":
     n_robot = rospy.get_param('n_robot', "")
     robot_frame_name = rospy.get_param('robot_frame_name', "")
     urdf_path = rospy.get_param('urdf_path', "")
+    urdf_path_ocs2 = rospy.get_param('urdf_path_ocs2', "")
     lib_path = rospy.get_param('lib_path', "")
     collision_points_config_path = rospy.get_param('collision_points_config_path', "")
 
@@ -106,6 +107,7 @@ if __name__=="__main__":
     print("[mobiman_framework_launch:: __main__ ] n_robot: " + str(n_robot))
     print("[mobiman_framework_launch:: __main__ ] robot_frame_name: " + str(robot_frame_name))
     print("[mobiman_framework_launch:: __main__ ] urdf_path: " + str(urdf_path))
+    print("[mobiman_framework_launch:: __main__ ] urdf_path_ocs2: " + str(urdf_path_ocs2))
     print("[mobiman_framework_launch:: __main__ ] lib_path: " + str(lib_path))
     print("[mobiman_framework_launch:: __main__ ] collision_points_config_path: " + str(collision_points_config_path))
 
@@ -120,20 +122,27 @@ if __name__=="__main__":
     print("")
 
     ## Set Namespace
-    namespaces = []
-    robot_frame_names = []
+    robot_ns_vec = []
+    robot_base_frame_name_vec = []
     if flag_ns:
-        print("[mobiman_framework_launch:: __main__ ] namespaces:")
+        print("[mobiman_framework_launch:: __main__ ] robot_ns_vec:")
         for i in range(n_robot):
-            ns_tmp = robot_name + "_" + str(i) + "/"
-            namespaces.append(ns_tmp)
+            ns_tmp = robot_name + "_" + str(i)
+            robot_ns_vec.append(ns_tmp)
             print(ns_tmp)
 
             # Update frame names
-            robot_frame_names.append(ns_tmp + str(robot_frame_name))
-            print(robot_frame_names)
+            robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
+
+        print("[mobiman_framework_launch:: __main__ ] robot_base_frame_name_vec:")
+        print(robot_base_frame_name_vec)
+    
     else:
         print("[mobiman_framework_launch:: __main__ ] No namespace!")
+
+    #print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
+    #while 1:
+    #    continue
 
     ## Launch Simulation
     if sim == "gazebo":
@@ -155,17 +164,18 @@ if __name__=="__main__":
         print("[mobiman_framework_launch:: __main__ ] Launched simulation in Gazebo!")
 
     elif sim == "igibson":
-        ns1 = "turtlebot2_0"
 
         # Launch iGibson
-        mobile_garden_path = mobiman_launch_path + "utilities/mobile_garden_igibson.launch"
-        mobile_garden_args = [mobile_garden_path,
-                                'ns1:=' + str(ns1),
-                                'world_frame_name:=' + str(world_frame_name)]
+        sim_launch_path = igibson_path + "launch/mobiman_jackal_jaco.launch"
 
-        mobile_garden_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobile_garden_args)[0], mobile_garden_args[1:]) ]
-        mobile_garden = roslaunch.parent.ROSLaunchParent(uuid, mobile_garden_launch)
-        mobile_garden.start()
+        for i, rns in enumerate(robot_ns_vec):
+            sim_args = [sim_launch_path,
+                        'robot_ns:=' + str(rns),
+                        'urdf_path:=' + str(urdf_path)]
+
+            sim_launch = [ (roslaunch.rlutil.resolve_launch_arguments(sim_args)[0], sim_args[1:]) ]
+            sim = roslaunch.parent.ROSLaunchParent(uuid, sim_launch)
+            sim.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched simulation in iGibson!")
     
@@ -189,13 +199,15 @@ if __name__=="__main__":
     ## Wait for simulation to be ready!
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
-    print("Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...")
+    if flag_ns:
+        robot_frame_name = robot_base_frame_name_vec[0]
+    print("[mobiman_framework_launch:: __main__ ] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...")
     trans = None
     while (not rospy.is_shutdown()) and (not trans):
         try:
             trans = tfBuffer.lookup_transform(world_frame_name, robot_frame_name, rospy.Time(0))
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as ex:
-            rospy.logwarn(str(ex))
+            rospy.logwarn("[mobiman_framework_launch:: __main__ ] ERROR: " + str(ex))
             rospy.sleep(1.0)   
 
     ## Launch Map Server
@@ -233,7 +245,7 @@ if __name__=="__main__":
         mobiman_path = mobiman_launch_path + "utilities/ocs2_m4.launch"
         mobiman_args = [mobiman_path,
                         'task_config_path:=' + str(task_config_path),
-                        'urdf_path:=' + str(urdf_path),
+                        'urdf_path:=' + str(urdf_path_ocs2),
                         'lib_path:=' + str(lib_path),
                         'collision_points_config_path:=' + str(collision_points_config_path)]
 

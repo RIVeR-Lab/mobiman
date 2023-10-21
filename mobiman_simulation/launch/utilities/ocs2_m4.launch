@@ -8,7 +8,7 @@
             gazebo
             igibson
       -->
-      <arg name="sim"        default="igibson" />
+      <arg name="sim"         default="igibson" />
 
       <!--
             ur5
@@ -17,6 +17,8 @@
       -->
       <arg name="robot"       default="jackalJaco" />
       
+      <arg name="robot_ns"    default="robotName_0"/>
+
       <!-- The task file for the mpc -->
       <arg name="task_config_path"        default="config/task/task_$(arg robot)_$(arg sim).info" />
       <param name="taskFile"              value="$(find mobiman_simulation)/$(arg task_config_path)" />
