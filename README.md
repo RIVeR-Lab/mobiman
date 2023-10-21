@@ -15,6 +15,15 @@ cd mobiman
 ```
 rosdep install --from-paths src --ignore-src -r -y
 ```
+## Run (Manual mode in Gazebo):
+1. Set configurations in [config_mobiman_framework](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework.yaml)
+
+2. Launch mobiman framework:
+```
+roslaunch mobiman_simulation mobiman_framework.launch
+```
+
+## !!! BELOW IS DEPRECATED: 
 
 ## Run (Manual mode in iGibson):
 
