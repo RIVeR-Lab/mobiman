@@ -4,10 +4,16 @@
 ## Gazebo:
 
 ## Installation: 
+1. Clone the mobiman repository into the src folder of catkin workspace:
 ```
 git clone git@github.com:RIVeR-Lab/mobiman.git
 cd mobiman
 ./install_mobiman.sh
+```
+
+2. Install ROS dependencies:
+```
+rosdep install --from-paths src --ignore-src -r -y
 ```
 
 ## Run (Manual mode in iGibson):
