@@ -1,0 +1,10 @@
+<launch>
+  <arg name="rviz_config_path" default="rviz/debug" />
+
+  <node name="rviz" 
+        pkg="rviz" 
+        type="rviz" 
+        args="-d $(find mobiman_simulation)/$(arg rviz_config_path).rviz" 
+        required="true" />
+
+</launch>

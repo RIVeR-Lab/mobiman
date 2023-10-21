@@ -17,12 +17,12 @@
       <!--
             jackal_ur5
             ur5
-            jackal_jaco
+            jackalJaco
       -->
-      <arg name="robot"       default="jackal_jaco" />
+      <arg name="robot"       default="jackalJaco" />
 
       <!-- The task file for the mpc. -->
-      <arg name="taskFile"    default="$(find mobiman_simulation)/config/task/task_$(arg robot)_$(arg sim).info" />
+      <arg name="task_config_path"    default="config/task/task_$(arg robot)_$(arg sim).info" />
 
       <!-- The URDF model of the robot -->
       <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
@@ -32,7 +32,7 @@
       <!--arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" /-->
 
       <!-- make the files into global parameters -->
-      <param name="taskFile"   value="$(arg taskFile)" />
+      <param name="taskFile"   value="$(find mobiman_simulation)/$(arg task_config_path)" />
       <!--param name="urdfFile"   value="$(arg urdfFile)" />
       <param name="libFolder"  value="$(arg libFolder)" /-->
 

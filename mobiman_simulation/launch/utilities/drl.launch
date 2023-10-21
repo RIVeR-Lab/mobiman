@@ -220,14 +220,14 @@
   <node if="$(arg flag_markers)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" />
 
   <!-- Run Map Server -->
-  <group if="$(eval arg('flag_gazebo') == true)">
+  <!--group if="$(eval arg('flag_gazebo') == true)">
     <group if="$(eval arg('flag_map_server') == true)">
       <include file="$(find mobiman_simulation)/launch/utilities/map_server.launch" />
     </group>
-  </group>
+  </group-->
 
   <!-- Run Rviz visualization -->
-  <group if="$(eval arg('flag_rviz') == true)">
+  <!--group if="$(eval arg('flag_rviz') == true)">
     <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_gazebo.launch" />
-  </group>
+  </group-->
 </launch>

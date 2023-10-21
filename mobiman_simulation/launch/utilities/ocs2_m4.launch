@@ -2,51 +2,37 @@
 
 <launch>
       <!-- Enable rviz visualization -->
-      <arg name="rviz"        default="true" />
-      <arg name="simulation"  value="true" />
-
+      <arg name="rviz"        default="false" />
+      
       <!--
             gazebo
             igibson
       -->
       <arg name="sim"        default="igibson" />
-      
 
-      <!-- Set nodes on debug mode -->
-      <!--arg name="debug"       default="false" /-->
-
-      <!-- Set nodes on debug mode -->
       <!--
             ur5
             jackal_ur5
-            jackal_jaco
+            jackalJaco
       -->
-      <arg name="robot"       default="jackal_jaco" />
+      <arg name="robot"       default="jackalJaco" />
       
-      <!-- <arg name="taskFile"    default="" /> -->
-      <!-- The task file for the mpc. -->
-      <group if="$(arg simulation)">
-            <param name="taskFile"    value="$(find mobiman_simulation)/config/task/task_$(arg robot)_$(arg sim).info" />
-      </group>
-
-      <group unless="$(arg simulation)">
-            <param name="taskFile"    value="$(find mobiman_simulation)/config/task/exp_$(arg robot).info" />
-      </group>
+      <!-- The task file for the mpc -->
+      <arg name="task_config_path"        default="config/task/task_$(arg robot)_$(arg sim).info" />
+      <param name="taskFile"              value="$(find mobiman_simulation)/$(arg task_config_path)" />
 
       <!-- The URDF model of the robot -->
       <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
-      <arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_jaco_fixedFinger.urdf" />
-      
+      <arg name="urdf_path"               default="urdf/jackal_fixedWheel_jaco_fixedFinger.urdf" />
+      <param name="urdfFile"              value="$(find mobiman_simulation)/$(arg urdf_path)" />
+
       <!-- The library folder to generate CppAD codegen into -->
-      <arg name="libFolder"   default="$(find mobiman_simulation)/codegen/auto_generated/$(arg robot)" />
+      <arg name="lib_path"                default="codegen/auto_generated/$(arg robot)" />
+      <param name="libFolder"             value="$(find mobiman_simulation)/$(arg lib_path)" />
 
-      <!-- make the files into global parameters -->
-      <!-- <param name="taskFile"   value="$(arg taskFile)" /> -->
-      <param name="urdfFile"   value="$(arg urdfFile)" />
-      <param name="libFolder"  value="$(arg libFolder)" />
 
-      <arg name="config_collision_points"  default="config_points_on_robot" />
-      <rosparam file="$(find mobiman_simulation)/config/$(arg config_collision_points).yaml"/>
+      <arg name="collision_points_config_path"  default="config/config_points_on_robot" />
+      <rosparam file="$(find mobiman_simulation)/$(arg collision_points_config_path).yaml"/>
 
       <node pkg="ocs2_mobile_manipulator_ros" 
             type="mobile_manipulator_node" 
@@ -56,6 +42,6 @@
 
       <!-- Run Rviz visualization -->
       <group if="$(eval arg('rviz') == true)">
-            <include file="$(find mobiman_simulation)/launch/examples/rviz_ocs2_$(arg sim).launch" />
+            <include file="$(find mobiman_simulation)/launch/utilities/rviz.launch" />
       </group>
 </launch>
