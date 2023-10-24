@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 
 <launch>
+      <arg name="robot_ns"            default="robotName_0"/>
+  
       <!-- Enable rviz visualization -->
       <!--arg name="rviz"        default="true" /-->
 
@@ -36,8 +38,10 @@
       <!--param name="urdfFile"   value="$(arg urdfFile)" />
       <param name="libFolder"  value="$(arg libFolder)" /-->
 
-      <node pkg="ocs2_mobile_manipulator_ros" 
-            type="mobile_manipulator_target" 
-            name="mobile_manipulator_target_node" 
-            output="screen" />
+      <group ns="$(arg robot_ns)">
+            <node pkg="ocs2_mobile_manipulator_ros" 
+                  type="mobile_manipulator_target" 
+                  name="mobile_manipulator_target_node" 
+                  output="screen" />
+      </group>
 </launch>

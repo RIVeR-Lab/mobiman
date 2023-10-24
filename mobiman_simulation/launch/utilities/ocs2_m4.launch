@@ -32,18 +32,19 @@
       <arg name="lib_path"                default="codegen/auto_generated/$(arg robot)" />
       <param name="libFolder"             value="$(find mobiman_simulation)/$(arg lib_path)" />
 
-
       <arg name="collision_points_config_path"  default="config/config_points_on_robot" />
       <rosparam file="$(find mobiman_simulation)/$(arg collision_points_config_path).yaml"/>
 
-      <node pkg="ocs2_mobile_manipulator_ros" 
-            type="mobile_manipulator_node" 
-            name="mobile_manipulator_node" 
-            output="screen"
-            launch-prefix="" />
+      <group ns="$(arg robot_ns)">
+            <node pkg="ocs2_mobile_manipulator_ros" 
+                  type="mobile_manipulator_node" 
+                  name="mobile_manipulator_node" 
+                  output="screen"
+                  launch-prefix="" />
 
-      <!-- Run Rviz visualization -->
-      <group if="$(eval arg('rviz') == true)">
-            <include file="$(find mobiman_simulation)/launch/utilities/rviz.launch" />
+            <!-- Run Rviz visualization -->
+            <group if="$(eval arg('rviz') == true)">
+                  <include file="$(find mobiman_simulation)/launch/utilities/rviz.launch" />
+            </group>
       </group>
 </launch>

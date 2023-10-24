@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv)
 {
-  cout << "[map_server::main] START" << endl;
+  //cout << "[map_server::main] START" << endl;
 
   // INITIALIZE ROS
   ros::init(argc, argv, "map_server");
@@ -34,6 +34,8 @@ int main(int argc, char** argv)
   std::vector<string> name_pkgs_ign, name_pkgs_man, scan_data_path_pkgs_ign, scan_data_path_pkgs_man;
   double map_resolution, egrid_resolution, egrid_occ_threshold;
   geometry_msgs::Point egrid_bbx_min, egrid_bbx_max;
+
+  bool printOutFlag = false;
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
@@ -65,27 +67,30 @@ int main(int argc, char** argv)
   pnh.param<double>("/egrid_bbx_max_z", egrid_bbx_max.z, 0.0);
   pnh.param<double>("/egrid_occ_threshold", egrid_occ_threshold, 0.0);
   
-  cout << "[map_server::main] world_frame_name: " << world_frame_name << endl;
-  cout << "[map_server::main] gz_model_msg_name: " << gz_model_msg_name << endl;
-  cout << "[map_server::main] name_pkgs_ign: " << endl;
-  for (size_t i = 0; i < name_pkgs_ign.size(); i++)
+  if (printOutFlag)
   {
-    cout << i << " -> " << name_pkgs_ign[i] << endl;
+    cout << "[map_server::main] world_frame_name: " << world_frame_name << endl;
+    cout << "[map_server::main] gz_model_msg_name: " << gz_model_msg_name << endl;
+    cout << "[map_server::main] name_pkgs_ign: " << endl;
+    for (size_t i = 0; i < name_pkgs_ign.size(); i++)
+    {
+      cout << i << " -> " << name_pkgs_ign[i] << endl;
+    }
+    cout << "[map_server::main] name_pkgs_man: " << endl;
+    for (size_t i = 0; i < name_pkgs_man.size(); i++)
+    {
+      cout << i << " -> " << name_pkgs_man[i] << endl;
+    }
+    cout << "[map_server::main] egrid_frame_name: " << egrid_frame_name << endl;
+    cout << "[map_server::main] egrid_resolution: " << egrid_resolution << endl;
+    cout << "[map_server::main] egrid_bbx_min_x: " << egrid_bbx_min.x << endl;
+    cout << "[map_server::main] egrid_bbx_min_y: " << egrid_bbx_min.y << endl;
+    cout << "[map_server::main] egrid_bbx_min_z: " << egrid_bbx_min.z << endl;
+    cout << "[map_server::main] egrid_bbx_max_x: " << egrid_bbx_max.x << endl;
+    cout << "[map_server::main] egrid_bbx_max_y: " << egrid_bbx_max.y << endl;
+    cout << "[map_server::main] egrid_bbx_max_z: " << egrid_bbx_max.z << endl;
+    cout << "[map_server::main] egrid_occ_threshold: " << egrid_occ_threshold << endl;
   }
-  cout << "[map_server::main] name_pkgs_man: " << endl;
-  for (size_t i = 0; i < name_pkgs_man.size(); i++)
-  {
-    cout << i << " -> " << name_pkgs_man[i] << endl;
-  }
-  cout << "[map_server::main] egrid_frame_name: " << egrid_frame_name << endl;
-  cout << "[map_server::main] egrid_resolution: " << egrid_resolution << endl;
-  cout << "[map_server::main] egrid_bbx_min_x: " << egrid_bbx_min.x << endl;
-  cout << "[map_server::main] egrid_bbx_min_y: " << egrid_bbx_min.y << endl;
-  cout << "[map_server::main] egrid_bbx_min_z: " << egrid_bbx_min.z << endl;
-  cout << "[map_server::main] egrid_bbx_max_x: " << egrid_bbx_max.x << endl;
-  cout << "[map_server::main] egrid_bbx_max_y: " << egrid_bbx_max.y << endl;
-  cout << "[map_server::main] egrid_bbx_max_z: " << egrid_bbx_max.z << endl;
-  cout << "[map_server::main] egrid_occ_threshold: " << egrid_occ_threshold << endl;
 
   // Initialize Scan Utility
   ScanUtility su(nh);
@@ -205,7 +210,7 @@ int main(int argc, char** argv)
   //double map_server_dt = 0.1;
   //ros::Timer timer = nh.createTimer(ros::Duration(scan_server_dt), &MapUtility::mainCallback, &mu);
 
-  cout << "[map_server::main] END" << endl;
+  //cout << "[map_server::main] END" << endl;
 
   return 0;
 }

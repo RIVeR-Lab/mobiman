@@ -5,9 +5,9 @@
   <!-- CONFIGURATION OPTIONS
     config_map_server
   -->
-  <arg name="robot_ns"            default="robotName_0"/>
   <arg name="config_map_server"  default="config_map_server" />
-
+  <arg name="robot_ns"            default="robotName_0"/>
+  
   <group ns="$(arg robot_ns)">
     <!-- PUBLISH CONFIGURATION PARAMETERS -->
     <rosparam file="$(find mobiman_simulation)/config/$(arg config_map_server).yaml"/>

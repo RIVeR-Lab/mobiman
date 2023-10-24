@@ -155,6 +155,8 @@ class ScanUtility
 
     tf::TransformListener* tflistener_;
 
+    bool printOutFlag_ = false;
+
     string obj_name_;
     string pkg_dir_;
     string data_dir_;

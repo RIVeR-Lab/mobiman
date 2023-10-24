@@ -502,10 +502,13 @@ void ScanUtility::PclPointcloudToVec(vector<double>& pcl_pc_scan_x,
     pcl_pc_scan_z.push_back(c.z);
   }
 
-  std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
-  std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_x size: " << pcl_pc_scan_x.size() << std::endl;
-  std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_y size: " << pcl_pc_scan_y.size() << std::endl;
-  std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_z size: " << pcl_pc_scan_z.size() << std::endl;
+  if (printOutFlag_)
+  {
+    std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
+    std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_x size: " << pcl_pc_scan_x.size() << std::endl;
+    std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_y size: " << pcl_pc_scan_y.size() << std::endl;
+    std::cout << "[ScanUtility::PclPointcloudToVec] pcl_pc_scan_z size: " << pcl_pc_scan_z.size() << std::endl;
+  }
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -521,10 +524,13 @@ void ScanUtility::vecToPclPointcloud(vector<double>& pcl_pc_scan_x,
     pcl_pc_scan_.push_back(pcl::PointXYZ(pcl_pc_scan_x[i], pcl_pc_scan_y[i], pcl_pc_scan_z[i]));
   }
 
-  std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
-  std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_x size: " << pcl_pc_scan_x.size() << std::endl;
-  std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_y size: " << pcl_pc_scan_y.size() << std::endl;
-  std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_z size: " << pcl_pc_scan_z.size() << std::endl;
+  if (printOutFlag_)
+  {
+    std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
+    std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_x size: " << pcl_pc_scan_x.size() << std::endl;
+    std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_y size: " << pcl_pc_scan_y.size() << std::endl;
+    std::cout << "[ScanUtility::vecToPclPointcloud] pcl_pc_scan_z size: " << pcl_pc_scan_z.size() << std::endl;
+  } 
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -648,7 +654,7 @@ void ScanUtility::waitAndCheckForPointCloud2Message(string msg_name, double dura
 //-------------------------------------------------------------------------------------------------------
 void ScanUtility::scanner()
 {
-  std::cout << "[ScanUtility::scanner] START" << std::endl;
+  //std::cout << "[ScanUtility::scanner] START" << std::endl;
 
   waitAndCheckForPointCloud2Message(pc2_msg_name_sensor1_, 10, measured_pc2_msg_sensor1_);
   waitAndCheckForPointCloud2Message(pc2_msg_name_sensor2_, 10, measured_pc2_msg_sensor2_);
@@ -677,7 +683,7 @@ void ScanUtility::scanner()
 
   octomapToPclPointcloud();
 
-  std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
+  //std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl;
 
   pcl::toROSMsg(pcl_pc_scan_, pc2_msg_scan_);
 
@@ -686,7 +692,7 @@ void ScanUtility::scanner()
   publishOctMsg();
   publishPC2Msg();
 
-  std::cout << "[ScanUtility::scanner] END" << std::endl << std::endl;
+  //std::cout << "[ScanUtility::scanner] END" << std::endl << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -694,7 +700,7 @@ void ScanUtility::scanner()
 //-------------------------------------------------------------------------------------------------------
 void ScanUtility::writePointcloud2Data()
 {
-  std::cout << "[ScanUtility::writePointcloud2Data] START" << std::endl;
+  //std::cout << "[ScanUtility::writePointcloud2Data] START" << std::endl;
 
   json j;
   boost::filesystem::create_directories(pkg_dir_ + data_dir_);
@@ -738,7 +744,7 @@ void ScanUtility::writePointcloud2Data()
   std::ofstream o(data_path_);
   o << std::setw(4) << j << std::endl;
 
-  std::cout << "[ScanUtility::writePointcloud2Data] END" << std::endl << std::endl;
+  //std::cout << "[ScanUtility::writePointcloud2Data] END" << std::endl << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -746,9 +752,9 @@ void ScanUtility::writePointcloud2Data()
 //-------------------------------------------------------------------------------------------------------
 void ScanUtility::readPointcloud2Data(string& data_path)
 {
-  std::cout << "[ScanUtility::readPointcloud2Data] START" << std::endl;
-  std::cout << "[ScanUtility::readPointcloud2Data] pkg_dir_: " << pkg_dir_ << std::endl;
-  std::cout << "[ScanUtility::readPointcloud2Data] data_path: " << data_path << std::endl;
+  //std::cout << "[ScanUtility::readPointcloud2Data] START" << std::endl;
+  //std::cout << "[ScanUtility::readPointcloud2Data] pkg_dir_: " << pkg_dir_ << std::endl;
+  //std::cout << "[ScanUtility::readPointcloud2Data] data_path: " << data_path << std::endl;
 
   std::ifstream f(pkg_dir_ + data_path);
   json data = json::parse(f);
@@ -775,15 +781,18 @@ void ScanUtility::readPointcloud2Data(string& data_path)
   }
   vecToPclPointcloud(pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z);
 
-  std::cout << "[ScanUtility::readPointcloud2Data] obj_name_: " << obj_name_ << std::endl;
-  std::cout << "[ScanUtility::readPointcloud2Data] data_path_: " << data_path_ << std::endl;
-  std::cout << "[ScanUtility::readPointcloud2Data] world_frame_name_: " << world_frame_name_ << std::endl;
-  std::cout << "[ScanUtility::readPointcloud2Data] oct_resolution_: " << oct_resolution_ << std::endl;
-  std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl << std::endl;
-
+  if (printOutFlag_)
+  {
+    std::cout << "[ScanUtility::readPointcloud2Data] obj_name_: " << obj_name_ << std::endl;
+    std::cout << "[ScanUtility::readPointcloud2Data] data_path_: " << data_path_ << std::endl;
+    std::cout << "[ScanUtility::readPointcloud2Data] world_frame_name_: " << world_frame_name_ << std::endl;
+    std::cout << "[ScanUtility::readPointcloud2Data] oct_resolution_: " << oct_resolution_ << std::endl;
+    std::cout << "[ScanUtility::scanner] pcl_pc_scan_ size: " << pcl_pc_scan_.size() << std::endl << std::endl;
+  }
+  
   pcl::toROSMsg(pcl_pc_scan_, pc2_msg_scan_);
 
-  std::cout << "[ScanUtility::readPointcloud2Data] END" << std::endl << std::endl;
+  //std::cout << "[ScanUtility::readPointcloud2Data] END" << std::endl << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -791,9 +800,7 @@ void ScanUtility::readPointcloud2Data(string& data_path)
 //-------------------------------------------------------------------------------------------------------
 void ScanUtility::readObjBbxDim(string& data_path)
 {
-  std::cout << "[ScanUtility::readObjBbxDim] START" << std::endl;
-  std::cout << "[ScanUtility::readObjBbxDim] pkg_dir_: " << pkg_dir_ << std::endl;
-  std::cout << "[ScanUtility::readObjBbxDim] data_path: " << data_path << std::endl;
+  //std::cout << "[ScanUtility::readObjBbxDim] START" << std::endl;
 
   std::ifstream f(pkg_dir_ + data_path);
   json data = json::parse(f);
@@ -810,12 +817,17 @@ void ScanUtility::readObjBbxDim(string& data_path)
   obj_dim_.y = data["obj_dim"]["y"];
   obj_dim_.z = data["obj_dim"]["z"];
 
-  std::cout << "[ScanUtility::readObjBbxDim] obj_bbx_min_: " << std::endl;
-  print(obj_bbx_min_);
-  std::cout << "[ScanUtility::readObjBbxDim] obj_bbx_max_: " << std::endl;
-  print(obj_bbx_max_);
-  std::cout << "[ScanUtility::readObjBbxDim] obj_dim_: " << std::endl;
-  print(obj_dim_);
+  if (printOutFlag_)
+  {
+    std::cout << "[ScanUtility::readObjBbxDim] pkg_dir_: " << pkg_dir_ << std::endl;
+    std::cout << "[ScanUtility::readObjBbxDim] data_path: " << data_path << std::endl;
+    std::cout << "[ScanUtility::readObjBbxDim] obj_bbx_min_: " << std::endl;
+    print(obj_bbx_min_);
+    std::cout << "[ScanUtility::readObjBbxDim] obj_bbx_max_: " << std::endl;
+    print(obj_bbx_max_);
+    std::cout << "[ScanUtility::readObjBbxDim] obj_dim_: " << std::endl;
+    print(obj_dim_);
+  }
 
-  std::cout << "[ScanUtility::readObjBbxDim] END" << std::endl;
+  //std::cout << "[ScanUtility::readObjBbxDim] END" << std::endl;
 }
