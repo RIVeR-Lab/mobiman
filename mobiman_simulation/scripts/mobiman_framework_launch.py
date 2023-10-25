@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.10.20
+LAST UPDATE: 2023.10.24
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -69,7 +69,6 @@ if __name__=="__main__":
     world_frame_name = rospy.get_param('world_frame_name', "")
 
     ### Robot:
-    flag_ns = rospy.get_param('flag_ns', True)
     robot_name = rospy.get_param('robot_name', "")
     n_robot = rospy.get_param('n_robot', "")
     robot_frame_name = rospy.get_param('robot_frame_name', "")
@@ -124,21 +123,18 @@ if __name__=="__main__":
     ## Set Namespace
     robot_ns_vec = []
     robot_base_frame_name_vec = []
-    if flag_ns:
-        print("[mobiman_framework_launch:: __main__ ] robot_ns_vec:")
-        for i in range(n_robot):
-            ns_tmp = robot_name + "_" + str(i)
-            robot_ns_vec.append(ns_tmp)
-            print(ns_tmp)
 
-            # Update frame names
-            robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
+    print("[mobiman_framework_launch:: __main__ ] robot_ns_vec:")
+    for i in range(n_robot):
+        ns_tmp = robot_name + "_" + str(i)
+        robot_ns_vec.append(ns_tmp)
+        print(ns_tmp)
 
-        print("[mobiman_framework_launch:: __main__ ] robot_base_frame_name_vec:")
-        print(robot_base_frame_name_vec)
-    
-    else:
-        print("[mobiman_framework_launch:: __main__ ] No namespace!")
+        # Update frame names
+        robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
+
+    print("[mobiman_framework_launch:: __main__ ] robot_base_frame_name_vec:")
+    print(robot_base_frame_name_vec)
 
     #print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
     #while 1:
@@ -201,8 +197,7 @@ if __name__=="__main__":
     ## Wait for simulation to be ready!
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
-    if flag_ns:
-        robot_frame_name = robot_base_frame_name_vec[0]
+    robot_frame_name = robot_base_frame_name_vec[0]
     print("[mobiman_framework_launch:: __main__ ] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...")
     trans = None
     while (not rospy.is_shutdown()) and (not trans):

@@ -628,7 +628,8 @@ Visualization Manager:
       Marker Topic: /jackalJaco_1/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -675,7 +676,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.7370924949646
+      Distance: 5.305543422698975
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
