@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.10.24
+LAST UPDATE: 2023.10.26
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -167,13 +167,6 @@ if __name__=="__main__":
         sim_launch_path = igibson_path + "launch/mobiman_jackal_jaco.launch"
 
         for i, rns in enumerate(robot_ns_vec):
-            print("__________________________________________________________________")
-            print("__________________________________________________________________")
-            print("__________________________________________________________________")
-            print("__________________________________________________________________")
-            print("__________________________________________________________________")
-            print("__________________________________________________________________")
-            print("[mobiman_framework_launch:: __main__ ] flag_drl: " + str(flag_drl))
             sim_args = [sim_launch_path,
                         'robot_ns:=' + str(rns),
                         'urdf_path:=' + str(urdf_path),
