@@ -3,7 +3,7 @@
 ### Simulator:
 # gazebo
 # igibson
-sim: igibson
+sim: "igibson"
 
 flag_gazebo: true
 flag_robot: true
@@ -11,6 +11,7 @@ flag_conveyor: false
 flag_bin: false
 flag_pedsim: false
 flag_moveit: false
+flag_drl: true
 
 ### Rviz:
 flag_rviz: true
