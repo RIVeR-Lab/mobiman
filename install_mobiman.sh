@@ -76,7 +76,7 @@ cd ..
 # 3.2.8 openai_ros
 git clone git@github.com:RIVeR-Lab/openai_ros.git
 cd openai_ros
-git checkout devel_v0
+git checkout devel-v2
 cd ..
 
 # 3.2.9 mocap_optitrack
