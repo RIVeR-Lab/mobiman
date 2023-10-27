@@ -55,10 +55,10 @@ git checkout noetic-akmandor
 cd ..
 
 # 3.2.5 geometry2
-git clone git@github.com:RIVeR-Lab/geometry2.git
-cd geometry2/
-git checkout noetic-akmandor
-cd ..
+#git clone git@github.com:RIVeR-Lab/geometry2.git
+#cd geometry2/
+#git checkout noetic-akmandor
+#cd ..
 
 # 3.2.6 pedsim_ros
 git clone git@github.com:RIVeR-Lab/pedsim_ros.git
