@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.10.20
+LAST UPDATE: 2023.10.26
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -57,6 +57,7 @@ if __name__=="__main__":
     flag_conveyor = rospy.get_param('flag_conveyor', True)
     flag_pedsim = rospy.get_param('flag_pedsim', False)
     flag_moveit = rospy.get_param('flag_moveit', False)
+    flag_drl = rospy.get_param('flag_drl', False)
 
     ### Rviz:
     rviz_config_path = rospy.get_param('rviz_config_path', "")
@@ -69,7 +70,6 @@ if __name__=="__main__":
     world_frame_name = rospy.get_param('world_frame_name', "")
 
     ### Robot:
-    flag_ns = rospy.get_param('flag_ns', True)
     robot_name = rospy.get_param('robot_name', "")
     n_robot = rospy.get_param('n_robot', "")
     robot_frame_name = rospy.get_param('robot_frame_name', "")
@@ -93,6 +93,7 @@ if __name__=="__main__":
     print("[mobiman_framework_launch:: __main__ ] flag_conveyor: " + str(flag_conveyor))
     print("[mobiman_framework_launch:: __main__ ] flag_pedsim: " + str(flag_pedsim))
     print("[mobiman_framework_launch:: __main__ ] flag_moveit: " + str(flag_moveit))
+    print("[mobiman_framework_launch:: __main__ ] flag_drl: " + str(flag_drl))
 
     print("[mobiman_framework_launch:: __main__ ] Rviz:")
     print("[mobiman_framework_launch:: __main__ ] flag_rviz: " + str(flag_rviz))
@@ -124,21 +125,18 @@ if __name__=="__main__":
     ## Set Namespace
     robot_ns_vec = []
     robot_base_frame_name_vec = []
-    if flag_ns:
-        print("[mobiman_framework_launch:: __main__ ] robot_ns_vec:")
-        for i in range(n_robot):
-            ns_tmp = robot_name + "_" + str(i)
-            robot_ns_vec.append(ns_tmp)
-            print(ns_tmp)
 
-            # Update frame names
-            robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
+    print("[mobiman_framework_launch:: __main__ ] robot_ns_vec:")
+    for i in range(n_robot):
+        ns_tmp = robot_name + "_" + str(i)
+        robot_ns_vec.append(ns_tmp)
+        print(ns_tmp)
 
-        print("[mobiman_framework_launch:: __main__ ] robot_base_frame_name_vec:")
-        print(robot_base_frame_name_vec)
-    
-    else:
-        print("[mobiman_framework_launch:: __main__ ] No namespace!")
+        # Update frame names
+        robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
+
+    print("[mobiman_framework_launch:: __main__ ] robot_base_frame_name_vec:")
+    print(robot_base_frame_name_vec)
 
     #print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
     #while 1:
@@ -171,7 +169,8 @@ if __name__=="__main__":
         for i, rns in enumerate(robot_ns_vec):
             sim_args = [sim_launch_path,
                         'robot_ns:=' + str(rns),
-                        'urdf_path:=' + str(urdf_path)]
+                        'urdf_path:=' + str(urdf_path),
+                        'flag_drl:=' + str(flag_drl)]
 
             sim_launch = [ (roslaunch.rlutil.resolve_launch_arguments(sim_args)[0], sim_args[1:]) ]
             sim = roslaunch.parent.ROSLaunchParent(uuid, sim_launch)
@@ -201,15 +200,14 @@ if __name__=="__main__":
     ## Wait for simulation to be ready!
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
-    if flag_ns:
-        robot_frame_name = robot_base_frame_name_vec[0]
+    robot_frame_name = robot_base_frame_name_vec[0]
     print("[mobiman_framework_launch:: __main__ ] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...")
     trans = None
     while (not rospy.is_shutdown()) and (not trans):
         try:
             trans = tfBuffer.lookup_transform(world_frame_name, robot_frame_name, rospy.Time(0))
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as ex:
-            rospy.logwarn("[mobiman_framework_launch:: __main__ ] ERROR: " + str(ex))
+            #rospy.logwarn("[mobiman_framework_launch:: __main__ ] ERROR: " + str(ex))
             rospy.sleep(1.0)   
 
     ## Launch Map Server

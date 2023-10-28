@@ -61,154 +61,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        chassis_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        d435_cam1camera_bottom_screw_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_color_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_color_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_depth_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_depth_frame_gazebo:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_depth_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_left_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_left_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        d435_cam1camera_right_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_right_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        front_fender_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        front_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        j2n6s300_end_effector:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        j2n6s300_link_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        jaco_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        mid_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        navsat_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_fender_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rear_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       Robot Description: jackalJaco_0/robot_description
       TF Prefix: jackalJaco_0
@@ -222,144 +74,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        jackalJaco_0/base_link:
-          Value: true
-        jackalJaco_0/chassis_link:
-          Value: false
-        jackalJaco_0/d435_cam1camera_bottom_screw_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_color_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_color_optical_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_depth_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_depth_frame_gazebo:
-          Value: false
-        jackalJaco_0/d435_cam1camera_depth_optical_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_left_ir_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_left_ir_optical_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_link:
-          Value: false
-        jackalJaco_0/d435_cam1camera_right_ir_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_right_ir_optical_frame:
-          Value: false
-        jackalJaco_0/front_fender_link:
-          Value: false
-        jackalJaco_0/front_left_wheel_link:
-          Value: false
-        jackalJaco_0/front_mount:
-          Value: false
-        jackalJaco_0/front_right_wheel_link:
-          Value: false
-        jackalJaco_0/imu_link:
-          Value: false
-        jackalJaco_0/j2n6s300_end_effector:
-          Value: true
-        jackalJaco_0/j2n6s300_link_1:
-          Value: false
-        jackalJaco_0/j2n6s300_link_2:
-          Value: false
-        jackalJaco_0/j2n6s300_link_3:
-          Value: false
-        jackalJaco_0/j2n6s300_link_4:
-          Value: false
-        jackalJaco_0/j2n6s300_link_5:
-          Value: false
-        jackalJaco_0/j2n6s300_link_6:
-          Value: false
-        jackalJaco_0/j2n6s300_link_base:
-          Value: false
-        jackalJaco_0/jaco_base_link:
-          Value: false
-        jackalJaco_0/mid_mount:
-          Value: false
-        jackalJaco_0/navsat_link:
-          Value: false
-        jackalJaco_0/odom:
-          Value: false
-        jackalJaco_0/rear_fender_link:
-          Value: false
-        jackalJaco_0/rear_left_wheel_link:
-          Value: false
-        jackalJaco_0/rear_mount:
-          Value: false
-        jackalJaco_0/rear_right_wheel_link:
-          Value: false
-        jackalJaco_1/base_link:
-          Value: false
-        jackalJaco_1/chassis_link:
-          Value: false
-        jackalJaco_1/d435_cam1camera_bottom_screw_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_color_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_color_optical_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_depth_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_depth_frame_gazebo:
-          Value: false
-        jackalJaco_1/d435_cam1camera_depth_optical_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_left_ir_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_left_ir_optical_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_link:
-          Value: false
-        jackalJaco_1/d435_cam1camera_right_ir_frame:
-          Value: false
-        jackalJaco_1/d435_cam1camera_right_ir_optical_frame:
-          Value: false
-        jackalJaco_1/front_fender_link:
-          Value: false
-        jackalJaco_1/front_left_wheel_link:
-          Value: false
-        jackalJaco_1/front_mount:
-          Value: false
-        jackalJaco_1/front_right_wheel_link:
-          Value: false
-        jackalJaco_1/imu_link:
-          Value: false
-        jackalJaco_1/j2n6s300_end_effector:
-          Value: false
-        jackalJaco_1/j2n6s300_link_1:
-          Value: false
-        jackalJaco_1/j2n6s300_link_2:
-          Value: false
-        jackalJaco_1/j2n6s300_link_3:
-          Value: false
-        jackalJaco_1/j2n6s300_link_4:
-          Value: false
-        jackalJaco_1/j2n6s300_link_5:
-          Value: false
-        jackalJaco_1/j2n6s300_link_6:
-          Value: false
-        jackalJaco_1/j2n6s300_link_base:
-          Value: false
-        jackalJaco_1/jaco_base_link:
-          Value: false
-        jackalJaco_1/mid_mount:
-          Value: false
-        jackalJaco_1/navsat_link:
-          Value: false
-        jackalJaco_1/odom:
-          Value: false
-        jackalJaco_1/rear_fender_link:
-          Value: false
-        jackalJaco_1/rear_left_wheel_link:
-          Value: false
-        jackalJaco_1/rear_mount:
-          Value: false
-        jackalJaco_1/rear_right_wheel_link:
-          Value: false
-        world:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -367,107 +81,7 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        world:
-          jackalJaco_0/odom:
-            jackalJaco_0/base_link:
-              jackalJaco_0/chassis_link:
-                jackalJaco_0/front_fender_link:
-                  {}
-                jackalJaco_0/front_left_wheel_link:
-                  {}
-                jackalJaco_0/front_right_wheel_link:
-                  {}
-                jackalJaco_0/imu_link:
-                  {}
-                jackalJaco_0/mid_mount:
-                  jackalJaco_0/front_mount:
-                    {}
-                  jackalJaco_0/rear_mount:
-                    {}
-                jackalJaco_0/navsat_link:
-                  {}
-                jackalJaco_0/rear_fender_link:
-                  {}
-                jackalJaco_0/rear_left_wheel_link:
-                  {}
-                jackalJaco_0/rear_right_wheel_link:
-                  {}
-              jackalJaco_0/d435_cam1camera_bottom_screw_frame:
-                jackalJaco_0/d435_cam1camera_link:
-                  jackalJaco_0/d435_cam1camera_depth_frame:
-                    jackalJaco_0/d435_cam1camera_color_frame:
-                      jackalJaco_0/d435_cam1camera_color_optical_frame:
-                        {}
-                    jackalJaco_0/d435_cam1camera_depth_optical_frame:
-                      {}
-                    jackalJaco_0/d435_cam1camera_left_ir_frame:
-                      jackalJaco_0/d435_cam1camera_left_ir_optical_frame:
-                        {}
-                    jackalJaco_0/d435_cam1camera_right_ir_frame:
-                      jackalJaco_0/d435_cam1camera_right_ir_optical_frame:
-                        {}
-                  jackalJaco_0/d435_cam1camera_depth_frame_gazebo:
-                    {}
-              jackalJaco_0/jaco_base_link:
-                jackalJaco_0/j2n6s300_link_base:
-                  jackalJaco_0/j2n6s300_link_1:
-                    jackalJaco_0/j2n6s300_link_2:
-                      jackalJaco_0/j2n6s300_link_3:
-                        jackalJaco_0/j2n6s300_link_4:
-                          jackalJaco_0/j2n6s300_link_5:
-                            jackalJaco_0/j2n6s300_link_6:
-                              jackalJaco_0/j2n6s300_end_effector:
-                                {}
-          jackalJaco_1/odom:
-            jackalJaco_1/base_link:
-              jackalJaco_1/chassis_link:
-                jackalJaco_1/front_fender_link:
-                  {}
-                jackalJaco_1/front_left_wheel_link:
-                  {}
-                jackalJaco_1/front_right_wheel_link:
-                  {}
-                jackalJaco_1/imu_link:
-                  {}
-                jackalJaco_1/mid_mount:
-                  jackalJaco_1/front_mount:
-                    {}
-                  jackalJaco_1/rear_mount:
-                    {}
-                jackalJaco_1/navsat_link:
-                  {}
-                jackalJaco_1/rear_fender_link:
-                  {}
-                jackalJaco_1/rear_left_wheel_link:
-                  {}
-                jackalJaco_1/rear_right_wheel_link:
-                  {}
-              jackalJaco_1/d435_cam1camera_bottom_screw_frame:
-                jackalJaco_1/d435_cam1camera_link:
-                  jackalJaco_1/d435_cam1camera_depth_frame:
-                    jackalJaco_1/d435_cam1camera_color_frame:
-                      jackalJaco_1/d435_cam1camera_color_optical_frame:
-                        {}
-                    jackalJaco_1/d435_cam1camera_depth_optical_frame:
-                      {}
-                    jackalJaco_1/d435_cam1camera_left_ir_frame:
-                      jackalJaco_1/d435_cam1camera_left_ir_optical_frame:
-                        {}
-                    jackalJaco_1/d435_cam1camera_right_ir_frame:
-                      jackalJaco_1/d435_cam1camera_right_ir_optical_frame:
-                        {}
-                  jackalJaco_1/d435_cam1camera_depth_frame_gazebo:
-                    {}
-              jackalJaco_1/jaco_base_link:
-                jackalJaco_1/j2n6s300_link_base:
-                  jackalJaco_1/j2n6s300_link_1:
-                    jackalJaco_1/j2n6s300_link_2:
-                      jackalJaco_1/j2n6s300_link_3:
-                        jackalJaco_1/j2n6s300_link_4:
-                          jackalJaco_1/j2n6s300_link_5:
-                            jackalJaco_1/j2n6s300_link_6:
-                              jackalJaco_1/j2n6s300_end_effector:
-                                {}
+        {}
       Update Interval: 0
       Value: true
     - Class: rviz/InteractiveMarkers
@@ -683,7 +297,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.194599151611328
+      Distance: 6.122635841369629
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -691,17 +305,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.3674023151397705
-        Y: -0.39812135696411133
-        Z: 0.5430676341056824
+        X: 0.45597076416015625
+        Y: -0.587834358215332
+        Z: 0.5612213611602783
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.43979716300964355
+      Pitch: 0.8047968149185181
       Target Frame: <Fixed Frame>
-      Yaw: 1.467919945716858
+      Yaw: 1.577919840812683
     Saved: ~
 Window Geometry:
   Displays:
@@ -709,7 +323,7 @@ Window Geometry:
   Height: 1016
   Hide Left Dock: true
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000019300000335fc020000000efb0000001200530065006c0065006300740069006f006e000000003d0000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d00000335000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f00000242fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000242000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000003c000000063fc0100000002fb0000000800540069006d00650100000000000003c0000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000003c00000033500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001c700000335fc020000000efb0000001200530065006c0065006300740069006f006e000000003d0000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d00000335000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f00000242fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d00000242000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000003c000000063fc0100000002fb0000000800540069006d00650100000000000003c0000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000003c00000033500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

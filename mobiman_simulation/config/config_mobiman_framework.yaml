@@ -3,17 +3,21 @@
 ### Simulator:
 # gazebo
 # igibson
-sim: igibson
+sim: "igibson"
 
 flag_gazebo: true
 flag_robot: true
-flag_conveyor: false 
+flag_conveyor: false
 flag_bin: false
 flag_pedsim: false
 flag_moveit: false
+flag_drl: true
 
 ### Rviz:
 flag_rviz: true
+
+# rviz/gazebo/mobile_manipulator_ocs2_gazebo
+# rviz/igibson/mobile_manipulator_ocs2_igibson
 rviz_config_path: "rviz/igibson/mobile_manipulator_ocs2_igibson"
 
 ### Map Server:
@@ -21,7 +25,6 @@ flag_map_server: true
 config_map_server: "config_map_server"
 
 ### Robot:
-flag_ns: true
 robot_name: "jackalJaco"
 n_robot: 2
 robot_frame_name: "base_link"
@@ -35,4 +38,7 @@ flag_goal_server: true
 
 ### Mobiman:
 flag_mobiman: true
+
+# task_jackalJaco_gazebo
+# task_jackalJaco_igibson
 task_config_path: config/task/task_jackalJaco_igibson.info
