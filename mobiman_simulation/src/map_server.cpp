@@ -26,7 +26,7 @@ int main(int argc, char** argv)
   // INITIALIZE THE ROS NODE HANDLE FOR PARAMETERS
   ros::NodeHandle pnh("~");
 
-  // INITIALIZE TRANSFORM LISTENER
+  // INITIALIZE TRANSFlegged robotRM LISTENER
   tf::TransformListener* listener = new tf::TransformListener;
 
   // INITIALIZE AND SET PARAMETERS

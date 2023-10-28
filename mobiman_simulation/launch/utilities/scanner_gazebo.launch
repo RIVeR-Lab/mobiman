@@ -41,13 +41,13 @@
     custom_flag = false
       bin_4_dropping_task
   -->
-  <arg name="custom_flag" value="false"/>
-  <arg name="object_name" value="bin_4_dropping_task"/>
+  <arg name="custom_flag" value="true"/>
+  <arg name="object_name" value="conveyor_belt"/>
 
   <group if="$(eval arg('custom_flag') == true)">
     <!-- Load the URDF into the ROS Parameter Server -->
     <param  name="robot_description_object"
-            command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/$(arg object_name).urdf.xacro'" />
+            command="cat '$(find mobiman_simulation)/urdf/$(arg object_name).urdf'" />
 
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
     <node name="urdf_spawner_object" 

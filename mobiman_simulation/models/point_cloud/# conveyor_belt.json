@@ -1,5 +1,5 @@
 {
-    "data_path": "/home/mobiman/mobiman/src/mobiman/mobiman_simulation/models/point_cloud/conveyor_belt.json",
+    "data_path": "/home/mobiman/mobiman/src/mobiman/mobiman_simulation/models/point_cloud/# conveyor_belt.json",
     "obj_bbx": {
         "max": {
             "x": 4.989999771118164,
@@ -17,7 +17,7 @@
         "y": 0.18000000715255737,
         "z": 0.41999998688697815
     },
-    "obj_name": "conveyor_belt",
+    "obj_name": "# conveyor_belt",
     "oct_resolution": 0.02,
     "pc2": {
         "x": [

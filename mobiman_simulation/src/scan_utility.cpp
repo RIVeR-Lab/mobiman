@@ -708,7 +708,8 @@ void ScanUtility::writePointcloud2Data()
 
   vector<double> pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z;
   PclPointcloudToVec(pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z);
-
+  pcl::PointCloud<pcl::PointXYZ> main = pcl_pc_scan_;
+  pcl::io::savePCDFileASCII("/home/mobiman/mobiman/test.pcd", main);
   updateObjBbxDim(pcl_pc_scan_x, pcl_pc_scan_y, pcl_pc_scan_z);
 
   j["obj_name"] = obj_name_;

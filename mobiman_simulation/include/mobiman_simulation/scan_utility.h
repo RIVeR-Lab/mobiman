@@ -23,7 +23,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-
+#include <pcl/io/pcd_io.h>
 // --CUSTOM LIBRARIES--
 #include <mobiman_simulation/common_utility.h>
 
