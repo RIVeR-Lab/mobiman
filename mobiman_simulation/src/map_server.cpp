@@ -11,7 +11,13 @@
 // --CUSTOM LIBRARIES--
 #include <mobiman_simulation/scan_utility.h>
 #include <mobiman_simulation/map_utility.h>
+#include <mobiman_simulation/MapServerObject.h>
+#include <mobiman_simulation/MapServerObjectArray.h>
+
 //#include <voxblox_ros/esdf_server.h>
+void map_server_callback(const mobiman_simulation::MapServerObjectArray& temp) {
+  std::cout << "Hello, world!" << std::endl;
+}
 
 int main(int argc, char** argv)
 {
@@ -22,6 +28,9 @@ int main(int argc, char** argv)
   
   // INITIALIZE THE MAIN ROS NODE HANDLE
   ros::NodeHandle nh;
+
+  // Subscribe 
+  ros::Subscriber mapserver_topic = nh.subscribe("/map_server_objects", 100, map_server_callback);
 
   // INITIALIZE THE ROS NODE HANDLE FOR PARAMETERS
   ros::NodeHandle pnh("~");

@@ -5,5 +5,5 @@
 
   <!-- RUN MOBIMAN FRAMEWORK -->
   <node name="mobiman_framework_launch" pkg="mobiman_simulation" type="mobiman_framework_launch.py" output="screen" />
-
+  <include file="$(find mobiman_simulation)/launch/utilities/map_server.launch" />
 </launch>
