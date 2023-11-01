@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
   // INITIALIZE ROS
   ros::init(argc, argv, "map_server");
-  
+  std::cout << "********************************\n" << argc << "********************************\n" << std::endl; 
   // INITIALIZE THE MAIN ROS NODE HANDLE
   ros::NodeHandle nh;
 
@@ -35,10 +35,11 @@ int main(int argc, char** argv)
   double map_resolution, egrid_resolution, egrid_occ_threshold;
   geometry_msgs::Point egrid_bbx_min, egrid_bbx_max;
 
-  bool printOutFlag = false;
+  bool printOutFlag = true;
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
+  gz_model_msg_name = ros::this_node::getNamespace() + gz_model_msg_name;
   if (!pnh.getParam("/name_pkgs_ign", name_pkgs_ign))
   {
     ROS_ERROR("Failed to get parameter from server.");
@@ -125,7 +126,7 @@ int main(int argc, char** argv)
     obj_bbx_max_pkgs_man.push_back(su.getObjBbxMax());
     obj_dim_pkgs_man.push_back(su.getObjDim());
   }
-
+  std::cout << "!!!!!!!!!!!!!!!!!!!!!\n" << gz_model_msg_name << "!!!!!!!!!!!!!!!!!!!!!\n" << std::endl;
   // Initialize Map Utility
   MapUtility mu(nh, 
                 pnh, 
