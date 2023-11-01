@@ -53,7 +53,7 @@ model_information
 
   ;baseStateMsg                    "/gazebo/link_states"
   ;armStateMsg                     "/arm_controller/state"
-  armStateMsg                     "/gibson_ros/joint_states"
+  armStateMsg                     "/joint_states"
   baseControlMsg                  "/mobile_base_controller/cmd_vel"
   armControlMsg                   "/arm_controller/cmd_pos"
   selfCollisionMsg                "/self_collision_distances"

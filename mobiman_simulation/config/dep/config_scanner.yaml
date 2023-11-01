@@ -1,0 +1,32 @@
+# AUTHOR: Neset Unver Akmandor (NUA)
+# E-MAIL: akmandor.n@northeastern.edu
+
+# normal_pkg 
+# long_pkg
+# longwide_pkg
+# red_cube
+# green_cube
+# blue_cube
+# conveyor_belt
+# actor
+# bin_4_dropping_task
+
+obj_name: "conveyor_belt"
+world_frame_name: "world"
+
+data_dir: "models/point_cloud/"
+
+pc2_msg_name_sensor1: "/d435_cam1d435/camera/depth/color/points"
+pc2_msg_name_sensor2: "/d435_cam2d435/camera/depth/color/points"
+pc2_msg_name_sensor3: "/d435_cam3d435/camera/depth/color/points"
+pc2_msg_name_sensor4: "/d435_cam4d435/camera/depth/color/points"
+
+oct_resolution: 0.02
+
+# NUA NOTE: Currently bbx parameters are not used!
+scan_bbx_x_min: -1
+scan_bbx_x_max: 1
+scan_bbx_y_min: -1
+scan_bbx_y_max: 1
+scan_bbx_z_min: -0.05
+scan_bbx_z_max: 0.5

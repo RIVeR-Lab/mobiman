@@ -42,3 +42,5 @@ flag_mobiman: true
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson
 task_config_path: config/task/task_jackalJaco_igibson.info
+
+config_mobiman_drl: "drl/config_mobiman_drl"
