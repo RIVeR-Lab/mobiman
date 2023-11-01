@@ -3547,7 +3547,7 @@ void MapUtility::updateModelPc2Scan()
         pcl_ros::transformPointCloud(world_frame_name_, transform_pkg_ign, vec_pc2_msg_gz_ign_[j], vec_pc2_msg_gz_ign_wrt_world);
 
         static tf::TransformBroadcaster br_gz_pkg_ign;
-        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name_, tf_name_tmp));
+        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name_, ros::this_node::getNamespace() + "/" + tf_name_tmp));
 
         vec_frame_name_obj_.push_back(tf_name_tmp);
         vec_pc2_msg_obj_wrt_world_.push_back(vec_pc2_msg_gz_ign_wrt_world);
@@ -3587,7 +3587,7 @@ void MapUtility::updateModelPc2Scan()
         transform_pkg_man.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
       
         static tf::TransformBroadcaster br_gz_pkg_man;
-        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man, ros::Time::now(), world_frame_name_, tf_name_tmp));
+        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man, ros::Time::now(), world_frame_name_, ros::this_node::getNamespace() + "/" +tf_name_tmp));
 
         //publishPC2MsgGzPkgMan(j);
 
