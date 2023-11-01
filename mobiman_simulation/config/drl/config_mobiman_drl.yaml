@@ -1,5 +1,7 @@
 #### DRL Parameters
 
+igibson_config_file: "igibson_jackal_jaco"
+
 ### Common Parameters for Training and Testing
 ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
@@ -11,6 +13,15 @@ training_log_name: "training_log"
 
 ### DRL-Training Parameters
 world_name: "conveyor"
+world_range_x_min: -5.0
+world_range_x_max: 5.0
+
+world_range_y_min: -5.0
+world_range_y_max: 5.0
+
+world_range_z_min: 0.0
+world_range_z_max: 2.0
+
 deep_learning_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
 
@@ -44,19 +55,26 @@ arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j
 ee_frame_name: "j2n6s300_end_effector"
 goal_frame_name: "grasp"
 
-cmd_velocity_msg_name: "/cmd_vel"
-imu_msg_name: "/imu/data"
-arm_state_msg_name: "/joint_states"
-target_msg_name: "/mobile_manipulator_target"
-occgrid_msg_name: "/occupancy_grid"
-selfcoldistance_msg_name: "/self_collision_distances"
-#selfcoldistance_n_coeff: 5  ### NUA NOTE: This is because of the visualization info!
-#extcoldistance_n_coeff: 2  ### NUA NOTE: This is because of the visualization info!
-extcoldistance_base_msg_name: "/occupancy_distances_base"
-extcoldistance_arm_msg_name: "/occupancy_distances_arm"
-pointsonrobot_msg_name: "/points_on_robot"
+base_control_msg_name: "mobile_base_controller/cmd_vel"
+arm_control_msg_name: "arm_controller/cmd_pos"
 
-goal_status_msg_name: "/goal_status"
+rgb_image_msg_name: "camera/rgb/image"
+depth_image_msg_name: "camera/depth/image"
+depth_image_raw_msg_name: "camera/depth/image_raw"
+camera_info_msg_name: "camera/depth/camera_info"
+lidar_msg_name: "lidar/points"
+odom_msg_name: "odom"
+#odom_msg_name: "odom_ground_truth" 
+#imu_msg_name: "imu"
+arm_state_msg_name: "joint_states"
+target_msg_name: "mobile_manipulator_target"
+occgrid_msg_name: "occupancy_grid"
+selfcoldistance_msg_name: "self_collision_distances"
+extcoldistance_base_msg_name: "occupancy_distances_base"
+extcoldistance_arm_msg_name: "occupancy_distances_arm"
+pointsonrobot_msg_name: "points_on_robot"
+
+goal_status_msg_name: "goal_status"
 
 occgrid_normalize_flag: True
 occgrid_occ_min: 0
