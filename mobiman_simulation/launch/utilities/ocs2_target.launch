@@ -41,7 +41,7 @@
       <group ns="$(arg robot_ns)">
             <node pkg="ocs2_mobile_manipulator_ros" 
                   type="mobile_manipulator_target" 
-                  name="mobile_manipulator_target_node" 
+                  name="goal_server" 
                   output="screen" />
       </group>
 </launch>

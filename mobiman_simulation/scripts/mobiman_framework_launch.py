@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.10.26
+LAST UPDATE: 2023.11.02
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -81,6 +81,10 @@ if __name__=="__main__":
     ### Goal Server:
     flag_goal_server = rospy.get_param('flag_goal_server', True)
 
+    ### Distance Server:
+    flag_distance_server = rospy.get_param('flag_distance_server', True)
+    config_distance_server = rospy.get_param('config_distance_server', "")
+
     ### Task:
     flag_mobiman = rospy.get_param('flag_mobiman', True)
     task_config_path = rospy.get_param('task_config_path', "")
@@ -116,6 +120,10 @@ if __name__=="__main__":
 
     print("[mobiman_framework_launch:: __main__ ] Goal Server:")
     print("[mobiman_framework_launch:: __main__ ] flag_goal_server: " + str(flag_goal_server))
+
+    print("[mobiman_framework_launch:: __main__ ] Distance Server:")
+    print("[mobiman_framework_launch:: __main__ ] flag_distance_server: " + str(flag_distance_server))
+    print("[mobiman_framework_launch:: __main__ ] config_distance_server: " + str(config_distance_server))
 
     print("[mobiman_framework_launch:: __main__ ] Mobiman:")
     print("[mobiman_framework_launch:: __main__ ] flag_mobiman: " + str(flag_mobiman))
@@ -244,6 +252,26 @@ if __name__=="__main__":
             goal_server.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched Goal Server!")
+        rospy.sleep(1)
+
+    ## Launch distance server 
+    if flag_distance_server:
+
+        for i, rns in enumerate(robot_ns_vec):
+            distance_server_path = mobiman_launch_path + "utilities/distance_server.launch"
+            distance_server_args = [distance_server_path,
+                                    'robot_ns:=' + str(rns),
+                                    'config_distance_server:=' + str(config_distance_server),
+                                    'collision_points_config_path:=' + str(collision_points_config_path),
+                                    'urdf_path:=' + str(urdf_path_ocs2),
+                                    'lib_path:=' + str(lib_path),
+                                    'task_config_path:=' + str(task_config_path)]
+
+            distance_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(distance_server_args)[0], distance_server_args[1:]) ] # type: ignore
+            distance_server = roslaunch.parent.ROSLaunchParent(uuid, distance_server_launch) # type: ignore
+            distance_server.start()
+
+        print("[mobiman_framework_launch:: __main__ ] Launched Distance Server!")
         rospy.sleep(1)
 
     ## Launch mobiman 

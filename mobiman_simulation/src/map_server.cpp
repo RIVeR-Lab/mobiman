@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
   // INITIALIZE ROS
   ros::init(argc, argv, "map_server");
-  std::cout << "********************************\n" << argc << "********************************\n" << std::endl; 
+
   // INITIALIZE THE MAIN ROS NODE HANDLE
   ros::NodeHandle nh;
 
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     obj_bbx_max_pkgs_man.push_back(su.getObjBbxMax());
     obj_dim_pkgs_man.push_back(su.getObjDim());
   }
-  std::cout << "!!!!!!!!!!!!!!!!!!!!!\n" << gz_model_msg_name << "!!!!!!!!!!!!!!!!!!!!!\n" << std::endl;
+
   // Initialize Map Utility
   MapUtility mu(nh, 
                 pnh, 
@@ -168,7 +168,7 @@ int main(int argc, char** argv)
   while(ros::ok)
   {
     mu.updateModelPc2Scan();
-
+    
     //cout << "[map_server::main] BEFORE updateOct" << endl;
     // Update octomap with the recent transformed pc2 data
     mu.updateOct();

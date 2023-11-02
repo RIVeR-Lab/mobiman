@@ -36,6 +36,10 @@ collision_points_config_path: "config/config_points_on_robot"
 ### Goal Server:
 flag_goal_server: true
 
+### Distance Server:
+flag_distance_server: true
+config_distance_server: "config_distance_server"
+
 ### Mobiman:
 flag_mobiman: true
 

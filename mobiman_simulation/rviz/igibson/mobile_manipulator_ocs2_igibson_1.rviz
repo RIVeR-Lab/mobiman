@@ -7,7 +7,7 @@ Panels:
         - /TF1/Frames1
         - /MarkerArray2/Namespaces1
       Splitter Ratio: 0.5
-    Tree Height: 441
+    Tree Height: 760
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -226,6 +226,8 @@ Visualization Manager:
           Value: false
         jackalJaco_0/chassis_link:
           Value: false
+        jackalJaco_0/conveyor_belt:
+          Value: true
         jackalJaco_0/d435_cam1camera_bottom_screw_frame:
           Value: false
         jackalJaco_0/d435_cam1camera_color_frame:
@@ -294,6 +296,8 @@ Visualization Manager:
           Value: true
         jackalJaco_1/chassis_link:
           Value: false
+        jackalJaco_1/conveyor_belt:
+          Value: true
         jackalJaco_1/d435_cam1camera_bottom_screw_frame:
           Value: false
         jackalJaco_1/d435_cam1camera_color_frame:
@@ -368,6 +372,8 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
+          jackalJaco_0/conveyor_belt:
+            {}
           jackalJaco_0/odom:
             jackalJaco_0/base_link:
               jackalJaco_0/chassis_link:
@@ -418,6 +424,8 @@ Visualization Manager:
                             jackalJaco_0/j2n6s300_link_6:
                               jackalJaco_0/j2n6s300_end_effector:
                                 {}
+          jackalJaco_1/conveyor_belt:
+            {}
           jackalJaco_1/odom:
             jackalJaco_1/base_link:
               jackalJaco_1/chassis_link:
@@ -576,37 +584,50 @@ Visualization Manager:
       Voxel Coloring: Z-Axis
       Voxel Rendering: Occupied Voxels
     - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /occupancy_distances_base_visu
+      Enabled: true
+      Marker Topic: /jackalJaco_1/occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
+        "": true
+        0: true
+      Queue Size: 10
+      Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /occupancy_distances_arm_visu
+      Enabled: true
+      Marker Topic: /jackalJaco_1/occupancy_distances_arm_visu
       Name: MarkerArray
       Namespaces:
-        {}
-      Queue Size: 100
-      Value: false
+        "": true
+        0: true
+        1: true
+        10: true
+        2: true
+        3: true
+        4: true
+        5: true
+        6: true
+        7: true
+        8: true
+        9: true
+      Queue Size: 10
+      Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /points_on_robot
+      Enabled: true
+      Marker Topic: /jackalJaco_1/points_on_robot
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 0
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
-      Marker Topic: /self_collision_distances_visu
+      Enabled: true
+      Marker Topic: /jackalJaco_1/self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        11 - 14: true
       Queue Size: 0
-      Value: false
+      Value: true
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.10000000149011612
@@ -628,8 +649,7 @@ Visualization Manager:
       Marker Topic: /jackalJaco_1/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -676,7 +696,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.468321323394775
+      Distance: 4.913194179534912
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -684,17 +704,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.17908141016960144
-        Y: -0.3189200758934021
-        Z: 0.7639337778091431
+        X: 1.0345133543014526
+        Y: -0.16971354186534882
+        Z: 1.2113909721374512
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6397972106933594
+      Pitch: 0.5797973871231079
       Target Frame: <Fixed Frame>
-      Yaw: 1.53291916847229
+      Yaw: 4.67792272567749
     Saved: ~
 Window Geometry:
   Displays:
