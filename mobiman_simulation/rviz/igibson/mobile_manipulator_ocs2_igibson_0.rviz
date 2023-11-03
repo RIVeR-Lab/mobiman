@@ -4,12 +4,10 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1/Frames1
-        - /MarkerArray2/Status1
         - /MarkerArray2/Namespaces1
         - /MarkerArray5/Namespaces1
       Splitter Ratio: 0.5
-    Tree Height: 760
+    Tree Height: 441
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -260,6 +258,8 @@ Visualization Manager:
           Value: false
         jackalJaco_0/front_right_wheel_link:
           Value: false
+        jackalJaco_0/golazo:
+          Value: true
         jackalJaco_0/imu_link:
           Value: false
         jackalJaco_0/j2n6s300_end_effector:
@@ -299,7 +299,7 @@ Visualization Manager:
         jackalJaco_1/chassis_link:
           Value: false
         jackalJaco_1/conveyor_belt:
-          Value: true
+          Value: false
         jackalJaco_1/d435_cam1camera_bottom_screw_frame:
           Value: false
         jackalJaco_1/d435_cam1camera_color_frame:
@@ -329,6 +329,8 @@ Visualization Manager:
         jackalJaco_1/front_mount:
           Value: false
         jackalJaco_1/front_right_wheel_link:
+          Value: false
+        jackalJaco_1/golazo:
           Value: false
         jackalJaco_1/imu_link:
           Value: false
@@ -375,6 +377,8 @@ Visualization Manager:
       Tree:
         world:
           jackalJaco_0/conveyor_belt:
+            {}
+          jackalJaco_0/golazo:
             {}
           jackalJaco_0/odom:
             jackalJaco_0/base_link:
@@ -427,6 +431,8 @@ Visualization Manager:
                               jackalJaco_0/j2n6s300_end_effector:
                                 {}
           jackalJaco_1/conveyor_belt:
+            {}
+          jackalJaco_1/golazo:
             {}
           jackalJaco_1/odom:
             jackalJaco_1/base_link:
@@ -595,41 +601,29 @@ Visualization Manager:
       Queue Size: 10
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_0/occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        "": true
-        0: true
+        {}
       Queue Size: 10
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_0/occupancy_distances_arm_visu
       Name: MarkerArray
       Namespaces:
-        "": true
-        0: true
-        1: true
-        10: true
-        2: true
-        3: true
-        4: true
-        5: true
-        6: true
-        7: true
-        8: true
-        9: true
+        {}
       Queue Size: 0
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_0/points_on_robot
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 0
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /jackalJaco_0/optimizedStateTrajectory
@@ -641,7 +635,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /jackalJaco_0/mobile_manipulator_goal
+      Marker Topic: /jackalJaco_0/target
       Name: MarkerArray
       Namespaces:
         {}
@@ -649,18 +643,12 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /jackalJaco_0/mobile_manipulator_target
+      Marker Topic: /jackalJaco_0/target_visu
       Name: MarkerArray
       Namespaces:
-        {}
-      Queue Size: 100
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: visualization_marker_array
-      Name: MarkerArray
-      Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -691,7 +679,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.996170997619629
+      Distance: 7.454265117645264
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -699,17 +687,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.1763380765914917
-        Y: -0.11044111847877502
-        Z: 0.8582985401153564
+        X: 0.5396068096160889
+        Y: 0.27986663579940796
+        Z: 0.6679954528808594
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6652020812034607
+      Pitch: 0.9102022051811218
       Target Frame: <Fixed Frame>
-      Yaw: 4.722929000854492
+      Yaw: 4.687926769256592
     Saved: ~
 Window Geometry:
   Displays:

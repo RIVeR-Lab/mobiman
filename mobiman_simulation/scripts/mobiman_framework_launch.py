@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.11.02
+LAST UPDATE: 2023.11.03
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -80,6 +80,7 @@ if __name__=="__main__":
 
     ### Goal Server:
     flag_goal_server = rospy.get_param('flag_goal_server', True)
+    config_goal_server = rospy.get_param('config_goal_server', "")
 
     ### Distance Server:
     flag_distance_server = rospy.get_param('flag_distance_server', True)
@@ -120,6 +121,7 @@ if __name__=="__main__":
 
     print("[mobiman_framework_launch:: __main__ ] Goal Server:")
     print("[mobiman_framework_launch:: __main__ ] flag_goal_server: " + str(flag_goal_server))
+    print("[mobiman_framework_launch:: __main__ ] config_goal_server: " + str(config_goal_server))
 
     print("[mobiman_framework_launch:: __main__ ] Distance Server:")
     print("[mobiman_framework_launch:: __main__ ] flag_distance_server: " + str(flag_distance_server))
@@ -245,6 +247,7 @@ if __name__=="__main__":
             goal_server_path = mobiman_launch_path + "utilities/ocs2_target.launch"
             goal_server_args = [goal_server_path,
                                 'robot_ns:=' + str(rns),
+                                'config_goal_server:=' + str(config_goal_server),
                                 'task_config_path:=' + str(task_config_path)]
 
             goal_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(goal_server_args)[0], goal_server_args[1:]) ] # type: ignore

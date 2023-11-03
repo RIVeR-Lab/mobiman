@@ -61,10 +61,10 @@ model_information
   occupancyDistanceArmMsg         "/occupancy_distances_arm"
   pointsOnRobotMsg                "/points_on_robot"
   octomapMsg                      "/octomap_scan"
-  modelModeMsg                    "/mobile_manipulator_model_mode"
-  mpcTargetMsg                    "/mobile_manipulator_mpc_target"
-  targetMsg                       "/mobile_manipulator_target"
-  goalFrame                       "/grasp"
+  modelModeMsg                    "/model_mode"
+  mpcTargetMsg                    "/mpc_target"
+  targetMsg                       "/target"
+  goalFrame                       "/golazo"
 
   collisionConstraintPoints       "/collision_constraint_points"
   collisionCheckPoints            "/collision_check_points"
@@ -73,7 +73,7 @@ model_information
 
 model_settings
 {
-  drlFlag                         false    ;
+  drlFlag                         true    ;
   drlActionType                   1       ; 0: Discrete, 1: Continuous
   usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
   recompileLibraries              true    ; NUA NOTE: make true when made some changes (for example self-collision pairs)

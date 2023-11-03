@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-        - /MarkerArray2/Namespaces1
+        - /MarkerArray3/Namespaces1
       Splitter Ratio: 0.5
     Tree Height: 760
   - Class: rviz/Selection
@@ -227,7 +227,7 @@ Visualization Manager:
         jackalJaco_0/chassis_link:
           Value: false
         jackalJaco_0/conveyor_belt:
-          Value: true
+          Value: false
         jackalJaco_0/d435_cam1camera_bottom_screw_frame:
           Value: false
         jackalJaco_0/d435_cam1camera_color_frame:
@@ -257,6 +257,8 @@ Visualization Manager:
         jackalJaco_0/front_mount:
           Value: false
         jackalJaco_0/front_right_wheel_link:
+          Value: false
+        jackalJaco_0/golazo:
           Value: false
         jackalJaco_0/imu_link:
           Value: false
@@ -328,6 +330,8 @@ Visualization Manager:
           Value: false
         jackalJaco_1/front_right_wheel_link:
           Value: false
+        jackalJaco_1/golazo:
+          Value: true
         jackalJaco_1/imu_link:
           Value: false
         jackalJaco_1/j2n6s300_end_effector:
@@ -373,6 +377,8 @@ Visualization Manager:
       Tree:
         world:
           jackalJaco_0/conveyor_belt:
+            {}
+          jackalJaco_0/golazo:
             {}
           jackalJaco_0/odom:
             jackalJaco_0/base_link:
@@ -425,6 +431,8 @@ Visualization Manager:
                               jackalJaco_0/j2n6s300_end_effector:
                                 {}
           jackalJaco_1/conveyor_belt:
+            {}
+          jackalJaco_1/golazo:
             {}
           jackalJaco_1/odom:
             jackalJaco_1/base_link:
@@ -585,42 +593,6 @@ Visualization Manager:
       Voxel Rendering: Occupied Voxels
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /jackalJaco_1/occupancy_distances_base_visu
-      Name: MarkerArray
-      Namespaces:
-        "": true
-        0: true
-      Queue Size: 10
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /jackalJaco_1/occupancy_distances_arm_visu
-      Name: MarkerArray
-      Namespaces:
-        "": true
-        0: true
-        1: true
-        10: true
-        2: true
-        3: true
-        4: true
-        5: true
-        6: true
-        7: true
-        8: true
-        9: true
-      Queue Size: 10
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /jackalJaco_1/points_on_robot
-      Name: MarkerArray
-      Namespaces:
-        "": true
-      Queue Size: 0
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
       Marker Topic: /jackalJaco_1/self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
@@ -628,44 +600,47 @@ Visualization Manager:
         11 - 14: true
       Queue Size: 0
       Value: true
-    - Alpha: 1
-      Axes Length: 1
-      Axes Radius: 0.10000000149011612
-      Class: rviz/Pose
-      Color: 255; 25; 0
+    - Class: rviz/MarkerArray
       Enabled: false
-      Head Length: 0.30000001192092896
-      Head Radius: 0.10000000149011612
-      Name: Pose
+      Marker Topic: /jackalJaco_1/occupancy_distances_base_visu
+      Name: MarkerArray
+      Namespaces:
+        {}
       Queue Size: 10
-      Shaft Length: 1
-      Shaft Radius: 0.05000000074505806
-      Shape: Arrow
-      Topic: /move_base_simple/goal
-      Unreliable: false
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /jackalJaco_1/occupancy_distances_arm_visu
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 10
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /jackalJaco_1/points_on_robot
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 0
       Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /jackalJaco_1/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /jackalJaco_1/mobile_manipulator_goal
+      Marker Topic: /jackalJaco_1/target_visu
       Name: MarkerArray
       Namespaces:
-        {}
-      Queue Size: 100
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /jackalJaco_1/mobile_manipulator_target
-      Name: MarkerArray
-      Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -696,7 +671,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.913194179534912
+      Distance: 7.731006145477295
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -704,17 +679,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.0345133543014526
-        Y: -0.16971354186534882
-        Z: 1.2113909721374512
+        X: 0.9182801842689514
+        Y: -0.21097108721733093
+        Z: 0.9208272695541382
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5797973871231079
+      Pitch: 1.0547972917556763
       Target Frame: <Fixed Frame>
-      Yaw: 4.67792272567749
+      Yaw: 4.692928314208984
     Saved: ~
 Window Geometry:
   Displays:

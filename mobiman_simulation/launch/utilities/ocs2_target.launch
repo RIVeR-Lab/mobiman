@@ -9,6 +9,8 @@
       <!-- Set nodes on debug mode -->
       <!--arg name="debug"       default="false" /-->
 
+      <arg name="config_goal_server"  default="config_goal_server" />
+
       <!--
             gazebo
             igibson
@@ -39,6 +41,8 @@
       <param name="libFolder"  value="$(arg libFolder)" /-->
 
       <group ns="$(arg robot_ns)">
+            <rosparam file="$(find mobiman_simulation)/config/$(arg config_goal_server).yaml"/>
+
             <node pkg="ocs2_mobile_manipulator_ros" 
                   type="mobile_manipulator_target" 
                   name="goal_server" 
