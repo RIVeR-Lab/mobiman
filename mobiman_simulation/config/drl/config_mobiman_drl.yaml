@@ -86,7 +86,7 @@ occgrid_occ_max: 100
 
 ## Algorithm: mobiman-DRL Parameters
 # Action time horizon [s]
-action_time_horizon: 600.0
+action_time_horizon: 6.0
 
 # 0: Discrete
 # 1: Continuous

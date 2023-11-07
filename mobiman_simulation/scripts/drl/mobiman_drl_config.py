@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.08.23
+LAST UPDATE: 2023.11.07
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -162,18 +162,22 @@ class Config():
             self.reward_terminal_roll = rospy.get_param('reward_terminal_roll', 0.0)
             self.reward_terminal_max_step = rospy.get_param('reward_terminal_max_step', 0.0)
 
-            self.reward_step_goal = rospy.get_param('reward_step_goal', 0.0)
-            self.reward_step_target = rospy.get_param('reward_step_target', 0.0)
+            self.reward_step_target2goal = rospy.get_param('reward_step_target2goal', 0.0)
+            self.reward_step_target2goal_mu_regular = rospy.get_param('reward_step_target2goal_mu_regular', 0.0)
+            self.reward_step_target2goal_sigma_regular = rospy.get_param('reward_step_target2goal_sigma_regular', 0.0)
+            self.reward_step_target2goal_mu_last_step = rospy.get_param('reward_step_target2goal_mu_last_step', 0.0)
+            self.reward_step_target2goal_sigma_last_step = rospy.get_param('reward_step_target2goal_sigma_last_step', 0.0)
             self.reward_step_mode0 = rospy.get_param('reward_step_mode0', 0.0)
             self.reward_step_mode1 = rospy.get_param('reward_step_mode1', 0.0)
             self.reward_step_mode2 = rospy.get_param('reward_step_mode2', 0.0)
             self.reward_step_mpc_exit = rospy.get_param('reward_step_mpc_exit', 0.0)
+            self.reward_step_target_reached = rospy.get_param('reward_step_target_reached', 0.0)
+            self.reward_step_time_horizon_min = rospy.get_param('reward_step_time_horizon_min', 0.0)
+            self.reward_step_time_horizon_max = rospy.get_param('reward_step_time_horizon_max', 0.0)
 
-            self.alpha_step_goal_base = rospy.get_param('alpha_step_goal_base', 0.0)
-            self.alpha_step_goal_ee = rospy.get_param('alpha_step_goal_ee', 0.0)
-            self.alpha_step_target = rospy.get_param('alpha_step_target', 0.0)
+            self.alpha_step_target2goal = rospy.get_param('alpha_step_target2goal', 0.0)
             self.alpha_step_mode = rospy.get_param('alpha_step_mode', 0.0)
-            self.alpha_step_mpc_exit = rospy.get_param('alpha_step_mpc_exit', 0.0)
+            self.alpha_step_mpc_result = rospy.get_param('alpha_step_mpc_result', 0.0)
             
             if data_folder_path:
 
@@ -252,17 +256,21 @@ class Config():
                 training_log_data.append(["reward_terminal_collision", self.reward_terminal_collision])
                 training_log_data.append(["reward_terminal_roll", self.reward_terminal_roll])
                 training_log_data.append(["reward_terminal_max_step", self.reward_terminal_max_step])
-                training_log_data.append(["reward_step_goal", self.reward_step_goal])
-                training_log_data.append(["reward_step_target", self.reward_step_target])
+                training_log_data.append(["reward_step_target2goal", self.reward_step_target2goal])
+                training_log_data.append(["reward_step_target2goal_mu_regular", self.reward_step_target2goal_mu_regular])
+                training_log_data.append(["reward_step_target2goal_sigma_regular", self.reward_step_target2goal_sigma_regular])
+                training_log_data.append(["reward_step_target2goal_mu_last_step", self.reward_step_target2goal_mu_last_step])
+                training_log_data.append(["reward_step_target2goal_sigma_last_step", self.reward_step_target2goal_sigma_last_step])
                 training_log_data.append(["reward_step_mode0", self.reward_step_mode0])
                 training_log_data.append(["reward_step_mode1", self.reward_step_mode1])
                 training_log_data.append(["reward_step_mode2", self.reward_step_mode2])
                 training_log_data.append(["reward_step_mpc_exit", self.reward_step_mpc_exit])
-                training_log_data.append(["alpha_step_goal_base", self.alpha_step_goal_base])
-                training_log_data.append(["alpha_step_goal_ee", self.alpha_step_goal_ee])
-                training_log_data.append(["alpha_step_target", self.alpha_step_target])
+                training_log_data.append(["reward_step_target_reached", self.reward_step_target_reached])
+                training_log_data.append(["reward_step_time_horizon_min", self.reward_step_time_horizon_min])
+                training_log_data.append(["reward_step_time_horizon_max", self.reward_step_time_horizon_max])
+                training_log_data.append(["alpha_step_target2goal", self.alpha_step_target2goal])
                 training_log_data.append(["alpha_step_mode", self.alpha_step_mode])
-                training_log_data.append(["alpha_step_mpc_exit", self.alpha_step_mpc_exit])
+                training_log_data.append(["alpha_step_mpc_result", self.alpha_step_mpc_result])
 
                 write_data(training_log_file, training_log_data)
 
@@ -419,17 +427,21 @@ class Config():
         print("[mobiman_drl_config::Config::__init__] reward_terminal_collision: " + str(self.reward_terminal_collision))
         print("[mobiman_drl_config::Config::__init__] reward_terminal_roll: " + str(self.reward_terminal_roll))
         print("[mobiman_drl_config::Config::__init__] reward_terminal_max_step: " + str(self.reward_terminal_max_step))
-        print("[mobiman_drl_config::Config::__init__] reward_step_goal: " + str(self.reward_step_goal))
-        print("[mobiman_drl_config::Config::__init__] reward_step_target: " + str(self.reward_step_target))
+        print("[mobiman_drl_config::Config::__init__] reward_step_target2goal: " + str(self.reward_step_target2goal))
+        print("[mobiman_drl_config::Config::__init__] reward_step_target2goal_mu_regular: " + str(self.reward_step_target2goal_mu_regular))
+        print("[mobiman_drl_config::Config::__init__] reward_step_target2goal_sigma_regular: " + str(self.reward_step_target2goal_sigma_regular))
+        print("[mobiman_drl_config::Config::__init__] reward_step_target2goal_mu_last_step: " + str(self.reward_step_target2goal_mu_last_step))
+        print("[mobiman_drl_config::Config::__init__] reward_step_target2goal_sigma_last_step: " + str(self.reward_step_target2goal_sigma_last_step))
         print("[mobiman_drl_config::Config::__init__] reward_step_mode0: " + str(self.reward_step_mode0))
         print("[mobiman_drl_config::Config::__init__] reward_step_mode1: " + str(self.reward_step_mode1))
         print("[mobiman_drl_config::Config::__init__] reward_step_mode2: " + str(self.reward_step_mode2))
         print("[mobiman_drl_config::Config::__init__] reward_step_mpc_exit: " + str(self.reward_step_mpc_exit))
-        print("[mobiman_drl_config::Config::__init__] alpha_step_goal_base: " + str(self.alpha_step_goal_base))
-        print("[mobiman_drl_config::Config::__init__] alpha_step_goal_ee: " + str(self.alpha_step_goal_ee))
-        print("[mobiman_drl_config::Config::__init__] alpha_step_target: " + str(self.alpha_step_target))
+        print("[mobiman_drl_config::Config::__init__] reward_step_target_reached: " + str(self.reward_step_target_reached))
+        print("[mobiman_drl_config::Config::__init__] reward_step_time_horizon_min: " + str(self.reward_step_time_horizon_min))
+        print("[mobiman_drl_config::Config::__init__] reward_step_time_horizon_max: " + str(self.reward_step_time_horizon_max))
+        print("[mobiman_drl_config::Config::__init__] alpha_step_target2goal: " + str(self.alpha_step_target2goal))
         print("[mobiman_drl_config::Config::__init__] alpha_step_mode: " + str(self.alpha_step_mode))
-        print("[mobiman_drl_config::Config::__init__] alpha_step_mpc_exit: " + str(self.alpha_step_mpc_exit))
+        print("[mobiman_drl_config::Config::__init__] alpha_step_mpc_result: " + str(self.alpha_step_mpc_result))
 
         '''
         print("--------------")
