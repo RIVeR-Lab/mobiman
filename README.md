@@ -25,6 +25,23 @@ rosdep install --from-paths src --ignore-src -r -y
 roslaunch mobiman_simulation mobiman_framework.launch
 ```
 
+## Run (DRL mode):
+1. Set configurations in [config_mobiman_framework](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework.yaml)
+  - Set parameter "sim: gazebo" for simulation in Gazebo
+  - Set parameter "sim: igibson" for simulation in iGibson
+
+2. Launch mobiman framework from the ROS workspace:
+```
+# Do not forget to source: source devel/setup.bash
+roslaunch mobiman_simulation mobiman_framework.launch
+```
+
+3. Run the training script (python) from the igibson ros scripts folder (such as /home/akmandor/projects/iGibson/igibson/examples/ros/igibson-ros/scripts):
+```
+# Do not forget to source: source ~/ros_workspaces/igibson_ws/devel/setup.bash
+python stable_baselines3_ros_jackalJaco.py
+```
+
 ## !!! BELOW IS DEPRECATED: 
 
 ## Run (Manual mode in iGibson):
