@@ -53,6 +53,7 @@ model_information
 
   ;baseStateMsg                    "/gazebo/link_states"
   ;armStateMsg                     "/arm_controller/state"
+  odomMsgName                     "/odom"
   armStateMsg                     "/joint_states"
   baseControlMsg                  "/mobile_base_controller/cmd_vel"
   armControlMsg                   "/arm_controller/cmd_pos"
@@ -73,7 +74,7 @@ model_information
 
 model_settings
 {
-  drlFlag                         true    ;
+  drlFlag                         false    ;
   drlActionType                   1       ; 0: Discrete, 1: Continuous
   usePreComputation               false   ; NUA TODO: needs to be false for ext_collision (ExtCollision::getLinearApproximation is not implemented properly)!
   recompileLibraries              true    ; NUA NOTE: make true when made some changes (for example self-collision pairs)

@@ -35,9 +35,13 @@
       <arg name="collision_points_config_path"  default="config/config_points_on_robot" />
       <rosparam file="$(find mobiman_simulation)/$(arg collision_points_config_path).yaml"/>
 
+      <!--
+            mobile_manipulator_node
+            mobile_manipulator_node_simplified
+       -->
       <group ns="$(arg robot_ns)">
             <node pkg="ocs2_mobile_manipulator_ros" 
-                  type="mobile_manipulator_node" 
+                  type="mobile_manipulator_node_simplified" 
                   name="ocs2_m4" 
                   output="screen"
                   launch-prefix="" />
