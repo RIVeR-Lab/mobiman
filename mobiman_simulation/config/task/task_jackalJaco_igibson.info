@@ -69,7 +69,7 @@ model_information
 
   collisionConstraintPoints       "/collision_constraint_points"
   collisionCheckPoints            "/collision_check_points"
-  logSavePathRel                  "dataset/ocs2/" ; If empty, not saved. Ex: "dataset/ocs2/"
+  logSavePathRel                  "" ; If empty, not saved. Ex: "dataset/ocs2/"
 }
 
 model_settings
