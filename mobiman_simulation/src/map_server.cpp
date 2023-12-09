@@ -68,6 +68,23 @@ int main(int argc, char** argv)
   pnh.param<double>("/egrid_bbx_max_z", egrid_bbx_max.z, 0.0);
   pnh.param<double>("/egrid_occ_threshold", egrid_occ_threshold, 0.0);
   
+  // Add namespace
+  string ns = nh.getNamespace();
+  cout << "[map_server::main] ns: " << ns << endl;
+
+  if (ns != "/")
+  {
+    for (size_t i = 0; i < name_pkgs_ign.size(); i++)
+    {
+      name_pkgs_ign[i] = ns + "/" + name_pkgs_ign[i];
+    }
+
+    for (size_t i = 0; i < name_pkgs_man.size(); i++)
+    {
+      name_pkgs_man[i] = ns + "/" + name_pkgs_man[i];
+    }
+  }
+
   if (printOutFlag)
   {
     cout << "[map_server::main] world_frame_name: " << world_frame_name << endl;

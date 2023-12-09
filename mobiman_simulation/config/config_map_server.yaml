@@ -2,7 +2,7 @@
 # E-MAIL: akmandor.n@northeastern.edu
 
 world_frame_name: "world"
-gz_model_msg_name: "/model_states"
+gz_model_msg_name: "gazebo/model_states"
 
 name_pkgs_ign: ["conveyor_belt","normal_pkg","long_pkg","longwide_pkg","red_cube","green_cube","blue_cube", "actor", "bin_4_dropping_task"] 
 name_pkgs_man: [] 

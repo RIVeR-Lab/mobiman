@@ -11,8 +11,8 @@
   <arg name="flag_bin" default="false"/>
   <arg name="flag_pedsim" default="false"/>
   <arg name="flag_markers" default="false"/>
-  <arg name="flag_map_server" default="true"/>
-  <arg name="flag_rviz" default="true"/>
+  <arg name="flag_map_server" default="false"/>
+  <arg name="flag_rviz" default="false"/>
 
   <!-- Gazebo -->
   <arg name="paused" default="true"/>
@@ -96,7 +96,6 @@
 
       <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
       <group if="$(eval arg('robot_arm') == 'ur5')">
-
         <arg name="name_arm_joint_1" default="ur5_shoulder_pan_joint"/>
         <arg name="name_arm_joint_2" default="ur5_shoulder_lift_joint"/>
         <arg name="name_arm_joint_3" default="ur5_elbow_joint"/>
@@ -187,6 +186,7 @@
 
       <!-- node -->
       <node name="reset_mobiman" pkg="mobiman_simulation" type="reset_mobiman.py" output="screen" />
+      
       <!-- Load Robot Semantic -->
       <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
 
@@ -217,7 +217,7 @@
   </group>
 
   <!-- Spawn marker on the robot -->
-  <node if="$(arg flag_markers)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" />
+  <!--node if="$(arg flag_markers)" name="spawn_markers" pkg="mobiman_simulation" type="spawn_markers" output="screen" /-->
 
   <!-- Run Map Server -->
   <!--group if="$(eval arg('flag_gazebo') == true)">

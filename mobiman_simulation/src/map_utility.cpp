@@ -3065,6 +3065,8 @@ void MapUtility::publishPC2MsgGzPkgIgn(int index_pkg_ign)
   //vec_pc2_msg_gz_ign_[index_pkg_ign].header.seq++;
   vec_pc2_msg_gz_ign_[index_pkg_ign].header.stamp = ros::Time::now();
 
+  //std::cout << "[MapUtility::publishPC2MsgGzPkgIgn] vec_pc2_msg_gz_ign_ size: " << vec_pc2_msg_gz_ign_[index_pkg_ign].data.size() << std::endl;
+
   switch (index_pkg_ign)
   {
     case 0:
@@ -3522,11 +3524,15 @@ void MapUtility::updateModelPc2Scan()
 
   for (size_t i = 0; i < ms.name.size(); i++)
   {
+    //cout << "[MapUtility::updateModelPc2Scan] GAZEBO_MSG_RECEIVED!" << std::endl;
     gz_model_name_tmp = ms.name[i];
 
     for (size_t j = 0; j < vec_frame_name_ign_.size(); j++)
     {
       tf_name_tmp = vec_frame_name_ign_[j];
+
+      //cout << "[MapUtility::updateModelPc2Scan] gz_model_name_tmp: " << gz_model_name_tmp << std::endl;
+      //cout << "[MapUtility::updateModelPc2Scan] tf_name_tmp: " << tf_name_tmp << std::endl;
 
       // NUA TODO: Try to fix this by finding a way to generalize for multiple objects with the same namespace!
       if ( tf_name_tmp == "actor" && (gz_model_name_tmp == "0" || gz_model_name_tmp == "1") )
@@ -3547,7 +3553,8 @@ void MapUtility::updateModelPc2Scan()
         pcl_ros::transformPointCloud(world_frame_name_, transform_pkg_ign, vec_pc2_msg_gz_ign_[j], vec_pc2_msg_gz_ign_wrt_world);
 
         static tf::TransformBroadcaster br_gz_pkg_ign;
-        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name_, ros::this_node::getNamespace() + "/" + tf_name_tmp));
+        br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name_, tf_name_tmp));
+        //br_gz_pkg_ign.sendTransform(tf::StampedTransform(transform_pkg_ign, ros::Time::now(), world_frame_name_, ros::this_node::getNamespace() + "/" + tf_name_tmp));
 
         vec_frame_name_obj_.push_back(tf_name_tmp);
         vec_pc2_msg_obj_wrt_world_.push_back(vec_pc2_msg_gz_ign_wrt_world);
@@ -3578,6 +3585,9 @@ void MapUtility::updateModelPc2Scan()
     {
       tf_name_tmp = vec_frame_name_man_[j];
 
+      //cout << "[MapUtility::updateModelPc2Scan] gz_model_name_tmp: " << gz_model_name_tmp << std::endl;
+      //cout << "[MapUtility::updateModelPc2Scan] tf_name_tmp: " << tf_name_tmp << std::endl;
+
       if (gz_model_name_tmp == tf_name_tmp)
       {
         tf::Transform transform_pkg_man;
@@ -3587,7 +3597,11 @@ void MapUtility::updateModelPc2Scan()
         transform_pkg_man.setRotation(tf::Quaternion(ms.pose[i].orientation.x, ms.pose[i].orientation.y, ms.pose[i].orientation.z, ms.pose[i].orientation.w));
       
         static tf::TransformBroadcaster br_gz_pkg_man;
-        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man, ros::Time::now(), world_frame_name_, ros::this_node::getNamespace() + "/" +tf_name_tmp));
+        br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man, ros::Time::now(), world_frame_name_, tf_name_tmp));
+        //cout << "[MapUtility::updateModelPc2Scan] world_frame_name_: " << world_frame_name_ << std::endl;
+        //cout << "[MapUtility::updateModelPc2Scan] tf_name_tmp: " << tf_name_tmp << std::endl;
+        //cout << "[MapUtility::updateModelPc2Scan] ns: " << ros::this_node::getNamespace() << std::endl;
+        //br_gz_pkg_man.sendTransform(tf::StampedTransform(transform_pkg_man, ros::Time::now(), world_frame_name_, ros::this_node::getNamespace() + "/" + tf_name_tmp));
 
         //publishPC2MsgGzPkgMan(j);
 

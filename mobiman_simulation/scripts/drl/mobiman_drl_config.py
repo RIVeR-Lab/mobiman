@@ -91,6 +91,7 @@ class Config():
 
         self.imu_msg_name = rospy.get_param('imu_msg_name', "")
         self.arm_state_msg_name = rospy.get_param('arm_state_msg_name', "")
+        self.modelmode_msg_name = rospy.get_param('modelmode_msg_name', "")
         self.target_msg_name = rospy.get_param('target_msg_name', "")
         self.occgrid_msg_name = rospy.get_param('occgrid_msg_name', "")
         self.selfcoldistance_msg_name = rospy.get_param('selfcoldistance_msg_name', "")
@@ -211,6 +212,7 @@ class Config():
                 training_log_data.append(["odom_ground_truth_msg_name", self.odom_ground_truth_msg_name])
                 training_log_data.append(["imu_msg_name", self.imu_msg_name])
                 training_log_data.append(["arm_state_msg_name", self.arm_state_msg_name])
+                training_log_data.append(["modelmode_msg_name", self.modelmode_msg_name])
                 training_log_data.append(["target_msg_name", self.target_msg_name])
                 training_log_data.append(["occgrid_msg_name", self.occgrid_msg_name])
                 training_log_data.append(["selfcoldistance_msg_name", self.selfcoldistance_msg_name])
@@ -381,6 +383,7 @@ class Config():
         print("[mobiman_drl_config::Config::__init__] odom_ground_truth_msg_name: " + str(self.odom_ground_truth_msg_name))
         print("[mobiman_drl_config::Config::__init__] imu_msg_name: " + str(self.imu_msg_name))
         print("[mobiman_drl_config::Config::__init__] arm_state_msg_name: " + str(self.arm_state_msg_name))
+        print("[mobiman_drl_config::Config::__init__] modelmode_msg_name: " + str(self.modelmode_msg_name))
         print("[mobiman_drl_config::Config::__init__] target_msg_name: " + str(self.target_msg_name))
         print("[mobiman_drl_config::Config::__init__] occgrid_msg_name: " + str(self.occgrid_msg_name))
         print("[mobiman_drl_config::Config::__init__] selfcoldistance_msg_name: " + str(self.selfcoldistance_msg_name))

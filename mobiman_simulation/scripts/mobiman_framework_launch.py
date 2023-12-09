@@ -157,7 +157,7 @@ if __name__=="__main__":
 
     ## Launch Simulation
     if sim == "gazebo":
-        
+
         # Launch Gazebo
         sim_launch_path = mobiman_launch_path + "utilities/drl.launch"
         sim_args = [sim_launch_path,
@@ -189,6 +189,20 @@ if __name__=="__main__":
             sim = roslaunch.parent.ROSLaunchParent(uuid, sim_launch) # type: ignore
             sim.start()
 
+        ### NUA TODO: MAKE THIS FROM NODES AND PARALLELIZE!!!
+        ## Wait for simulation to be ready!
+        tfBuffer = tf2_ros.Buffer() # type: ignore
+        listener = tf2_ros.TransformListener(tfBuffer) # type: ignore
+        robot_frame_name = robot_base_frame_name_vec[0]
+        print("[mobiman_framework_launch:: __main__ ] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...") # type: ignore
+        trans = None
+        while (not rospy.is_shutdown()) and (not trans):
+            try:
+                trans = tfBuffer.lookup_transform(world_frame_name, robot_frame_name, rospy.Time(0))
+            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as ex: # type: ignore
+                #rospy.logwarn("[mobiman_framework_launch:: __main__ ] ERROR: " + str(ex))
+                rospy.sleep(1.0)   
+
         print("[mobiman_framework_launch:: __main__ ] Launched simulation in iGibson!")
     
     else:
@@ -196,45 +210,48 @@ if __name__=="__main__":
 
     ## Launch Rviz
     if flag_rviz:
-
-        for i, rns in enumerate(robot_ns_vec):
+        
+        if len(robot_ns_vec) > 0:
+            for i, rns in enumerate(robot_ns_vec):
+                rviz_path = mobiman_launch_path + "utilities/rviz.launch"
+                rviz_args = [rviz_path,
+                            'robot_ns:=' + str(rns),
+                            'rviz_config_path:=' + str(rviz_config_path) + '_' + str(i)]
+        else:
             rviz_path = mobiman_launch_path + "utilities/rviz.launch"
             rviz_args = [rviz_path,
-                         'robot_ns:=' + str(rns),
-                         'rviz_config_path:=' + str(rviz_config_path) + '_' + str(i)]
+                         'robot_ns:=/',
+                         'rviz_config_path:=' + str(rviz_config_path) + '_0']
 
-            rviz_launch = [ (roslaunch.rlutil.resolve_launch_arguments(rviz_args)[0], rviz_args[1:]) ] # type: ignore
-            rviz = roslaunch.parent.ROSLaunchParent(uuid, rviz_launch) # type: ignore
-            rviz.start()
+        rviz_launch = [ (roslaunch.rlutil.resolve_launch_arguments(rviz_args)[0], rviz_args[1:]) ] # type: ignore
+        rviz = roslaunch.parent.ROSLaunchParent(uuid, rviz_launch) # type: ignore
+        rviz.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched Rviz!")
         rospy.sleep(1)
 
-    ## Wait for simulation to be ready!
-    tfBuffer = tf2_ros.Buffer()
-    listener = tf2_ros.TransformListener(tfBuffer)
-    robot_frame_name = robot_base_frame_name_vec[0]
-    print("[mobiman_framework_launch:: __main__ ] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...") # type: ignore
-    trans = None
-    while (not rospy.is_shutdown()) and (not trans):
-        try:
-            trans = tfBuffer.lookup_transform(world_frame_name, robot_frame_name, rospy.Time(0))
-        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as ex: # type: ignore
-            #rospy.logwarn("[mobiman_framework_launch:: __main__ ] ERROR: " + str(ex))
-            rospy.sleep(1.0)   
+    #print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
+    #while 1:
+    #    continue
 
     ## Launch Map Server
     if flag_map_server:
 
-        for i, rns in enumerate(robot_ns_vec):
+        if len(robot_ns_vec) > 0:
+            for i, rns in enumerate(robot_ns_vec):
+                map_server_path = mobiman_launch_path + "utilities/map_server.launch"
+                map_server_args = [map_server_path,
+                                'robot_ns:=' + str(rns),
+                                'config_map_server:=' + str(config_map_server)]
+        else:
             map_server_path = mobiman_launch_path + "utilities/map_server.launch"
             map_server_args = [map_server_path,
-                               'robot_ns:=' + str(rns),
+                               'robot_ns:=/',
                                'config_map_server:=' + str(config_map_server)]
 
-            map_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(map_server_args)[0], map_server_args[1:]) ] # type: ignore
-            map_server = roslaunch.parent.ROSLaunchParent(uuid, map_server_launch) # type: ignore
-            map_server.start()
+        map_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(map_server_args)[0], map_server_args[1:]) ] # type: ignore
+        map_server = roslaunch.parent.ROSLaunchParent(uuid, map_server_launch) # type: ignore
+        map_server.start()  
 
         print("[mobiman_framework_launch:: __main__ ] Launched Map Server!")
         rospy.sleep(1) 
@@ -243,16 +260,23 @@ if __name__=="__main__":
     ## Launch ocs2 target 
     if flag_goal_server:
 
-        for i, rns in enumerate(robot_ns_vec):
+        if len(robot_ns_vec) > 0:
+            for i, rns in enumerate(robot_ns_vec):
+                goal_server_path = mobiman_launch_path + "utilities/ocs2_target.launch"
+                goal_server_args = [goal_server_path,
+                                    'robot_ns:=' + str(rns),
+                                    'config_goal_server:=' + str(config_goal_server),
+                                    'task_config_path:=' + str(task_config_path)]
+        else:
             goal_server_path = mobiman_launch_path + "utilities/ocs2_target.launch"
             goal_server_args = [goal_server_path,
-                                'robot_ns:=' + str(rns),
+                                'robot_ns:=/',
                                 'config_goal_server:=' + str(config_goal_server),
                                 'task_config_path:=' + str(task_config_path)]
-
-            goal_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(goal_server_args)[0], goal_server_args[1:]) ] # type: ignore
-            goal_server = roslaunch.parent.ROSLaunchParent(uuid, goal_server_launch) # type: ignore
-            goal_server.start()
+        
+        goal_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(goal_server_args)[0], goal_server_args[1:]) ] # type: ignore
+        goal_server = roslaunch.parent.ROSLaunchParent(uuid, goal_server_launch) # type: ignore
+        goal_server.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched Goal Server!")
         rospy.sleep(1)
@@ -260,19 +284,29 @@ if __name__=="__main__":
     ## Launch distance server 
     if flag_distance_server:
 
-        for i, rns in enumerate(robot_ns_vec):
+        if len(robot_ns_vec) > 0:
+            for i, rns in enumerate(robot_ns_vec):
+                distance_server_path = mobiman_launch_path + "utilities/distance_server.launch"
+                distance_server_args = [distance_server_path,
+                                        'robot_ns:=' + str(rns),
+                                        'config_distance_server:=' + str(config_distance_server),
+                                        'collision_points_config_path:=' + str(collision_points_config_path),
+                                        'urdf_path:=' + str(urdf_path_ocs2),
+                                        'lib_path:=' + str(lib_path),
+                                        'task_config_path:=' + str(task_config_path)]
+        else:
             distance_server_path = mobiman_launch_path + "utilities/distance_server.launch"
             distance_server_args = [distance_server_path,
-                                    'robot_ns:=' + str(rns),
+                                    'robot_ns:=/',
                                     'config_distance_server:=' + str(config_distance_server),
                                     'collision_points_config_path:=' + str(collision_points_config_path),
                                     'urdf_path:=' + str(urdf_path_ocs2),
                                     'lib_path:=' + str(lib_path),
                                     'task_config_path:=' + str(task_config_path)]
-
-            distance_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(distance_server_args)[0], distance_server_args[1:]) ] # type: ignore
-            distance_server = roslaunch.parent.ROSLaunchParent(uuid, distance_server_launch) # type: ignore
-            distance_server.start()
+        
+        distance_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(distance_server_args)[0], distance_server_args[1:]) ] # type: ignore
+        distance_server = roslaunch.parent.ROSLaunchParent(uuid, distance_server_launch) # type: ignore
+        distance_server.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched Distance Server!")
         rospy.sleep(1)
@@ -280,18 +314,27 @@ if __name__=="__main__":
     ## Launch mobiman 
     if flag_mobiman:
 
-        for i, rns in enumerate(robot_ns_vec):
+        if len(robot_ns_vec) > 0:
+            for i, rns in enumerate(robot_ns_vec):
+                mobiman_path = mobiman_launch_path + "utilities/ocs2_m4.launch"
+                mobiman_args = [mobiman_path,
+                                'robot_ns:=' + str(rns),
+                                'task_config_path:=' + str(task_config_path),
+                                'urdf_path:=' + str(urdf_path_ocs2),
+                                'lib_path:=' + str(lib_path),
+                                'collision_points_config_path:=' + str(collision_points_config_path)]
+        else:
             mobiman_path = mobiman_launch_path + "utilities/ocs2_m4.launch"
             mobiman_args = [mobiman_path,
-                            'robot_ns:=' + str(rns),
+                            'robot_ns:=/',
                             'task_config_path:=' + str(task_config_path),
                             'urdf_path:=' + str(urdf_path_ocs2),
                             'lib_path:=' + str(lib_path),
                             'collision_points_config_path:=' + str(collision_points_config_path)]
 
-            mobiman_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_args)[0], mobiman_args[1:]) ] # type: ignore
-            mobiman = roslaunch.parent.ROSLaunchParent(uuid, mobiman_launch) # type: ignore
-            mobiman.start()
+        mobiman_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_args)[0], mobiman_args[1:]) ] # type: ignore
+        mobiman = roslaunch.parent.ROSLaunchParent(uuid, mobiman_launch) # type: ignore
+        mobiman.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched Mobiman!")
         rospy.sleep(1)
