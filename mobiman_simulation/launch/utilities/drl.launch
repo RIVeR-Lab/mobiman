@@ -177,8 +177,7 @@
                     -J $(arg name_arm_joint_3) $(arg init_arm_joint_pos_3)
                     -J $(arg name_arm_joint_4) $(arg init_arm_joint_pos_4)
                     -J $(arg name_arm_joint_5) $(arg init_arm_joint_pos_5)
-                    -J $(arg name_arm_joint_6) $(arg init_arm_joint_pos_6)
-                    -unpause"/>
+                    -J $(arg name_arm_joint_6) $(arg init_arm_joint_pos_6)"/>
         </group>
 
       <!--node name="publish_ground_truth_odom" pkg="mobiman_simulation" type="publish_ground_truth_odom.py" output="screen" /-->
