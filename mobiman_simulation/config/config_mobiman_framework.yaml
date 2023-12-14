@@ -41,7 +41,7 @@ flag_distance_server: true
 config_distance_server: "config_distance_server"
 
 ### Mobiman:
-flag_mobiman: true
+flag_mobiman: false
 
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson

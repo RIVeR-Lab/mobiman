@@ -41,8 +41,8 @@
        -->
       <group ns="$(arg robot_ns)">
             <node pkg="ocs2_mobile_manipulator_ros" 
-                  type="mobile_manipulator_node" 
-                  name="ocs2_m4" 
+                  type="mobile_manipulator_mpc_node" 
+                  name="ocs2_m4_mpc" 
                   output="screen"
                   launch-prefix="" />
 

@@ -31,8 +31,8 @@
       <param name="libFolder"  value="$(arg libFolder)" />
 
       <node pkg="ocs2_mobile_manipulator_ros" 
-            type="mobile_manipulator_gazebo_mrt_node" 
-            name="mobile_manipulator_gazebo_mrt_node" 
+            type="mobile_manipulator_mrt_node" 
+            name="mobile_manipulator_mrt_node" 
             output="screen"
             launch-prefix="" /> <!--gnome-terminal - - -->
 
