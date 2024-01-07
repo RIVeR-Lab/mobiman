@@ -18,7 +18,7 @@ rosdep install --from-paths src --ignore-src -r -y
 ## Run (Manual mode):
 1. Set configurations in [config_mobiman_framework](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework.yaml)
   - Set parameter "sim: gazebo" for simulation in Gazebo
-  - Set parameter "sim: igibson" for simulation in iGibson
+  - (NOT FUNCTIONAL!) Set parameter "sim: igibson" for simulation in iGibson
 
 2. Launch mobiman framework:
 
