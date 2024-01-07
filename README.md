@@ -21,9 +21,25 @@ rosdep install --from-paths src --ignore-src -r -y
   - Set parameter "sim: igibson" for simulation in iGibson
 
 2. Launch mobiman framework:
+
+In seperate terminals:
+
+1. Start simulation in Gazebo:
 ```
-roslaunch mobiman_simulation mobiman_framework.launch
+roslaunch mobiman_simulation mobiman_framework.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
 ```
+
+2. Start MPC:
+```
+roslaunch mobiman_simulation ocs2_m4_mpc.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
+```
+
+3. Start MRT:
+```
+roslaunch mobiman_simulation ocs2_m4_mrt.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
+```
+
+Note: grep command added to avoid stream of warnings as depicted in [here](https://github.com/ms-iot/ROSOnWindows/issues/279).
 
 ## Run (DRL mode):
 1. Set configurations in [config_mobiman_framework](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework.yaml)
