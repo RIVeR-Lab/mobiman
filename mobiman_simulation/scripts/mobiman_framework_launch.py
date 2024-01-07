@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.11.03
+LAST UPDATE: 2024.01.05
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -13,7 +13,7 @@ import rospkg
 import roslib
 import rosparam
 import roslaunch 
-import tf2_ros
+#import tf2_ros
 
 def load_config_file(config_file_path, namespace=""):
     ## Load config files
@@ -189,6 +189,10 @@ if __name__=="__main__":
             sim = roslaunch.parent.ROSLaunchParent(uuid, sim_launch) # type: ignore
             sim.start()
 
+        print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
+        while 1:
+            continue
+
         ### NUA TODO: MAKE THIS FROM NODES AND PARALLELIZE!!!
         ## Wait for simulation to be ready!
         tfBuffer = tf2_ros.Buffer() # type: ignore
@@ -311,6 +315,7 @@ if __name__=="__main__":
         print("[mobiman_framework_launch:: __main__ ] Launched Distance Server!")
         rospy.sleep(1)
 
+    ### NUA TODO: NOT FUNCTIONAL!!! MPC + MRT LAUNCHES ARE NOT WORKING!
     ## Launch mobiman 
     if flag_mobiman:
 
@@ -324,19 +329,24 @@ if __name__=="__main__":
                                 'lib_path:=' + str(lib_path),
                                 'collision_points_config_path:=' + str(collision_points_config_path)]
         else:
-            mobiman_path = mobiman_launch_path + "utilities/ocs2_m4.launch"
-            mobiman_args = [mobiman_path,
-                            'robot_ns:=/',
-                            'task_config_path:=' + str(task_config_path),
-                            'urdf_path:=' + str(urdf_path_ocs2),
-                            'lib_path:=' + str(lib_path),
-                            'collision_points_config_path:=' + str(collision_points_config_path)]
+            mobiman_mpc_path = mobiman_launch_path + "utilities/ocs2_m4_mpc.launch"
+            mobiman_mpc_args = [mobiman_mpc_path]
+            
+            mobiman_mrt_path = mobiman_launch_path + "utilities/ocs2_m4_mrt.launch"
+            mobiman_mrt_args = [mobiman_mrt_path]
 
-        mobiman_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_args)[0], mobiman_args[1:]) ] # type: ignore
-        mobiman = roslaunch.parent.ROSLaunchParent(uuid, mobiman_launch) # type: ignore
-        mobiman.start()
+        mobiman_mpc_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_mpc_args)[0], mobiman_mpc_args[1:]) ] # type: ignore
+        mobiman_mpc = roslaunch.parent.ROSLaunchParent(uuid, mobiman_mpc_launch) # type: ignore
+        mobiman_mpc.start()
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Mobiman!")
+        print("[mobiman_framework_launch:: __main__ ] Launched Mobiman MPC!")
+        rospy.sleep(1)
+
+        mobiman_mrt_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_mrt_args)[0], mobiman_mrt_args[1:]) ] # type: ignore
+        mobiman_mrt = roslaunch.parent.ROSLaunchParent(uuid, mobiman_mrt_launch) # type: ignore
+        mobiman_mrt.start()
+
+        print("[mobiman_framework_launch:: __main__ ] Launched Mobiman MRT!")
         rospy.sleep(1)
 
     while (not rospy.is_shutdown()):

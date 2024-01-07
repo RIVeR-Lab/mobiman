@@ -192,7 +192,7 @@
       <node name="world_frame_server" pkg="mobiman_simulation" type="world_frame_server" output="screen" />
 
       <!-- node -->
-      <node name="reset_mobiman" pkg="mobiman_simulation" type="reset_mobiman.py" output="screen" />
+      <!--node name="reset_mobiman" pkg="mobiman_simulation" type="reset_mobiman.py" output="screen" /-->
       
       <!-- Load Robot Semantic -->
       <!--param name="robot_description_semantic" textfile="$(find mobiman_wb_moveit_config)/config/mobiman.srdf" /-->
