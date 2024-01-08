@@ -3,7 +3,7 @@
 ### Simulator:
 # gazebo
 # igibson
-sim: "gazebo"
+sim: "igibson"
 
 flag_gazebo: true
 flag_robot: true
@@ -18,7 +18,7 @@ flag_rviz: true
 
 # rviz/gazebo/mobile_manipulator_ocs2_gazebo
 # rviz/igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "rviz/gazebo/mobile_manipulator_ocs2_gazebo"
+rviz_config_path: "rviz/igibson/mobile_manipulator_ocs2_igibson"
 
 ### Map Server:
 flag_map_server: true
@@ -26,7 +26,7 @@ config_map_server: "config_map_server"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 0
+n_robot: 1
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!
@@ -45,6 +45,6 @@ flag_mobiman: false
 
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson
-task_config_path: config/task/task_jackalJaco_gazebo.info
+task_config_path: config/task/task_jackalJaco_igibson.info
 
 config_mobiman_drl: "drl/config_mobiman_drl"

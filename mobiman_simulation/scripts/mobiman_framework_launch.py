@@ -13,7 +13,7 @@ import rospkg
 import roslib
 import rosparam
 import roslaunch 
-#import tf2_ros
+import tf2_ros
 
 def load_config_file(config_file_path, namespace=""):
     ## Load config files
@@ -189,11 +189,6 @@ if __name__=="__main__":
             sim = roslaunch.parent.ROSLaunchParent(uuid, sim_launch) # type: ignore
             sim.start()
 
-        print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
-        while 1:
-            continue
-
-        ### NUA TODO: MAKE THIS FROM NODES AND PARALLELIZE!!!
         ## Wait for simulation to be ready!
         tfBuffer = tf2_ros.Buffer() # type: ignore
         listener = tf2_ros.TransformListener(tfBuffer) # type: ignore
