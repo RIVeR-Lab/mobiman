@@ -1,8 +1,6 @@
 # mobiman
 <hr>
 
-## Gazebo:
-
 ## Installation: 
 1. Clone the mobiman repository into the src folder of catkin workspace:
 ```
@@ -16,27 +14,14 @@ cd mobiman
 rosdep install --from-paths src --ignore-src -r -y
 ```
 ## Run (Manual mode):
-1. Set configurations in [config_mobiman_framework](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework.yaml)
-  - Set parameter "sim: gazebo" for simulation in Gazebo
-  - (NOT FUNCTIONAL!) Set parameter "sim: igibson" for simulation in iGibson
+1. Set configurations in [mobiman_framework.launch](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/launch/mobiman_framework.launch)
+     1. Set parameter "config_mobiman_framework" to
+        - "config_mobiman_framework_gazebo.yaml" for Gazebo
+        - "config_mobiman_framework_igibson.yaml" for iGibson
 
 2. Launch mobiman framework:
-
-In seperate terminals:
-
-1. Start simulation in Gazebo:
 ```
 roslaunch mobiman_simulation mobiman_framework.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
-```
-
-2. Start MPC:
-```
-roslaunch mobiman_simulation ocs2_m4_mpc.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
-```
-
-3. Start MRT:
-```
-roslaunch mobiman_simulation ocs2_m4_mrt.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
 ```
 
 Note: grep command added to avoid stream of warnings as depicted in [here](https://github.com/ms-iot/ROSOnWindows/issues/279).
