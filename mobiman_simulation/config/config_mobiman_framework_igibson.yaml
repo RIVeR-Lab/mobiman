@@ -12,6 +12,7 @@ flag_bin: false
 flag_pedsim: false
 flag_moveit: false
 flag_drl: false
+flag_igibson: true
 
 ### Rviz:
 flag_rviz: true
