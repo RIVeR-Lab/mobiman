@@ -64,7 +64,7 @@ model_information
   pointsOnRobotMsg                "points_on_robot"
   octomapMsg                      "/octomap_scan"
   modelModeMsg                    "/model_mode"
-  mpcTargetMsg                    "/mobile_manipulator_mpc_target"
+  mpcTargetMsg                    "/mpc_target"
   targetMsg                       "/mobile_manipulator_target"
   goalFrame                       "grasp"
 

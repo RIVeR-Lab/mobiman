@@ -3543,6 +3543,8 @@ void MapUtility::updateModelPc2Scan()
 
       if (gz_model_name_tmp == tf_name_tmp)
       {
+        //cout << "[MapUtility::updateModelPc2Scan] tf_name_tmp: " << tf_name_tmp << std::endl;
+        
         tf::Transform transform_pkg_ign;
 
         sensor_msgs::PointCloud2 vec_pc2_msg_gz_ign_wrt_world;

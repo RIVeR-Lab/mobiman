@@ -2,7 +2,7 @@
 <!--E-MAIL: akmandor.n@northeastern.edu-->
 
 <launch>
-      <arg name="robot_ns"                      default="robotName_0"/>
+      <arg name="robot_ns"                      default="/"/>
       <arg name="config_distance_server"        default="config_distance_server" />
       <arg name="collision_points_config_path"  default="config/config_points_on_robot" />
 

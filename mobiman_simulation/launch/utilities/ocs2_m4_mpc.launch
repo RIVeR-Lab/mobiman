@@ -17,7 +17,7 @@
       -->
       <arg name="robot"       default="jackalJaco" />
       
-      <arg name="robot_ns"    default="/"/>
+      <arg name="robot_ns"    default="jackalJaco_0"/>
 
       <!-- The task file for the mpc -->
       <arg name="task_config_path"        default="config/task/task_$(arg robot)_$(arg sim).info" />

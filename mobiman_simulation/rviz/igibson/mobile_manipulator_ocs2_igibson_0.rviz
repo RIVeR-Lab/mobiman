@@ -222,12 +222,12 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        conveyor_belt:
+          Value: true
         jackalJaco_0/base_link:
           Value: true
         jackalJaco_0/chassis_link:
           Value: false
-        jackalJaco_0/conveyor_belt:
-          Value: true
         jackalJaco_0/d435_cam1camera_bottom_screw_frame:
           Value: false
         jackalJaco_0/d435_cam1camera_color_frame:
@@ -304,7 +304,7 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
-          jackalJaco_0/conveyor_belt:
+          conveyor_belt:
             {}
           jackalJaco_0/golazo:
             {}
@@ -470,18 +470,17 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        0 - 12: true
-        11 - 14: true
+        {}
       Queue Size: 10
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: false
+      Enabled: true
       Marker Topic: /jackalJaco_0/occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 10
-      Value: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: false
       Marker Topic: /jackalJaco_0/occupancy_distances_arm_visu
@@ -566,9 +565,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.620201826095581
+      Pitch: 0.6802017688751221
       Target Frame: <Fixed Frame>
-      Yaw: 4.7129435539245605
+      Yaw: 4.692946910858154
     Saved: ~
 Window Geometry:
   Displays:

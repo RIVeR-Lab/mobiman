@@ -314,28 +314,56 @@ if __name__=="__main__":
     ## Launch mobiman 
     if flag_mobiman:
 
+        rospy.sleep(5)
+
         if len(robot_ns_vec) > 0:
             for i, rns in enumerate(robot_ns_vec):
-                mobiman_path = mobiman_launch_path + "utilities/ocs2_m4.launch"
-                mobiman_args = [mobiman_path,
+                mobiman_mpc_path = mobiman_launch_path + "utilities/ocs2_m4_mpc.launch"
+                mobiman_mpc_args = [mobiman_mpc_path,
                                 'robot_ns:=' + str(rns),
                                 'task_config_path:=' + str(task_config_path),
                                 'urdf_path:=' + str(urdf_path_ocs2),
                                 'lib_path:=' + str(lib_path),
                                 'collision_points_config_path:=' + str(collision_points_config_path)]
+                
+                mobiman_mrt_path = mobiman_launch_path + "utilities/ocs2_m4_mrt.launch"
+                mobiman_mrt_args = [mobiman_mrt_path,
+                                'robot_ns:=' + str(rns),
+                                'task_config_path:=' + str(task_config_path),
+                                'urdf_path:=' + str(urdf_path_ocs2),
+                                'lib_path:=' + str(lib_path),
+                                'collision_points_config_path:=' + str(collision_points_config_path)]
+                
+                '''
+                print("[mobiman_framework_launch:: __main__ ] robot_ns: " + str(rns))
+                print("[mobiman_framework_launch:: __main__ ] task_config_path: " + str(task_config_path))
+                print("[mobiman_framework_launch:: __main__ ] urdf_path: " + str(urdf_path_ocs2))
+                print("[mobiman_framework_launch:: __main__ ] lib_path: " + str(lib_path))
+                print("[mobiman_framework_launch:: __main__ ] collision_points_config_path: " + str(collision_points_config_path))
+                '''
         else:
             mobiman_mpc_path = mobiman_launch_path + "utilities/ocs2_m4_mpc.launch"
-            mobiman_mpc_args = [mobiman_mpc_path]
+            mobiman_mpc_args = [mobiman_mpc_path,
+                            'robot_ns:=/',
+                            'task_config_path:=' + str(task_config_path),
+                            'urdf_path:=' + str(urdf_path_ocs2),
+                            'lib_path:=' + str(lib_path),
+                            'collision_points_config_path:=' + str(collision_points_config_path)]
             
             mobiman_mrt_path = mobiman_launch_path + "utilities/ocs2_m4_mrt.launch"
-            mobiman_mrt_args = [mobiman_mrt_path]
+            mobiman_mrt_args = [mobiman_mrt_path,
+                            'robot_ns:=/',
+                            'task_config_path:=' + str(task_config_path),
+                            'urdf_path:=' + str(urdf_path_ocs2),
+                            'lib_path:=' + str(lib_path),
+                            'collision_points_config_path:=' + str(collision_points_config_path)]
 
         mobiman_mpc_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_mpc_args)[0], mobiman_mpc_args[1:]) ] # type: ignore
         mobiman_mpc = roslaunch.parent.ROSLaunchParent(uuid, mobiman_mpc_launch) # type: ignore
         mobiman_mpc.start()
 
         print("[mobiman_framework_launch:: __main__ ] Launched Mobiman MPC!")
-        rospy.sleep(1)
+        rospy.sleep(5)
 
         mobiman_mrt_launch = [ (roslaunch.rlutil.resolve_launch_arguments(mobiman_mrt_args)[0], mobiman_mrt_args[1:]) ] # type: ignore
         mobiman_mrt = roslaunch.parent.ROSLaunchParent(uuid, mobiman_mrt_launch) # type: ignore

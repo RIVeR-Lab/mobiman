@@ -22,7 +22,10 @@ rviz_config_path: "rviz/igibson/mobile_manipulator_ocs2_igibson"
 
 ### Map Server:
 flag_map_server: true
-config_map_server: "config_map_server"
+
+# config_map_server_gazebo
+# config_map_server_igibson
+config_map_server: "config_map_server_igibson"
 
 ### Robot:
 robot_name: "jackalJaco"
@@ -41,7 +44,7 @@ flag_distance_server: true
 config_distance_server: "config_distance_server"
 
 ### Mobiman:
-flag_mobiman: false
+flag_mobiman: true
 
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson

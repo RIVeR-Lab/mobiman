@@ -39,7 +39,9 @@ int main(int argc, char** argv)
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
-  gz_model_msg_name = ros::this_node::getNamespace() + gz_model_msg_name;
+  
+  //gz_model_msg_name = ros::this_node::getNamespace() + gz_model_msg_name;
+
   if (!pnh.getParam("/name_pkgs_ign", name_pkgs_ign))
   {
     ROS_ERROR("Failed to get parameter from server.");
@@ -74,6 +76,10 @@ int main(int argc, char** argv)
 
   if (ns != "/")
   {
+    gz_model_msg_name = ns + "/" + gz_model_msg_name;
+    egrid_frame_name = ns + "/" + egrid_frame_name;
+
+    /*
     for (size_t i = 0; i < name_pkgs_ign.size(); i++)
     {
       name_pkgs_ign[i] = ns + "/" + name_pkgs_ign[i];
@@ -83,6 +89,7 @@ int main(int argc, char** argv)
     {
       name_pkgs_man[i] = ns + "/" + name_pkgs_man[i];
     }
+    */
   }
 
   if (printOutFlag)
