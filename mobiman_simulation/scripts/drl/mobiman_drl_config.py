@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.11.07
+LAST UPDATE: 2024.01.10
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -80,6 +80,7 @@ class Config():
         
         self.base_control_msg_name = rospy.get_param('base_control_msg_name', "")
         self.arm_control_msg_name = rospy.get_param('arm_control_msg_name', "")
+        self.mpc_data_msg_name = rospy.get_param('mpc_data_msg_name', "")
         
         self.rgb_image_msg_name = rospy.get_param('rgb_image_msg_name', "")
         self.depth_image_msg_name = rospy.get_param('depth_image_msg_name', "")
@@ -203,6 +204,7 @@ class Config():
                 training_log_data.append(["goal_frame_name", self.goal_frame_name])
                 training_log_data.append(["base_control_msg_name", self.base_control_msg_name])
                 training_log_data.append(["arm_control_msg_name", self.arm_control_msg_name])
+                training_log_data.append(["mpc_data_msg_name", self.mpc_data_msg_name])
                 training_log_data.append(["rgb_image_msg_name", self.rgb_image_msg_name])
                 training_log_data.append(["depth_image_msg_name", self.depth_image_msg_name])
                 training_log_data.append(["depth_image_raw_msg_name", self.depth_image_raw_msg_name])
@@ -374,6 +376,7 @@ class Config():
         print("[mobiman_drl_config::Config::__init__] n_armstate: " + str(self.n_armstate))
         print("[mobiman_drl_config::Config::__init__] base_control_msg_name: " + str(self.base_control_msg_name))
         print("[mobiman_drl_config::Config::__init__] arm_control_msg_name: " + str(self.arm_control_msg_name))
+        print("[mobiman_drl_config::Config::__init__] mpc_data_msg_name: " + str(self.mpc_data_msg_name))
         print("[mobiman_drl_config::Config::__init__] rgb_image_msg_name: " + str(self.rgb_image_msg_name))
         print("[mobiman_drl_config::Config::__init__] depth_image_msg_name: " + str(self.depth_image_msg_name))
         print("[mobiman_drl_config::Config::__init__] depth_image_raw_msg_name: " + str(self.depth_image_raw_msg_name))

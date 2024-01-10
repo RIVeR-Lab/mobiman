@@ -57,6 +57,7 @@ goal_frame_name: "golazo"
 
 base_control_msg_name: "mobile_base_controller/cmd_vel"
 arm_control_msg_name: "arm_controller/cmd_pos"
+mpc_data_msg_name: "mpc_data"
 
 rgb_image_msg_name: "camera/rgb/image"
 depth_image_msg_name: "camera/depth/image"
