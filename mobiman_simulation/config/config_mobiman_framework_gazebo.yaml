@@ -12,7 +12,6 @@ flag_bin: false
 flag_pedsim: false
 flag_moveit: false
 flag_drl: false
-flag_igibson: false
 
 ### Rviz:
 flag_rviz: true
@@ -30,7 +29,7 @@ config_map_server: "config_map_server_gazebo"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 0
+n_robot: 
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!

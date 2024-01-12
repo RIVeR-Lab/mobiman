@@ -294,6 +294,8 @@ Visualization Manager:
           Value: false
         jackalJaco_0/rear_right_wheel_link:
           Value: false
+        red_cube:
+          Value: true
         world:
           Value: true
       Marker Alpha: 1
@@ -358,6 +360,8 @@ Visualization Manager:
                             jackalJaco_0/j2n6s300_link_6:
                               jackalJaco_0/j2n6s300_end_effector:
                                 {}
+          red_cube:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/InteractiveMarkers
@@ -470,7 +474,8 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/self_collision_distances_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        0 - 12: true
+        11 - 14: true
       Queue Size: 10
       Value: true
     - Class: rviz/MarkerArray
@@ -478,7 +483,8 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
+        0: true
       Queue Size: 10
       Value: true
     - Class: rviz/MarkerArray
