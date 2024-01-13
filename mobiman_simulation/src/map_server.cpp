@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.07.24
+// LAST UPDATE: 2024.01.12
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -79,7 +79,6 @@ int main(int argc, char** argv)
     gz_model_msg_name = ns + "/" + gz_model_msg_name;
     egrid_frame_name = ns + "/" + egrid_frame_name;
 
-    /*
     for (size_t i = 0; i < name_pkgs_ign.size(); i++)
     {
       name_pkgs_ign[i] = ns + "/" + name_pkgs_ign[i];
@@ -89,7 +88,6 @@ int main(int argc, char** argv)
     {
       name_pkgs_man[i] = ns + "/" + name_pkgs_man[i];
     }
-    */
   }
 
   if (printOutFlag)

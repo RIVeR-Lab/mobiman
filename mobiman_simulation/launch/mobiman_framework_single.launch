@@ -1,9 +1,0 @@
-<launch>
-
-  <arg name="config_mobiman_framework"    default="config_mobiman_framework_single.yaml"/>
-  <param name="config_mobiman_framework"  value="$(arg config_mobiman_framework)" />
-
-  <!-- RUN MOBIMAN FRAMEWORK -->
-  <node name="mobiman_framework_single_launch" pkg="mobiman_simulation" type="mobiman_framework_launch.py" output="screen" />
-
-</launch>

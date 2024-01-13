@@ -1,6 +1,8 @@
 #### Mobiman Framework Parameters
 
 ### Simulator:
+flag_sim: true
+
 # gazebo
 # igibson
 sim: "igibson"
@@ -12,7 +14,7 @@ flag_bin: false
 flag_pedsim: false
 flag_moveit: false
 flag_drl: false
-flag_igibson: true
+flag_igibson: false
 
 ### Rviz:
 flag_rviz: true
@@ -30,7 +32,7 @@ config_map_server: "config_map_server_igibson"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 1
+n_robot: 2
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!
@@ -45,7 +47,8 @@ flag_distance_server: true
 config_distance_server: "config_distance_server"
 
 ### Mobiman:
-flag_mobiman: true
+flag_mobiman_mpc: false
+flag_mobiman_mrt: false
 
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson

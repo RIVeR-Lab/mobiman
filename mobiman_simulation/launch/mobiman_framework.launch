@@ -2,6 +2,9 @@
   <!--
     config_mobiman_framework_gazebo
     config_mobiman_framework_igibson
+
+    config_mobiman_framework_igibson_debug_mpc
+    config_mobiman_framework_igibson_debug_mrt
   -->
   <arg name="config_mobiman_framework"    default="config_mobiman_framework_igibson.yaml"/>
   <param name="config_mobiman_framework"  value="$(arg config_mobiman_framework)" />

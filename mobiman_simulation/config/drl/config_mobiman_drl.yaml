@@ -30,7 +30,7 @@ motion_planning_algorithm: "ocs2"
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action)
 observation_space_type: "mobiman_FC"
 
-n_robot: 1
+#n_robot: 1
 
 # Options:
 # JackalJaco_mobiman_drl-v0

@@ -1,9 +1,11 @@
 #### Mobiman Framework Parameters
 
 ### Simulator:
+flag_sim: false
+
 # gazebo
 # igibson
-sim: "gazebo"
+sim: "igibson"
 
 flag_gazebo: true
 flag_robot: true
@@ -12,24 +14,25 @@ flag_bin: false
 flag_pedsim: false
 flag_moveit: false
 flag_drl: false
+flag_igibson: false
 
 ### Rviz:
-flag_rviz: true
+flag_rviz: false
 
 # rviz/gazebo/mobile_manipulator_ocs2_gazebo
 # rviz/igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "rviz/gazebo/mobile_manipulator_ocs2_gazebo"
+rviz_config_path: "rviz/igibson/mobile_manipulator_ocs2_igibson"
 
 ### Map Server:
-flag_map_server: true
+flag_map_server: false
 
 # config_map_server_gazebo
 # config_map_server_igibson
-config_map_server: "config_map_server_gazebo"
+config_map_server: "config_map_server_igibson"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 0
+n_robot: 2
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!
@@ -37,17 +40,18 @@ lib_path: "codegen/auto_generated/jackalJaco"
 collision_points_config_path: "config/config_points_on_robot"
 
 ### Goal Server:
-flag_goal_server: true
+flag_goal_server: false
 
 ### Distance Server:
-flag_distance_server: true
+flag_distance_server: false
 config_distance_server: "config_distance_server"
 
 ### Mobiman:
-flag_mobiman: true
+flag_mobiman_mpc: false
+flag_mobiman_mrt: true
 
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson
-task_config_path: config/task/task_jackalJaco_gazebo.info
+task_config_path: config/task/task_jackalJaco_igibson.info
 
 config_mobiman_drl: "drl/config_mobiman_drl"

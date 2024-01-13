@@ -1,7 +1,7 @@
 #ifndef MAP_UTILITY_H
 #define MAP_UTILITY_H
 
-// LAST UPDATE: 2023.09.11
+// LAST UPDATE: 2024.01.13
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -741,6 +741,8 @@ class MapUtility
 
     NodeHandle nh_;
 
+    std::string ns_;
+
     // NUA TODO: Change naming convention by adding "_".
     tf::TransformListener* tflistener;
 
@@ -894,6 +896,41 @@ class MapUtility
     ros::Publisher pub_occ_grid_msg_;
 
     // NUA TODO: Find a way to generalize!
+    std::string obj_name_conveyor_ = "conveyor_belt";
+    std::string obj_name_normal_pkg_ = "_normal_pkg";
+    std::string obj_name_long_pkg_ = "_long_pkg";
+    std::string obj_name_longwide_pkg_ = "longwide_pkg";
+    std::string obj_name_red_cube_ = "red_cube";
+    std::string obj_name_green_cube_ = "green_cube";
+    std::string obj_name_blue_cube_ = "blue_cube";
+    std::string obj_name_actor0_ = "actor0";
+    std::string obj_name_actor1_ = "actor1";
+    std::string obj_name_bin_ = "bin_4_dropping_task";
+
+    std::string pc2_msg_name_conveyor_ = "pc2_scan_conveyor";
+    std::string pc2_msg_name_normal_pkg_ = "pc2_scan_normal_pkg";
+    std::string pc2_msg_name_long_pkg_ = "pc2_scan_long_pkg";
+    std::string pc2_msg_name_longwide_pkg_ = "pc2_scan_longwide_pkg";
+    std::string pc2_msg_name_red_cube_ = "pc2_scan_red_cube";
+    std::string pc2_msg_name_green_cube_ = "pc2_scan_green_cube";
+    std::string pc2_msg_name_blue_cube_ = "pc2_scan_blue_cube";
+    std::string pc2_msg_name_actor0_ = "pc2_scan_actor0";
+    std::string pc2_msg_name_actor1_ = "pc2_scan_actor1";
+    std::string pc2_msg_name_bin_ = "pc2_scan_bin";
+
+    std::string oct_msg_name_conveyor_ = "oct_conveyor";
+    std::string oct_msg_name_normal_pkg_ = "oct_normal_pkg";
+    std::string oct_msg_name_long_pkg_ = "oct_long_pkg";
+    std::string oct_msg_name_longwide_pkg_ = "oct_longwide_pkg";
+    std::string oct_msg_name_red_cube_ = "oct_red_cube";
+    std::string oct_msg_name_green_cube_ = "oct_green_cube";
+    std::string oct_msg_name_blue_cube_ = "oct_blue_cube";
+    std::string oct_msg_name_actor0_ = "oct_actor0";
+    std::string oct_msg_name_actor1_ = "oct_actor1";
+    std::string oct_msg_name_bin_ = "oct_bin";
+
+    std::string oct_msg_name_ = "octomap_scan";
+    
     shared_ptr<octomap::ColorOcTree> oct_conveyor_;
     shared_ptr<octomap::ColorOcTree> oct_pkg_normal_;
     shared_ptr<octomap::ColorOcTree> oct_pkg_long_;

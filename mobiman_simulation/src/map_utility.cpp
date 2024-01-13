@@ -1,4 +1,4 @@
-// LAST UPDATE: 2023.09.11
+// LAST UPDATE: 2024.01.13
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -54,6 +54,7 @@ MapUtility::MapUtility(ros::NodeHandle& nh,
   cout << "[MapUtility::MapUtility(3)] START" << std::endl;
 
   nh_ = nh;
+  ns_ = nh_.getNamespace();
 
   cout << "[MapUtility::MapUtility(3)] BEFORE subscribe" << std::endl;
   sub_oct_msg_ = nh.subscribe(oct_msg_name, 100, &MapUtility::octMsgCallback, this);
@@ -87,6 +88,7 @@ MapUtility::MapUtility(NodeHandle& nh,
   //cout << "[MapUtility::MapUtility(15)] START" << std::endl;
 
   nh_ = nh;
+  ns_ = nh_.getNamespace();
   tflistener = new tf::TransformListener;
 
   world_frame_name_ = world_frame_name;
@@ -126,29 +128,69 @@ MapUtility::MapUtility(NodeHandle& nh,
   oct_actor1_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
   oct_bin_ = std::make_shared<octomap::ColorOcTree>(map_resolution_);
 
-  pub_pc2_msg_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_conveyor", 5);
-  pub_pc2_msg_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 5);
-  pub_pc2_msg_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 5);
-  pub_pc2_msg_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_longwide_pkg", 5);
-  pub_pc2_msg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_red_cube", 5);
-  pub_pc2_msg_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_green_cube", 5);
-  pub_pc2_msg_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_blue_cube", 5);
-  pub_pc2_msg_actor0_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor0", 5);
-  pub_pc2_msg_actor1_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_actor1", 5);
-  pub_pc2_msg_bin_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_bin", 5);
+  //// NUA TODO: LEFT HEREEE DEFINE MSG NAMES AND ADD NAMESPACES IF REQUIRED!!! 
+  if (ns_ != "/")
+  {
+    obj_name_conveyor_ = ns_ + "/" + obj_name_conveyor_;
+    obj_name_normal_pkg_ = ns_ + "/" + obj_name_normal_pkg_;
+    obj_name_long_pkg_ = ns_ + "/" + obj_name_long_pkg_;
+    obj_name_longwide_pkg_ = ns_ + "/" + obj_name_longwide_pkg_;
+    obj_name_red_cube_ = ns_ + "/" + obj_name_red_cube_;
+    obj_name_green_cube_ = ns_ + "/" + obj_name_green_cube_;
+    obj_name_blue_cube_ = ns_ + "/" + obj_name_blue_cube_;
+    obj_name_actor0_ = ns_ + "/" + obj_name_actor0_;
+    obj_name_actor1_ = ns_ + "/" + obj_name_actor1_;
+    obj_name_bin_ = ns_ + "/" + obj_name_bin_;
 
-  pub_oct_msg_conveyor_ = nh_.advertise<octomap_msgs::Octomap>("oct_conveyor", 5);
-  pub_oct_msg_pkg_normal_ = nh_.advertise<octomap_msgs::Octomap>("oct_normal_pkg", 5);
-  pub_oct_msg_pkg_long_ = nh_.advertise<octomap_msgs::Octomap>("oct_long_pkg", 5);
-  pub_oct_msg_pkg_longwide_ = nh_.advertise<octomap_msgs::Octomap>("oct_longwide_pkg", 5);
-  pub_oct_msg_red_cube_ = nh_.advertise<octomap_msgs::Octomap>("oct_red_cube", 5);
-  pub_oct_msg_green_cube_ = nh_.advertise<octomap_msgs::Octomap>("oct_green_cube", 5);
-  pub_oct_msg_blue_cube_ = nh_.advertise<octomap_msgs::Octomap>("oct_blue_cube", 5);
-  pub_oct_msg_actor0_ = nh_.advertise<octomap_msgs::Octomap>("oct_actor0", 5);
-  pub_oct_msg_actor1_ = nh_.advertise<octomap_msgs::Octomap>("oct_actor1", 5);
-  pub_oct_msg_bin_ = nh_.advertise<octomap_msgs::Octomap>("oct_bin", 5);
 
-  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>("octomap_scan", 5);
+    pc2_msg_name_conveyor_ = ns_ + "/" + pc2_msg_name_conveyor_;
+    pc2_msg_name_normal_pkg_ = ns_ + "/" + pc2_msg_name_normal_pkg_;
+    pc2_msg_name_long_pkg_ = ns_ + "/" + pc2_msg_name_long_pkg_;
+    pc2_msg_name_longwide_pkg_ = ns_ + "/" + pc2_msg_name_longwide_pkg_;
+    pc2_msg_name_red_cube_ = ns_ + "/" + pc2_msg_name_red_cube_;
+    pc2_msg_name_green_cube_ = ns_ + "/" + pc2_msg_name_green_cube_;
+    pc2_msg_name_blue_cube_ = ns_ + "/" + pc2_msg_name_blue_cube_;
+    pc2_msg_name_actor0_ = ns_ + "/" + pc2_msg_name_actor0_;
+    pc2_msg_name_actor1_ = ns_ + "/" + pc2_msg_name_actor1_;
+    pc2_msg_name_bin_ = ns_ + "/" + pc2_msg_name_bin_;
+
+    oct_msg_name_conveyor_ = ns_ + "/" + oct_msg_name_conveyor_;
+    oct_msg_name_normal_pkg_ = ns_ + "/" + oct_msg_name_normal_pkg_;
+    oct_msg_name_long_pkg_ = ns_ + "/" + oct_msg_name_long_pkg_;
+    oct_msg_name_longwide_pkg_ = ns_ + "/" + oct_msg_name_longwide_pkg_;
+    oct_msg_name_red_cube_ = ns_ + "/" + oct_msg_name_red_cube_;
+    oct_msg_name_green_cube_ = ns_ + "/" + oct_msg_name_green_cube_;
+    oct_msg_name_blue_cube_ = ns_ + "/" + oct_msg_name_blue_cube_;
+    oct_msg_name_actor0_ = ns_ + "/" + oct_msg_name_actor0_;
+    oct_msg_name_actor1_ = ns_ + "/" + oct_msg_name_actor1_;
+    oct_msg_name_bin_ = ns_ + "/" + oct_msg_name_bin_;
+
+    oct_msg_name_ = ns_ + "/" + oct_msg_name_;
+  }
+
+  pub_pc2_msg_conveyor_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_conveyor_, 5);
+  pub_pc2_msg_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_normal_pkg_, 5);
+  pub_pc2_msg_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_long_pkg_, 5);
+  pub_pc2_msg_pkg_longwide_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_longwide_pkg_, 5);
+  pub_pc2_msg_red_cube_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_red_cube_, 5);
+  pub_pc2_msg_green_cube_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_green_cube_, 5);
+  pub_pc2_msg_blue_cube_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_blue_cube_, 5);
+  pub_pc2_msg_actor0_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_actor0_, 5);
+  pub_pc2_msg_actor1_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_actor1_, 5);
+  pub_pc2_msg_bin_ = nh_.advertise<sensor_msgs::PointCloud2>(pc2_msg_name_bin_, 5);
+
+  pub_oct_msg_conveyor_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_conveyor_, 5);
+  pub_oct_msg_pkg_normal_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_normal_pkg_, 5);
+  pub_oct_msg_pkg_long_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_long_pkg_, 5);
+  pub_oct_msg_pkg_longwide_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_longwide_pkg_, 5);
+  pub_oct_msg_red_cube_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_red_cube_, 5);
+  pub_oct_msg_green_cube_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_green_cube_, 5);
+  pub_oct_msg_blue_cube_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_blue_cube_, 5);
+  pub_oct_msg_actor0_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_actor0_, 5);
+  pub_oct_msg_actor1_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_actor1_, 5);
+  pub_oct_msg_bin_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_bin_, 5);
+
+  pub_oct_msg_ = nh_.advertise<octomap_msgs::Octomap>(oct_msg_name_, 5);
 
   //pub_pc2_msg_gz_man_pkg_normal_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_normal_pkg", 5);
   //pub_pc2_msg_gz_man_pkg_long_ = nh_.advertise<sensor_msgs::PointCloud2>("pc2_scan_long_pkg", 5);
@@ -171,6 +213,7 @@ MapUtility::MapUtility(NodeHandle& nh,
                        std::string new_sensor_laser_msg_name)
 {
   nh_ = nh;
+  ns_ = nh_.getNamespace();
   tflistener = new tf::TransformListener;
 
   map_name = new_map_name;
@@ -228,6 +271,7 @@ MapUtility::MapUtility(NodeHandle& nh,
 MapUtility::MapUtility(const MapUtility& mu)
 {
   nh_ = mu.nh_;
+  ns_ = mu.ns_;
   tflistener = mu.tflistener;
   world_frame_name_ = mu.world_frame_name_;
   map_name = mu.map_name;
@@ -291,6 +335,7 @@ MapUtility::~MapUtility()
 MapUtility& MapUtility::operator=(const MapUtility& mu) 
 {
   nh_ = mu.nh_;
+  ns_ = mu.ns_;
   tflistener = mu.tflistener;
   world_frame_name_ = mu.world_frame_name_;
   map_name = mu.map_name;
@@ -1513,8 +1558,8 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
 {
   //cout << "[MapUtility::fillOctMsgFromOct(1)] START" << endl;
   //cout << "[MapUtility::fillOctMsgFromOct(1)] octMsgName: " << octMsgName << endl;
-  
-  if (octMsgName == "conveyor_belt")
+
+  if (octMsgName == obj_name_conveyor_)
   {
     oct_msg_conveyor_.data.clear();
     oct_msg_conveyor_.header.frame_id = world_frame_name_;
@@ -1523,7 +1568,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_conveyor_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_conveyor_, oct_msg_conveyor_);
   }
-  else if (octMsgName == "normal_pkg")
+  else if (octMsgName == obj_name_normal_pkg_)
   {
     oct_msg_pkg_normal_.data.clear();
     oct_msg_pkg_normal_.header.frame_id = world_frame_name_;
@@ -1532,7 +1577,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_pkg_normal_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_pkg_normal_, oct_msg_pkg_normal_);
   }
-  else if (octMsgName == "long_pkg")
+  else if (octMsgName == obj_name_long_pkg_)
   {
     oct_msg_pkg_long_.data.clear();
     oct_msg_pkg_long_.header.frame_id = world_frame_name_;
@@ -1541,7 +1586,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_pkg_long_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_pkg_long_, oct_msg_pkg_long_);
   }
-  else if (octMsgName == "longwide_pkg")
+  else if (octMsgName == obj_name_longwide_pkg_)
   {
     oct_msg_pkg_longwide_.data.clear();
     oct_msg_pkg_longwide_.header.frame_id = world_frame_name_;
@@ -1550,7 +1595,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_pkg_longwide_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_pkg_longwide_, oct_msg_pkg_longwide_);
   }
-  else if (octMsgName == "red_cube")
+  else if (octMsgName == obj_name_red_cube_)
   {
     oct_msg_red_cube_.data.clear();
     oct_msg_red_cube_.header.frame_id = world_frame_name_;
@@ -1559,7 +1604,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_red_cube_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_red_cube_, oct_msg_red_cube_);
   }
-  else if (octMsgName == "green_cube")
+  else if (octMsgName == obj_name_green_cube_)
   {
     oct_msg_green_cube_.data.clear();
     oct_msg_green_cube_.header.frame_id = world_frame_name_;
@@ -1568,7 +1613,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_green_cube_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_green_cube_, oct_msg_green_cube_);
   }
-  else if (octMsgName == "blue_cube")
+  else if (octMsgName == obj_name_blue_cube_)
   {
     oct_msg_blue_cube_.data.clear();
     oct_msg_blue_cube_.header.frame_id = world_frame_name_;
@@ -1577,7 +1622,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_blue_cube_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_blue_cube_, oct_msg_blue_cube_);
   }
-  else if (octMsgName == "actor0")
+  else if (octMsgName == obj_name_actor0_)
   {
     oct_msg_actor0_.data.clear();
     oct_msg_actor0_.header.frame_id = world_frame_name_;
@@ -1586,7 +1631,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_actor0_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_actor0_, oct_msg_actor0_);
   }
-  else if (octMsgName == "actor1")
+  else if (octMsgName == obj_name_actor1_)
   {
     oct_msg_actor1_.data.clear();
     oct_msg_actor1_.header.frame_id = world_frame_name_;
@@ -1595,7 +1640,7 @@ void MapUtility::fillOctMsgFromOct(std::string octMsgName)
     oct_msg_actor1_.resolution = map_resolution_;
     octomap_msgs::fullMapToMsg(*oct_actor1_, oct_msg_actor1_);
   }
-  else if (octMsgName == "bin_4_dropping_task")
+  else if (octMsgName == obj_name_bin_)
   {
     oct_msg_bin_.data.clear();
     oct_msg_bin_.header.frame_id = world_frame_name_;
@@ -1765,6 +1810,7 @@ void MapUtility::addToOct(sensor_msgs::PointCloud2& pc2_msg)
 void MapUtility::updateObjectOct(sensor_msgs::PointCloud2& pc2_msg, std::string objName)
 {
   //std::cout << "[MapUtility::updateObjectOct] START" << std::endl;
+  //std::cout << "[MapUtility::updateObjectOct] objName: " << objName << std::endl;
 
   oct_conveyor_->clear();
   oct_pkg_normal_->clear();
@@ -1787,43 +1833,43 @@ void MapUtility::updateObjectOct(sensor_msgs::PointCloud2& pc2_msg, std::string 
     // Check if the point is invalid
     if (!std::isnan (*iter_x) && !std::isnan (*iter_y) && !std::isnan (*iter_z))
     {
-      if (objName == "conveyor_belt") 
+      if (objName == obj_name_conveyor_) 
       {
         oct_conveyor_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "normal_pkg") 
+      else if (objName == obj_name_normal_pkg_) 
       {
         oct_pkg_normal_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "long_pkg") 
+      else if (objName == obj_name_long_pkg_) 
       {
         oct_pkg_long_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "longwide_pkg") 
+      else if (objName == obj_name_longwide_pkg_) 
       { 
         oct_pkg_longwide_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "red_cube") 
+      else if (objName == obj_name_red_cube_) 
       { 
         oct_red_cube_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "green_cube") 
+      else if (objName == obj_name_green_cube_) 
       {
         oct_green_cube_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "blue_cube") 
+      else if (objName == obj_name_blue_cube_) 
       {
         oct_blue_cube_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "actor0") 
+      else if (objName == obj_name_actor0_) 
       {
         oct_actor0_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "actor1") 
+      else if (objName == obj_name_actor1_) 
       {
         oct_actor1_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
-      else if (objName == "bin_4_dropping_task") 
+      else if (objName == obj_name_bin_) 
       {
         oct_bin_->updateNode(*iter_x, *iter_y, *iter_z, true);
       }
@@ -2928,6 +2974,8 @@ void MapUtility::publishOctMsg()
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::publishObjectOctMsg()
 {
+  //std::cout << "[MapUtility::publishObjectOctMsg] START" << std::endl;
+
   oct_msg_conveyor_.header.frame_id = world_frame_name_;
   oct_msg_conveyor_.header.stamp = ros::Time::now();
   pub_oct_msg_conveyor_.publish(oct_msg_conveyor_);
@@ -2967,6 +3015,8 @@ void MapUtility::publishObjectOctMsg()
   oct_msg_bin_.header.frame_id = world_frame_name_;
   oct_msg_bin_.header.stamp = ros::Time::now();
   pub_oct_msg_bin_.publish(oct_msg_bin_);
+
+  //std::cout << "[MapUtility::publishObjectOctMsg] START" << std::endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -3525,7 +3575,14 @@ void MapUtility::updateModelPc2Scan()
   for (size_t i = 0; i < ms.name.size(); i++)
   {
     //cout << "[MapUtility::updateModelPc2Scan] GAZEBO_MSG_RECEIVED!" << std::endl;
-    gz_model_name_tmp = ms.name[i];
+    if (ns_ != "/")
+    {
+      gz_model_name_tmp = ns_ + "/" + ms.name[i];
+    }
+    else
+    {
+      gz_model_name_tmp = ms.name[i];
+    }
 
     for (size_t j = 0; j < vec_frame_name_ign_.size(); j++)
     {
