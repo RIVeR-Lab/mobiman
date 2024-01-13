@@ -638,7 +638,8 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 10
       Value: true
     - Class: rviz/MarkerArray
@@ -654,7 +655,9 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/target_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
   Enabled: true

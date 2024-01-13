@@ -5,8 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-        - /InteractiveMarkers1
-        - /InteractiveMarkers3
         - /MarkerArray3/Namespaces1
       Splitter Ratio: 0.5
     Tree Height: 787
@@ -612,7 +610,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /jackalJaco_0/occupancy_distances_base_visu
+      Marker Topic: /jackalJaco_1/occupancy_distances_base_visu
       Name: MarkerArray
       Namespaces:
         "": true
@@ -640,7 +638,8 @@ Visualization Manager:
       Marker Topic: /jackalJaco_1/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        {}
+        Base Trajectory: true
+        EE Trajectory: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -681,7 +680,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.7914693355560303
+      Distance: 3.7160191535949707
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -699,7 +698,7 @@ Visualization Manager:
       Near Clip Distance: 0.009999999776482582
       Pitch: 0.3697979748249054
       Target Frame: <Fixed Frame>
-      Yaw: 4.377920150756836
+      Yaw: 4.372920036315918
     Saved: ~
 Window Geometry:
   Displays:
