@@ -7,7 +7,7 @@ Panels:
         - /MarkerArray2/Namespaces1
         - /MarkerArray5/Namespaces1
       Splitter Ratio: 0.5
-    Tree Height: 787
+    Tree Height: 441
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties

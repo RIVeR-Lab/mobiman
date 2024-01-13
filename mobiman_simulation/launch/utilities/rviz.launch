@@ -1,6 +1,6 @@
 <launch>
   <arg name="rviz_config_path" default="rviz/debug" />
-  <arg name="robot_ns"            default="robotName_0"/>
+  <arg name="robot_ns"            default="/"/>
   
   <group ns="$(arg robot_ns)">
     <node name="rviz" 
