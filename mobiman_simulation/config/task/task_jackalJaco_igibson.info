@@ -183,7 +183,7 @@ endEffector
 
 finalEndEffector
 {
-  muPosition      20.0  ; NUA EDIT: def: 10
+  muPosition      40.0  ; NUA EDIT: def: 10
   muOrientation   20.0  ; NUA EDIT: def: 5.0
 }
 
@@ -252,7 +252,7 @@ jointPositionLimits
 jointVelocityLimits
 {
   ; relaxed log barrier mu
-  mu      0.015
+  mu      0.05
 
   ; relaxed log barrier delta
   delta   1e-3
@@ -262,19 +262,19 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      (0,0)  -0.3 ; forward velocity NUA EDIT: def: -0.5
-      (1,0)  -0.6 ; turning velocity NUA EDIT: def: -1.0
+      (0,0)  -1.0 ; forward velocity NUA EDIT: def: -0.5
+      (1,0)  -2.0 ; turning velocity NUA EDIT: def: -1.0
     }
 
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  -15  ; j2n6s300_joint_1 velocity
-      (1,0)  -15  ; j2n6s300_joint_2 velocity
-      (2,0)  -15  ; j2n6s300_joint_3 velocity
-      (3,0)  -15  ; j2n6s300_joint_4 velocity
-      (4,0)  -15  ; j2n6s300_joint_5 velocity
-      (5,0)  -15  ; j2n6s300_joint_6 velocity
+      (0,0)  -10  ; j2n6s300_joint_1 velocity
+      (1,0)  -10  ; j2n6s300_joint_2 velocity
+      (2,0)  -10  ; j2n6s300_joint_3 velocity
+      (3,0)  -10  ; j2n6s300_joint_4 velocity
+      (4,0)  -10  ; j2n6s300_joint_5 velocity
+      (5,0)  -10  ; j2n6s300_joint_6 velocity
     }
   }
 
@@ -283,19 +283,19 @@ jointVelocityLimits
     ; velocity limits for the different types of arm base DOFs
     base
     {
-      (0,0)  0.3 ; forward velocity
-      (1,0)  0.6 ; turning velocity
+      (0,0)  1.0 ; forward velocity
+      (1,0)  2.0 ; turning velocity
     }
 
     ; velocity limits for the arm DOFs
     arm
     {
-      (0,0)  15  ; j2n6s300_joint_1 velocity
-      (1,0)  15  ; j2n6s300_joint_2 velocity
-      (2,0)  15  ; j2n6s300_joint_3 velocity
-      (3,0)  15  ; j2n6s300_joint_4 velocity
-      (4,0)  15  ; j2n6s300_joint_5 velocity
-      (5,0)  15  ; j2n6s300_joint_6 velocity
+      (0,0)  10  ; j2n6s300_joint_1 velocity
+      (1,0)  10  ; j2n6s300_joint_2 velocity
+      (2,0)  10  ; j2n6s300_joint_3 velocity
+      (3,0)  10  ; j2n6s300_joint_4 velocity
+      (4,0)  10  ; j2n6s300_joint_5 velocity
+      (5,0)  10  ; j2n6s300_joint_6 velocity
     }
   }
 }
