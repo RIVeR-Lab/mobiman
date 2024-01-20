@@ -1,0 +1,179 @@
+#### DRL Parameters
+
+igibson_config_file: "igibson_jackal_jaco"
+
+### Common Parameters for Training and Testing
+ros_pkg_name: "mobiman_simulation"
+gazebo_robot_name: "mobiman"
+mode: "training"
+drl_data_path: "dataset/drl/"
+initial_training_path: ""
+#initial_training_path: "20231003_115318_PPO_mobiman/"
+training_log_name: "training_log"
+
+### DRL-Training Parameters
+world_name: "conveyor"
+world_range_x_min: -5.0
+world_range_x_max: 5.0
+
+world_range_y_min: -5.0
+world_range_y_max: 5.0
+
+world_range_z_min: 0.0
+world_range_z_max: 2.0
+
+deep_learning_algorithm: "PPO"
+motion_planning_algorithm: "ocs2"
+
+# Options: ### NUA TODO: UPDATE! 
+# mobiman_FC             -> FC(occupancy_set + target + prev_action)
+# mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action)
+observation_space_type: "mobiman_FC"
+
+#n_robot: 1
+
+# Options:
+# JackalJaco_mobiman_drl-v0
+task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
+
+learning_rate: 0.0001
+n_steps: 50 #1000
+batch_size: 10 #50
+ent_coef: 0.0001
+training_timesteps: 2000 #10000
+max_episode_steps: 10 #2000
+
+training_checkpoint_freq: 50 #1000
+plot_title: "Learning Curve"
+plot_moving_average_window_size_timesteps: 5
+plot_moving_average_window_size_episodes: 1
+
+## Data and Sensors
+world_frame_name: "world"
+robot_frame_name: "base_link"
+arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j2n6s300_joint_4", "j2n6s300_joint_5", "j2n6s300_joint_6"]
+ee_frame_name: "j2n6s300_end_effector"
+goal_frame_name: "grasp"
+
+base_control_msg_name: "mobile_base_controller/cmd_vel"
+arm_control_msg_name: "arm_controller/cmd_pos"
+mpc_data_msg_name: "mpc_data"
+
+rgb_image_msg_name: "camera/rgb/image"
+depth_image_msg_name: "camera/depth/image"
+depth_image_raw_msg_name: "camera/depth/image_raw"
+camera_info_msg_name: "camera/depth/camera_info"
+lidar_msg_name: "lidar/points"
+odom_msg_name: "odom"
+#odom_msg_name: "odom_ground_truth" 
+#imu_msg_name: "imu"
+arm_state_msg_name: "joint_states"
+modelmode_msg_name: "model_mode"
+target_msg_name: "target_visu"
+occgrid_msg_name: "occupancy_grid"
+selfcoldistance_msg_name: "self_collision_distances"
+extcoldistance_base_msg_name: "occupancy_distances_base"
+extcoldistance_arm_msg_name: "occupancy_distances_arm"
+pointsonrobot_msg_name: "points_on_robot"
+
+#goal_status_msg_name: "goal_status"
+
+occgrid_normalize_flag: True
+occgrid_occ_min: 0
+occgrid_occ_max: 100
+
+#laser_size_downsampled: 90
+#laser_normalize_flag: True
+#laser_error_threshold: 0.1
+
+## Algorithm: mobiman-DRL Parameters
+# Action time horizon [s]
+action_time_horizon: 6.0
+
+# 0: Discrete
+# 1: Continuous
+action_type: 1
+
+# --------------------------- ### NUA TODO: NOT FUNCTIONAL! 
+# IF action_type: 0 (Discrete)
+# [baseMotion, armMotion, wholeBodyMotion]
+n_action_model: 3
+
+# [inputCost, targetCost, targetConstraint, selfCollisionConstraint, extCollisionConstraint, jointPositionConstraint, jointVelocityConstraint]
+# [selfCollisionConstraint]
+n_action_constraint: 1
+
+# 32 fixed poses in robot workspace + 1 goal pose
+n_action_target: 33 
+# ---------------------------
+
+# IF action_type: 1 (Continuous)
+# [model(1), constraint(1), target(6)]
+n_action: 8
+
+# Ablation modes
+# 0: Close to the goal -> first complete drl action, then whole-body mpc where target is goal (Comment: Only arm mode becoming redundant.)
+# 1: Close to the goal -> change action's target part to goal (Comment: Wrong target values are rewarded.)
+ablation_mode: 0
+
+last_step_distance_threshold: 1.0
+goal_distance_pos_threshold: 0.1
+goal_distance_ori_threshold_yaw: 0.1
+goal_distance_ori_threshold_quat: 0.05
+
+goal_range_min_x: -5.0
+goal_range_max_x: 5.0
+
+goal_range_min_y: -2.5
+goal_range_max_y: 2.0
+
+goal_range_min_z: 0.5
+goal_range_max_z: 1.0
+
+self_collision_range_min: 0.05
+self_collision_range_max: 1.0
+
+ext_collision_range_base_min: 0.25
+ext_collision_range_arm_min: 0.05
+ext_collision_range_max: 5.0
+
+rollover_pitch_threshold: 0.2
+rollover_roll_threshold: 0.2
+
+n_obs_stack: 1
+n_skip_obs_stack: 1
+
+## Reward Function:
+# Terminal:
+reward_terminal_goal: 50
+reward_terminal_collision: -10
+reward_terminal_roll: -10
+reward_terminal_max_step: -50
+
+# Target-to-goal
+reward_step_target2goal: 5
+reward_step_target2goal_mu_regular: 1
+reward_step_target2goal_sigma_regular: 1.0
+reward_step_target2goal_mu_last_step: 0.75
+reward_step_target2goal_sigma_last_step: 0.5
+
+# Model mode
+reward_step_mode0: -1.5
+reward_step_mode1: -3.0
+reward_step_mode2: -4.5
+
+# MPC result
+reward_step_mpc_exit: -5
+reward_step_target_reached: 3
+reward_step_time_horizon_min: -10
+reward_step_time_horizon_max: 0
+
+# Cost weights
+alpha_step_target2goal: 1
+alpha_step_mode: 1
+alpha_step_mpc_result: 1
+
+### DRL-Testing Parameters
+#max_testing_episode_timesteps: 2000
+#max_testing_episodes: 2
+#goal_status_msg: "/goal_reaching_status"
