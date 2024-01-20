@@ -83,6 +83,7 @@ if __name__=="__main__":
     ### Goal Server:
     flag_goal_server = rospy.get_param('flag_goal_server', True)
     config_goal_server = rospy.get_param('config_goal_server', "")
+    load_config_file(mobiman_path + "config/" + config_goal_server + ".yaml")
 
     ### Distance Server:
     flag_distance_server = rospy.get_param('flag_distance_server', True)

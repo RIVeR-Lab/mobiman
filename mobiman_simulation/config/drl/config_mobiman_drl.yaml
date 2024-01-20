@@ -53,7 +53,7 @@ world_frame_name: "world"
 robot_frame_name: "base_link"
 arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j2n6s300_joint_4", "j2n6s300_joint_5", "j2n6s300_joint_6"]
 ee_frame_name: "j2n6s300_end_effector"
-goal_frame_name: "golazo"
+goal_frame_name: "grasp"
 
 base_control_msg_name: "mobile_base_controller/cmd_vel"
 arm_control_msg_name: "arm_controller/cmd_pos"
