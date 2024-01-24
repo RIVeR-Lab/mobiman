@@ -1,4 +1,4 @@
-// LAST UPDATE: 2024.01.13
+// LAST UPDATE: 2024.01.23
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -2797,13 +2797,15 @@ void MapUtility::updateOct(std::string oct_msg_name)
 //-------------------------------------------------------------------------------------------------------
 void MapUtility::updateObjectOct()
 {
-  for (size_t i = 0; i < vec_pc2_msg_obj_wrt_world_.size(); i++)
+  std::vector<string> vec_frame_name_obj = vec_frame_name_obj_;
+  std::vector<sensor_msgs::PointCloud2> vec_pc2_msg_obj_wrt_world = vec_pc2_msg_obj_wrt_world_;
+
+  for (size_t i = 0; i < vec_pc2_msg_obj_wrt_world.size(); i++)
   {
-    sensor_msgs::PointCloud2 pc2_msg_scan = vec_pc2_msg_obj_wrt_world_[i];
-    if (pc2_msg_scan.data.size() > 0)
+    if (vec_pc2_msg_obj_wrt_world[i].data.size() > 0)
     {
-      updateObjectOct(pc2_msg_scan, vec_frame_name_obj_[i]);
-      fillOctMsgFromOct(vec_frame_name_obj_[i]);
+      updateObjectOct(vec_pc2_msg_obj_wrt_world[i], vec_frame_name_obj[i]);
+      fillOctMsgFromOct(vec_frame_name_obj[i]);
     }
   }
 }
