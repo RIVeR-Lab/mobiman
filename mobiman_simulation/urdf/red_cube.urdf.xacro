@@ -9,9 +9,9 @@
         prefix="red_cube" 
         color="Red"
         mass="0.1"
-        box_size_x="0.05" 
-        box_size_y="0.05" 
-        box_size_z="0.05" >
+        box_size_x="0.15" 
+        box_size_y="0.075" 
+        box_size_z="0.15" >
     </xacro:package>
 
 </robot>

@@ -29,14 +29,23 @@ world_range_y_max: 3.0
 world_range_z_min: 0.0
 world_range_z_max: 2.0
 
-init_robot_pos_range_x_min: -2.0
-init_robot_pos_range_x_max: 2.0
+init_robot_pos_range_x_min: -1.5    # wrt. world frame
+init_robot_pos_range_x_max: 1.5     # wrt. world frame
 
-init_robot_pos_range_y_min: -2.0
-init_robot_pos_range_y_max: 2.0
+init_robot_pos_range_y_min: -2.0    # wrt. world frame
+init_robot_pos_range_y_max: 2.0     # wrt. world frame
 
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
+
+goal_range_min_x: -1.5              # wrt. conveyor frame
+goal_range_max_x: 1.5               # wrt. conveyor frame
+
+goal_range_min_y: -0.1              # wrt. conveyor frame
+goal_range_max_y: 0.1               # wrt. conveyor frame
+
+goal_range_min_z: 0.5               # wrt. world frame
+goal_range_max_z: 0.7               # wrt. world frame
 
 ## Algorithm:
 deep_learning_algorithm: "PPO"
@@ -131,15 +140,6 @@ last_step_distance_threshold: 1.0
 goal_distance_pos_threshold: 0.1
 goal_distance_ori_threshold_yaw: 0.1
 goal_distance_ori_threshold_quat: 0.05
-
-goal_range_min_x: -5.0
-goal_range_max_x: 5.0
-
-goal_range_min_y: -2.5
-goal_range_max_y: 2.0
-
-goal_range_min_z: 0.5
-goal_range_max_z: 1.0
 
 self_collision_range_min: 0.05
 self_collision_range_max: 1.0
