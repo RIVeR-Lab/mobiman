@@ -23,4 +23,5 @@
 
   <!-- RUN MOBIMAN FRAMEWORK -->
   <node name="mobiman_framework_launch" pkg="mobiman_simulation" type="mobiman_framework_launch.py" output="screen" />
+  <param name="robot_description" command="$(find xacro)/xacro '$(find mobiman_simulation)/urdf/jackal_jaco.xacro'" /> 
 </launch>
