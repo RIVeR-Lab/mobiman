@@ -6,8 +6,20 @@
     config_mobiman_framework_igibson_debug_mpc
     config_mobiman_framework_igibson_debug_mrt
   -->
+
+  <arg name="exp" default="false"/>
+
   <arg name="config_mobiman_framework"    default="config_mobiman_framework_igibson.yaml"/>
+  <arg name="exp_mobiman_framework"    default="exp_mobiman_framework_igibson.yaml"/>
   <param name="config_mobiman_framework"  value="$(arg config_mobiman_framework)" />
+  <param name="config_mobiman_framework"  value="$(arg exp_mobiman_framework)" unless="$(arg exp)" />
+
+  <!-- If Experiments, run transform broadcaster, model_state publisher and PID controller -->
+  <group if="$(arg exp)">
+    <node name="model_state_pub" pkg="mobiman_simulation" type="model_state_pub.py" output="screen" />
+    <node name="jackal_jaco_transform" pkg="mobiman_simulation" type="jackal_jaco_transform.py" output="screen" />
+    <node name="jaco_utility" pkg="mobiman_simulation" type="jaco_utility" output="screen" />
+  </group>
 
   <!-- RUN MOBIMAN FRAMEWORK -->
   <node name="mobiman_framework_launch" pkg="mobiman_simulation" type="mobiman_framework_launch.py" output="screen" />
