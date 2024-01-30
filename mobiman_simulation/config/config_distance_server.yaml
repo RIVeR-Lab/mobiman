@@ -2,3 +2,6 @@
 # E-MAIL: akmandor.n@northeastern.edu
 
 world_frame_name: "world"
+
+obj_octomap_names: ["oct_conveyor"]
+mobiman_occ_obs_names: ["conveyor_belt", "red_cube"]

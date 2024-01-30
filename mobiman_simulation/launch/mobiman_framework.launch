@@ -5,14 +5,16 @@
 
     config_mobiman_framework_igibson_debug_mpc
     config_mobiman_framework_igibson_debug_mrt
+
+    exp_mobiman_framework_igibson
   -->
-
-  <arg name="exp" default="false"/>
-
   <arg name="config_mobiman_framework"    default="config_mobiman_framework_igibson.yaml"/>
-  <arg name="exp_mobiman_framework"    default="exp_mobiman_framework_igibson.yaml"/>
+  <arg name="exp" default="false"/>
+  
   <param name="config_mobiman_framework"  value="$(arg config_mobiman_framework)" />
-  <param name="config_mobiman_framework"  value="$(arg exp_mobiman_framework)" unless="$(arg exp)" />
+
+  <!--arg name="exp_mobiman_framework"    default="exp_mobiman_framework_igibson.yaml"/>
+  <param name="config_mobiman_framework"  value="$(arg exp_mobiman_framework)" unless="$(arg exp)" /-->
 
   <!-- If Experiments, run transform broadcaster, model_state publisher and PID controller -->
   <group if="$(arg exp)">

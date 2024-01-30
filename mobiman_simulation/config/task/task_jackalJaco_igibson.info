@@ -65,7 +65,7 @@ model_information
   modelModeMsg                    "/model_mode"
   mpcTargetMsg                    "/mpc_target"
   targetMsg                       "/target"
-  goalFrame                       "/golazo"
+  goalFrame                       "/grasp"
 
   collisionConstraintPoints       "/collision_constraint_points"
   collisionCheckPoints            "/collision_check_points"

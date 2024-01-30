@@ -1,12 +1,17 @@
 <launch>
-  <arg name="rviz_config_path" default="rviz/debug" />
+  <!--
+    debug
+    igibson/mobile_manipulator_ocs2_igibson_0
+  -->
+
+  <arg name="rviz_config_path"    default="igibson/mobile_manipulator_ocs2_igibson_0" />
   <arg name="robot_ns"            default="/"/>
   
   <group ns="$(arg robot_ns)">
     <node name="rviz" 
           pkg="rviz" 
           type="rviz" 
-          args="-d $(find mobiman_simulation)/$(arg rviz_config_path).rviz" 
+          args="-d $(find mobiman_simulation)/rviz/$(arg rviz_config_path).rviz" 
           required="true" />
   </group>
 

@@ -20,6 +20,8 @@ training_log_name: "training_log"
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
 world_name: "conveyor"
+
+#### NUA TODO: SET THEM IN PYTHON SCRIPT!
 world_range_x_min: -3.0
 world_range_x_max: 3.0
 
@@ -38,13 +40,13 @@ init_robot_pos_range_y_max: 2.0     # wrt. world frame
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
 
-goal_range_min_x: -1.5              # wrt. conveyor frame
-goal_range_max_x: 1.5               # wrt. conveyor frame
+goal_range_min_x: -1.0              # wrt. conveyor frame
+goal_range_max_x: 1.0               # wrt. conveyor frame
 
-goal_range_min_y: -0.1              # wrt. conveyor frame
-goal_range_max_y: 0.1               # wrt. conveyor frame
+goal_range_min_y: -0.15              # wrt. conveyor frame
+goal_range_max_y: 0.0               # wrt. conveyor frame
 
-goal_range_min_z: 0.5               # wrt. world frame
+goal_range_min_z: 0.6               # wrt. world frame
 goal_range_max_z: 0.7               # wrt. world frame
 
 ## Algorithm:
@@ -79,28 +81,34 @@ base_control_msg_name: "mobile_base_controller/cmd_vel"
 arm_control_msg_name: "arm_controller/cmd_pos"
 mpc_data_msg_name: "mpc_data"
 
-rgb_image_msg_name: "camera/rgb/image"
-depth_image_msg_name: "camera/depth/image"
-depth_image_raw_msg_name: "camera/depth/image_raw"
-camera_info_msg_name: "camera/depth/camera_info"
-lidar_msg_name: "lidar/points"
+#rgb_image_msg_name: "camera/rgb/image"
+#depth_image_msg_name: "camera/depth/image"
+#depth_image_raw_msg_name: "camera/depth/image_raw"
+#camera_info_msg_name: "camera/depth/camera_info"
+#lidar_msg_name: "lidar/points"
+
 odom_msg_name: "odom"
-#odom_msg_name: "odom_ground_truth" 
+
 #imu_msg_name: "imu"
 arm_state_msg_name: "joint_states"
-modelmode_msg_name: "model_mode"
-target_msg_name: "target_visu"
-occgrid_msg_name: "occupancy_grid"
-selfcoldistance_msg_name: "self_collision_distances"
-extcoldistance_base_msg_name: "occupancy_distances_base"
-extcoldistance_arm_msg_name: "occupancy_distances_arm"
-pointsonrobot_msg_name: "points_on_robot"
+#modelmode_msg_name: "model_mode"
+#target_msg_name: "target_visu"
+
+mobiman_goal_obs_msg_name: "mobiman_goal_obs"
+mobiman_occupancy_obs_msg_name: "mobiman_occupancy_obs"
+
+### NUA NOTE: DEPRECATE ALL UNNECESSARY VARIABLES!
+#occgrid_msg_name: "occupancy_grid"
+#selfcoldistance_msg_name: "self_collision_distances"
+#extcoldistance_base_msg_name: "occupancy_distances_base"
+#extcoldistance_arm_msg_name: "occupancy_distances_arm"
+#pointsonrobot_msg_name: "points_on_robot"
 
 #goal_status_msg_name: "goal_status"
 
-occgrid_normalize_flag: True
-occgrid_occ_min: 0
-occgrid_occ_max: 100
+#occgrid_normalize_flag: True
+#occgrid_occ_min: 0
+#occgrid_occ_max: 100
 
 #laser_size_downsampled: 90
 #laser_normalize_flag: True

@@ -99,6 +99,8 @@ class Config():
         self.modelmode_msg_name = rospy.get_param('modelmode_msg_name', "")
         self.target_msg_name = rospy.get_param('target_msg_name', "")
         self.occgrid_msg_name = rospy.get_param('occgrid_msg_name', "")
+        self.mobiman_goal_obs_msg_name = rospy.get_param('mobiman_goal_obs_msg_name', "")
+        self.mobiman_occupancy_obs_msg_name = rospy.get_param('mobiman_occupancy_obs_msg_name', "")
         self.selfcoldistance_msg_name = rospy.get_param('selfcoldistance_msg_name', "")
         self.extcoldistance_base_msg_name = rospy.get_param('extcoldistance_base_msg_name', "")
         self.extcoldistance_arm_msg_name = rospy.get_param('extcoldistance_arm_msg_name', "")
@@ -225,6 +227,8 @@ class Config():
                 training_log_data.append(["modelmode_msg_name", self.modelmode_msg_name])
                 training_log_data.append(["target_msg_name", self.target_msg_name])
                 training_log_data.append(["occgrid_msg_name", self.occgrid_msg_name])
+                training_log_data.append(["mobiman_goal_obs_msg_name", self.mobiman_goal_obs_msg_name])
+                training_log_data.append(["mobiman_occupancy_obs_msg_name", self.mobiman_occupancy_obs_msg_name])
                 training_log_data.append(["selfcoldistance_msg_name", self.selfcoldistance_msg_name])
                 training_log_data.append(["extcoldistance_base_msg_name", self.extcoldistance_base_msg_name])
                 training_log_data.append(["extcoldistance_arm_msg_name", self.extcoldistance_arm_msg_name])
@@ -401,6 +405,8 @@ class Config():
         print("[mobiman_drl_config::Config::__init__] modelmode_msg_name: " + str(self.modelmode_msg_name))
         print("[mobiman_drl_config::Config::__init__] target_msg_name: " + str(self.target_msg_name))
         print("[mobiman_drl_config::Config::__init__] occgrid_msg_name: " + str(self.occgrid_msg_name))
+        print("[mobiman_drl_config::Config::__init__] mobiman_goal_obs_msg_name: " + str(self.mobiman_goal_obs_msg_name))
+        print("[mobiman_drl_config::Config::__init__] mobiman_occupancy_obs_msg_name: " + str(self.mobiman_occupancy_obs_msg_name))
         print("[mobiman_drl_config::Config::__init__] selfcoldistance_msg_name: " + str(self.selfcoldistance_msg_name))
         print("[mobiman_drl_config::Config::__init__] extcoldistance_base_msg_name: " + str(self.extcoldistance_base_msg_name))
         print("[mobiman_drl_config::Config::__init__] extcoldistance_arm_msg_name: " + str(self.extcoldistance_arm_msg_name))
@@ -535,6 +541,36 @@ class Config():
         print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_width: " + str(self.occgrid_width))
         print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_height: " + str(self.occgrid_height))
         print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_resolution: " + str(self.occgrid_resolution))
+
+    '''
+    NUA TODO: 
+    '''
+    def set_mobiman_goal_obs_config(self, n_mobiman_goal_obs, mobiman_goal_obs_frame_id, mobiman_goal_obs_dim_dt):
+        self.n_mobiman_goal_obs = n_mobiman_goal_obs
+        self.mobiman_goal_obs_frame_id = mobiman_goal_obs_frame_id
+        self.mobiman_goal_obs_dim_dt = mobiman_goal_obs_dim_dt
+        training_log_data = []
+        training_log_data.append(["n_mobiman_goal_obs", self.n_mobiman_goal_obs])
+        training_log_data.append(["mobiman_goal_obs_frame_id", self.mobiman_goal_obs_frame_id])
+        training_log_data.append(["mobiman_goal_obs_dim_dt", self.mobiman_goal_obs_dim_dt])
+        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(training_log_file, training_log_data)
+
+        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] n_mobiman_goal_obs: " + str(self.n_mobiman_goal_obs))
+        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_frame_id: " + str(self.mobiman_goal_obs_frame_id))
+        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_dim_dt: " + str(self.mobiman_goal_obs_dim_dt))
+
+    '''
+    NUA TODO: 
+    '''
+    def set_mobiman_occupancy_obs_config(self, n_mobiman_occupancy_obs):
+        self.n_mobiman_occupancy_obs = n_mobiman_occupancy_obs
+        training_log_data = []
+        training_log_data.append(["n_mobiman_occupancy_obs", self.n_mobiman_occupancy_obs])
+        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(training_log_file, training_log_data)
+
+        print("[mobiman_drl_config::Config::set_mobiman_occupancy_obs_config] n_mobiman_occupancy_obs: " + str(self.n_mobiman_occupancy_obs))
 
     '''
     NUA TODO: 
