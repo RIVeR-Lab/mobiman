@@ -563,14 +563,20 @@ class Config():
     '''
     NUA TODO: 
     '''
-    def set_mobiman_occupancy_obs_config(self, n_mobiman_occupancy_obs):
+    def set_mobiman_occupancy_obs_config(self, n_mobiman_occupancy_obs, mobiman_occupancy_obs_frame_id, mobiman_occupancy_obs_dim_dt):
         self.n_mobiman_occupancy_obs = n_mobiman_occupancy_obs
+        self.mobiman_occupancy_obs_frame_id = mobiman_occupancy_obs_frame_id
+        self.mobiman_occupancy_obs_dim_dt = mobiman_occupancy_obs_dim_dt
         training_log_data = []
         training_log_data.append(["n_mobiman_occupancy_obs", self.n_mobiman_occupancy_obs])
+        training_log_data.append(["mobiman_occupancy_obs_frame_id", self.mobiman_occupancy_obs_frame_id])
+        training_log_data.append(["mobiman_occupancy_obs_dim_dt", self.mobiman_occupancy_obs_dim_dt])
         training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
         write_data(training_log_file, training_log_data)
 
         print("[mobiman_drl_config::Config::set_mobiman_occupancy_obs_config] n_mobiman_occupancy_obs: " + str(self.n_mobiman_occupancy_obs))
+        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_frame_id: " + str(self.mobiman_occupancy_obs_frame_id))
+        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_dim_dt: " + str(self.mobiman_occupancy_obs_dim_dt))
 
     '''
     NUA TODO: 
