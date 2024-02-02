@@ -29,6 +29,8 @@ cd mobiman
 ```
 rosdep install --from-paths src --ignore-src -r -y
 ```
+5. Install iGibson simulator and its library by following the instructions in [igibson README](https://github.com/RIVeR-Lab/iGibson?tab=readme-ov-file#igibson-installation).
+
 ## Run (Manual mode):
 1. Set configurations in [mobiman_framework.launch](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/launch/mobiman_framework.launch)
      1. Set parameter "config_mobiman_framework" to
