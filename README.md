@@ -2,14 +2,30 @@
 <hr>
 
 ## Installation: 
-1. Clone the mobiman repository into the src folder of catkin workspace:
+1. Clone [libccd](https://github.com/danfis/libccd) into any directory (e.g. Home) and install libccd library from its source:
+```
+git clone https://github.com/danfis/libccd.git
+cd libccd
+mkdir build && cd build
+cmake -G "Unix Makefiles" -DENABLE_DOUBLE_PRECISION=ON ..
+sudo make
+sudo make install
+```
+2. Clone [fcl](https://github.com/flexible-collision-library/fcl) into any directory (e.g. Home)  and install fcl library from its source:
+```
+git clone https://github.com/flexible-collision-library/fcl.git
+cd fcl
+mkdir build && cd build
+sudo make
+sudo make install
+```
+3. Clone the mobiman repository into the src folder of catkin workspace and install all required ROS packages:
 ```
 git clone git@github.com:RIVeR-Lab/mobiman.git
 cd mobiman
 ./install_mobiman.sh
 ```
-
-2. Install ROS dependencies:
+4. Install ROS dependencies:
 ```
 rosdep install --from-paths src --ignore-src -r -y
 ```
