@@ -33,7 +33,7 @@ git clone git@github.com:mazrk7/robot_collision_checking.git
 # 3.2.1 ocs2
 git clone git@github.com:RIVeR-Lab/ocs2.git
 cd ocs2/
-git checkout noetic-akmandor-v12
+git checkout noetic-akmandor-v13
 cd ..
 
 # 3.2.2 pinocchio
