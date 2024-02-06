@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2024.01.12
+LAST UPDATE: 2024.02.05
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -225,7 +225,7 @@ if __name__=="__main__":
                 rviz_args = [rviz_path,
                             'robot_ns:=' + str(rns),
                             'rviz_config_path:=' + str(rviz_config_path) + '_' + str(i)]
-                
+
                 rviz_launch = [ (roslaunch.rlutil.resolve_launch_arguments(rviz_args)[0], rviz_args[1:]) ] # type: ignore
                 rviz = roslaunch.parent.ROSLaunchParent(uuid, rviz_launch) # type: ignore
                 rviz.start()

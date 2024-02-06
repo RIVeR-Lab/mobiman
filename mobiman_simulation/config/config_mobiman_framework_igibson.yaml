@@ -16,11 +16,11 @@ flag_moveit: false
 flag_igibson: false
 
 ### Rviz:
-flag_rviz: false
+flag_rviz: true
 
-# rviz/gazebo/mobile_manipulator_ocs2_gazebo
-# rviz/igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "rviz/igibson/mobile_manipulator_ocs2_igibson"
+# gazebo/mobile_manipulator_ocs2_gazebo
+# igibson/mobile_manipulator_ocs2_igibson
+rviz_config_path: "igibson/mobile_manipulator_ocs2_igibson"
 
 ### Map Server:
 flag_map_server: true
@@ -48,7 +48,7 @@ config_distance_server: "config_distance_server"
 
 ### Mobiman:
 flag_mobiman_mpc: true
-flag_mobiman_mrt: false
+flag_mobiman_mrt: true
 
 # task_jackalJaco_gazebo
 # task_jackalJaco_igibson
@@ -60,7 +60,3 @@ config_mobiman_drl: "drl/config_mobiman_drl_pick"
 
 ### DRL:
 flag_drl: true
-
-# 0: Discrete
-# 1: Continuous
-drl_action_type: 1

@@ -21,33 +21,29 @@ task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
 
 world_name: "conveyor"
 
-#### NUA TODO: SET THEM IN PYTHON SCRIPT!
-world_range_x_min: -2.0
-world_range_x_max: 2.0
+#### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- START
+world_range_x_min: -2.0               # wrt. world frame
+world_range_x_max: 2.0                # wrt. world frame
+world_range_y_min: -2.0               # wrt. world frame
+world_range_y_max: 2.0                # wrt. world frame
+world_range_z_min: 0.0                # wrt. world frame
+world_range_z_max: 2.0                # wrt. world frame
 
-world_range_y_min: -2.0
-world_range_y_max: 2.0
-
-world_range_z_min: 0.0
-world_range_z_max: 2.0
-
-init_robot_pos_range_x_min: -1.5    # wrt. world frame
-init_robot_pos_range_x_max: 1.5     # wrt. world frame
-
-init_robot_pos_range_y_min: -1.5    # wrt. world frame
-init_robot_pos_range_y_max: 1.5     # wrt. world frame
-
+init_robot_pos_range_x_min: -1.5      # wrt. world frame
+init_robot_pos_range_x_max: 1.5       # wrt. world frame
+init_robot_pos_range_y_min: -1.5      # wrt. world frame
+init_robot_pos_range_y_max: 1.5       # wrt. world frame
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
 
-goal_range_min_x: -1.0              # wrt. conveyor frame
-goal_range_max_x: 1.0               # wrt. conveyor frame
+goal_range_min_x: -1.0                # wrt. conveyor frame
+goal_range_max_x: 1.0                 # wrt. conveyor frame
+goal_range_min_y: -0.15               # wrt. conveyor frame
+goal_range_max_y: 0.0                 # wrt. conveyor frame
+goal_range_min_z: 0.6                 # wrt. world frame
+goal_range_max_z: 0.7                 # wrt. world frame
 
-goal_range_min_y: -0.15              # wrt. conveyor frame
-goal_range_max_y: 0.0               # wrt. conveyor frame
-
-goal_range_min_z: 0.6               # wrt. world frame
-goal_range_max_z: 0.7               # wrt. world frame
+#### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- END
 
 ## Algorithm:
 deep_learning_algorithm: "PPO"
@@ -101,14 +97,28 @@ action_time_horizon: 6.0
 # 1: Continuous
 action_type: 1
 
-# [model(1), constraint(1), target(6)]
+# [model(1), target_type(1), target(6)]
 n_action: 8
+
+action_goal_range_min_x: -0.2               # wrt. goal frame
+action_goal_range_max_x: 0.2                # wrt. goal frame
+action_goal_range_min_y: -0.0               # wrt. goal frame
+action_goal_range_max_y: 0.0                # wrt. goal frame
+action_goal_range_min_z: -0.0               # wrt. goal frame
+action_goal_range_max_z: 0.0                # wrt. goal frame
+
+action_target_range_min_x: -2.0             # wrt. world frame
+action_target_range_max_x: 2.0              # wrt. world frame
+action_target_range_min_y: -2.0             # wrt. world frame
+action_target_range_max_y: 2.0              # wrt. world frame
+action_target_range_min_z: 0.0              # wrt. world frame
+action_target_range_max_z: 1.0              # wrt. world frame
 
 ## Reward Function:
 # Terminal:
 reward_terminal_goal: 50
-reward_terminal_collision: -10
-reward_terminal_roll: -10
+reward_terminal_collision: -50
+reward_terminal_roll: -50
 reward_terminal_max_step: -50
 
 # Target-to-goal
