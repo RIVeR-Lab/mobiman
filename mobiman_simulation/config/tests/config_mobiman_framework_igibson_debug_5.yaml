@@ -7,8 +7,8 @@ flag_sim: false
 # igibson
 sim: "igibson"
 
-flag_gazebo: true
-flag_robot: true
+flag_gazebo: false
+flag_robot: false
 flag_conveyor: false
 flag_bin: false
 flag_pedsim: false
@@ -18,9 +18,9 @@ flag_igibson: false
 ### Rviz:
 flag_rviz: false
 
-# rviz/gazebo/mobile_manipulator_ocs2_gazebo
-# rviz/igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "rviz/igibson/mobile_manipulator_ocs2_igibson"
+# gazebo/mobile_manipulator_ocs2_gazebo
+# igibson/mobile_manipulator_ocs2_igibson
+rviz_config_path: "igibson/mobile_manipulator_ocs2_igibson"
 
 ### Map Server:
 flag_map_server: false
@@ -40,6 +40,11 @@ collision_points_config_path: "config/config_points_on_robot"
 
 ### Goal Server:
 flag_goal_server: false
+config_goal_server: "config_goal_server"
+
+### Observation Server:
+flag_observation_server: false
+config_observation_server: "config_observation_server"
 
 ### Distance Server:
 flag_distance_server: false
@@ -53,11 +58,9 @@ flag_mobiman_mrt: true
 # task_jackalJaco_igibson
 task_config_path: config/task/task_jackalJaco_igibson.info
 
-config_mobiman_drl: "drl/config_mobiman_drl"
+# config_mobiman_drl_pick
+# config_mobiman_drl_place
+config_mobiman_drl: "drl/config_mobiman_drl_pick"
 
 ### DRL:
 flag_drl: true
-
-# 0: Discrete
-# 1: Continuous
-drl_action_type: 1

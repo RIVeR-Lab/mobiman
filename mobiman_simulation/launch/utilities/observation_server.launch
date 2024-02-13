@@ -1,0 +1,47 @@
+<!--AUTHOR: Neset Unver Akmandor (NUA)-->
+<!--E-MAIL: akmandor.n@northeastern.edu-->
+
+<launch>
+      <arg name="robot_ns"                      default="/"/>
+      <arg name="config_observation_server"        default="config_observation_server" />
+      <arg name="collision_points_config_path"  default="config/config_points_on_robot" />
+
+      <!--
+            gazebo
+            igibson
+      -->
+      <arg name="sim"        default="igibson" />
+
+      <!-- Set nodes on debug mode -->
+      <!--
+            ur5
+            jackal_ur5
+            jackalJaco
+      -->
+      <arg name="robot_name"       default="jackalJaco" />
+
+      <!-- PUBLISH CONFIGURATION PARAMETERS -->
+      <rosparam file="$(find mobiman_simulation)/config/$(arg config_observation_server).yaml"/>
+      <rosparam file="$(find mobiman_simulation)/$(arg collision_points_config_path).yaml"/>
+
+      <!-- The task file for the mpc -->
+      <arg name="task_config_path"        default="config/task/task_$(arg robot_name)_$(arg sim).info" />
+      <param name="taskFile"              value="$(find mobiman_simulation)/$(arg task_config_path)" />
+      
+      <!-- The URDF model of the robot -->
+      <!--arg name="urdfFile"    default="$(find mobiman_simulation)/urdf/jackal_fixedWheel_ur5.urdf" /-->
+      <arg name="urdf_path"               default="urdf/jackal_fixedWheel_jaco_fixedFinger.urdf" />
+      <param name="urdfFile"              value="$(find mobiman_simulation)/$(arg urdf_path)" />
+      
+      <!-- The library folder to generate CppAD codegen into -->
+      <arg name="lib_path"                default="codegen/auto_generated/$(arg robot_name)" />
+      <param name="libFolder"             value="$(find mobiman_simulation)/$(arg lib_path)" />
+
+      <group ns="$(arg robot_ns)">
+            <node pkg="ocs2_mobile_manipulator_ros" 
+                  type="mobile_manipulator_observation_generation" 
+                  name="observation_server" 
+                  output="screen"
+                  launch-prefix="" />
+      </group>
+</launch>

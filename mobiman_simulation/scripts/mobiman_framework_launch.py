@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2024.02.05
+LAST UPDATE: 2024.02.12
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -85,6 +85,10 @@ if __name__=="__main__":
     config_goal_server = rospy.get_param('config_goal_server', "")
     load_config_file(mobiman_path + "config/" + config_goal_server + ".yaml")
 
+    ### Observation Server:
+    flag_observation_server = rospy.get_param('flag_observation_server', True)
+    config_observation_server = rospy.get_param('config_observation_server', "")
+
     ### Distance Server:
     flag_distance_server = rospy.get_param('flag_distance_server', True)
     config_distance_server = rospy.get_param('config_distance_server', "")
@@ -128,6 +132,10 @@ if __name__=="__main__":
     print("[mobiman_framework_launch:: __main__ ] Goal Server:")
     print("[mobiman_framework_launch:: __main__ ] flag_goal_server: " + str(flag_goal_server))
     print("[mobiman_framework_launch:: __main__ ] config_goal_server: " + str(config_goal_server))
+
+    print("[mobiman_framework_launch:: __main__ ] Observation Server:")
+    print("[mobiman_framework_launch:: __main__ ] flag_observation_server: " + str(flag_observation_server))
+    print("[mobiman_framework_launch:: __main__ ] config_observation_server: " + str(config_observation_server))
 
     print("[mobiman_framework_launch:: __main__ ] Distance Server:")
     print("[mobiman_framework_launch:: __main__ ] flag_distance_server: " + str(flag_distance_server))
@@ -301,6 +309,40 @@ if __name__=="__main__":
         print("[mobiman_framework_launch:: __main__ ] Launched Goal Server!")
         rospy.sleep(1)
 
+    ## Launch observation server 
+    if flag_observation_server:
+
+        if len(robot_ns_vec) > 0:
+            for i, rns in enumerate(robot_ns_vec):
+                observation_server_path = mobiman_launch_path + "utilities/observation_server.launch"
+                observation_server_args = [observation_server_path,
+                                        'robot_ns:=' + str(rns),
+                                        'config_observation_server:=' + str(config_observation_server),
+                                        'collision_points_config_path:=' + str(collision_points_config_path),
+                                        'urdf_path:=' + str(urdf_path_ocs2),
+                                        'lib_path:=' + str(lib_path),
+                                        'task_config_path:=' + str(task_config_path)]
+                
+                observation_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(observation_server_args)[0], observation_server_args[1:]) ] # type: ignore
+                observation_server = roslaunch.parent.ROSLaunchParent(uuid, observation_server_launch) # type: ignore
+                observation_server.start()
+        else:
+            observation_server_path = mobiman_launch_path + "utilities/observation_server.launch"
+            observation_server_args = [observation_server_path,
+                                    'robot_ns:=/',
+                                    'config_observation_server:=' + str(config_observation_server),
+                                    'collision_points_config_path:=' + str(collision_points_config_path),
+                                    'urdf_path:=' + str(urdf_path_ocs2),
+                                    'lib_path:=' + str(lib_path),
+                                    'task_config_path:=' + str(task_config_path)]
+        
+            observation_server_launch = [ (roslaunch.rlutil.resolve_launch_arguments(observation_server_args)[0], observation_server_args[1:]) ] # type: ignore
+            observation_server = roslaunch.parent.ROSLaunchParent(uuid, observation_server_launch) # type: ignore
+            observation_server.start()
+
+        print("[mobiman_framework_launch:: __main__ ] Launched observation Server!")
+        rospy.sleep(5)
+
     ## Launch distance server 
     if flag_distance_server:
 
@@ -335,7 +377,6 @@ if __name__=="__main__":
         print("[mobiman_framework_launch:: __main__ ] Launched Distance Server!")
         rospy.sleep(5)
 
-    ### NUA TODO: NOT FUNCTIONAL!!! MPC + MRT LAUNCHES ARE NOT WORKING!
     ## Launch mobiman 
     if flag_mobiman_mpc:
 

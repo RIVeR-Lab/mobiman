@@ -1,14 +1,14 @@
 #### Mobiman Framework Parameters
 
 ### Simulator:
-flag_sim: true
+flag_sim: false
 
 # gazebo
 # igibson
 sim: "igibson"
 
-flag_gazebo: true
-flag_robot: true
+flag_gazebo: false
+flag_robot: false
 flag_conveyor: false
 flag_bin: false
 flag_pedsim: false
@@ -16,7 +16,7 @@ flag_moveit: false
 flag_igibson: false
 
 ### Rviz:
-flag_rviz: true
+flag_rviz: false
 
 # gazebo/mobile_manipulator_ocs2_gazebo
 # igibson/mobile_manipulator_ocs2_igibson
@@ -51,7 +51,7 @@ flag_distance_server: false
 config_distance_server: "config_distance_server"
 
 ### Mobiman:
-flag_mobiman_mpc: false
+flag_mobiman_mpc: true
 flag_mobiman_mrt: false
 
 # task_jackalJaco_gazebo

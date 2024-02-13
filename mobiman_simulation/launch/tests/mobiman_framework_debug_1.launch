@@ -1,0 +1,13 @@
+<launch>
+  <!--
+    config_mobiman_framework_gazebo
+    config_mobiman_framework_igibson
+
+    config_mobiman_framework_igibson_debug_1
+  -->
+  <arg name="config_mobiman_framework"    default="tests/config_mobiman_framework_igibson_debug_1.yaml"/>
+  <param name="config_mobiman_framework"  value="$(arg config_mobiman_framework)" />
+
+  <!-- RUN MOBIMAN FRAMEWORK -->
+  <node name="mobiman_framework_launch_debug_1" pkg="mobiman_simulation" type="mobiman_framework_launch.py" output="screen" />
+</launch>
