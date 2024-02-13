@@ -72,6 +72,7 @@ robot_frame_name: "base_link"
 arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j2n6s300_joint_4", "j2n6s300_joint_5", "j2n6s300_joint_6"]
 ee_frame_name: "j2n6s300_end_effector"
 goal_frame_name: "grasp"
+occupancy_frame_names: ["conveyor_belt", "red_cube"]
 
 odom_msg_name: "odom"
 arm_state_msg_name: "joint_states"
@@ -80,8 +81,8 @@ arm_control_msg_name: "arm_controller/cmd_pos"
 target_msg_name: "target_visu"
 
 mpc_data_msg_name: "mpc_data"
-mobiman_goal_obs_msg_name: "mobiman_goal_obs"
-mobiman_occupancy_obs_msg_name: "mobiman_occupancy_obs"
+#mobiman_goal_obs_msg_name: "mobiman_goal_obs"
+#mobiman_occupancy_obs_msg_name: "mobiman_occupancy_obs"
 selfcoldistance_msg_name: "self_collision_distances"
 
 self_collision_range_min: 0.0

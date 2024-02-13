@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2024.01.10
+LAST UPDATE: 2024.02.13
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -81,6 +81,8 @@ class Config():
         self.n_armstate = len(self.arm_joint_names) # type: ignore
         self.ee_frame_name = rospy.get_param('ee_frame_name', "")
         self.goal_frame_name = rospy.get_param('goal_frame_name', "")
+        self.occupancy_frame_names = rospy.get_param('occupancy_frame_names', "")
+        self.n_occupancy = len(self.occupancy_frame_names) # type: ignore
         
         self.base_control_msg_name = rospy.get_param('base_control_msg_name', "")
         self.arm_control_msg_name = rospy.get_param('arm_control_msg_name', "")
@@ -212,6 +214,9 @@ class Config():
                 training_log_data.append(["n_armstate", self.n_armstate])
                 training_log_data.append(["ee_frame_name", self.ee_frame_name])
                 training_log_data.append(["goal_frame_name", self.goal_frame_name])
+                for i, oname in enumerate(self.occupancy_frame_names): # type: ignore
+                    training_log_data.append(["occupancy_frame_names" + str(i), oname])
+                training_log_data.append(["n_occupancy", self.n_occupancy])
                 training_log_data.append(["base_control_msg_name", self.base_control_msg_name])
                 training_log_data.append(["arm_control_msg_name", self.arm_control_msg_name])
                 training_log_data.append(["mpc_data_msg_name", self.mpc_data_msg_name])
