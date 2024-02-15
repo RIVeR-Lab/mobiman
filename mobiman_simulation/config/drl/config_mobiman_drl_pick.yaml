@@ -31,7 +31,7 @@ world_range_z_max: 2.0                # wrt. world frame
 
 init_robot_pos_range_x_min: -1.5      # wrt. world frame
 init_robot_pos_range_x_max: 1.5       # wrt. world frame
-init_robot_pos_range_y_min: -1.5      # wrt. world frame
+init_robot_pos_range_y_min: -1.0      # wrt. world frame
 init_robot_pos_range_y_max: 1.5       # wrt. world frame
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
@@ -92,6 +92,14 @@ n_obs_stack: 1
 n_skip_obs_stack: 1
 
 ## Algorithm: mobiman-DRL Parameters
+obs_base_velo_lat_min: -2.0
+obs_base_velo_lat_max: 2.0
+obs_base_velo_ang_min: -5.0
+obs_base_velo_ang_max: 5.0
+
+obs_joint_velo_min: -20.0
+obs_joint_velo_max: 20.0
+
 # Action time horizon [s]
 action_time_horizon: 6.0
 
@@ -123,28 +131,26 @@ reward_terminal_collision: -50
 reward_terminal_roll: -50
 reward_terminal_max_step: -50
 
-# Target-to-goal
-reward_step_target2goal: 5
-reward_step_target2goal_mu_regular: 1
-reward_step_target2goal_sigma_regular: 1.0
-reward_step_target2goal_mu_last_step: 0.75
-reward_step_target2goal_sigma_last_step: 0.5
+# Distance-to-goal
+reward_step_dist2goal_scale: 5.0
+#reward_step_dist2goal_mu: 0.0
+#reward_step_dist2goal_sigma: 1.0
 
 # Model mode
-reward_step_mode0: -1.5
-reward_step_mode1: -3.0
-reward_step_mode2: -4.5
+reward_step_mode0: -3.0
+reward_step_mode1: -6.0
+reward_step_mode2: -9.0
 
 # MPC result
-reward_step_mpc_exit: -5
-reward_step_target_reached: 3
-reward_step_time_horizon_min: -10
-reward_step_time_horizon_max: 0
+#reward_step_mpc_exit: -5
+#reward_step_target_reached: 3
+#reward_step_time_horizon_min: -10
+#reward_step_time_horizon_max: 0
 
 # Cost weights
-alpha_step_target2goal: 1
+alpha_step_dist2goal: 1
 alpha_step_mode: 1
-alpha_step_mpc_result: 1
+#alpha_step_mpc_result: 1
 
 
 #-------------------------------------------------------------------------------
