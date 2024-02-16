@@ -16,7 +16,7 @@ flag_moveit: false
 flag_igibson: false
 
 ### Rviz:
-flag_rviz: true
+flag_rviz: false
 
 # gazebo/mobile_manipulator_ocs2_gazebo
 # igibson/mobile_manipulator_ocs2_igibson
@@ -31,7 +31,7 @@ config_map_server: "config_map_server_igibson"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 1
+n_robot: 2
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!

@@ -5,5 +5,5 @@
         file="$(find mobiman_simulation)/config/drl/config_mobiman_drl_plotter.yaml" 
         subst_value="True"/>
 
-    <node name="mobiman_drl_training" pkg="mobiman_simulation" type="mobiman_plot_oar.py" output="screen" />
+    <node name="mobiman_drl_plot_result_training" pkg="mobiman_simulation" type="mobiman_plot_oar.py" output="screen" />
 </launch>

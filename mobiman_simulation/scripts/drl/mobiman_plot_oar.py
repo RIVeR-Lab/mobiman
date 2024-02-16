@@ -1,4 +1,22 @@
 #!/usr/bin/python3
+
+'''
+LAST UPDATE: 2024.02.15
+
+AUTHOR:	Sarvesh Prajapati (SP)
+        Neset Unver Akmandor (NUA)	
+
+E-MAIL: prajapati.s@northeastern.edu
+        akmandor.n@northeastern.edu
+
+DESCRIPTION: TODO...
+
+REFERENCES:
+
+NUA TODO:
+- 
+'''
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,9 +26,24 @@ import rospy
 import numpy as np
 import time
 
-
+'''
+DESCRIPTION: NUA TODO: Update!
+'''
 class PlotMobiman(object):
-    def __init__(self, data_folder:str, plot_flag:str, plot_path:str, observation_sequences:list, action_sequences:list, continue_initial: bool, continue_initial_count: int, window_episodic: int):
+    
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def __init__(self, data_folder:str, 
+                 plot_flag:str, 
+                 plot_path:str, 
+                 observation_sequences:list, 
+                 action_sequences:list, 
+                 continue_initial: bool, 
+                 continue_initial_count: int, 
+                 window_episodic: int):
+        print("[mobiman_plot_oar::PlotMobiman::__init__] START")
+        
         self.data_folder = data_folder
         self.plot_flag = plot_flag
         self.plot_path = plot_path
@@ -20,14 +53,23 @@ class PlotMobiman(object):
         self.continue_initial_count = continue_initial_count
         self.window_episodic = window_episodic
         self.df = None
+        
         try:
             os.chdir(self.data_folder)
         except Exception as e:
-            print("[+] Unable to find the folder! Program will now terminate!")
+            print("[mobiman_plot_oar::PlotMobiman::__init__] Unable to find the folder! Program will now terminate!")
             sys.exit(1)
+        
         self.create_dataset()
 
+        print("[mobiman_plot_oar::PlotMobiman::__init__] END")
+
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
     def create_dataset(self):
+        print("[mobiman_plot_oar::PlotMobiman::create_dataset] START")
+        
         data_paths = []
         self.df = pd.read_csv(os.path.join(os.getcwd(), 'oar_data.csv'))
         if self.plot_path == "":
@@ -36,6 +78,7 @@ class PlotMobiman(object):
             os.makedirs(self.plot_path)
         data_paths.append(os.path.join(os.getcwd(), 'oar_data.csv'))
         self.df = self.df[0:0]
+        
         if continue_initial == True:
             while not pd.isnull(pd.read_csv('training_log.csv')['training'].iloc[13]):
                 prev_data = pd.read_csv('training_log.csv')['training'].iloc[13]
@@ -45,10 +88,14 @@ class PlotMobiman(object):
                 except Exception as e:
                     print(f"[-] {prev_data} not found!")
                     break
+        
         data_paths = data_paths[::-1]
         if self.continue_initial_count == 0:
             self.continue_initial_count = len(data_paths)
+        
+        print("[mobiman_plot_oar::PlotMobiman::create_dataset] data_paths:")
         print(data_paths)
+        
         for data in data_paths:
             if self.continue_initial_count > 0:
                 self.continue_initial_count -= 1
@@ -56,26 +103,41 @@ class PlotMobiman(object):
                 new_data.index += len(self.df) - 1
                 print(len(new_data))
                 self.df = pd.concat([self.df, new_data])
-        # print(self.df.head())
-        # print(self.df.info())
-        # print(self.df.tail())
         
-
+        print("[mobiman_plot_oar::PlotMobiman::create_dataset] df.head: " + str(self.df.head()))
+        print("[mobiman_plot_oar::PlotMobiman::create_dataset] df.info: " + str(self.df.info()))
+        print("[mobiman_plot_oar::PlotMobiman::create_dataset] df.tail: " + str(self.df.tail()))
+        print("[mobiman_plot_oar::PlotMobiman::create_dataset] END")
+        
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
     def plot_rewards(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
+        
         clean_data = self.df.dropna()
         window_size = self.window_episodic
         clean_data['Reward'] = clean_data['Reward'].apply(lambda x: float(x))
         clean_data['Reward'] = clean_data['Reward'].round(4)
         clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
+        
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
         print(clean_data.info())
+        
         plt.plot(clean_data['cumulative_reward'].iloc[:])
         plt.title(f'Rolling average of reward, window size {window_size}')
         plt.xlabel("Steps")
         plt.ylabel("Rewards")
         plt.show()
-    
 
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")
+    
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
     def plot_episodic_reward(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_episodic_reward] START")
+
         episodic_reward = []
         prev_counter = 0
         window_size = self.window_episodic
@@ -93,8 +155,14 @@ class PlotMobiman(object):
             plt.show()
         plt.close()
 
+        print("[mobiman_plot_oar::PlotMobiman::plot_episodic_reward] END")
 
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
     def plot_action(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] START")
+
         columns = ['a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
         columns_ = ['model_mode','self_collision_flag','target_pos_x', 'target_pos_y',
                    'target_pos_z', 'target_pos_roll', 'target_pos_pitch', 'target_pos_yaw']
@@ -102,7 +170,9 @@ class PlotMobiman(object):
         new_df['Action'] = new_df['Action'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(' ') if a != ''])
         new_df[columns] = pd.DataFrame(new_df['Action'].tolist(), index=new_df.index)
         self.df.dropna(inplace=True)
-        print(self.action_sequences, '****')
+        
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] action_sequences: " + str(self.action_sequences))
+        
         if self.action_sequences == [-1]:
             for i in range(0,8):
                 new_df[f'a{i}'].hist()
@@ -124,15 +194,24 @@ class PlotMobiman(object):
                 if self.plot_flag:
                     plt.show()
                 plt.close()
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] END")
     
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
     def plot_observations(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
+
         columns = [f'o{a}' for a in range(0,74)]
         columns_ = columns
         new_df = self.df.copy()
         new_df['Observation'] = new_df['Observation'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(',') if a != ''])
         new_df[columns] = pd.DataFrame(new_df['Observation'].tolist(), index=new_df.index)
         self.df.dropna(inplace=True)
-        print(self.observation_sequences, '****')
+        
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] observation_sequences: " + str(self.observation_sequences))
+
         if self.observation_sequences == [-1]:
             for i in range(0,74):
                 new_df[f'o{i}'].hist()
@@ -155,19 +234,29 @@ class PlotMobiman(object):
                     plt.show()
                 plt.close()
 
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
 
+'''
+DESCRIPTION: NUA TODO: Update!
+'''
 if __name__ == '__main__':
+    print("[mobiman_plot_oar::__main__] START")
+
     rospy.init_node('mobiman_drl_training_plot')
-    print("[+] Plotting node created!")
+    
     data_path = rospy.get_param('data_path')
     observation_sequences = [int(a) for a in str(rospy.get_param('observation_sequences')).split(',')]
     action_sequences = [int(a) for a in str(rospy.get_param('action_sequences')).split(',')]
     continue_initial = rospy.get_param('continue_initial')
     continue_initial_count = rospy.get_param('continue_initial_count')
+    
     plot_flag = rospy.get_param('plot_flag')
     plot_path = rospy.get_param('plot_path')
     window_episodic = rospy.get_param('window_episodic')
-    plot_mobiman = PlotMobiman(data_path,plot_flag, plot_path, observation_sequences, action_sequences, continue_initial, continue_initial_count, window_episodic)
+    
+    plot_mobiman = PlotMobiman(data_path,plot_flag, plot_path, observation_sequences, action_sequences, continue_initial, continue_initial_count, window_episodic) # type: ignore
     plot_mobiman.plot_episodic_reward()
     plot_mobiman.plot_action()
     plot_mobiman.plot_observations()
+
+    print("[mobiman_plot_oar::__main__] END")
