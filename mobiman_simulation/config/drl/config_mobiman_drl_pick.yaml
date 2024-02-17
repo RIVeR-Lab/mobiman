@@ -5,11 +5,12 @@ igibson_config_file: "igibson_jackal_jaco"
 ### Common Parameters for Training and Testing
 ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
-mode: "training"
+drl_mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
 #initial_training_path: "20240217_004709_PPO_mobiman/"
 training_log_name: "training_log"
+testing_log_name: "training_log"
 
 ### DRL-Training Parameters
 

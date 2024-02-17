@@ -56,14 +56,13 @@ DESCRIPTION: TODO...
 '''
 class Config():
 
-    def __init__(self, data_folder_path=""):        
+    def __init__(self, data_folder_path="", drl_mode="training"):        
 
         print("[mobiman_drl_config::Config::__init__] START")
         print("[mobiman_drl_config::Config::__init__] data_folder_path: " + str(data_folder_path))
 
         ## General
         self.ros_pkg_name = rospy.get_param('ros_pkg_name', "")
-        self.mode = rospy.get_param('mode', "")
         self.world_name = rospy.get_param('world_name', "")
         self.world_range_x_min = rospy.get_param('world_range_x_min', 0.0)
         self.world_range_x_max = rospy.get_param('world_range_x_max', 0.0)
@@ -114,7 +113,7 @@ class Config():
         rospack = rospkg.RosPack()
         self.ros_pkg_path = rospack.get_path(self.ros_pkg_name) + "/"
 
-        if self.mode == "training":
+        if drl_mode == "training":
 
             print("[mobiman_drl_config::Config::__init__] START training")
 
@@ -205,7 +204,6 @@ class Config():
                 training_log_file = data_folder_path + self.training_log_name + ".csv" # type: ignore
 
                 training_log_data = []
-                training_log_data.append(["mode", self.mode])
                 training_log_data.append(["world_name", self.world_name])
                 training_log_data.append(["world_range_x_min", self.world_range_x_min])
                 training_log_data.append(["world_range_x_max", self.world_range_x_max])
@@ -314,93 +312,6 @@ class Config():
 
                 write_data(training_log_file, training_log_data)
 
-        ### NUA TODO: OUT OF DATE! UPDATE!
-        '''
-        elif self.mode == "testing":
-
-            print("[mobiman_drl_config::Config::__init__] DEBUG INF testing")
-            while 1:
-                continue
-
-            self.initial_training_path = self.ros_pkg_path + rospy.get_param('initial_training_path', "")
-            self.max_testing_episodes = rospy.get_param('max_testing_episodes', "")
-
-            self.world_frame_name = get_training_param(self.initial_training_path, "world_frame_name")
-            self.max_episode_steps = int(get_training_param(self.initial_training_path, "max_episode_steps"))
-            self.training_timesteps = int(get_training_param(self.initial_training_path, "training_timesteps"))
-
-            ## Sensors
-            self.laser_size_downsampled = int(get_training_param(self.initial_training_path, "laser_size_downsampled"))
-            self.laser_error_threshold = float(get_training_param(self.initial_training_path, "laser_error_threshold"))
-
-            if get_training_param(self.initial_training_path, "laser_normalize_flag") == "False":
-                self.laser_normalize_flag = False
-            else:
-                self.laser_normalize_flag = True
-
-            ## Robots
-            self.velocity_control_msg = rospy.get_param('robot_velo_control_msg', "")
-            self.velocity_control_data_path = get_training_param(self.initial_training_path, "velocity_control_data_path")
-            velocity_control_data_str = read_data(self.ros_pkg_path + self.velocity_control_data_path + "velocity_control_data.csv")
-            self.velocity_control_data = np.zeros(velocity_control_data_str.shape)
-
-            for i, row in enumerate(velocity_control_data_str):
-                for j, val in enumerate(row):
-                    self.velocity_control_data[i][j] = float(val)
-
-            self.min_lateral_speed = min(self.velocity_control_data[:,0])               # [m/s]
-            self.max_lateral_speed = max(self.velocity_control_data[:,0])               # [m/s]
-            self.init_lateral_speed = self.velocity_control_data[0,0]                   # [m/s]
-
-            self.min_angular_speed = min(self.velocity_control_data[:,1])               # [rad/s]
-            self.max_angular_speed = max(self.velocity_control_data[:,1])               # [rad/s]
-            self.init_angular_speed = self.velocity_control_data[0,1]                   # [rad/s]
-
-            ## Algorithm
-            self.observation_space_type = get_training_param(self.initial_training_path, "observation_space_type")
-
-            self.goal_range_min = float(get_training_param(self.initial_training_path, "goal_range_min"))
-            self.collision_range_min = float(get_training_param(self.initial_training_path, "collision_range_min"))
-
-            self.n_actions = len(self.velocity_control_data)
-            self.n_observations = self.n_actions
-
-            self.n_obs_stack = int(get_training_param(self.initial_training_path, "n_obs_stack"))
-            self.n_skip_obs_stack = int(get_training_param(self.initial_training_path, "n_skip_obs_stack"))
-
-            self.cnn_obs_shape = (1,-1)
-            self.fc_obs_shape = (-1, )
-
-            # Waypoints
-            if self.observation_space_type == "mobiman_WP_FC" or \
-                self.observation_space_type == "laser_WP_1DCNN_FC":
- 
-                self.n_wp = int(get_training_param(self.initial_training_path, "n_wp"))
-                self.look_ahead = float(get_training_param(self.initial_training_path, "look_ahead"))
-                self.wp_reached_dist = float(get_training_param(self.initial_training_path, "wp_reached_dist"))
-                self.wp_global_dist = float(get_training_param(self.initial_training_path, "wp_global_dist"))
-                self.wp_dynamic = int(get_training_param(self.initial_training_path, "wp_dynamic"))
-
-            # Rewards
-            self.reward_terminal_success = float(get_training_param(self.initial_training_path, "reward_terminal_success"))
-            self.reward_step_scale = float(get_training_param(self.initial_training_path, "reward_step_scale"))
-            self.penalty_terminal_fail = float(get_training_param(self.initial_training_path, "penalty_terminal_fail"))
-            self.penalty_cumulative_step = float(get_training_param(self.initial_training_path, "penalty_cumulative_step"))
-            #self.reward_terminal_mintime = float(get_training_param(self.initial_training_path, "reward_terminal_mintime"))
-                
-            if data_folder_path:
-
-                ## Write all parameters
-                testing_log_file = data_folder_path + "testing_input_log.csv"
-
-                testing_log_data = []
-                testing_log_data.append(["mode", self.mode])
-                testing_log_data.append(["initial_training_path", self.initial_training_path])
-                
-                write_data(testing_log_file, testing_log_data)
-        '''
-
-        print("[mobiman_drl_config::Config::__init__] mode: " + str(self.mode))
         print("[mobiman_drl_config::Config::__init__] world_name: " + str(self.world_name))
         print("[mobiman_drl_config::Config::__init__] world_range_x_min: " + str(self.world_range_x_min))
         print("[mobiman_drl_config::Config::__init__] world_range_x_max: " + str(self.world_range_x_max))
