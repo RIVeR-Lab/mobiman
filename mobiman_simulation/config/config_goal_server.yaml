@@ -1,6 +1,13 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
+gs_world_frame_name: "world"
+gs_robot_frame_name: "base_link"
+gs_goal_frame_name: "golazo"
+gs_ee_frame_name: "j2n6s300_end_effector"
+gs_grasp_frame_name: "grasp"
+gs_drop_frame_name: "drop"
+
 dummy_goal_pos_x: 0.0
 dummy_goal_pos_y: 0.0
 dummy_goal_pos_z: 1.0

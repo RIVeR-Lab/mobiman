@@ -8,16 +8,40 @@ gazebo_robot_name: "mobiman"
 mode: "training"
 drl_data_path: "dataset/drl/"
 initial_training_path: ""
-#initial_training_path: "20231003_115318_PPO_mobiman/"
+#initial_training_path: "20240217_004709_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Training Parameters
 
-## Task:
+## Algorithm:
+# PPO
+# SAC
+# DDPG  (NUA NOTE: NOT FUNCTIONAL YET!)
+# A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
+rl_algorithm: "SAC"
+motion_planning_algorithm: "ocs2"
 
-# Options: ### NUA NOTE: GAZEBO ONLY! 
+# Options: ### NUA TODO: UPDATE! 
+# mobiman_FC             -> FC(occupancy_set + target + prev_action)
+# mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action) (NUA NOTE: NOT FUNCTIONAL YET!)
+observation_space_type: "mobiman_FC"
+
+learning_rate: 0.0002
+n_steps: 50 #1000
+batch_size: 20 #50
+ent_coef: 0.0001
+training_timesteps: 10 #10000
+max_episode_steps: 10 #2000
+
+training_checkpoint_freq: 50 #1000
+plot_title: "Learning Curve"
+plot_moving_average_window_size_timesteps: 5
+plot_moving_average_window_size_episodes: 1
+
+## Task:
+# Options: 
 # JackalJaco_mobiman_drl-v0
-task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"
+task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"   # (NUA NOTE: GAZEBO ONLY AND NOT FUNCTIONAL YET!)
 
 world_name: "conveyor"
 
@@ -43,27 +67,6 @@ goal_range_max_y: 0.0                 # wrt. conveyor frame
 goal_range_min_z: 0.6                 # wrt. world frame
 goal_range_max_z: 0.7                 # wrt. world frame
 #### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- END
-
-## Algorithm:
-deep_learning_algorithm: "PPO"
-motion_planning_algorithm: "ocs2"
-
-# Options: ### NUA TODO: UPDATE! 
-# mobiman_FC             -> FC(occupancy_set + target + prev_action)
-# mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action)
-observation_space_type: "mobiman_FC"
-
-learning_rate: 0.0001
-n_steps: 50 #1000
-batch_size: 10 #50
-ent_coef: 0.0001
-training_timesteps: 5000 #10000
-max_episode_steps: 10 #2000
-
-training_checkpoint_freq: 50 #1000
-plot_title: "Learning Curve"
-plot_moving_average_window_size_timesteps: 5
-plot_moving_average_window_size_episodes: 1
 
 ## Data and Sensors
 world_frame_name: "world"
@@ -99,9 +102,9 @@ obs_base_velo_ang_max: 5.0
 obs_joint_velo_min: -20.0
 obs_joint_velo_max: 20.0
 
-err_threshold_pos: 0.02
-err_threshold_ori_yaw: 0.02
-err_threshold_ori_quat: 0.02
+err_threshold_pos: 0.05
+err_threshold_ori_yaw: 0.05
+err_threshold_ori_quat: 0.05
 
 # Action time horizon [s]
 action_time_horizon: 6.0
