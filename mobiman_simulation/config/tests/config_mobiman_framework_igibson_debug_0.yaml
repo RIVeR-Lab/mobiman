@@ -31,7 +31,7 @@ config_map_server: "config_map_server_igibson"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 4
+n_robot: 1
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!
@@ -43,8 +43,8 @@ flag_goal_server: false
 config_goal_server: "config_goal_server"
 
 ### Observation Server:
-flag_observation_server: false
-config_observation_server: "config_observation_server"
+#flag_observation_server: false
+#config_observation_server: "config_observation_server"
 
 ### Distance Server:
 flag_distance_server: false

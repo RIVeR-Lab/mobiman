@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2024.02.12
+LAST UPDATE: 2024.02.22
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -86,7 +86,7 @@ if __name__=="__main__":
     load_config_file(mobiman_path + "config/" + config_goal_server + ".yaml")
 
     ### Observation Server:
-    flag_observation_server = rospy.get_param('flag_observation_server', True)
+    flag_observation_server = rospy.get_param('flag_observation_server', False)
     config_observation_server = rospy.get_param('config_observation_server', "")
 
     ### Distance Server:

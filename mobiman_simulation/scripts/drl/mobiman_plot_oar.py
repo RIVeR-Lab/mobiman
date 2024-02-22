@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 '''
-LAST UPDATE: 2024.02.15
+LAST UPDATE: 2024.02.22
 
 AUTHOR:	Sarvesh Prajapati (SP)
         Neset Unver Akmandor (NUA)	
@@ -242,21 +242,35 @@ DESCRIPTION: NUA TODO: Update!
 if __name__ == '__main__':
     print("[mobiman_plot_oar::__main__] START")
 
-    rospy.init_node('mobiman_drl_training_plot')
+    rospy.init_node('mobiman_plot_oar')
     
+    plot_path = rospy.get_param('plot_path')
+    plot_flag = rospy.get_param('plot_flag')
+    plot_title = rospy.get_param('plot_title')
+    plot_window_timestep = rospy.get_param('plot_window_timestep')
+    plot_window_episode = rospy.get_param('plot_window_episode')
     data_path = rospy.get_param('data_path')
+
+    print("[mobiman_plot_oar::__main__] plot_path: " + str(plot_path))
+    print("[mobiman_plot_oar::__main__] plot_flag: " + str(plot_flag))
+    print("[mobiman_plot_oar::__main__] plot_title: " + str(plot_title))
+    print("[mobiman_plot_oar::__main__] plot_window_timestep: " + str(plot_window_timestep))
+    print("[mobiman_plot_oar::__main__] plot_window_episode: " + str(plot_window_episode))
+    print("[mobiman_plot_oar::__main__] data_path: " + str(data_path))
+
+
+
+    '''
+    plot_path = rospy.get_param('data_path')
     observation_sequences = [int(a) for a in str(rospy.get_param('observation_sequences')).split(',')]
     action_sequences = [int(a) for a in str(rospy.get_param('action_sequences')).split(',')]
     continue_initial = rospy.get_param('continue_initial')
     continue_initial_count = rospy.get_param('continue_initial_count')
     
-    plot_flag = rospy.get_param('plot_flag')
-    plot_path = rospy.get_param('plot_path')
-    window_episodic = rospy.get_param('window_episodic')
-    
     plot_mobiman = PlotMobiman(data_path,plot_flag, plot_path, observation_sequences, action_sequences, continue_initial, continue_initial_count, window_episodic) # type: ignore
     plot_mobiman.plot_episodic_reward()
     plot_mobiman.plot_action()
     plot_mobiman.plot_observations()
+    '''
 
     print("[mobiman_plot_oar::__main__] END")

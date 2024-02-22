@@ -12,6 +12,7 @@ DESCRIPTION: TODO...
 NUA TODO:
 '''
 
+import drl
 import rospy
 import rospkg
 import csv
@@ -305,126 +306,129 @@ class Config():
         if data_folder_path:
 
             ## Write all parameters
-            training_log_file = data_folder_path + self.training_log_name + ".csv" # type: ignore
+            if drl_mode == "training":
+                self.log_file = data_folder_path + self.training_log_name + ".csv" # type: ignore
+            elif drl_mode == "testing":
+                self.log_file = data_folder_path + "testing_log_" + self.testing_benchmark_name + ".csv" # type: ignore
 
-            training_log_data = []
-            training_log_data.append(["world_name", self.world_name])
-            training_log_data.append(["world_range_x_min", self.world_range_x_min])
-            training_log_data.append(["world_range_x_max", self.world_range_x_max])
-            training_log_data.append(["world_range_y_min", self.world_range_y_min])
-            training_log_data.append(["world_range_y_max", self.world_range_y_max])
-            training_log_data.append(["world_range_z_min", self.world_range_z_min])
-            training_log_data.append(["world_range_z_max", self.world_range_z_max])
-            training_log_data.append(["init_robot_pos_range_x_min", self.init_robot_pos_range_x_min])
-            training_log_data.append(["init_robot_pos_range_x_max", self.init_robot_pos_range_x_max])
-            training_log_data.append(["init_robot_pos_range_y_min", self.init_robot_pos_range_y_min])
-            training_log_data.append(["init_robot_pos_range_y_max", self.init_robot_pos_range_y_max])
-            training_log_data.append(["world_frame_name", self.world_frame_name])
-            training_log_data.append(["robot_frame_name", self.robot_frame_name])
+            log_data = []
+            log_data.append(["world_name", self.world_name])
+            log_data.append(["world_range_x_min", self.world_range_x_min])
+            log_data.append(["world_range_x_max", self.world_range_x_max])
+            log_data.append(["world_range_y_min", self.world_range_y_min])
+            log_data.append(["world_range_y_max", self.world_range_y_max])
+            log_data.append(["world_range_z_min", self.world_range_z_min])
+            log_data.append(["world_range_z_max", self.world_range_z_max])
+            log_data.append(["init_robot_pos_range_x_min", self.init_robot_pos_range_x_min])
+            log_data.append(["init_robot_pos_range_x_max", self.init_robot_pos_range_x_max])
+            log_data.append(["init_robot_pos_range_y_min", self.init_robot_pos_range_y_min])
+            log_data.append(["init_robot_pos_range_y_max", self.init_robot_pos_range_y_max])
+            log_data.append(["world_frame_name", self.world_frame_name])
+            log_data.append(["robot_frame_name", self.robot_frame_name])
             for i, jname in enumerate(self.arm_joint_names): # type: ignore
-                training_log_data.append(["arm_joint_names_" + str(i), jname])
-            training_log_data.append(["n_armstate", self.n_armstate])
-            training_log_data.append(["ee_frame_name", self.ee_frame_name])
-            training_log_data.append(["goal_frame_name", self.goal_frame_name])
+                log_data.append(["arm_joint_names_" + str(i), jname])
+            log_data.append(["n_armstate", self.n_armstate])
+            log_data.append(["ee_frame_name", self.ee_frame_name])
+            log_data.append(["goal_frame_name", self.goal_frame_name])
             for i, oname in enumerate(self.occupancy_frame_names): # type: ignore
-                training_log_data.append(["occupancy_frame_names" + str(i), oname])
-            training_log_data.append(["n_occupancy", self.n_occupancy])
-            training_log_data.append(["base_control_msg_name", self.base_control_msg_name])
-            training_log_data.append(["arm_control_msg_name", self.arm_control_msg_name])
-            training_log_data.append(["mpc_data_msg_name", self.mpc_data_msg_name])
-            training_log_data.append(["rgb_image_msg_name", self.rgb_image_msg_name])
-            training_log_data.append(["depth_image_msg_name", self.depth_image_msg_name])
-            training_log_data.append(["depth_image_raw_msg_name", self.depth_image_raw_msg_name])
-            training_log_data.append(["camera_info_msg_name", self.camera_info_msg_name])
-            training_log_data.append(["lidar_msg_name", self.lidar_msg_name])
-            training_log_data.append(["odom_msg_name", self.odom_msg_name])
-            training_log_data.append(["odom_ground_truth_msg_name", self.odom_ground_truth_msg_name])
-            training_log_data.append(["imu_msg_name", self.imu_msg_name])
-            training_log_data.append(["arm_state_msg_name", self.arm_state_msg_name])
-            training_log_data.append(["modelmode_msg_name", self.modelmode_msg_name])
-            training_log_data.append(["target_msg_name", self.target_msg_name])
-            training_log_data.append(["occgrid_msg_name", self.occgrid_msg_name])
-            training_log_data.append(["mobiman_goal_obs_msg_name", self.mobiman_goal_obs_msg_name])
-            training_log_data.append(["mobiman_occupancy_obs_msg_name", self.mobiman_occupancy_obs_msg_name])
-            training_log_data.append(["selfcoldistance_msg_name", self.selfcoldistance_msg_name])
-            training_log_data.append(["extcoldistance_base_msg_name", self.extcoldistance_base_msg_name])
-            training_log_data.append(["extcoldistance_arm_msg_name", self.extcoldistance_arm_msg_name])
-            training_log_data.append(["pointsonrobot_msg_name", self.pointsonrobot_msg_name])
-            training_log_data.append(["goal_status_msg_name", self.goal_status_msg_name])
-            training_log_data.append(["max_episode_steps", self.max_episode_steps])
-            training_log_data.append(["training_timesteps", self.training_timesteps])
-            training_log_data.append(["occgrid_normalize_flag", self.occgrid_normalize_flag])
-            training_log_data.append(["occgrid_occ_min", self.occgrid_occ_min])
-            training_log_data.append(["occgrid_occ_max", self.occgrid_occ_max])
-            training_log_data.append(["observation_space_type", self.observation_space_type])
-            training_log_data.append(["err_threshold_pos", self.err_threshold_pos])
-            training_log_data.append(["err_threshold_ori_yaw", self.err_threshold_ori_yaw])
-            training_log_data.append(["err_threshold_ori_quat", self.err_threshold_ori_quat])
-            training_log_data.append(["obs_base_velo_lat_min", self.obs_base_velo_lat_min])
-            training_log_data.append(["obs_base_velo_lat_max", self.obs_base_velo_lat_max])
-            training_log_data.append(["obs_base_velo_ang_min", self.obs_base_velo_ang_min])
-            training_log_data.append(["obs_base_velo_ang_max", self.obs_base_velo_ang_max])
-            training_log_data.append(["obs_joint_velo_min", self.obs_joint_velo_min])
-            training_log_data.append(["obs_joint_velo_max", self.obs_joint_velo_max])
-            training_log_data.append(["action_time_horizon", self.action_time_horizon])
-            training_log_data.append(["action_type", self.action_type])
-            training_log_data.append(["n_action_model", self.n_action_model])
-            training_log_data.append(["n_action_constraint", self.n_action_constraint])
-            training_log_data.append(["n_action_target", self.n_action_target])
-            #training_log_data.append(["ablation_mode", self.ablation_mode])
-            #training_log_data.append(["last_step_distance_threshold", self.last_step_distance_threshold])
-            #training_log_data.append(["goal_distance_pos_threshold", self.goal_distance_pos_threshold])
-            #training_log_data.append(["goal_distance_ori_threshold_yaw", self.goal_distance_ori_threshold_yaw])
-            #training_log_data.append(["goal_distance_ori_threshold_quat", self.goal_distance_ori_threshold_quat])
-            training_log_data.append(["goal_range_min_x", self.goal_range_min_x])
-            training_log_data.append(["goal_range_max_x", self.goal_range_max_x])
-            training_log_data.append(["goal_range_min_y", self.goal_range_min_y])
-            training_log_data.append(["goal_range_max_y", self.goal_range_max_y])
-            training_log_data.append(["goal_range_min_z", self.goal_range_min_z])
-            training_log_data.append(["goal_range_max_z", self.goal_range_max_z])
-            training_log_data.append(["self_collision_range_min", self.self_collision_range_min])
-            training_log_data.append(["self_collision_range_max", self.self_collision_range_max])
-            training_log_data.append(["ext_collision_range_base_min", self.ext_collision_range_base_min])
-            training_log_data.append(["ext_collision_range_arm_min", self.ext_collision_range_arm_min])
-            training_log_data.append(["ext_collision_range_max", self.ext_collision_range_max])
-            #training_log_data.append(["rollover_pitch_threshold", self.rollover_pitch_threshold])
-            #training_log_data.append(["rollover_roll_threshold", self.rollover_roll_threshold])
-            training_log_data.append(["n_obs_stack", self.n_obs_stack])
-            training_log_data.append(["n_skip_obs_stack", self.n_skip_obs_stack]) 
-            training_log_data.append(["fc_obs_shape", self.fc_obs_shape])
-            training_log_data.append(["cnn_obs_shape", self.cnn_obs_shape])
-            training_log_data.append(["n_action", self.n_action])
-            training_log_data.append(["reward_terminal_goal", self.reward_terminal_goal])
-            training_log_data.append(["reward_terminal_out_of_boundary", self.reward_terminal_out_of_boundary])
-            training_log_data.append(["reward_terminal_collision", self.reward_terminal_collision])
-            training_log_data.append(["reward_terminal_rollover", self.reward_terminal_rollover])
-            training_log_data.append(["reward_terminal_max_step", self.reward_terminal_max_step])
-            training_log_data.append(["reward_step_dist2goal_scale", self.reward_step_dist2goal_scale])
-            training_log_data.append(["reward_step_dist2goal_dist_threshold", self.reward_step_dist2goal_dist_threshold])
-            #training_log_data.append(["reward_step_dist2goal_mu", self.reward_step_dist2goal_mu])
-            #training_log_data.append(["reward_step_dist2goal_sigma", self.reward_step_dist2goal_sigma])
-            training_log_data.append(["reward_step_mode0", self.reward_step_mode0])
-            training_log_data.append(["reward_step_mode1", self.reward_step_mode1])
-            training_log_data.append(["reward_step_mode2", self.reward_step_mode2])
-            #training_log_data.append(["reward_step_mpc_exit", self.reward_step_mpc_exit])
-            #training_log_data.append(["reward_step_target_reached", self.reward_step_target_reached])
-            #training_log_data.append(["reward_step_time_horizon_min", self.reward_step_time_horizon_min])
-            #training_log_data.append(["reward_step_time_horizon_max", self.reward_step_time_horizon_max])
-            training_log_data.append(["alpha_step_dist2goal", self.alpha_step_dist2goal])
-            training_log_data.append(["alpha_step_mode", self.alpha_step_mode])
-            #training_log_data.append(["alpha_step_mpc_result", self.alpha_step_mpc_result])
+                log_data.append(["occupancy_frame_names" + str(i), oname])
+            log_data.append(["n_occupancy", self.n_occupancy])
+            log_data.append(["base_control_msg_name", self.base_control_msg_name])
+            log_data.append(["arm_control_msg_name", self.arm_control_msg_name])
+            log_data.append(["mpc_data_msg_name", self.mpc_data_msg_name])
+            log_data.append(["rgb_image_msg_name", self.rgb_image_msg_name])
+            log_data.append(["depth_image_msg_name", self.depth_image_msg_name])
+            log_data.append(["depth_image_raw_msg_name", self.depth_image_raw_msg_name])
+            log_data.append(["camera_info_msg_name", self.camera_info_msg_name])
+            log_data.append(["lidar_msg_name", self.lidar_msg_name])
+            log_data.append(["odom_msg_name", self.odom_msg_name])
+            log_data.append(["odom_ground_truth_msg_name", self.odom_ground_truth_msg_name])
+            log_data.append(["imu_msg_name", self.imu_msg_name])
+            log_data.append(["arm_state_msg_name", self.arm_state_msg_name])
+            log_data.append(["modelmode_msg_name", self.modelmode_msg_name])
+            log_data.append(["target_msg_name", self.target_msg_name])
+            log_data.append(["occgrid_msg_name", self.occgrid_msg_name])
+            log_data.append(["mobiman_goal_obs_msg_name", self.mobiman_goal_obs_msg_name])
+            log_data.append(["mobiman_occupancy_obs_msg_name", self.mobiman_occupancy_obs_msg_name])
+            log_data.append(["selfcoldistance_msg_name", self.selfcoldistance_msg_name])
+            log_data.append(["extcoldistance_base_msg_name", self.extcoldistance_base_msg_name])
+            log_data.append(["extcoldistance_arm_msg_name", self.extcoldistance_arm_msg_name])
+            log_data.append(["pointsonrobot_msg_name", self.pointsonrobot_msg_name])
+            log_data.append(["goal_status_msg_name", self.goal_status_msg_name])
+            log_data.append(["max_episode_steps", self.max_episode_steps])
+            log_data.append(["training_timesteps", self.training_timesteps])
+            log_data.append(["occgrid_normalize_flag", self.occgrid_normalize_flag])
+            log_data.append(["occgrid_occ_min", self.occgrid_occ_min])
+            log_data.append(["occgrid_occ_max", self.occgrid_occ_max])
+            log_data.append(["observation_space_type", self.observation_space_type])
+            log_data.append(["err_threshold_pos", self.err_threshold_pos])
+            log_data.append(["err_threshold_ori_yaw", self.err_threshold_ori_yaw])
+            log_data.append(["err_threshold_ori_quat", self.err_threshold_ori_quat])
+            log_data.append(["obs_base_velo_lat_min", self.obs_base_velo_lat_min])
+            log_data.append(["obs_base_velo_lat_max", self.obs_base_velo_lat_max])
+            log_data.append(["obs_base_velo_ang_min", self.obs_base_velo_ang_min])
+            log_data.append(["obs_base_velo_ang_max", self.obs_base_velo_ang_max])
+            log_data.append(["obs_joint_velo_min", self.obs_joint_velo_min])
+            log_data.append(["obs_joint_velo_max", self.obs_joint_velo_max])
+            log_data.append(["action_time_horizon", self.action_time_horizon])
+            log_data.append(["action_type", self.action_type])
+            log_data.append(["n_action_model", self.n_action_model])
+            log_data.append(["n_action_constraint", self.n_action_constraint])
+            log_data.append(["n_action_target", self.n_action_target])
+            #log_data.append(["ablation_mode", self.ablation_mode])
+            #log_data.append(["last_step_distance_threshold", self.last_step_distance_threshold])
+            #log_data.append(["goal_distance_pos_threshold", self.goal_distance_pos_threshold])
+            #log_data.append(["goal_distance_ori_threshold_yaw", self.goal_distance_ori_threshold_yaw])
+            #log_data.append(["goal_distance_ori_threshold_quat", self.goal_distance_ori_threshold_quat])
+            log_data.append(["goal_range_min_x", self.goal_range_min_x])
+            log_data.append(["goal_range_max_x", self.goal_range_max_x])
+            log_data.append(["goal_range_min_y", self.goal_range_min_y])
+            log_data.append(["goal_range_max_y", self.goal_range_max_y])
+            log_data.append(["goal_range_min_z", self.goal_range_min_z])
+            log_data.append(["goal_range_max_z", self.goal_range_max_z])
+            log_data.append(["self_collision_range_min", self.self_collision_range_min])
+            log_data.append(["self_collision_range_max", self.self_collision_range_max])
+            log_data.append(["ext_collision_range_base_min", self.ext_collision_range_base_min])
+            log_data.append(["ext_collision_range_arm_min", self.ext_collision_range_arm_min])
+            log_data.append(["ext_collision_range_max", self.ext_collision_range_max])
+            #log_data.append(["rollover_pitch_threshold", self.rollover_pitch_threshold])
+            #log_data.append(["rollover_roll_threshold", self.rollover_roll_threshold])
+            log_data.append(["n_obs_stack", self.n_obs_stack])
+            log_data.append(["n_skip_obs_stack", self.n_skip_obs_stack]) 
+            log_data.append(["fc_obs_shape", self.fc_obs_shape])
+            log_data.append(["cnn_obs_shape", self.cnn_obs_shape])
+            log_data.append(["n_action", self.n_action])
+            log_data.append(["reward_terminal_goal", self.reward_terminal_goal])
+            log_data.append(["reward_terminal_out_of_boundary", self.reward_terminal_out_of_boundary])
+            log_data.append(["reward_terminal_collision", self.reward_terminal_collision])
+            log_data.append(["reward_terminal_rollover", self.reward_terminal_rollover])
+            log_data.append(["reward_terminal_max_step", self.reward_terminal_max_step])
+            log_data.append(["reward_step_dist2goal_scale", self.reward_step_dist2goal_scale])
+            log_data.append(["reward_step_dist2goal_dist_threshold", self.reward_step_dist2goal_dist_threshold])
+            #log_data.append(["reward_step_dist2goal_mu", self.reward_step_dist2goal_mu])
+            #log_data.append(["reward_step_dist2goal_sigma", self.reward_step_dist2goal_sigma])
+            log_data.append(["reward_step_mode0", self.reward_step_mode0])
+            log_data.append(["reward_step_mode1", self.reward_step_mode1])
+            log_data.append(["reward_step_mode2", self.reward_step_mode2])
+            #log_data.append(["reward_step_mpc_exit", self.reward_step_mpc_exit])
+            #log_data.append(["reward_step_target_reached", self.reward_step_target_reached])
+            #log_data.append(["reward_step_time_horizon_min", self.reward_step_time_horizon_min])
+            #log_data.append(["reward_step_time_horizon_max", self.reward_step_time_horizon_max])
+            log_data.append(["alpha_step_dist2goal", self.alpha_step_dist2goal])
+            log_data.append(["alpha_step_mode", self.alpha_step_mode])
+            #log_data.append(["alpha_step_mpc_result", self.alpha_step_mpc_result])
 
-            write_data(training_log_file, training_log_data)
+            write_data(self.log_file, log_data)
 
     '''
     NUA TODO: 
     '''
     def set_observation_shape(self, obs_shape):
         self.observation_shape = obs_shape
-        training_log_data = []
-        training_log_data.append(["observation_shape", self.observation_shape])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["observation_shape", self.observation_shape])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
         print("[mobiman_drl_config::Config::set_observation_shape] observation_shape: " + str(self.observation_shape))
 
     '''
@@ -432,10 +436,10 @@ class Config():
     '''
     def set_action_shape(self, act_shape):
         self.action_shape = act_shape
-        training_log_data = []
-        training_log_data.append(["action_shape", self.action_shape])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["action_shape", self.action_shape])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
         print("[mobiman_drl_config::Config::set_action_shape] action_shape: " + str(self.action_shape))
 
     '''
@@ -468,13 +472,13 @@ class Config():
         self.occgrid_height = occgrid_msg.info.height
         self.occgrid_resolution = round(occgrid_msg.info.resolution, 2)
 
-        training_log_data = []
-        training_log_data.append(["occgrid_data_size", self.occgrid_data_size])
-        training_log_data.append(["occgrid_width", self.occgrid_width])
-        training_log_data.append(["occgrid_height", self.occgrid_height])
-        training_log_data.append(["occgrid_resolution", self.occgrid_resolution])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["occgrid_data_size", self.occgrid_data_size])
+        log_data.append(["occgrid_width", self.occgrid_width])
+        log_data.append(["occgrid_height", self.occgrid_height])
+        log_data.append(["occgrid_resolution", self.occgrid_resolution])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
 
         print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_data_size: " + str(self.occgrid_data_size))
         print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_width: " + str(self.occgrid_width))
@@ -488,12 +492,12 @@ class Config():
         self.n_mobiman_goal_obs = n_mobiman_goal_obs
         self.mobiman_goal_obs_frame_id = mobiman_goal_obs_frame_id
         self.mobiman_goal_obs_dim_dt = mobiman_goal_obs_dim_dt
-        training_log_data = []
-        training_log_data.append(["n_mobiman_goal_obs", self.n_mobiman_goal_obs])
-        training_log_data.append(["mobiman_goal_obs_frame_id", self.mobiman_goal_obs_frame_id])
-        training_log_data.append(["mobiman_goal_obs_dim_dt", self.mobiman_goal_obs_dim_dt])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["n_mobiman_goal_obs", self.n_mobiman_goal_obs])
+        log_data.append(["mobiman_goal_obs_frame_id", self.mobiman_goal_obs_frame_id])
+        log_data.append(["mobiman_goal_obs_dim_dt", self.mobiman_goal_obs_dim_dt])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
 
         print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] n_mobiman_goal_obs: " + str(self.n_mobiman_goal_obs))
         print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_frame_id: " + str(self.mobiman_goal_obs_frame_id))
@@ -506,12 +510,12 @@ class Config():
         self.n_mobiman_occupancy_obs = n_mobiman_occupancy_obs
         self.mobiman_occupancy_obs_frame_id = mobiman_occupancy_obs_frame_id
         self.mobiman_occupancy_obs_dim_dt = mobiman_occupancy_obs_dim_dt
-        training_log_data = []
-        training_log_data.append(["n_mobiman_occupancy_obs", self.n_mobiman_occupancy_obs])
-        training_log_data.append(["mobiman_occupancy_obs_frame_id", self.mobiman_occupancy_obs_frame_id])
-        training_log_data.append(["mobiman_occupancy_obs_dim_dt", self.mobiman_occupancy_obs_dim_dt])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["n_mobiman_occupancy_obs", self.n_mobiman_occupancy_obs])
+        log_data.append(["mobiman_occupancy_obs_frame_id", self.mobiman_occupancy_obs_frame_id])
+        log_data.append(["mobiman_occupancy_obs_dim_dt", self.mobiman_occupancy_obs_dim_dt])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
 
         print("[mobiman_drl_config::Config::set_mobiman_occupancy_obs_config] n_mobiman_occupancy_obs: " + str(self.n_mobiman_occupancy_obs))
         print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_frame_id: " + str(self.mobiman_occupancy_obs_frame_id))
@@ -522,10 +526,10 @@ class Config():
     '''
     def set_selfcoldistance_config(self, n_selfcoldistance):
         self.n_selfcoldistance = n_selfcoldistance
-        training_log_data = []
-        training_log_data.append(["n_selfcoldistance", self.n_selfcoldistance])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["n_selfcoldistance", self.n_selfcoldistance])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
 
         print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_selfcoldistance: " + str(self.n_selfcoldistance))
 
@@ -534,10 +538,10 @@ class Config():
     '''
     def set_extcoldistance_base_config(self, n_extcoldistance_base):
         self.n_extcoldistance_base = n_extcoldistance_base
-        training_log_data = []
-        training_log_data.append(["n_extcoldistance_base", self.n_extcoldistance_base])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["n_extcoldistance_base", self.n_extcoldistance_base])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
 
         print("[mobiman_drl_config::Config::set_extcoldistance_base_config] n_extcoldistance_base: " + str(self.n_extcoldistance_base))
 
@@ -546,9 +550,9 @@ class Config():
     '''
     def set_extcoldistance_arm_config(self, n_extcoldistance_arm):
         self.n_extcoldistance_arm = n_extcoldistance_arm
-        training_log_data = []
-        training_log_data.append(["n_extcoldistance_arm", self.n_extcoldistance_arm])
-        training_log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(training_log_file, training_log_data)
+        log_data = []
+        log_data.append(["n_extcoldistance_arm", self.n_extcoldistance_arm])
+        #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
+        write_data(self.log_file, log_data)
 
         print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_extcoldistance_arm: " + str(self.n_extcoldistance_arm))
