@@ -3,7 +3,8 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 760
   - Class: rviz/Selection
@@ -50,12 +51,394 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: false
+      Enabled: true
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        jackalJaco_0/base_link:
+          Value: true
+        jackalJaco_0/chassis_link:
+          Value: false
+        jackalJaco_0/conveyor_belt:
+          Value: false
+        jackalJaco_0/d435_cam1camera_bottom_screw_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_color_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_color_optical_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_depth_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_depth_frame_gazebo:
+          Value: false
+        jackalJaco_0/d435_cam1camera_depth_optical_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_left_ir_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_left_ir_optical_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_link:
+          Value: false
+        jackalJaco_0/d435_cam1camera_right_ir_frame:
+          Value: false
+        jackalJaco_0/d435_cam1camera_right_ir_optical_frame:
+          Value: false
+        jackalJaco_0/front_fender_link:
+          Value: false
+        jackalJaco_0/front_left_wheel_link:
+          Value: false
+        jackalJaco_0/front_mount:
+          Value: false
+        jackalJaco_0/front_right_wheel_link:
+          Value: false
+        jackalJaco_0/golazo:
+          Value: false
+        jackalJaco_0/grasp:
+          Value: true
+        jackalJaco_0/imu_link:
+          Value: false
+        jackalJaco_0/j2n6s300_end_effector:
+          Value: true
+        jackalJaco_0/j2n6s300_link_1:
+          Value: true
+        jackalJaco_0/j2n6s300_link_2:
+          Value: true
+        jackalJaco_0/j2n6s300_link_3:
+          Value: true
+        jackalJaco_0/j2n6s300_link_4:
+          Value: true
+        jackalJaco_0/j2n6s300_link_5:
+          Value: true
+        jackalJaco_0/j2n6s300_link_6:
+          Value: true
+        jackalJaco_0/j2n6s300_link_base:
+          Value: false
+        jackalJaco_0/jaco_base_link:
+          Value: false
+        jackalJaco_0/mid_mount:
+          Value: false
+        jackalJaco_0/navsat_link:
+          Value: false
+        jackalJaco_0/odom:
+          Value: false
+        jackalJaco_0/rear_fender_link:
+          Value: false
+        jackalJaco_0/rear_left_wheel_link:
+          Value: false
+        jackalJaco_0/rear_mount:
+          Value: false
+        jackalJaco_0/rear_right_wheel_link:
+          Value: false
+        jackalJaco_0/red_cube:
+          Value: false
+        jackalJaco_1/base_link:
+          Value: true
+        jackalJaco_1/chassis_link:
+          Value: false
+        jackalJaco_1/conveyor_belt:
+          Value: false
+        jackalJaco_1/d435_cam1camera_bottom_screw_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_color_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_color_optical_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_depth_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_depth_frame_gazebo:
+          Value: false
+        jackalJaco_1/d435_cam1camera_depth_optical_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_left_ir_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_left_ir_optical_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_link:
+          Value: false
+        jackalJaco_1/d435_cam1camera_right_ir_frame:
+          Value: false
+        jackalJaco_1/d435_cam1camera_right_ir_optical_frame:
+          Value: false
+        jackalJaco_1/front_fender_link:
+          Value: false
+        jackalJaco_1/front_left_wheel_link:
+          Value: false
+        jackalJaco_1/front_mount:
+          Value: false
+        jackalJaco_1/front_right_wheel_link:
+          Value: false
+        jackalJaco_1/golazo:
+          Value: false
+        jackalJaco_1/grasp:
+          Value: true
+        jackalJaco_1/imu_link:
+          Value: false
+        jackalJaco_1/j2n6s300_end_effector:
+          Value: true
+        jackalJaco_1/j2n6s300_link_1:
+          Value: true
+        jackalJaco_1/j2n6s300_link_2:
+          Value: true
+        jackalJaco_1/j2n6s300_link_3:
+          Value: true
+        jackalJaco_1/j2n6s300_link_4:
+          Value: true
+        jackalJaco_1/j2n6s300_link_5:
+          Value: true
+        jackalJaco_1/j2n6s300_link_6:
+          Value: true
+        jackalJaco_1/j2n6s300_link_base:
+          Value: false
+        jackalJaco_1/jaco_base_link:
+          Value: false
+        jackalJaco_1/mid_mount:
+          Value: false
+        jackalJaco_1/navsat_link:
+          Value: false
+        jackalJaco_1/odom:
+          Value: false
+        jackalJaco_1/rear_fender_link:
+          Value: false
+        jackalJaco_1/rear_left_wheel_link:
+          Value: false
+        jackalJaco_1/rear_mount:
+          Value: false
+        jackalJaco_1/rear_right_wheel_link:
+          Value: false
+        jackalJaco_1/red_cube:
+          Value: false
+        jackalJaco_2/base_link:
+          Value: true
+        jackalJaco_2/chassis_link:
+          Value: false
+        jackalJaco_2/conveyor_belt:
+          Value: false
+        jackalJaco_2/d435_cam1camera_bottom_screw_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_color_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_color_optical_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_depth_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_depth_frame_gazebo:
+          Value: false
+        jackalJaco_2/d435_cam1camera_depth_optical_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_left_ir_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_left_ir_optical_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_link:
+          Value: false
+        jackalJaco_2/d435_cam1camera_right_ir_frame:
+          Value: false
+        jackalJaco_2/d435_cam1camera_right_ir_optical_frame:
+          Value: false
+        jackalJaco_2/front_fender_link:
+          Value: false
+        jackalJaco_2/front_left_wheel_link:
+          Value: false
+        jackalJaco_2/front_mount:
+          Value: false
+        jackalJaco_2/front_right_wheel_link:
+          Value: false
+        jackalJaco_2/golazo:
+          Value: false
+        jackalJaco_2/grasp:
+          Value: true
+        jackalJaco_2/imu_link:
+          Value: false
+        jackalJaco_2/j2n6s300_end_effector:
+          Value: true
+        jackalJaco_2/j2n6s300_link_1:
+          Value: true
+        jackalJaco_2/j2n6s300_link_2:
+          Value: true
+        jackalJaco_2/j2n6s300_link_3:
+          Value: true
+        jackalJaco_2/j2n6s300_link_4:
+          Value: true
+        jackalJaco_2/j2n6s300_link_5:
+          Value: true
+        jackalJaco_2/j2n6s300_link_6:
+          Value: true
+        jackalJaco_2/j2n6s300_link_base:
+          Value: false
+        jackalJaco_2/jaco_base_link:
+          Value: false
+        jackalJaco_2/mid_mount:
+          Value: false
+        jackalJaco_2/navsat_link:
+          Value: false
+        jackalJaco_2/odom:
+          Value: false
+        jackalJaco_2/rear_fender_link:
+          Value: false
+        jackalJaco_2/rear_left_wheel_link:
+          Value: false
+        jackalJaco_2/rear_mount:
+          Value: false
+        jackalJaco_2/rear_right_wheel_link:
+          Value: false
+        jackalJaco_2/red_cube:
+          Value: false
+        jackalJaco_3/base_link:
+          Value: true
+        jackalJaco_3/chassis_link:
+          Value: false
+        jackalJaco_3/conveyor_belt:
+          Value: false
+        jackalJaco_3/d435_cam1camera_bottom_screw_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_color_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_color_optical_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_depth_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_depth_frame_gazebo:
+          Value: false
+        jackalJaco_3/d435_cam1camera_depth_optical_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_left_ir_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_left_ir_optical_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_link:
+          Value: false
+        jackalJaco_3/d435_cam1camera_right_ir_frame:
+          Value: false
+        jackalJaco_3/d435_cam1camera_right_ir_optical_frame:
+          Value: false
+        jackalJaco_3/front_fender_link:
+          Value: false
+        jackalJaco_3/front_left_wheel_link:
+          Value: false
+        jackalJaco_3/front_mount:
+          Value: false
+        jackalJaco_3/front_right_wheel_link:
+          Value: false
+        jackalJaco_3/golazo:
+          Value: false
+        jackalJaco_3/grasp:
+          Value: true
+        jackalJaco_3/imu_link:
+          Value: false
+        jackalJaco_3/j2n6s300_end_effector:
+          Value: true
+        jackalJaco_3/j2n6s300_link_1:
+          Value: true
+        jackalJaco_3/j2n6s300_link_2:
+          Value: true
+        jackalJaco_3/j2n6s300_link_3:
+          Value: true
+        jackalJaco_3/j2n6s300_link_4:
+          Value: true
+        jackalJaco_3/j2n6s300_link_5:
+          Value: true
+        jackalJaco_3/j2n6s300_link_6:
+          Value: true
+        jackalJaco_3/j2n6s300_link_base:
+          Value: false
+        jackalJaco_3/jaco_base_link:
+          Value: false
+        jackalJaco_3/mid_mount:
+          Value: false
+        jackalJaco_3/navsat_link:
+          Value: false
+        jackalJaco_3/odom:
+          Value: false
+        jackalJaco_3/rear_fender_link:
+          Value: false
+        jackalJaco_3/rear_left_wheel_link:
+          Value: false
+        jackalJaco_3/rear_mount:
+          Value: false
+        jackalJaco_3/rear_right_wheel_link:
+          Value: false
+        jackalJaco_3/red_cube:
+          Value: false
+        jackalJaco_4/base_link:
+          Value: true
+        jackalJaco_4/chassis_link:
+          Value: false
+        jackalJaco_4/conveyor_belt:
+          Value: false
+        jackalJaco_4/d435_cam1camera_bottom_screw_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_color_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_color_optical_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_depth_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_depth_frame_gazebo:
+          Value: false
+        jackalJaco_4/d435_cam1camera_depth_optical_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_left_ir_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_left_ir_optical_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_link:
+          Value: false
+        jackalJaco_4/d435_cam1camera_right_ir_frame:
+          Value: false
+        jackalJaco_4/d435_cam1camera_right_ir_optical_frame:
+          Value: false
+        jackalJaco_4/front_fender_link:
+          Value: false
+        jackalJaco_4/front_left_wheel_link:
+          Value: false
+        jackalJaco_4/front_mount:
+          Value: false
+        jackalJaco_4/front_right_wheel_link:
+          Value: false
+        jackalJaco_4/golazo:
+          Value: false
+        jackalJaco_4/grasp:
+          Value: true
+        jackalJaco_4/imu_link:
+          Value: false
+        jackalJaco_4/j2n6s300_end_effector:
+          Value: true
+        jackalJaco_4/j2n6s300_link_1:
+          Value: true
+        jackalJaco_4/j2n6s300_link_2:
+          Value: true
+        jackalJaco_4/j2n6s300_link_3:
+          Value: true
+        jackalJaco_4/j2n6s300_link_4:
+          Value: true
+        jackalJaco_4/j2n6s300_link_5:
+          Value: true
+        jackalJaco_4/j2n6s300_link_6:
+          Value: true
+        jackalJaco_4/j2n6s300_link_base:
+          Value: false
+        jackalJaco_4/jaco_base_link:
+          Value: false
+        jackalJaco_4/mid_mount:
+          Value: false
+        jackalJaco_4/navsat_link:
+          Value: false
+        jackalJaco_4/odom:
+          Value: false
+        jackalJaco_4/rear_fender_link:
+          Value: false
+        jackalJaco_4/rear_left_wheel_link:
+          Value: false
+        jackalJaco_4/rear_mount:
+          Value: false
+        jackalJaco_4/rear_right_wheel_link:
+          Value: false
+        jackalJaco_4/red_cube:
+          Value: false
+        world:
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -63,172 +446,314 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        world:
+          jackalJaco_0/conveyor_belt:
+            {}
+          jackalJaco_0/golazo:
+            {}
+          jackalJaco_0/grasp:
+            {}
+          jackalJaco_0/odom:
+            jackalJaco_0/base_link:
+              jackalJaco_0/chassis_link:
+                jackalJaco_0/front_fender_link:
+                  {}
+                jackalJaco_0/front_left_wheel_link:
+                  {}
+                jackalJaco_0/front_right_wheel_link:
+                  {}
+                jackalJaco_0/imu_link:
+                  {}
+                jackalJaco_0/mid_mount:
+                  jackalJaco_0/front_mount:
+                    {}
+                  jackalJaco_0/rear_mount:
+                    {}
+                jackalJaco_0/navsat_link:
+                  {}
+                jackalJaco_0/rear_fender_link:
+                  {}
+                jackalJaco_0/rear_left_wheel_link:
+                  {}
+                jackalJaco_0/rear_right_wheel_link:
+                  {}
+              jackalJaco_0/d435_cam1camera_bottom_screw_frame:
+                jackalJaco_0/d435_cam1camera_link:
+                  jackalJaco_0/d435_cam1camera_depth_frame:
+                    jackalJaco_0/d435_cam1camera_color_frame:
+                      jackalJaco_0/d435_cam1camera_color_optical_frame:
+                        {}
+                    jackalJaco_0/d435_cam1camera_depth_optical_frame:
+                      {}
+                    jackalJaco_0/d435_cam1camera_left_ir_frame:
+                      jackalJaco_0/d435_cam1camera_left_ir_optical_frame:
+                        {}
+                    jackalJaco_0/d435_cam1camera_right_ir_frame:
+                      jackalJaco_0/d435_cam1camera_right_ir_optical_frame:
+                        {}
+                  jackalJaco_0/d435_cam1camera_depth_frame_gazebo:
+                    {}
+              jackalJaco_0/jaco_base_link:
+                jackalJaco_0/j2n6s300_link_base:
+                  jackalJaco_0/j2n6s300_link_1:
+                    jackalJaco_0/j2n6s300_link_2:
+                      jackalJaco_0/j2n6s300_link_3:
+                        jackalJaco_0/j2n6s300_link_4:
+                          jackalJaco_0/j2n6s300_link_5:
+                            jackalJaco_0/j2n6s300_link_6:
+                              jackalJaco_0/j2n6s300_end_effector:
+                                {}
+          jackalJaco_0/red_cube:
+            {}
+          jackalJaco_1/conveyor_belt:
+            {}
+          jackalJaco_1/golazo:
+            {}
+          jackalJaco_1/grasp:
+            {}
+          jackalJaco_1/odom:
+            jackalJaco_1/base_link:
+              jackalJaco_1/chassis_link:
+                jackalJaco_1/front_fender_link:
+                  {}
+                jackalJaco_1/front_left_wheel_link:
+                  {}
+                jackalJaco_1/front_right_wheel_link:
+                  {}
+                jackalJaco_1/imu_link:
+                  {}
+                jackalJaco_1/mid_mount:
+                  jackalJaco_1/front_mount:
+                    {}
+                  jackalJaco_1/rear_mount:
+                    {}
+                jackalJaco_1/navsat_link:
+                  {}
+                jackalJaco_1/rear_fender_link:
+                  {}
+                jackalJaco_1/rear_left_wheel_link:
+                  {}
+                jackalJaco_1/rear_right_wheel_link:
+                  {}
+              jackalJaco_1/d435_cam1camera_bottom_screw_frame:
+                jackalJaco_1/d435_cam1camera_link:
+                  jackalJaco_1/d435_cam1camera_depth_frame:
+                    jackalJaco_1/d435_cam1camera_color_frame:
+                      jackalJaco_1/d435_cam1camera_color_optical_frame:
+                        {}
+                    jackalJaco_1/d435_cam1camera_depth_optical_frame:
+                      {}
+                    jackalJaco_1/d435_cam1camera_left_ir_frame:
+                      jackalJaco_1/d435_cam1camera_left_ir_optical_frame:
+                        {}
+                    jackalJaco_1/d435_cam1camera_right_ir_frame:
+                      jackalJaco_1/d435_cam1camera_right_ir_optical_frame:
+                        {}
+                  jackalJaco_1/d435_cam1camera_depth_frame_gazebo:
+                    {}
+              jackalJaco_1/jaco_base_link:
+                jackalJaco_1/j2n6s300_link_base:
+                  jackalJaco_1/j2n6s300_link_1:
+                    jackalJaco_1/j2n6s300_link_2:
+                      jackalJaco_1/j2n6s300_link_3:
+                        jackalJaco_1/j2n6s300_link_4:
+                          jackalJaco_1/j2n6s300_link_5:
+                            jackalJaco_1/j2n6s300_link_6:
+                              jackalJaco_1/j2n6s300_end_effector:
+                                {}
+          jackalJaco_1/red_cube:
+            {}
+          jackalJaco_2/conveyor_belt:
+            {}
+          jackalJaco_2/golazo:
+            {}
+          jackalJaco_2/grasp:
+            {}
+          jackalJaco_2/odom:
+            jackalJaco_2/base_link:
+              jackalJaco_2/chassis_link:
+                jackalJaco_2/front_fender_link:
+                  {}
+                jackalJaco_2/front_left_wheel_link:
+                  {}
+                jackalJaco_2/front_right_wheel_link:
+                  {}
+                jackalJaco_2/imu_link:
+                  {}
+                jackalJaco_2/mid_mount:
+                  jackalJaco_2/front_mount:
+                    {}
+                  jackalJaco_2/rear_mount:
+                    {}
+                jackalJaco_2/navsat_link:
+                  {}
+                jackalJaco_2/rear_fender_link:
+                  {}
+                jackalJaco_2/rear_left_wheel_link:
+                  {}
+                jackalJaco_2/rear_right_wheel_link:
+                  {}
+              jackalJaco_2/d435_cam1camera_bottom_screw_frame:
+                jackalJaco_2/d435_cam1camera_link:
+                  jackalJaco_2/d435_cam1camera_depth_frame:
+                    jackalJaco_2/d435_cam1camera_color_frame:
+                      jackalJaco_2/d435_cam1camera_color_optical_frame:
+                        {}
+                    jackalJaco_2/d435_cam1camera_depth_optical_frame:
+                      {}
+                    jackalJaco_2/d435_cam1camera_left_ir_frame:
+                      jackalJaco_2/d435_cam1camera_left_ir_optical_frame:
+                        {}
+                    jackalJaco_2/d435_cam1camera_right_ir_frame:
+                      jackalJaco_2/d435_cam1camera_right_ir_optical_frame:
+                        {}
+                  jackalJaco_2/d435_cam1camera_depth_frame_gazebo:
+                    {}
+              jackalJaco_2/jaco_base_link:
+                jackalJaco_2/j2n6s300_link_base:
+                  jackalJaco_2/j2n6s300_link_1:
+                    jackalJaco_2/j2n6s300_link_2:
+                      jackalJaco_2/j2n6s300_link_3:
+                        jackalJaco_2/j2n6s300_link_4:
+                          jackalJaco_2/j2n6s300_link_5:
+                            jackalJaco_2/j2n6s300_link_6:
+                              jackalJaco_2/j2n6s300_end_effector:
+                                {}
+          jackalJaco_2/red_cube:
+            {}
+          jackalJaco_3/conveyor_belt:
+            {}
+          jackalJaco_3/golazo:
+            {}
+          jackalJaco_3/grasp:
+            {}
+          jackalJaco_3/odom:
+            jackalJaco_3/base_link:
+              jackalJaco_3/chassis_link:
+                jackalJaco_3/front_fender_link:
+                  {}
+                jackalJaco_3/front_left_wheel_link:
+                  {}
+                jackalJaco_3/front_right_wheel_link:
+                  {}
+                jackalJaco_3/imu_link:
+                  {}
+                jackalJaco_3/mid_mount:
+                  jackalJaco_3/front_mount:
+                    {}
+                  jackalJaco_3/rear_mount:
+                    {}
+                jackalJaco_3/navsat_link:
+                  {}
+                jackalJaco_3/rear_fender_link:
+                  {}
+                jackalJaco_3/rear_left_wheel_link:
+                  {}
+                jackalJaco_3/rear_right_wheel_link:
+                  {}
+              jackalJaco_3/d435_cam1camera_bottom_screw_frame:
+                jackalJaco_3/d435_cam1camera_link:
+                  jackalJaco_3/d435_cam1camera_depth_frame:
+                    jackalJaco_3/d435_cam1camera_color_frame:
+                      jackalJaco_3/d435_cam1camera_color_optical_frame:
+                        {}
+                    jackalJaco_3/d435_cam1camera_depth_optical_frame:
+                      {}
+                    jackalJaco_3/d435_cam1camera_left_ir_frame:
+                      jackalJaco_3/d435_cam1camera_left_ir_optical_frame:
+                        {}
+                    jackalJaco_3/d435_cam1camera_right_ir_frame:
+                      jackalJaco_3/d435_cam1camera_right_ir_optical_frame:
+                        {}
+                  jackalJaco_3/d435_cam1camera_depth_frame_gazebo:
+                    {}
+              jackalJaco_3/jaco_base_link:
+                jackalJaco_3/j2n6s300_link_base:
+                  jackalJaco_3/j2n6s300_link_1:
+                    jackalJaco_3/j2n6s300_link_2:
+                      jackalJaco_3/j2n6s300_link_3:
+                        jackalJaco_3/j2n6s300_link_4:
+                          jackalJaco_3/j2n6s300_link_5:
+                            jackalJaco_3/j2n6s300_link_6:
+                              jackalJaco_3/j2n6s300_end_effector:
+                                {}
+          jackalJaco_3/red_cube:
+            {}
+          jackalJaco_4/conveyor_belt:
+            {}
+          jackalJaco_4/golazo:
+            {}
+          jackalJaco_4/grasp:
+            {}
+          jackalJaco_4/odom:
+            jackalJaco_4/base_link:
+              jackalJaco_4/chassis_link:
+                jackalJaco_4/front_fender_link:
+                  {}
+                jackalJaco_4/front_left_wheel_link:
+                  {}
+                jackalJaco_4/front_right_wheel_link:
+                  {}
+                jackalJaco_4/imu_link:
+                  {}
+                jackalJaco_4/mid_mount:
+                  jackalJaco_4/front_mount:
+                    {}
+                  jackalJaco_4/rear_mount:
+                    {}
+                jackalJaco_4/navsat_link:
+                  {}
+                jackalJaco_4/rear_fender_link:
+                  {}
+                jackalJaco_4/rear_left_wheel_link:
+                  {}
+                jackalJaco_4/rear_right_wheel_link:
+                  {}
+              jackalJaco_4/d435_cam1camera_bottom_screw_frame:
+                jackalJaco_4/d435_cam1camera_link:
+                  jackalJaco_4/d435_cam1camera_depth_frame:
+                    jackalJaco_4/d435_cam1camera_color_frame:
+                      jackalJaco_4/d435_cam1camera_color_optical_frame:
+                        {}
+                    jackalJaco_4/d435_cam1camera_depth_optical_frame:
+                      {}
+                    jackalJaco_4/d435_cam1camera_left_ir_frame:
+                      jackalJaco_4/d435_cam1camera_left_ir_optical_frame:
+                        {}
+                    jackalJaco_4/d435_cam1camera_right_ir_frame:
+                      jackalJaco_4/d435_cam1camera_right_ir_optical_frame:
+                        {}
+                  jackalJaco_4/d435_cam1camera_depth_frame_gazebo:
+                    {}
+              jackalJaco_4/jaco_base_link:
+                jackalJaco_4/j2n6s300_link_base:
+                  jackalJaco_4/j2n6s300_link_1:
+                    jackalJaco_4/j2n6s300_link_2:
+                      jackalJaco_4/j2n6s300_link_3:
+                        jackalJaco_4/j2n6s300_link_4:
+                          jackalJaco_4/j2n6s300_link_5:
+                            jackalJaco_4/j2n6s300_link_6:
+                              jackalJaco_4/j2n6s300_end_effector:
+                                {}
+          jackalJaco_4/red_cube:
+            {}
       Update Interval: 0
-      Value: false
+      Value: true
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        chassis_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        d435_cam1camera_bottom_screw_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_color_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_color_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_depth_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_depth_frame_gazebo:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_depth_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_left_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_left_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        d435_cam1camera_right_ir_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        d435_cam1camera_right_ir_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        front_fender_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        front_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        j2n6s300_end_effector:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        j2n6s300_link_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_2:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_3:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_4:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_5:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_6:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        j2n6s300_link_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        jaco_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        mid_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        navsat_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_fender_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rear_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       Robot Description: jackalJaco_0/robot_description
       TF Prefix: jackalJaco_0
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
@@ -313,13 +838,13 @@ Visualization Manager:
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_0/points_on_robot
       Name: MarkerArray
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /jackalJaco_0/debug_visu
@@ -395,7 +920,9 @@ Visualization Manager:
       Marker Topic: /jackalJaco_1/target_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -403,7 +930,9 @@ Visualization Manager:
       Marker Topic: /jackalJaco_2/target_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -411,9 +940,75 @@ Visualization Manager:
       Marker Topic: /jackalJaco_3/target_visu
       Name: MarkerArray
       Namespaces:
-        {}
+        target_1: true
+        target_2: true
+        target_3: true
       Queue Size: 100
       Value: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: RobotModel
+      Robot Description: jackalJaco_1/robot_description
+      TF Prefix: jackalJaco_1
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: RobotModel
+      Robot Description: jackalJaco_2/robot_description
+      TF Prefix: jackalJaco_2
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: RobotModel
+      Robot Description: jackalJaco_3/robot_description
+      TF Prefix: jackalJaco_3
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: RobotModel
+      Robot Description: jackalJaco_4/robot_description
+      TF Prefix: jackalJaco_4
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
@@ -442,7 +1037,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.686285018920898
+      Distance: 5.67535400390625
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -458,9 +1053,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6947967410087585
+      Pitch: 0.7847970128059387
       Target Frame: <Fixed Frame>
-      Yaw: 0.03475167974829674
+      Yaw: 6.237935543060303
     Saved: ~
 Window Geometry:
   Displays:

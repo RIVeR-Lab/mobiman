@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2024.02.15
+LAST UPDATE: 2024.02.23
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -21,12 +21,13 @@ import numpy as np
 '''
 DESCRIPTION: TODO...
 '''
-def write_data(file, data):
+def write_data(file, data, flag_print_info=False):
     file_status = open(file, 'a')
     with file_status:
         write = csv.writer(file_status)
         write.writerows(data)
-        print("[mobiman_drl_config::write_data] Data is written in " + str(file))
+        if flag_print_info:
+            print("[mobiman_drl_config::write_data] Data is written in " + str(file))
 
 '''
 DESCRIPTION: TODO...
@@ -57,12 +58,14 @@ DESCRIPTION: TODO...
 '''
 class Config():
 
-    def __init__(self, data_folder_path="", drl_mode="training"):        
+    def __init__(self, data_folder_path="", drl_mode="training", flag_print_info=False):        
+        
+        self.flag_print_info = flag_print_info
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::__init__] START")
+            print("[mobiman_drl_config::Config::__init__] data_folder_path: " + str(data_folder_path))
 
-        print("[mobiman_drl_config::Config::__init__] START")
-        print("[mobiman_drl_config::Config::__init__] data_folder_path: " + str(data_folder_path))
-
-        ### General (Training)
+        ### Training
         self.ros_pkg_name = rospy.get_param('ros_pkg_name', "")
         self.world_name = rospy.get_param('world_name', "")
         self.world_range_x_min = rospy.get_param('world_range_x_min', 0.0)
@@ -113,11 +116,8 @@ class Config():
 
         rospack = rospkg.RosPack()
         self.ros_pkg_path = rospack.get_path(self.ros_pkg_name) + "/"
-
-        #if drl_mode == "training":
-            #print("[mobiman_drl_config::Config::__init__] START training")
-
         self.training_log_name = rospy.get_param('training_log_name', "")
+
         self.max_episode_steps = rospy.get_param('max_episode_steps', 0)
         self.training_timesteps = rospy.get_param('training_timesteps', 0)
 
@@ -202,114 +202,115 @@ class Config():
         self.testing_benchmark_name = rospy.get_param('testing_benchmark_name', "")
         self.n_testing_eval_episodes = rospy.get_param('n_testing_eval_episodes', 0)
 
-        print("[mobiman_drl_config::Config::__init__] world_name: " + str(self.world_name))
-        print("[mobiman_drl_config::Config::__init__] world_range_x_min: " + str(self.world_range_x_min))
-        print("[mobiman_drl_config::Config::__init__] world_range_x_max: " + str(self.world_range_x_max))
-        print("[mobiman_drl_config::Config::__init__] world_range_y_min: " + str(self.world_range_y_min))
-        print("[mobiman_drl_config::Config::__init__] world_range_y_max: " + str(self.world_range_y_max))
-        print("[mobiman_drl_config::Config::__init__] world_range_z_min: " + str(self.world_range_z_min))
-        print("[mobiman_drl_config::Config::__init__] world_range_z_max: " + str(self.world_range_z_max))
-        print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_x_min: " + str(self.init_robot_pos_range_x_min))
-        print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_x_max: " + str(self.init_robot_pos_range_x_max))
-        print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_y_min: " + str(self.init_robot_pos_range_y_min))
-        print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_y_max: " + str(self.init_robot_pos_range_y_max))
-        print("[mobiman_drl_config::Config::__init__] world_frame_name: " + str(self.world_frame_name))
-        print("[mobiman_drl_config::Config::__init__] n_armstate: " + str(self.n_armstate))
-        print("[mobiman_drl_config::Config::__init__] base_control_msg_name: " + str(self.base_control_msg_name))
-        print("[mobiman_drl_config::Config::__init__] arm_control_msg_name: " + str(self.arm_control_msg_name))
-        print("[mobiman_drl_config::Config::__init__] mpc_data_msg_name: " + str(self.mpc_data_msg_name))
-        print("[mobiman_drl_config::Config::__init__] rgb_image_msg_name: " + str(self.rgb_image_msg_name))
-        print("[mobiman_drl_config::Config::__init__] depth_image_msg_name: " + str(self.depth_image_msg_name))
-        print("[mobiman_drl_config::Config::__init__] depth_image_raw_msg_name: " + str(self.depth_image_raw_msg_name))
-        print("[mobiman_drl_config::Config::__init__] camera_info_msg_name: " + str(self.camera_info_msg_name))
-        print("[mobiman_drl_config::Config::__init__] lidar_msg_name: " + str(self.lidar_msg_name))
-        print("[mobiman_drl_config::Config::__init__] odom_msg_name: " + str(self.odom_msg_name))
-        print("[mobiman_drl_config::Config::__init__] odom_ground_truth_msg_name: " + str(self.odom_ground_truth_msg_name))
-        print("[mobiman_drl_config::Config::__init__] imu_msg_name: " + str(self.imu_msg_name))
-        print("[mobiman_drl_config::Config::__init__] arm_state_msg_name: " + str(self.arm_state_msg_name))
-        print("[mobiman_drl_config::Config::__init__] modelmode_msg_name: " + str(self.modelmode_msg_name))
-        print("[mobiman_drl_config::Config::__init__] target_msg_name: " + str(self.target_msg_name))
-        print("[mobiman_drl_config::Config::__init__] occgrid_msg_name: " + str(self.occgrid_msg_name))
-        print("[mobiman_drl_config::Config::__init__] mobiman_goal_obs_msg_name: " + str(self.mobiman_goal_obs_msg_name))
-        print("[mobiman_drl_config::Config::__init__] mobiman_occupancy_obs_msg_name: " + str(self.mobiman_occupancy_obs_msg_name))
-        print("[mobiman_drl_config::Config::__init__] selfcoldistance_msg_name: " + str(self.selfcoldistance_msg_name))
-        print("[mobiman_drl_config::Config::__init__] extcoldistance_base_msg_name: " + str(self.extcoldistance_base_msg_name))
-        print("[mobiman_drl_config::Config::__init__] extcoldistance_arm_msg_name: " + str(self.extcoldistance_arm_msg_name))
-        print("[mobiman_drl_config::Config::__init__] pointsonrobot_msg_name: " + str(self.pointsonrobot_msg_name))
-        print("[mobiman_drl_config::Config::__init__] goal_status_msg_name: " + str(self.goal_status_msg_name))
-        print("[mobiman_drl_config::Config::__init__] goal_frame_name: " + str(self.goal_frame_name))
-        print("[mobiman_drl_config::Config::__init__] max_episode_steps: " + str(self.max_episode_steps))
-        print("[mobiman_drl_config::Config::__init__] training_timesteps: " + str(self.training_timesteps))
-        print("[mobiman_drl_config::Config::__init__] occgrid_normalize_flag: " + str(self.occgrid_normalize_flag))
-        print("[mobiman_drl_config::Config::__init__] occgrid_occ_min: " + str(self.occgrid_occ_min))
-        print("[mobiman_drl_config::Config::__init__] occgrid_occ_max: " + str(self.occgrid_occ_max))
-        print("[mobiman_drl_config::Config::__init__] observation_space_type: " + str(self.observation_space_type))
-        print("[mobiman_drl_config::Config::__init__] err_threshold_pos: " + str(self.err_threshold_pos))
-        print("[mobiman_drl_config::Config::__init__] err_threshold_ori_yaw: " + str(self.err_threshold_ori_yaw))
-        print("[mobiman_drl_config::Config::__init__] err_threshold_ori_quat: " + str(self.err_threshold_ori_quat))
-        print("[mobiman_drl_config::Config::__init__] obs_base_velo_lat_min: " + str(self.obs_base_velo_lat_min))
-        print("[mobiman_drl_config::Config::__init__] obs_base_velo_lat_max: " + str(self.obs_base_velo_lat_max))
-        print("[mobiman_drl_config::Config::__init__] obs_base_velo_ang_min: " + str(self.obs_base_velo_ang_min))
-        print("[mobiman_drl_config::Config::__init__] obs_base_velo_ang_max: " + str(self.obs_base_velo_ang_max))
-        print("[mobiman_drl_config::Config::__init__] obs_joint_velo_min: " + str(self.obs_joint_velo_min))
-        print("[mobiman_drl_config::Config::__init__] obs_joint_velo_max: " + str(self.obs_joint_velo_max))
-        print("[mobiman_drl_config::Config::__init__] action_time_horizon: " + str(self.action_time_horizon))
-        print("[mobiman_drl_config::Config::__init__] action_type: " + str(self.action_type))
-        print("[mobiman_drl_config::Config::__init__] n_action_model: " + str(self.n_action_model))
-        print("[mobiman_drl_config::Config::__init__] n_action_constraint: " + str(self.n_action_constraint))
-        print("[mobiman_drl_config::Config::__init__] n_action_target: " + str(self.n_action_target))
-        #print("[mobiman_drl_config::Config::__init__] ablation_mode: " + str(self.ablation_mode))
-        #print("[mobiman_drl_config::Config::__init__] last_step_distance_threshold: " + str(self.last_step_distance_threshold))
-        #print("[mobiman_drl_config::Config::__init__] goal_distance_pos_threshold: " + str(self.goal_distance_pos_threshold))
-        #print("[mobiman_drl_config::Config::__init__] goal_distance_ori_threshold_yaw: " + str(self.goal_distance_ori_threshold_yaw))
-        #print("[mobiman_drl_config::Config::__init__] goal_distance_ori_threshold_quat: " + str(self.goal_distance_ori_threshold_quat))
-        print("[mobiman_drl_config::Config::__init__] goal_range_min_x: " + str(self.goal_range_min_x))
-        print("[mobiman_drl_config::Config::__init__] goal_range_max_x: " + str(self.goal_range_max_x))
-        print("[mobiman_drl_config::Config::__init__] goal_range_min_y: " + str(self.goal_range_min_y))
-        print("[mobiman_drl_config::Config::__init__] goal_range_max_y: " + str(self.goal_range_max_y))
-        print("[mobiman_drl_config::Config::__init__] goal_range_min_z: " + str(self.goal_range_min_z))
-        print("[mobiman_drl_config::Config::__init__] goal_range_max_z: " + str(self.goal_range_max_z))
-        print("[mobiman_drl_config::Config::__init__] self_collision_range_min: " + str(self.self_collision_range_min))
-        print("[mobiman_drl_config::Config::__init__] self_collision_range_max: " + str(self.self_collision_range_max))
-        print("[mobiman_drl_config::Config::__init__] ext_collision_range_base_min: " + str(self.ext_collision_range_base_min))
-        print("[mobiman_drl_config::Config::__init__] ext_collision_range_arm_min: " + str(self.ext_collision_range_arm_min))
-        print("[mobiman_drl_config::Config::__init__] ext_collision_range_max: " + str(self.ext_collision_range_max))
-        #print("[mobiman_drl_config::Config::__init__] rollover_pitch_threshold: " + str(self.rollover_pitch_threshold))
-        #print("[mobiman_drl_config::Config::__init__] rollover_roll_threshold: " + str(self.rollover_roll_threshold))
-        print("[mobiman_drl_config::Config::__init__] n_obs_stack: " + str(self.n_obs_stack))
-        print("[mobiman_drl_config::Config::__init__] n_skip_obs_stack: " + str(self.n_skip_obs_stack))
-        print("[mobiman_drl_config::Config::__init__] fc_obs_shape: " + str(self.fc_obs_shape))
-        print("[mobiman_drl_config::Config::__init__] cnn_obs_shape: " + str(self.cnn_obs_shape))
-        print("[mobiman_drl_config::Config::__init__] n_action: " + str(self.n_action))
-        print("[mobiman_drl_config::Config::__init__] reward_terminal_goal: " + str(self.reward_terminal_goal))
-        print("[mobiman_drl_config::Config::__init__] reward_terminal_out_of_boundary: " + str(self.reward_terminal_out_of_boundary))
-        print("[mobiman_drl_config::Config::__init__] reward_terminal_collision: " + str(self.reward_terminal_collision))
-        print("[mobiman_drl_config::Config::__init__] reward_terminal_rollover: " + str(self.reward_terminal_rollover))
-        print("[mobiman_drl_config::Config::__init__] reward_terminal_max_step: " + str(self.reward_terminal_max_step))
-        print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_scale: " + str(self.reward_step_dist2goal_scale))
-        print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_dist_threshold: " + str(self.reward_step_dist2goal_dist_threshold))
-        #print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_mu: " + str(self.reward_step_dist2goal_mu))
-        #print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_sigma: " + str(self.reward_step_dist2goal_sigma))
-        print("[mobiman_drl_config::Config::__init__] reward_step_mode0: " + str(self.reward_step_mode0))
-        print("[mobiman_drl_config::Config::__init__] reward_step_mode1: " + str(self.reward_step_mode1))
-        print("[mobiman_drl_config::Config::__init__] reward_step_mode2: " + str(self.reward_step_mode2))
-        #print("[mobiman_drl_config::Config::__init__] reward_step_mpc_exit: " + str(self.reward_step_mpc_exit))
-        #print("[mobiman_drl_config::Config::__init__] reward_step_target_reached: " + str(self.reward_step_target_reached))
-        #print("[mobiman_drl_config::Config::__init__] reward_step_time_horizon_min: " + str(self.reward_step_time_horizon_min))
-        #print("[mobiman_drl_config::Config::__init__] reward_step_time_horizon_max: " + str(self.reward_step_time_horizon_max))
-        print("[mobiman_drl_config::Config::__init__] alpha_step_dist2goal: " + str(self.alpha_step_dist2goal))
-        print("[mobiman_drl_config::Config::__init__] alpha_step_mode: " + str(self.alpha_step_mode))
-        #print("[mobiman_drl_config::Config::__init__] alpha_step_mpc_result: " + str(self.alpha_step_mpc_result))
-        print("[mobiman_drl_config::Config::__init__] testing_benchmark_name: " + str(self.testing_benchmark_name))
-        print("[mobiman_drl_config::Config::__init__] n_testing_eval_episodes: " + str(self.n_testing_eval_episodes))
+        ## Write all parameters
+        if drl_mode == "training":
+            self.log_file = data_folder_path + self.training_log_name + ".csv" # type: ignore
+        elif drl_mode == "testing":
+            self.log_file = data_folder_path + "testing_log_" + self.testing_benchmark_name + ".csv" # type: ignore
+
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::__init__] world_name: " + str(self.world_name))
+            print("[mobiman_drl_config::Config::__init__] world_range_x_min: " + str(self.world_range_x_min))
+            print("[mobiman_drl_config::Config::__init__] world_range_x_max: " + str(self.world_range_x_max))
+            print("[mobiman_drl_config::Config::__init__] world_range_y_min: " + str(self.world_range_y_min))
+            print("[mobiman_drl_config::Config::__init__] world_range_y_max: " + str(self.world_range_y_max))
+            print("[mobiman_drl_config::Config::__init__] world_range_z_min: " + str(self.world_range_z_min))
+            print("[mobiman_drl_config::Config::__init__] world_range_z_max: " + str(self.world_range_z_max))
+            print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_x_min: " + str(self.init_robot_pos_range_x_min))
+            print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_x_max: " + str(self.init_robot_pos_range_x_max))
+            print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_y_min: " + str(self.init_robot_pos_range_y_min))
+            print("[mobiman_drl_config::Config::__init__] init_robot_pos_range_y_max: " + str(self.init_robot_pos_range_y_max))
+            print("[mobiman_drl_config::Config::__init__] world_frame_name: " + str(self.world_frame_name))
+            print("[mobiman_drl_config::Config::__init__] n_armstate: " + str(self.n_armstate))
+            print("[mobiman_drl_config::Config::__init__] base_control_msg_name: " + str(self.base_control_msg_name))
+            print("[mobiman_drl_config::Config::__init__] arm_control_msg_name: " + str(self.arm_control_msg_name))
+            print("[mobiman_drl_config::Config::__init__] mpc_data_msg_name: " + str(self.mpc_data_msg_name))
+            print("[mobiman_drl_config::Config::__init__] rgb_image_msg_name: " + str(self.rgb_image_msg_name))
+            print("[mobiman_drl_config::Config::__init__] depth_image_msg_name: " + str(self.depth_image_msg_name))
+            print("[mobiman_drl_config::Config::__init__] depth_image_raw_msg_name: " + str(self.depth_image_raw_msg_name))
+            print("[mobiman_drl_config::Config::__init__] camera_info_msg_name: " + str(self.camera_info_msg_name))
+            print("[mobiman_drl_config::Config::__init__] lidar_msg_name: " + str(self.lidar_msg_name))
+            print("[mobiman_drl_config::Config::__init__] odom_msg_name: " + str(self.odom_msg_name))
+            print("[mobiman_drl_config::Config::__init__] odom_ground_truth_msg_name: " + str(self.odom_ground_truth_msg_name))
+            print("[mobiman_drl_config::Config::__init__] imu_msg_name: " + str(self.imu_msg_name))
+            print("[mobiman_drl_config::Config::__init__] arm_state_msg_name: " + str(self.arm_state_msg_name))
+            print("[mobiman_drl_config::Config::__init__] modelmode_msg_name: " + str(self.modelmode_msg_name))
+            print("[mobiman_drl_config::Config::__init__] target_msg_name: " + str(self.target_msg_name))
+            print("[mobiman_drl_config::Config::__init__] occgrid_msg_name: " + str(self.occgrid_msg_name))
+            print("[mobiman_drl_config::Config::__init__] mobiman_goal_obs_msg_name: " + str(self.mobiman_goal_obs_msg_name))
+            print("[mobiman_drl_config::Config::__init__] mobiman_occupancy_obs_msg_name: " + str(self.mobiman_occupancy_obs_msg_name))
+            print("[mobiman_drl_config::Config::__init__] selfcoldistance_msg_name: " + str(self.selfcoldistance_msg_name))
+            print("[mobiman_drl_config::Config::__init__] extcoldistance_base_msg_name: " + str(self.extcoldistance_base_msg_name))
+            print("[mobiman_drl_config::Config::__init__] extcoldistance_arm_msg_name: " + str(self.extcoldistance_arm_msg_name))
+            print("[mobiman_drl_config::Config::__init__] pointsonrobot_msg_name: " + str(self.pointsonrobot_msg_name))
+            print("[mobiman_drl_config::Config::__init__] goal_status_msg_name: " + str(self.goal_status_msg_name))
+            print("[mobiman_drl_config::Config::__init__] goal_frame_name: " + str(self.goal_frame_name))
+            print("[mobiman_drl_config::Config::__init__] max_episode_steps: " + str(self.max_episode_steps))
+            print("[mobiman_drl_config::Config::__init__] training_timesteps: " + str(self.training_timesteps))
+            print("[mobiman_drl_config::Config::__init__] occgrid_normalize_flag: " + str(self.occgrid_normalize_flag))
+            print("[mobiman_drl_config::Config::__init__] occgrid_occ_min: " + str(self.occgrid_occ_min))
+            print("[mobiman_drl_config::Config::__init__] occgrid_occ_max: " + str(self.occgrid_occ_max))
+            print("[mobiman_drl_config::Config::__init__] observation_space_type: " + str(self.observation_space_type))
+            print("[mobiman_drl_config::Config::__init__] err_threshold_pos: " + str(self.err_threshold_pos))
+            print("[mobiman_drl_config::Config::__init__] err_threshold_ori_yaw: " + str(self.err_threshold_ori_yaw))
+            print("[mobiman_drl_config::Config::__init__] err_threshold_ori_quat: " + str(self.err_threshold_ori_quat))
+            print("[mobiman_drl_config::Config::__init__] obs_base_velo_lat_min: " + str(self.obs_base_velo_lat_min))
+            print("[mobiman_drl_config::Config::__init__] obs_base_velo_lat_max: " + str(self.obs_base_velo_lat_max))
+            print("[mobiman_drl_config::Config::__init__] obs_base_velo_ang_min: " + str(self.obs_base_velo_ang_min))
+            print("[mobiman_drl_config::Config::__init__] obs_base_velo_ang_max: " + str(self.obs_base_velo_ang_max))
+            print("[mobiman_drl_config::Config::__init__] obs_joint_velo_min: " + str(self.obs_joint_velo_min))
+            print("[mobiman_drl_config::Config::__init__] obs_joint_velo_max: " + str(self.obs_joint_velo_max))
+            print("[mobiman_drl_config::Config::__init__] action_time_horizon: " + str(self.action_time_horizon))
+            print("[mobiman_drl_config::Config::__init__] action_type: " + str(self.action_type))
+            print("[mobiman_drl_config::Config::__init__] n_action_model: " + str(self.n_action_model))
+            print("[mobiman_drl_config::Config::__init__] n_action_constraint: " + str(self.n_action_constraint))
+            print("[mobiman_drl_config::Config::__init__] n_action_target: " + str(self.n_action_target))
+            #print("[mobiman_drl_config::Config::__init__] ablation_mode: " + str(self.ablation_mode))
+            #print("[mobiman_drl_config::Config::__init__] last_step_distance_threshold: " + str(self.last_step_distance_threshold))
+            #print("[mobiman_drl_config::Config::__init__] goal_distance_pos_threshold: " + str(self.goal_distance_pos_threshold))
+            #print("[mobiman_drl_config::Config::__init__] goal_distance_ori_threshold_yaw: " + str(self.goal_distance_ori_threshold_yaw))
+            #print("[mobiman_drl_config::Config::__init__] goal_distance_ori_threshold_quat: " + str(self.goal_distance_ori_threshold_quat))
+            print("[mobiman_drl_config::Config::__init__] goal_range_min_x: " + str(self.goal_range_min_x))
+            print("[mobiman_drl_config::Config::__init__] goal_range_max_x: " + str(self.goal_range_max_x))
+            print("[mobiman_drl_config::Config::__init__] goal_range_min_y: " + str(self.goal_range_min_y))
+            print("[mobiman_drl_config::Config::__init__] goal_range_max_y: " + str(self.goal_range_max_y))
+            print("[mobiman_drl_config::Config::__init__] goal_range_min_z: " + str(self.goal_range_min_z))
+            print("[mobiman_drl_config::Config::__init__] goal_range_max_z: " + str(self.goal_range_max_z))
+            print("[mobiman_drl_config::Config::__init__] self_collision_range_min: " + str(self.self_collision_range_min))
+            print("[mobiman_drl_config::Config::__init__] self_collision_range_max: " + str(self.self_collision_range_max))
+            print("[mobiman_drl_config::Config::__init__] ext_collision_range_base_min: " + str(self.ext_collision_range_base_min))
+            print("[mobiman_drl_config::Config::__init__] ext_collision_range_arm_min: " + str(self.ext_collision_range_arm_min))
+            print("[mobiman_drl_config::Config::__init__] ext_collision_range_max: " + str(self.ext_collision_range_max))
+            #print("[mobiman_drl_config::Config::__init__] rollover_pitch_threshold: " + str(self.rollover_pitch_threshold))
+            #print("[mobiman_drl_config::Config::__init__] rollover_roll_threshold: " + str(self.rollover_roll_threshold))
+            print("[mobiman_drl_config::Config::__init__] n_obs_stack: " + str(self.n_obs_stack))
+            print("[mobiman_drl_config::Config::__init__] n_skip_obs_stack: " + str(self.n_skip_obs_stack))
+            print("[mobiman_drl_config::Config::__init__] fc_obs_shape: " + str(self.fc_obs_shape))
+            print("[mobiman_drl_config::Config::__init__] cnn_obs_shape: " + str(self.cnn_obs_shape))
+            print("[mobiman_drl_config::Config::__init__] n_action: " + str(self.n_action))
+            print("[mobiman_drl_config::Config::__init__] reward_terminal_goal: " + str(self.reward_terminal_goal))
+            print("[mobiman_drl_config::Config::__init__] reward_terminal_out_of_boundary: " + str(self.reward_terminal_out_of_boundary))
+            print("[mobiman_drl_config::Config::__init__] reward_terminal_collision: " + str(self.reward_terminal_collision))
+            print("[mobiman_drl_config::Config::__init__] reward_terminal_rollover: " + str(self.reward_terminal_rollover))
+            print("[mobiman_drl_config::Config::__init__] reward_terminal_max_step: " + str(self.reward_terminal_max_step))
+            print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_scale: " + str(self.reward_step_dist2goal_scale))
+            print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_dist_threshold: " + str(self.reward_step_dist2goal_dist_threshold))
+            #print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_mu: " + str(self.reward_step_dist2goal_mu))
+            #print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_sigma: " + str(self.reward_step_dist2goal_sigma))
+            print("[mobiman_drl_config::Config::__init__] reward_step_mode0: " + str(self.reward_step_mode0))
+            print("[mobiman_drl_config::Config::__init__] reward_step_mode1: " + str(self.reward_step_mode1))
+            print("[mobiman_drl_config::Config::__init__] reward_step_mode2: " + str(self.reward_step_mode2))
+            #print("[mobiman_drl_config::Config::__init__] reward_step_mpc_exit: " + str(self.reward_step_mpc_exit))
+            #print("[mobiman_drl_config::Config::__init__] reward_step_target_reached: " + str(self.reward_step_target_reached))
+            #print("[mobiman_drl_config::Config::__init__] reward_step_time_horizon_min: " + str(self.reward_step_time_horizon_min))
+            #print("[mobiman_drl_config::Config::__init__] reward_step_time_horizon_max: " + str(self.reward_step_time_horizon_max))
+            print("[mobiman_drl_config::Config::__init__] alpha_step_dist2goal: " + str(self.alpha_step_dist2goal))
+            print("[mobiman_drl_config::Config::__init__] alpha_step_mode: " + str(self.alpha_step_mode))
+            #print("[mobiman_drl_config::Config::__init__] alpha_step_mpc_result: " + str(self.alpha_step_mpc_result))
+            print("[mobiman_drl_config::Config::__init__] testing_benchmark_name: " + str(self.testing_benchmark_name))
+            print("[mobiman_drl_config::Config::__init__] n_testing_eval_episodes: " + str(self.n_testing_eval_episodes))
 
         if data_folder_path:
-
-            ## Write all parameters
-            if drl_mode == "training":
-                self.log_file = data_folder_path + self.training_log_name + ".csv" # type: ignore
-            elif drl_mode == "testing":
-                self.log_file = data_folder_path + "testing_log_" + self.testing_benchmark_name + ".csv" # type: ignore
 
             log_data = []
             log_data.append(["world_name", self.world_name])
@@ -418,7 +419,7 @@ class Config():
             log_data.append(["alpha_step_mode", self.alpha_step_mode])
             #log_data.append(["alpha_step_mpc_result", self.alpha_step_mpc_result])
 
-            write_data(self.log_file, log_data)
+            write_data(self.log_file, log_data, self.flag_print_info)
 
     '''
     NUA TODO: 
@@ -428,8 +429,9 @@ class Config():
         log_data = []
         log_data.append(["observation_shape", self.observation_shape])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-        print("[mobiman_drl_config::Config::set_observation_shape] observation_shape: " + str(self.observation_shape))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_observation_shape] observation_shape: " + str(self.observation_shape))
 
     '''
     NUA TODO: 
@@ -439,8 +441,9 @@ class Config():
         log_data = []
         log_data.append(["action_shape", self.action_shape])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-        print("[mobiman_drl_config::Config::set_action_shape] action_shape: " + str(self.action_shape))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_action_shape] action_shape: " + str(self.action_shape))
 
     '''
     NUA TODO: 
@@ -478,12 +481,12 @@ class Config():
         log_data.append(["occgrid_height", self.occgrid_height])
         log_data.append(["occgrid_resolution", self.occgrid_resolution])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-
-        print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_data_size: " + str(self.occgrid_data_size))
-        print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_width: " + str(self.occgrid_width))
-        print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_height: " + str(self.occgrid_height))
-        print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_resolution: " + str(self.occgrid_resolution))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_data_size: " + str(self.occgrid_data_size))
+            print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_width: " + str(self.occgrid_width))
+            print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_height: " + str(self.occgrid_height))
+            print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_resolution: " + str(self.occgrid_resolution))
 
     '''
     NUA TODO: 
@@ -497,11 +500,11 @@ class Config():
         log_data.append(["mobiman_goal_obs_frame_id", self.mobiman_goal_obs_frame_id])
         log_data.append(["mobiman_goal_obs_dim_dt", self.mobiman_goal_obs_dim_dt])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-
-        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] n_mobiman_goal_obs: " + str(self.n_mobiman_goal_obs))
-        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_frame_id: " + str(self.mobiman_goal_obs_frame_id))
-        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_dim_dt: " + str(self.mobiman_goal_obs_dim_dt))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] n_mobiman_goal_obs: " + str(self.n_mobiman_goal_obs))
+            print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_frame_id: " + str(self.mobiman_goal_obs_frame_id))
+            print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_dim_dt: " + str(self.mobiman_goal_obs_dim_dt))
 
     '''
     NUA TODO: 
@@ -515,11 +518,11 @@ class Config():
         log_data.append(["mobiman_occupancy_obs_frame_id", self.mobiman_occupancy_obs_frame_id])
         log_data.append(["mobiman_occupancy_obs_dim_dt", self.mobiman_occupancy_obs_dim_dt])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-
-        print("[mobiman_drl_config::Config::set_mobiman_occupancy_obs_config] n_mobiman_occupancy_obs: " + str(self.n_mobiman_occupancy_obs))
-        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_frame_id: " + str(self.mobiman_occupancy_obs_frame_id))
-        print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_dim_dt: " + str(self.mobiman_occupancy_obs_dim_dt))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_mobiman_occupancy_obs_config] n_mobiman_occupancy_obs: " + str(self.n_mobiman_occupancy_obs))
+            print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_frame_id: " + str(self.mobiman_occupancy_obs_frame_id))
+            print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_dim_dt: " + str(self.mobiman_occupancy_obs_dim_dt))
 
     '''
     NUA TODO: 
@@ -529,9 +532,9 @@ class Config():
         log_data = []
         log_data.append(["n_selfcoldistance", self.n_selfcoldistance])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-
-        print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_selfcoldistance: " + str(self.n_selfcoldistance))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_selfcoldistance: " + str(self.n_selfcoldistance))
 
     '''
     NUA TODO: 
@@ -541,9 +544,9 @@ class Config():
         log_data = []
         log_data.append(["n_extcoldistance_base", self.n_extcoldistance_base])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-
-        print("[mobiman_drl_config::Config::set_extcoldistance_base_config] n_extcoldistance_base: " + str(self.n_extcoldistance_base))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_extcoldistance_base_config] n_extcoldistance_base: " + str(self.n_extcoldistance_base))
 
     '''
     NUA TODO: 
@@ -553,6 +556,6 @@ class Config():
         log_data = []
         log_data.append(["n_extcoldistance_arm", self.n_extcoldistance_arm])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data)
-
-        print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_extcoldistance_arm: " + str(self.n_extcoldistance_arm))
+        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.flag_print_info:
+            print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_extcoldistance_arm: " + str(self.n_extcoldistance_arm))

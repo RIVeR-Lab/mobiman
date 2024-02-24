@@ -1,4 +1,4 @@
-// LAST UPDATE: 2024.01.12
+// LAST UPDATE: 2024.02.23
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -15,6 +15,8 @@
 
 int main(int argc, char** argv)
 {
+  bool printOutFlag = false;
+
   //cout << "[map_server::main] START" << endl;
 
   // INITIALIZE ROS
@@ -34,8 +36,6 @@ int main(int argc, char** argv)
   std::vector<string> name_pkgs_ign, name_pkgs_man, scan_data_path_pkgs_ign, scan_data_path_pkgs_man;
   double map_resolution, egrid_resolution, egrid_occ_threshold;
   geometry_msgs::Point egrid_bbx_min, egrid_bbx_max;
-
-  bool printOutFlag = true;
 
   pnh.param<string>("/world_frame_name", world_frame_name, "");
   pnh.param<string>("/gz_model_msg_name", gz_model_msg_name, "");
@@ -72,7 +72,8 @@ int main(int argc, char** argv)
   
   // Add namespace
   string ns = nh.getNamespace();
-  cout << "[map_server::main] ns: " << ns << endl;
+  if (printOutFlag)
+    cout << "[map_server::main] ns: " << ns << endl;
 
   if (ns != "/")
   {

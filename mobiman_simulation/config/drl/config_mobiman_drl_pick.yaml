@@ -1,5 +1,7 @@
 #### DRL Parameters
 
+flag_print_info: False
+
 igibson_config_file: "igibson_jackal_jaco"
 
 ### Common Parameters for Training and Testing
@@ -8,7 +10,7 @@ gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 drl_data_path: "dataset/drl/m4/"
 initial_training_path: ""
-#initial_training_path: "20240217_004709_PPO_mobiman/"
+#initial_training_path: "20240222_225718_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -35,10 +37,10 @@ motion_planning_algorithm: "ocs2"
 observation_space_type: "mobiman_FC"
 
 learning_rate: 0.0001
-n_steps: 50 #1000
+n_steps: 100 #1000
 batch_size: 20 #50
 ent_coef: 0.0002
-training_timesteps: 100 #10000
+training_timesteps: 50000 #10000
 max_episode_steps: 10 #2000
 
 training_checkpoint_freq: 100 #1000
