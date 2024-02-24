@@ -1,17 +1,17 @@
 ## Parameters
 plot_path: ""
 plot_flag: True
-plot_title: "Learning Curve"
+plot_title: ""
 plot_window_timestep: 20
 plot_window_episode: 20
 
-save_flag: False
+save_flag: True
 
 #data_folder: ""
 data_folder: "dataset/drl/arena"
 
 data_names: ["dataset/drl/arena/oar_data_testing_jackalJaco_0_ocs2wb.csv",
-             "dataset/drl/20240221_235932_SAC_mobiman/oar_data_training_jackalJaco_1.csv"]
+             "dataset/drl/m4/20240224_001852_PPO_mobiman/oar_data_testing_jackalJaco_0_m4.csv"]
 
 
 
@@ -27,15 +27,15 @@ data_names: ["dataset/drl/arena/oar_data_testing_jackalJaco_0_ocs2wb.csv",
 
 #data_path: "/home/akmandor/ros_workspaces/igibson_ws/src/mobiman/mobiman_simulation/dataset/drl/20240215_143352_PPO_mobiman"
 
-continue_initial: True
-continue_initial_count: 0
+#continue_initial: True
+#continue_initial_count: 0
 
 ### Sequences -1 means all, otherwise specify seperated by comma.
-observation_sequences: "0,1,2,3"
+#observation_sequences: "0,1,2,3"
 #observation_sequences: -1
 
-action_sequences: "0,1,2,3,4"
+#action_sequences: "0,1,2,3,4"
 #action_sequences: -1
 
 ### Window size for Rewards
-window_episodic: 20
+#window_episodic: 20

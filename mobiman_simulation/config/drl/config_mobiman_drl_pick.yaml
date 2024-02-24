@@ -9,8 +9,8 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 drl_data_path: "dataset/drl/m4/"
-initial_training_path: ""
-#initial_training_path: "20240222_225718_PPO_mobiman/"
+#initial_training_path: ""
+initial_training_path: "20240224_001852_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -40,7 +40,7 @@ learning_rate: 0.0001
 n_steps: 100 #1000
 batch_size: 20 #50
 ent_coef: 0.0002
-training_timesteps: 50000 #10000
+training_timesteps: 51000 #10000
 max_episode_steps: 10 #2000
 
 training_checkpoint_freq: 100 #1000
@@ -147,7 +147,7 @@ reward_terminal_goal: 100.0
 reward_terminal_out_of_boundary: -100.0
 reward_terminal_collision: -100.0
 reward_terminal_rollover: -100.0
-reward_terminal_max_step: -100.0
+reward_terminal_max_step: -50.0
 
 # Distance-to-goal
 reward_step_dist2goal_scale: 10.0

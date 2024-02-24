@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 '''
-LAST UPDATE: 2024.02.22
+LAST UPDATE: 2024.02.24
 
 AUTHOR:	Sarvesh Prajapati (SP)
         Neset Unver Akmandor (NUA)	
@@ -17,14 +17,20 @@ NUA TODO:
 - 
 '''
 
+import os
+import sys
+import time
+import csv
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
-import sys
+#from mobiman.mobiman_simulation.scripts.drl.mobiman_drl_training import print_array
+
 import rospy
-import numpy as np
-import time
+import rospkg
+
+#from stable_baselines3.common.results_plotter import ts2xy
+#from stable_baselines3.common.monitor import load_results
 
 '''
 DESCRIPTION: NUA TODO: Update!
@@ -34,35 +40,212 @@ class PlotMobiman(object):
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
-    def __init__(self, data_folder:str, 
-                 plot_flag:str, 
-                 plot_path:str, 
-                 observation_sequences:list, 
-                 action_sequences:list, 
-                 continue_initial: bool, 
-                 continue_initial_count: int, 
-                 window_episodic: int):
+    def __init__(self,
+                 mobiman_path:str,
+                 plot_path:str,
+                 plot_flag:bool,
+                 plot_title:str,
+                 plot_window_timestep:int,
+                 plot_window_episode:int,
+                 save_flag:bool,
+                 data_folder:str,
+                 data_names=list):
         print("[mobiman_plot_oar::PlotMobiman::__init__] START")
         
-        self.data_folder = data_folder
-        self.plot_flag = plot_flag
+        self.mobiman_path = mobiman_path
         self.plot_path = plot_path
-        self.observation_sequences = observation_sequences
-        self.action_sequences = action_sequences
-        self.continue_initial = continue_initial
-        self.continue_initial_count = continue_initial_count
-        self.window_episodic = window_episodic
-        self.df = None
-        
+        self.plot_flag = plot_flag
+        self.plot_title = plot_title
+        self.plot_window_timestep = plot_window_timestep
+        self.plot_window_episode = plot_window_episode
+        self.save_flag = save_flag
+        self.data_folder = data_folder
+        self.data_names = data_names
+
+        #self.df = None
+
+        '''
         try:
             os.chdir(self.data_folder)
         except Exception as e:
             print("[mobiman_plot_oar::PlotMobiman::__init__] Unable to find the folder! Program will now terminate!")
             sys.exit(1)
+        '''
         
-        self.create_dataset()
+        #self.create_dataset()
 
         print("[mobiman_plot_oar::PlotMobiman::__init__] END")
+
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def read_data_n_row(self, file):
+        with open(file, newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            data = np.array(next(reader))
+            i = 1
+            for row in reader:
+                i += 1
+            return i
+        
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def read_data_n_col(self, file):
+        with open(file, newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            data = np.array(next(reader))
+            return len(data)
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def read_data(self, file):
+        with open(file, newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            data = np.array(next(reader))
+            for row in reader:
+                data_row = np.array(row)
+                data = np.vstack((data, data_row))
+            return data
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def get_data_col(self, file, col_name, dtype="float"):
+        data = self.read_data(file)
+        data_keys = list(data[0])
+        print(len(data_keys))
+        print(data_keys)
+
+        idx = data_keys.index(col_name)
+        print(idx)
+
+        data_col = []
+        for i, row_vals in enumerate(data[1:]):
+            if dtype == "str":
+                data_col.append(row_vals[idx])
+            else:    
+                data_col.append(float(row_vals[idx]))
+        
+        return data_col
+    
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def get_data_col_episode(self, file, col_name, dtype="float", ep_end_token="[]"):
+
+        data_col = self.get_data_col(file, col_name, dtype)
+        
+        data_ep = []
+        data_ep_single = []
+        for d in data_col:
+            #print(d)
+            if d == ep_end_token:
+                data_ep.append(data_ep_single)
+                data_ep_single = []
+            else:
+                data_ep_single.append(d)
+
+        return data_ep
+    
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def plot_result(self, file, title=""):
+        data_result_ep = self.get_data_col_episode(file, "result", "str")
+        
+        n_time_goal = 0
+        n_time_out_of_boundary = 0
+        n_time_collision = 0
+        n_time_rollover = 0
+        n_time_max_step = 0
+
+        for res_ep in data_result_ep:
+            if "goal" in res_ep:
+                n_time_goal += 1
+
+            elif "out_of_boundary" in res_ep:
+                n_time_out_of_boundary += 1
+
+            elif "collision" in res_ep:
+                n_time_collision += 1
+
+            elif "rollover" in res_ep:
+                n_time_rollover += 1
+
+            elif "max_step" in res_ep:
+                n_time_max_step += 1
+
+        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_goal: " + str(n_time_goal))
+        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_out_of_boundary: " + str(n_time_out_of_boundary))
+        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_collision: " + str(n_time_collision))
+        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_rollover: " + str(n_time_rollover))
+        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_max_step: " + str(n_time_max_step))
+
+        y = np.array([n_time_goal, n_time_out_of_boundary, n_time_collision, n_time_rollover, n_time_max_step])
+        labels = ["Goal", "Out_of_boundary", "Collision", "Rollover", "Max_step"]
+        colors = ['green', 'magenta', 'red', 'orange', 'blue']
+        explode = [0.2, 0, 0, 0, 0]
+
+        plt.figure()
+        plt.pie(y, colors=colors, labels=labels, explode=explode, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.3)
+        #plt.legend()
+
+        if self.plot_title:
+            plot_title = self.plot_title + title
+        else:
+            plot_title = title
+        plt.title(plot_title)
+        #plt.show()
+
+        if self.save_flag:
+            if self.plot_path:
+                save_path = plot_path
+                plt.savefig(save_path)
+            else:
+                file_folder = file.split("/")
+                filename = file_folder[-1]
+                file_folder = '/'.join(file_folder[:-1])
+                save_path = file_folder + "/" + filename + "_result.png"
+            
+            print("[mobiman_plot_oar::PlotMobiman::plot_result] Saving to " + str(save_path) + "!")
+            plt.savefig(save_path)
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def print_array(self, arr):
+        for i in range(len(arr)):
+            print(str(i) + " -> " + str(arr[i]))
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def print_log(self, log_path):
+
+        with open(log_path) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            line_count = 0
+
+            print("----------")
+            print("[mobiman_plot_oar::PlotMobiman::print_training_log]")
+            for row in csv_reader:
+                print(str(line_count) + " -> " + str(row[0]) + ": " + str(row[1]))
+                line_count += 1
+            print("----------")
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def get_param_value_from_log(self, log_path, param_name):
+
+        with open(log_path) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            for row in csv_reader:
+                if row[0] == param_name:
+                    return row[1]
 
     '''
     DESCRIPTION: NUA TODO: Update!
@@ -243,22 +426,60 @@ if __name__ == '__main__':
     print("[mobiman_plot_oar::__main__] START")
 
     rospy.init_node('mobiman_plot_oar')
+
+    rospack = rospkg.RosPack()
+    mobiman_path = rospack.get_path('mobiman_simulation') + "/"
     
     plot_path = rospy.get_param('plot_path')
     plot_flag = rospy.get_param('plot_flag')
     plot_title = rospy.get_param('plot_title')
     plot_window_timestep = rospy.get_param('plot_window_timestep')
     plot_window_episode = rospy.get_param('plot_window_episode')
-    data_path = rospy.get_param('data_path')
 
+    save_flag = rospy.get_param('save_flag')    
+    
+    data_folder = rospy.get_param('data_folder')
+    data_names = rospy.get_param('data_names')
+
+    print("[mobiman_plot_oar::__main__] mobiman_path: " + str(mobiman_path))
     print("[mobiman_plot_oar::__main__] plot_path: " + str(plot_path))
     print("[mobiman_plot_oar::__main__] plot_flag: " + str(plot_flag))
     print("[mobiman_plot_oar::__main__] plot_title: " + str(plot_title))
     print("[mobiman_plot_oar::__main__] plot_window_timestep: " + str(plot_window_timestep))
     print("[mobiman_plot_oar::__main__] plot_window_episode: " + str(plot_window_episode))
-    print("[mobiman_plot_oar::__main__] data_path: " + str(data_path))
+    print("[mobiman_plot_oar::__main__] save_flag: " + str(save_flag))
+    print("[mobiman_plot_oar::__main__] data_folder: " + str(data_folder))
+    print("[mobiman_plot_oar::__main__] data_names: " + str(data_names))
 
+    plot_mobiman = PlotMobiman(mobiman_path=mobiman_path,
+                               plot_path=plot_path, # type: ignore
+                               plot_flag=plot_flag, # type: ignore
+                               plot_title=plot_title, # type: ignore
+                               plot_window_timestep=plot_window_timestep, # type: ignore
+                               plot_window_episode=plot_window_episode, # type: ignore
+                               save_flag=save_flag, # type: ignore
+                               data_folder=data_folder, # type: ignore
+                               data_names=data_names) # type: ignore
 
+    for dn in data_names: # type: ignore
+        file_path = plot_mobiman.mobiman_path + dn
+        n_row = plot_mobiman.read_data_n_row(file_path)
+        n_col = plot_mobiman.read_data_n_col(file_path)
+
+        print("[mobiman_plot_oar::__main__] data_name: " + dn)
+        print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
+        print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
+
+        #data_result = plot_mobiman.get_data_col(file_path, "result", "str")
+        #plot_mobiman.print_array(data_result)
+
+        #data_result_ep = plot_mobiman.get_data_col_episode(file_path, "result", "str")
+        #plot_mobiman.print_array(data_result_ep)
+
+        ## NUA TODO: LEFT HEREEE!!! GET THE NUM OF TRAINED STEPS FROM THE LOG AND INCLUDE IN THE TITLE!!!
+        #get_param_value_from_log(log_path, param_name):
+
+        plot_mobiman.plot_result(file_path, title="")
 
     '''
     plot_path = rospy.get_param('data_path')
