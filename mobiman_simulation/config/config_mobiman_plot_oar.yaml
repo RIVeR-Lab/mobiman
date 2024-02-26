@@ -1,0 +1,14 @@
+## Parameters
+plot_path: ""
+plot_flag: True
+plot_title: ""
+plot_window_timestep: 20
+plot_window_episode: 20
+
+save_flag: True
+
+### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
+#data_folder: ""
+#data_folder: "dataset/drl/arena"
+
+data_names: ["dataset/drl/m4/20240222_225718_PPO_mobiman/oar_data_testing_jackalJaco_0_m4.csv"]

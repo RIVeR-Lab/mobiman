@@ -250,6 +250,7 @@ class PlotMobiman(object):
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
+    '''
     def create_dataset(self):
         print("[mobiman_plot_oar::PlotMobiman::create_dataset] START")
         
@@ -291,9 +292,11 @@ class PlotMobiman(object):
         print("[mobiman_plot_oar::PlotMobiman::create_dataset] df.info: " + str(self.df.info()))
         print("[mobiman_plot_oar::PlotMobiman::create_dataset] df.tail: " + str(self.df.tail()))
         print("[mobiman_plot_oar::PlotMobiman::create_dataset] END")
-        
+    '''
+    
     '''
     DESCRIPTION: NUA TODO: Update!
+    '''
     '''
     def plot_rewards(self):
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
@@ -314,9 +317,11 @@ class PlotMobiman(object):
         plt.show()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")
-    
+    '''
+
     '''
     DESCRIPTION: NUA TODO: Update!
+    '''
     '''
     def plot_episodic_reward(self):
         print("[mobiman_plot_oar::PlotMobiman::plot_episodic_reward] START")
@@ -339,9 +344,11 @@ class PlotMobiman(object):
         plt.close()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_episodic_reward] END")
+    '''
 
     '''
     DESCRIPTION: NUA TODO: Update!
+    '''
     '''
     def plot_action(self):
         print("[mobiman_plot_oar::PlotMobiman::plot_action] START")
@@ -379,9 +386,11 @@ class PlotMobiman(object):
                 plt.close()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_action] END")
-    
+    '''
+
     '''
     DESCRIPTION: NUA TODO: Update!
+    '''
     '''
     def plot_observations(self):
         print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
@@ -418,6 +427,7 @@ class PlotMobiman(object):
                 plt.close()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
+    '''
 
 '''
 DESCRIPTION: NUA TODO: Update!
@@ -476,8 +486,7 @@ if __name__ == '__main__':
         #data_result_ep = plot_mobiman.get_data_col_episode(file_path, "result", "str")
         #plot_mobiman.print_array(data_result_ep)
 
-        ## NUA TODO: LEFT HEREEE!!! GET THE NUM OF TRAINED STEPS FROM THE LOG AND INCLUDE IN THE TITLE!!!
-        #get_param_value_from_log(log_path, param_name):
+        get_param_value_from_log(log_path, param_name)
 
         plot_mobiman.plot_result(file_path, title="")
 

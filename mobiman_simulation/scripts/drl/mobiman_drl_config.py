@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2024.02.23
+LAST UPDATE: 2024.02.26
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -58,12 +58,13 @@ DESCRIPTION: TODO...
 '''
 class Config():
 
-    def __init__(self, data_folder_path="", drl_mode="training", flag_print_info=False):        
+    def __init__(self, log_file="", drl_mode="training", flag_print_info=False):        
         
+        self.log_file = log_file
         self.flag_print_info = flag_print_info
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::__init__] START")
-            print("[mobiman_drl_config::Config::__init__] data_folder_path: " + str(data_folder_path))
+            #print("[mobiman_drl_config::Config::__init__] data_folder_path: " + str(data_folder_path))
 
         ### Training
         self.ros_pkg_name = rospy.get_param('ros_pkg_name', "")
@@ -112,7 +113,7 @@ class Config():
         self.pointsonrobot_msg_name = rospy.get_param('pointsonrobot_msg_name', "")
         self.goal_status_msg_name = rospy.get_param('goal_status_msg_name', "")
 
-        self.data_folder_path = data_folder_path
+        #self.data_folder_path = data_folder_path
 
         rospack = rospkg.RosPack()
         self.ros_pkg_path = rospack.get_path(self.ros_pkg_name) + "/"
@@ -203,10 +204,12 @@ class Config():
         self.n_testing_eval_episodes = rospy.get_param('n_testing_eval_episodes', 0)
 
         ## Write all parameters
+        '''
         if drl_mode == "training":
             self.log_file = data_folder_path + self.training_log_name + ".csv" # type: ignore
         elif drl_mode == "testing":
             self.log_file = data_folder_path + "testing_log_" + self.testing_benchmark_name + ".csv" # type: ignore
+        '''
 
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::__init__] world_name: " + str(self.world_name))
@@ -310,7 +313,7 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] testing_benchmark_name: " + str(self.testing_benchmark_name))
             print("[mobiman_drl_config::Config::__init__] n_testing_eval_episodes: " + str(self.n_testing_eval_episodes))
 
-        if data_folder_path:
+        if self.log_file:
 
             log_data = []
             log_data.append(["world_name", self.world_name])

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Load parameters -->
+    <rosparam command="load" 
+        file="$(find mobiman_simulation)/config/drl/config_mobiman_plot_oar.yaml" 
+        subst_value="True"/>
+
+    <node name="mobiman_plot_oar" pkg="mobiman_simulation" type="mobiman_plot_oar.py" output="screen" />
+</launch>
