@@ -10,7 +10,7 @@ gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 drl_data_path: "dataset/drl/m4/"
 #initial_training_path: ""
-initial_training_path: "20240222_225718_PPO_mobiman/"
+initial_training_path: "20240224_185247_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
