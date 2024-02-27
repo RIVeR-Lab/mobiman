@@ -432,7 +432,8 @@ class Config():
         log_data = []
         log_data.append(["observation_shape", self.observation_shape])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_observation_shape] observation_shape: " + str(self.observation_shape))
 
@@ -444,7 +445,8 @@ class Config():
         log_data = []
         log_data.append(["action_shape", self.action_shape])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_action_shape] action_shape: " + str(self.action_shape))
 
@@ -484,7 +486,8 @@ class Config():
         log_data.append(["occgrid_height", self.occgrid_height])
         log_data.append(["occgrid_resolution", self.occgrid_resolution])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_data_size: " + str(self.occgrid_data_size))
             print("[mobiman_drl_config::Config::set_occgrid_config] occgrid_width: " + str(self.occgrid_width))
@@ -503,7 +506,8 @@ class Config():
         log_data.append(["mobiman_goal_obs_frame_id", self.mobiman_goal_obs_frame_id])
         log_data.append(["mobiman_goal_obs_dim_dt", self.mobiman_goal_obs_dim_dt])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] n_mobiman_goal_obs: " + str(self.n_mobiman_goal_obs))
             print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_goal_obs_frame_id: " + str(self.mobiman_goal_obs_frame_id))
@@ -521,7 +525,8 @@ class Config():
         log_data.append(["mobiman_occupancy_obs_frame_id", self.mobiman_occupancy_obs_frame_id])
         log_data.append(["mobiman_occupancy_obs_dim_dt", self.mobiman_occupancy_obs_dim_dt])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_mobiman_occupancy_obs_config] n_mobiman_occupancy_obs: " + str(self.n_mobiman_occupancy_obs))
             print("[mobiman_drl_config::Config::set_mobiman_goal_obs_config] mobiman_occupancy_obs_frame_id: " + str(self.mobiman_occupancy_obs_frame_id))
@@ -535,7 +540,8 @@ class Config():
         log_data = []
         log_data.append(["n_selfcoldistance", self.n_selfcoldistance])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_selfcoldistance: " + str(self.n_selfcoldistance))
 
@@ -547,7 +553,8 @@ class Config():
         log_data = []
         log_data.append(["n_extcoldistance_base", self.n_extcoldistance_base])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_extcoldistance_base_config] n_extcoldistance_base: " + str(self.n_extcoldistance_base))
 
@@ -559,6 +566,7 @@ class Config():
         log_data = []
         log_data.append(["n_extcoldistance_arm", self.n_extcoldistance_arm])
         #log_file = self.data_folder_path + self.training_log_name + ".csv" # type: ignore
-        write_data(self.log_file, log_data, self.flag_print_info)
+        if self.log_file:
+            write_data(self.log_file, log_data, self.flag_print_info)
         if self.flag_print_info:
             print("[mobiman_drl_config::Config::set_selfcoldistance_config] n_extcoldistance_arm: " + str(self.n_extcoldistance_arm))
