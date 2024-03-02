@@ -10,7 +10,7 @@ gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 drl_data_path: "dataset/drl/m4/"
 #initial_training_path: ""
-initial_training_path: "20240225_162547_PPO_mobiman/"
+initial_training_path: "20240301_182134_SAC_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -28,7 +28,7 @@ n_testing_eval_episodes: 1
 # SAC
 # DDPG  (NUA NOTE: NOT FUNCTIONAL YET!)
 # A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
-rl_algorithm: "PPO"
+rl_algorithm: "SAC"
 motion_planning_algorithm: "ocs2"
 
 # Options: ### NUA TODO: UPDATE! 
@@ -36,11 +36,11 @@ motion_planning_algorithm: "ocs2"
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action) (NUA NOTE: NOT FUNCTIONAL YET!)
 observation_space_type: "mobiman_FC"
 
-learning_rate: 0.0001
+learning_rate: 0.00025
 n_steps: 100 #1000
-batch_size: 20 #50
+batch_size: 28 #50
 ent_coef: 0.0002
-training_timesteps: 50000 #10000
+training_timesteps: 30000 #10000
 max_episode_steps: 10 #2000
 
 training_checkpoint_freq: 50 #1000
@@ -64,9 +64,9 @@ world_range_y_max: 2.0                # wrt. world frame
 world_range_z_min: 0.0                # wrt. world frame
 world_range_z_max: 2.0                # wrt. world frame
 
-init_robot_pos_range_x_min: -1.5      # wrt. world frame
-init_robot_pos_range_x_max: 1.5       # wrt. world frame
-init_robot_pos_range_y_min: -1.5      # wrt. world frame
+init_robot_pos_range_x_min: -1.8      # wrt. world frame
+init_robot_pos_range_x_max: 1.8       # wrt. world frame
+init_robot_pos_range_y_min: -1.8      # wrt. world frame
 init_robot_pos_range_y_max: 1.0       # wrt. world frame
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
@@ -147,7 +147,7 @@ reward_terminal_goal: 100.0
 reward_terminal_out_of_boundary: -100.0
 reward_terminal_collision: -100.0
 reward_terminal_rollover: -100.0
-reward_terminal_max_step: -100.0
+reward_terminal_max_step: -50.0
 
 # Distance-to-goal
 reward_step_dist2goal_scale: 10.0

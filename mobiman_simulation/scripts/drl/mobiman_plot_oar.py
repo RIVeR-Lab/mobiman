@@ -486,9 +486,9 @@ if __name__ == '__main__':
         #data_result_ep = plot_mobiman.get_data_col_episode(file_path, "result", "str")
         #plot_mobiman.print_array(data_result_ep)
 
-        get_param_value_from_log(log_path, param_name)
+        #get_param_value_from_log(log_path, param_name)
 
-        plot_mobiman.plot_result(file_path, title="")
+        plot_mobiman.plot_result(file_path, title="Mobiman-PPO 101k")
 
     '''
     plot_path = rospy.get_param('data_path')
