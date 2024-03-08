@@ -1,7 +1,7 @@
 ## Parameters
 plot_path: ""
 plot_flag: True
-plot_title: ""
+plot_title: "PPO_48k_timeHorizon3"
 plot_window_timestep: 20
 plot_window_episode: 20
 
@@ -11,4 +11,4 @@ save_flag: True
 data_folder: ""
 #data_folder: "dataset/drl/arena"
 
-data_names: ["dataset/drl/m4/20240301_182134_SAC_mobiman/oar_data_testing_jackalJaco_0_m4.csv"]
+data_names: ["dataset/drl/m4/20240306_193233_PPO_mobiman/oar_data_testing_jackalJaco_0_m4.csv"]
