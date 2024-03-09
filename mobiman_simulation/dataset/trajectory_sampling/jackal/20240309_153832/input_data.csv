@@ -1,0 +1,14 @@
+trajectory_frame,base_link
+trajectory_data_path,dataset/trajectory_sampling/jackal/20240309_153832/
+trajectory_sampling_count,5
+trajectory_time,3
+trajectory_length,6.95212e-310
+trajectory_generation_type,
+trajectory_yaw,4.68636e-310
+trajectory_pitch,6.95212e-310
+trajectory_yaw_sampling_count,22084
+trajectory_pitch_sampling_count,766722208
+trajectory_yaw_sampling_type,
+trajectory_pitch_sampling_type,
+lateral_velocity_sampling_count,2
+angular_velocity_sampling_count,5

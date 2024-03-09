@@ -198,6 +198,7 @@ include_directories(
 add_library(map_utility src/map_utility.cpp)
 add_library(scan_utility src/scan_utility.cpp)
 add_library(goal_utility src/goal_utility.cpp)
+add_library(trajectory_sampling_utility src/trajectory_sampling_utility.cpp)
 #add_library(testplanner2 src/testplanner2.cpp)
 
 add_dependencies(map_utility ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -236,6 +237,7 @@ add_dependencies(scanner ${catkin_EXPORTED_TARGETS})
 add_dependencies(jaco_utility ${catkin_EXPORTED_TARGETS})
 target_link_libraries(scanner ${PCL_LIBRARIES} ${OCTOMAP_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 target_link_libraries(jaco_utility ${catkin_LIBRARIES})
+
 ## World Frame Server
 add_executable(world_frame_server src/world_frame_server.cpp)
 add_dependencies(world_frame_server ${catkin_EXPORTED_TARGETS})
@@ -250,6 +252,11 @@ target_link_libraries(virtual_frames_server ${PCL_LIBRARIES} ${catkin_LIBRARIES}
 add_executable(map_server src/map_server.cpp)
 add_dependencies(map_server ${catkin_EXPORTED_TARGETS})
 target_link_libraries(map_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} scan_utility map_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
+
+## Trajectory Sampling Server
+add_executable(trajectory_sampling_server src/trajectory_sampling_server.cpp)
+add_dependencies(trajectory_sampling_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(trajectory_sampling_server ${PCL_LIBRARIES} ${catkin_LIBRARIES} ${CHOLMOD_LIBRARY} ${TF_LIBRARIES} trajectory_sampling_utility ${FCL_LIBRARIES} nlohmann_json::nlohmann_json)
 
 ## Pick and Place
 add_executable(pick_n_place src/pick_n_place.cpp)

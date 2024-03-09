@@ -45,6 +45,28 @@ double mean(std::vector<double> const& v, bool debug_flag=false)
   return total / count;
 }
 
+// DESCRIPTION: TODO...Function to sample a range equidistantly by n points
+std::vector<double> sampleRange(double minVal, double maxVal, int n) 
+{
+  std::vector<double> sampledPoints;
+  if (n < 2)
+  {
+    sampledPoints.push_back(maxVal);
+    return sampledPoints;
+  }
+
+  double step = (maxVal - minVal) / (n - 1); // Calculate step size
+  
+  // Sample the range
+  for (int i = 0; i < n; ++i) 
+  {
+    double value = minVal + i * step;
+    sampledPoints.push_back(value);
+  }
+  
+  return sampledPoints;
+}
+
 // DESCRIPTION: TODO...
 vector<double> sampling_func(double mini, 
                              double maxi, 
@@ -430,6 +452,15 @@ void normalize(vector<double>& vals)
     normalized_vals.push_back(normalize(vals[min_index], vals[max_index], vals[i]));
   }
   vals = normalized_vals;
+}
+
+// DESCRIPTION: TODO...
+tf2::Quaternion convertRPY(double roll, double pitch, double yaw)
+{
+  // Convert RPY to Quaternion
+  tf2::Quaternion quat;
+  quat.setRPY(roll, pitch, yaw);
+  return quat;
 }
 
 // DESCRIPTION: TODO...

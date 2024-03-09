@@ -8,16 +8,19 @@ igibson_config_file: "igibson_jackal_jaco"
 ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
-drl_data_path: "dataset/drl/m4/"
+
+# m4
+# ocs2wb
+drl_data_path: "dataset/drl/m4/"      # NUA NOTE: Saving directory
 initial_training_path: ""
-#initial_training_path: "20240306_193233_PPO_mobiman/"
+#initial_training_path: "oar_data_testing_jackalJaco_0_ocs2wb/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
 
 #testing_log_name: "testing_log"
 # m4
-# ocs2_wb
+# ocs2wb
 testing_benchmark_name: "m4"
 n_testing_eval_episodes: 1
 
@@ -37,8 +40,8 @@ motion_planning_algorithm: "ocs2"
 observation_space_type: "mobiman_FC"
 
 learning_rate: 0.0001         #PPO: 0.0001    #SAC: 0.00025 
-n_steps: 100                  #PPO: 100       #SAC: 100
-batch_size: 20                #PPO: 20        #SAC: 28
+n_steps: 50                   #PPO: 100       #SAC: 100
+batch_size: 10                #PPO: 20        #SAC: 28
 ent_coef: 0.0002              #PPO: 0.0002    #SAC: 0.0002
 training_timesteps: 50000
 max_episode_steps: 20
@@ -156,9 +159,9 @@ reward_step_dist2goal_dist_threshold: 1.0
 #reward_step_dist2goal_sigma: 1.0
 
 # Model mode
-reward_step_mode0: -6.0     # Computational Cost: 3
-reward_step_mode1: -12.0    # Computational Cost: 6 
-reward_step_mode2: -18.0    # Computational Cost: 9
+reward_step_mode0: -3.0     # Computational Cost: 3
+reward_step_mode1: -6.0    # Computational Cost: 6 
+reward_step_mode2: -9.0    # Computational Cost: 9
 
 # MPC result
 #reward_step_mpc_exit: -5

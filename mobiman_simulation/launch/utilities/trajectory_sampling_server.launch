@@ -1,0 +1,31 @@
+<!--AUTHOR: Neset Unver Akmandor (NUA)-->
+<!--E-MAIL: akmandor.n@northeastern.edu-->
+
+<launch>
+  <!-- CONFIGURATION OPTIONS
+    config_trajectory_sampling_jackal
+    config_trajectory_sampling_jaco
+    config_trajectory_sampling_jackalJaco
+  -->
+  <arg name="config_trajectory_sampling_server"  default="config_trajectory_sampling_jackal" />
+  <arg name="robot_ns"            default="/"/>
+  
+  <arg name="rviz_config_path"    default="trajectory_sampling" />
+
+  <group ns="$(arg robot_ns)">
+    <!-- PUBLISH CONFIGURATION PARAMETERS -->
+    <rosparam file="$(find mobiman_simulation)/config/$(arg config_trajectory_sampling_server).yaml"/>
+
+    <node name="trajectory_sampling_server" pkg="mobiman_simulation" type="trajectory_sampling_server" output="screen" >
+      <!--param name="world_frame" value="world" /-->
+    </node>
+
+    <node name="rviz" 
+          pkg="rviz" 
+          type="rviz" 
+          args="-d $(find mobiman_simulation)/rviz/$(arg rviz_config_path).rviz" 
+          required="true" />
+
+  </group>
+
+</launch>

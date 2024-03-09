@@ -3,7 +3,8 @@ Panels:
     Help Height: 213
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /MarkerArray9/Namespaces1
       Splitter Ratio: 0.5
     Tree Height: 547
   - Class: rviz/Selection
@@ -50,88 +51,12 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        jackalJaco_0/base_link:
-          Value: false
-        jackalJaco_0/chassis_link:
-          Value: false
-        jackalJaco_0/conveyor_belt:
-          Value: false
-        jackalJaco_0/d435_cam1camera_bottom_screw_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_color_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_color_optical_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_depth_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_depth_frame_gazebo:
-          Value: false
-        jackalJaco_0/d435_cam1camera_depth_optical_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_left_ir_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_left_ir_optical_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_link:
-          Value: false
-        jackalJaco_0/d435_cam1camera_right_ir_frame:
-          Value: false
-        jackalJaco_0/d435_cam1camera_right_ir_optical_frame:
-          Value: false
-        jackalJaco_0/front_fender_link:
-          Value: false
-        jackalJaco_0/front_left_wheel_link:
-          Value: false
-        jackalJaco_0/front_mount:
-          Value: false
-        jackalJaco_0/front_right_wheel_link:
-          Value: false
-        jackalJaco_0/golazo:
-          Value: false
-        jackalJaco_0/imu_link:
-          Value: false
-        jackalJaco_0/j2n6s300_end_effector:
-          Value: false
-        jackalJaco_0/j2n6s300_link_1:
-          Value: false
-        jackalJaco_0/j2n6s300_link_2:
-          Value: false
-        jackalJaco_0/j2n6s300_link_3:
-          Value: false
-        jackalJaco_0/j2n6s300_link_4:
-          Value: false
-        jackalJaco_0/j2n6s300_link_5:
-          Value: false
-        jackalJaco_0/j2n6s300_link_6:
-          Value: false
-        jackalJaco_0/j2n6s300_link_base:
-          Value: false
-        jackalJaco_0/jaco_base_link:
-          Value: false
-        jackalJaco_0/mid_mount:
-          Value: false
-        jackalJaco_0/navsat_link:
-          Value: false
-        jackalJaco_0/odom:
-          Value: false
-        jackalJaco_0/rear_fender_link:
-          Value: false
-        jackalJaco_0/rear_left_wheel_link:
-          Value: false
-        jackalJaco_0/rear_mount:
-          Value: false
-        jackalJaco_0/rear_right_wheel_link:
-          Value: false
-        jackalJaco_0/red_cube:
-          Value: false
-        world:
-          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -139,65 +64,9 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        world:
-          jackalJaco_0/conveyor_belt:
-            {}
-          jackalJaco_0/golazo:
-            {}
-          jackalJaco_0/odom:
-            jackalJaco_0/base_link:
-              jackalJaco_0/chassis_link:
-                jackalJaco_0/front_fender_link:
-                  {}
-                jackalJaco_0/front_left_wheel_link:
-                  {}
-                jackalJaco_0/front_right_wheel_link:
-                  {}
-                jackalJaco_0/imu_link:
-                  {}
-                jackalJaco_0/mid_mount:
-                  jackalJaco_0/front_mount:
-                    {}
-                  jackalJaco_0/rear_mount:
-                    {}
-                jackalJaco_0/navsat_link:
-                  {}
-                jackalJaco_0/rear_fender_link:
-                  {}
-                jackalJaco_0/rear_left_wheel_link:
-                  {}
-                jackalJaco_0/rear_right_wheel_link:
-                  {}
-              jackalJaco_0/d435_cam1camera_bottom_screw_frame:
-                jackalJaco_0/d435_cam1camera_link:
-                  jackalJaco_0/d435_cam1camera_depth_frame:
-                    jackalJaco_0/d435_cam1camera_color_frame:
-                      jackalJaco_0/d435_cam1camera_color_optical_frame:
-                        {}
-                    jackalJaco_0/d435_cam1camera_depth_optical_frame:
-                      {}
-                    jackalJaco_0/d435_cam1camera_left_ir_frame:
-                      jackalJaco_0/d435_cam1camera_left_ir_optical_frame:
-                        {}
-                    jackalJaco_0/d435_cam1camera_right_ir_frame:
-                      jackalJaco_0/d435_cam1camera_right_ir_optical_frame:
-                        {}
-                  jackalJaco_0/d435_cam1camera_depth_frame_gazebo:
-                    {}
-              jackalJaco_0/jaco_base_link:
-                jackalJaco_0/j2n6s300_link_base:
-                  jackalJaco_0/j2n6s300_link_1:
-                    jackalJaco_0/j2n6s300_link_2:
-                      jackalJaco_0/j2n6s300_link_3:
-                        jackalJaco_0/j2n6s300_link_4:
-                          jackalJaco_0/j2n6s300_link_5:
-                            jackalJaco_0/j2n6s300_link_6:
-                              jackalJaco_0/j2n6s300_end_effector:
-                                {}
-          jackalJaco_0/red_cube:
-            {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -405,9 +274,7 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/target_visu
       Name: MarkerArray
       Namespaces:
-        target_1: true
-        target_2: true
-        target_3: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -440,8 +307,7 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/optimizedStateTrajectory
       Name: MarkerArray
       Namespaces:
-        Base Trajectory: true
-        EE Trajectory: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -522,13 +388,13 @@ Visualization Manager:
       Queue Size: 100
       Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_1/debug_visu
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
       Enabled: false
       Marker Topic: /jackalJaco_1/optimizedStateTrajectory
@@ -538,29 +404,29 @@ Visualization Manager:
       Queue Size: 100
       Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_1/target_visu
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_2/target_visu
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /jackalJaco_3/target_visu
       Name: MarkerArray
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -653,7 +519,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.3125486373901367
+      Distance: 5.403036117553711
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -661,17 +527,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.8680770993232727
-        Y: 0.3418274521827698
-        Z: 0.4987647533416748
+        X: 0.13208705186843872
+        Y: 0.6292510032653809
+        Z: 0.7866381406784058
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5847955346107483
+      Pitch: 0.7647954225540161
       Target Frame: <Fixed Frame>
-      Yaw: 4.711209297180176
+      Yaw: 0.02302183210849762
     Saved: ~
 Window Geometry:
   Displays:

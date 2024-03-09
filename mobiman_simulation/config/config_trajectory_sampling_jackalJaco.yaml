@@ -1,0 +1,63 @@
+# AUTHOR: Neset Unver Akmandor (NUA)
+# E-MAIL: akmandor.n@northeastern.edu
+
+trajectory_data_path: ""
+
+trajectory_sampling_dataset_path: "dataset/trajectory_sampling/jackalJaco/"
+
+tss_robot_frame_name: "base_link"
+
+# geometric
+# kinematic
+trajectory_gen_type: "geometric"
+
+## Geometric Parameters ~~~~ 
+# cone
+# cube
+geo_type: "cube"
+
+## Cone Parameters ~~~~ 
+#tlen: 0.0
+#tyaw: 0.9       # rad
+#tpitch: 0.6     # rad
+#tyaw_cnt: 21
+#tpitch_cnt: 11
+#tsamp_cnt: 3
+
+## Cube Parameters ~~~~ 
+sampling_x_min: -1.5
+sampling_x_max: 1.5
+sampling_x_cnt: 4
+
+sampling_y_min: -1.5
+sampling_y_max: 1.5
+sampling_y_cnt: 4
+
+sampling_z_min: 0.5
+sampling_z_max: 1.5
+sampling_z_cnt: 4
+
+sampling_roll_min: -1.57079632679
+sampling_roll_max: 3.14159265359
+sampling_roll_cnt: 4
+
+sampling_pitch_min: -1.57079632679
+sampling_pitch_max: 3.14159265359
+sampling_pitch_cnt: 4
+
+sampling_yaw_min: -1.57079632679
+sampling_yaw_max: 3.14159265359
+sampling_yaw_cnt: 4
+## ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Kinematic Parameters ~~~~
+#tsamp_cnt: 3
+#dt: 0.01
+#ttime: 3
+#lat_velo_samp_cnt: 2
+#ang_velo_samp_cnt: 15
+#min_lat_velo: -1.0
+#max_lat_velo: 1.0
+#max_yaw_velo: 1.0
+#sample_start_index: 0
+## ~~~~~~~~~~~~~~~~~~~~~~~~~
