@@ -8,7 +8,7 @@ git clone https://github.com/danfis/libccd.git
 cd libccd
 mkdir build && cd build
 cmake -G "Unix Makefiles" -DENABLE_DOUBLE_PRECISION=ON ..
-sudo make
+sudo make -j4
 sudo make install
 ```
 2. Clone [fcl](https://github.com/flexible-collision-library/fcl) into any directory (e.g. Home)  and install fcl library from its source:
@@ -16,7 +16,8 @@ sudo make install
 git clone https://github.com/flexible-collision-library/fcl.git
 cd fcl
 mkdir build && cd build
-sudo make
+cmake ..
+sudo make -j4
 sudo make install
 ```
 3. Clone the mobiman repository into the src folder of catkin workspace and install all required ROS packages:

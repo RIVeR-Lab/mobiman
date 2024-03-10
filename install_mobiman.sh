@@ -86,16 +86,16 @@ git checkout noetic-mobiman-v1
 cd ..
 
 # 3.3 Install other ROS dependencies:
-sudo apt install ros-noetic-octomap*
-sudo apt install ros-noetic-pointcloud-to-laserscan
-sudo apt-get install ros-noetic-jackal-simulator ros-noetic-jackal-desktop ros-noetic-jackal-navigation
-sudo apt-get install nlohmann-json3-dev
-sudo apt install liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
-sudo apt install ros-noetic-pybind11-catkin
-sudo apt install python3-catkin-tools
-sudo apt install doxygen doxygen-latex
-sudo apt-get install ros-noetic-rqt-multiplot
-sudo apt install ros-noetic-moveit
+sudo apt-get install -y ros-noetic-octomap*
+sudo apt-get install -y ros-noetic-pointcloud-to-laserscan
+sudo apt-get install -y ros-noetic-jackal-simulator ros-noetic-jackal-desktop ros-noetic-jackal-navigation
+sudo apt-get install -y nlohmann-json3-dev
+sudo apt-get install -y liburdfdom-dev liboctomap-dev libassimp-dev libglpk-dev
+sudo apt-get install -y ros-noetic-pybind11-catkin
+sudo apt-get install -y python3-catkin-tools
+sudo apt-get install -y doxygen doxygen-latex
+sudo apt-get install -y ros-noetic-rqt-multiplot
+sudo apt-get install -y ros-noetic-moveit
 
 # 3.4 Install remaining ROS dependencies using rosdep tool:
 wait
