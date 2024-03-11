@@ -1,4 +1,4 @@
-// LAST UPDATE: 2024.03.08
+// LAST UPDATE: 2024.03.10
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -25,6 +25,7 @@ TrajectorySamplingUtility::TrajectorySamplingUtility(NodeHandle& nh, string tfra
   trajectory_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectories", 10);
   trajectory_sampling_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_points", 10);
   trajectory_sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_arrows", 10);
+  sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("sampling_data_arrows", 10);
 }
 
 TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh, vector<vector<geometry_msgs::Point>> tdata, 
@@ -41,6 +42,7 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh, vector<vec
   trajectory_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectories", 10);
   trajectory_sampling_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_points", 10);
   trajectory_sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_arrows", 10);
+  sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("sampling_data_arrows", 10);
 }
 
 TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
@@ -76,6 +78,7 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
   trajectory_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectories", 10);
   trajectory_sampling_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_points", 10);
   trajectory_sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_arrows", 10);
+  sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("sampling_data_arrows", 10);
 }
 
 TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
@@ -110,6 +113,7 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
   trajectory_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectories", 10);
   trajectory_sampling_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_points", 10);
   trajectory_sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_arrows", 10);
+  sampling_arrow_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("sampling_data_arrows", 10);
 }
 
 TrajectorySamplingUtility::~TrajectorySamplingUtility()
@@ -638,7 +642,7 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cone(bool 
 
 void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube()
 {
-  //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] START" << endl;
+  cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] START" << endl;
 
   clear_trajectory_data();
 
@@ -682,7 +686,9 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube()
     }
   }
 
-  //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] END" << endl; 
+  cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] sampling_data_pose_ size: " << sampling_data_pose_.size() << endl;
+
+  cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] END" << endl; 
 }
 
 vector<double> TrajectorySamplingUtility::simple_car_model(vector<double>& x, vector<double>& u, double dt)
@@ -992,6 +998,35 @@ void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
     trajectory_visu_.markers.push_back(trajectory_line_strip);
     trajectory_sampling_visu_.markers.push_back(trajectory_tsamp);
   }
+
+  // --------
+
+  vector<geometry_msgs::Pose> sampling_data_pose = sampling_data_pose_;
+  sampling_arrow_visu_.markers.clear();
+
+  cout << "[TrajectorySamplingUtility::fill_trajectory_sampling_visu] sampling_data_pose size: " << sampling_data_pose.size() << endl;
+
+  for (size_t i = 0; i < sampling_data_pose.size(); i++)
+  {
+    visualization_msgs::Marker samp_arrow_visu;
+    samp_arrow_visu.ns = "sampling_data_" + to_string(i);
+    samp_arrow_visu.id = i;
+    samp_arrow_visu.header.frame_id = trajectory_frame_;
+    samp_arrow_visu.type = visualization_msgs::Marker::ARROW;
+    samp_arrow_visu.action = visualization_msgs::Marker::ADD;
+    
+    samp_arrow_visu.pose = sampling_data_pose[i];
+
+    samp_arrow_visu.scale.x = 0.2;
+    samp_arrow_visu.scale.y = 0.02;
+    samp_arrow_visu.scale.z = 0.05;
+    samp_arrow_visu.color.r = 0.0;
+    samp_arrow_visu.color.g = 0.0;
+    samp_arrow_visu.color.b = 1.0;
+    samp_arrow_visu.color.a = 1;
+
+    sampling_arrow_visu_.markers.push_back(samp_arrow_visu);
+  }
 }
 
 void TrajectorySamplingUtility::publish_trajectory_sampling()
@@ -999,22 +1034,30 @@ void TrajectorySamplingUtility::publish_trajectory_sampling()
   for(int k = 0; k < trajectory_visu_.markers.size(); k++)
   {
     // UPDATE SEQUENCE AND STAMP FOR TRAJECTORY
-    trajectory_visu_.markers[k].header.seq++;
+    //trajectory_visu_.markers[k].header.seq++;
     //trajectory_visu_.markers[k].header.stamp = ros::Time(0);
     trajectory_visu_.markers[k].header.stamp = ros::Time::now();
 
     // UPDATE SEQUENCE AND STAMP FOR SAMPLING POINTS ON TRAJECTORY 
-    trajectory_sampling_visu_.markers[k].header.seq++;
+    //trajectory_sampling_visu_.markers[k].header.seq++;
     //trajectory_sampling_visu_.markers[k].header.stamp = ros::Time(0);
     trajectory_sampling_visu_.markers[k].header.stamp = ros::Time::now();
+  
+    trajectory_visu_pub_.publish(trajectory_visu_);
+    trajectory_sampling_visu_pub_.publish(trajectory_sampling_visu_);
+
+    if (flag_kinematic)
+    {
+      trajectory_sampling_arrow_visu_pub_.publish(trajectory_sampling_arrow_visu_);
+    }
   }
 
-  trajectory_visu_pub_.publish(trajectory_visu_);
-  trajectory_sampling_visu_pub_.publish(trajectory_sampling_visu_);
+  //cout << "[TrajectorySamplingUtility::fill_trajectory_sampling_visu] sampling_arrow_visu_ size: " << sampling_arrow_visu_.markers.size() << endl;
 
-  if (flag_kinematic)
-  {
-    trajectory_sampling_arrow_visu_pub_.publish(trajectory_sampling_arrow_visu_);
+  for (size_t i = 0; i < sampling_arrow_visu_.markers.size(); i++)
+  {  
+    sampling_arrow_visu_.markers[i].header.stamp = ros::Time::now();
+    sampling_arrow_visu_pub_.publish(sampling_arrow_visu_);
   }
 }
 

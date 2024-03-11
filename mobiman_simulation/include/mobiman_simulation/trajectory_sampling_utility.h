@@ -1,7 +1,7 @@
 #ifndef TRAJECTORY_SAMPLING_UTILITY_H
 #define TRAJECTORY_SAMPLING_UTILITY_H
 
-// LAST UPDATE: 2024.03.08
+// LAST UPDATE: 2024.03.10
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -387,10 +387,12 @@ class TrajectorySamplingUtility
     ros::Publisher trajectory_visu_pub_;
     ros::Publisher trajectory_sampling_visu_pub_;
     ros::Publisher trajectory_sampling_arrow_visu_pub_;
+    ros::Publisher sampling_arrow_visu_pub_;
     
     visualization_msgs::MarkerArray trajectory_visu_;
     visualization_msgs::MarkerArray trajectory_sampling_visu_;
     visualization_msgs::MarkerArray trajectory_sampling_arrow_visu_;
+    visualization_msgs::MarkerArray sampling_arrow_visu_;
 
 }; // END of class TrajectorySamplingUtility
 

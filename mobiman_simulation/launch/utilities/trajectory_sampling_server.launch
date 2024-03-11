@@ -7,7 +7,7 @@
     config_trajectory_sampling_jaco
     config_trajectory_sampling_jackalJaco
   -->
-  <arg name="config_trajectory_sampling_server"  default="config_trajectory_sampling_jackal" />
+  <arg name="config_trajectory_sampling_server"  default="config_trajectory_sampling_jaco" />
   <arg name="robot_ns"            default="/"/>
   
   <arg name="rviz_config_path"    default="trajectory_sampling" />
