@@ -826,9 +826,18 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube(int s
     samp_z = sampleRange(sampling_z_min_, sampling_z_max_, sampling_z_cnt_);
   }
 
-  vector<double> samp_roll = sampleRange(sampling_roll_min_, sampling_roll_max_, sampling_roll_cnt_);
-  vector<double> samp_pitch = sampleRange(sampling_pitch_min_, sampling_pitch_max_, sampling_pitch_cnt_);
-  vector<double> samp_yaw = sampleRange(sampling_yaw_min_, sampling_yaw_max_, sampling_yaw_cnt_);
+  vector<double> samp_roll = sampleRange(sampling_roll_min_, sampling_roll_max_, sampling_roll_cnt_, true);
+  vector<double> samp_pitch = sampleRange(sampling_pitch_min_, sampling_pitch_max_, sampling_pitch_cnt_, true);
+  vector<double> samp_yaw = sampleRange(sampling_yaw_min_, sampling_yaw_max_, sampling_yaw_cnt_, true);
+
+  std::cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_roll size: " << samp_roll.size() << std::endl;
+  print(samp_roll);
+
+  std::cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_pitch size: " << samp_pitch.size() << std::endl;
+  print(samp_pitch);
+
+  std::cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_yaw size: " << samp_yaw.size() << std::endl;
+  print(samp_yaw);
 
   for (size_t r = 0; r < samp_roll.size(); r++)
   {
@@ -851,7 +860,7 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube(int s
               //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_pitch: " << samp_pitch[p]*180/PI << endl;
               //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] yaw: " << samp_yaw[y]*180/PI << endl;
 
-              tf2::Quaternion qu = convertRPY(samp_roll[r], samp_pitch[p], samp_yaw[y]);
+              tf2::Quaternion qu = getQuaternionFromRPY(samp_roll[r], samp_pitch[p], samp_yaw[y]);
 
               po.orientation.x = qu.x();
               po.orientation.y = qu.y();
@@ -1140,7 +1149,7 @@ void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
         tsamp_arrow.pose.position.y = trajectory_data[k][p].y;
         tsamp_arrow.pose.position.z = 0.0;
         
-        tf2::Quaternion tsamp_quat = convertRPY(0.0, 0.0, trajectory_data[k][p].z);
+        tf2::Quaternion tsamp_quat = getQuaternionFromRPY(0.0, 0.0, trajectory_data[k][p].z);
         tsamp_arrow.pose.orientation.x = tsamp_quat.x();
         tsamp_arrow.pose.orientation.y = tsamp_quat.y();
         tsamp_arrow.pose.orientation.z = tsamp_quat.z();
@@ -1250,6 +1259,21 @@ void TrajectorySamplingUtility::publishFrame(string origin_frame_name, vector<ge
     }
 
     tf::Transform tf_wrt_origin;
+
+    double roll, pitch, yaw;
+    tf2::Quaternion quat(frame_pose_vec[i].orientation.x, frame_pose_vec[i].orientation.y, frame_pose_vec[i].orientation.z, frame_pose_vec[i].orientation.w); 
+    getRPYFromQuaternion(quat, roll, pitch, yaw);
+
+    /*
+    std::cout << "[TrajectorySamplingUtility::publishFrame] i -> " << i << std::endl;
+    std::cout << "position: " << frame_pose_vec[i].position.x << ", " << frame_pose_vec[i].position.y << ", " << frame_pose_vec[i].position.z << std::endl;
+    std::cout << "orientation (rpy): " << roll*180/PI << ", " << pitch*180/PI << ", " << yaw*180/PI << std::endl;
+    std::cout << "orientation (quaternion): " << frame_pose_vec[i].orientation.x << ", " 
+                                 << frame_pose_vec[i].orientation.y << ", " 
+                                 << frame_pose_vec[i].orientation.z << ", " 
+                                 << frame_pose_vec[i].orientation.w << std::endl;
+    std::cout << "" << std::endl;
+    */
 
     tf_wrt_origin.setOrigin(tf::Vector3(frame_pose_vec[i].position.x, frame_pose_vec[i].position.y, frame_pose_vec[i].position.z));
     tf_wrt_origin.setRotation(tf::Quaternion(frame_pose_vec[i].orientation.x, frame_pose_vec[i].orientation.y, frame_pose_vec[i].orientation.z, frame_pose_vec[i].orientation.w));

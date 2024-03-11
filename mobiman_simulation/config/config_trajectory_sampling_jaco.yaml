@@ -27,18 +27,20 @@ geo_type: "cube"
 ## Cube Parameters ~~~~ 
 sampling_x_min: -0.5
 sampling_x_max: 0.5
-sampling_x_cnt: 1
+sampling_x_cnt: 3
 
 sampling_y_min: -0.5
 sampling_y_max: 0.5
-sampling_y_cnt: 1
+sampling_y_cnt: 4
 
 sampling_z_min: 0.5
 sampling_z_max: 1.0
 sampling_z_cnt: 1
 
-sampling_roll_min: 0.0                            # 90: 1.57079632679
-sampling_roll_max: 3.14159265359                    # 180: 3.14159265359  
+sample_start_index: 1
+
+sampling_roll_min: 3.14159265359                            # 90: 1.57079632679
+sampling_roll_max: 1.57079632679                    # 180: 3.14159265359  
 sampling_roll_cnt: 1
 
 sampling_pitch_min: 0.0
@@ -46,10 +48,9 @@ sampling_pitch_max: 1.57079632679                 # 3.14159265359
 sampling_pitch_cnt: 1
 
 sampling_yaw_min: 0.0                             # -1.57079632679
-sampling_yaw_max: 3.14159265359                   # 3.14159265359
+sampling_yaw_max: 1.57079632679                   # 3.14159265359
 sampling_yaw_cnt: 1
 
-sample_start_index: 0
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Kinematic Parameters ~~~~

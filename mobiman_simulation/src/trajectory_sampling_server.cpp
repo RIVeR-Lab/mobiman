@@ -34,10 +34,12 @@ int main(int argc, char** argv)
   cout << "[trajectory_sampling_server::main] ns: " << ns << endl;
   //std::cout << "[" << interfaceName_ << "][" << ns <<  "][MobileManipulatorInterface::MobileManipulatorInterface] ns: " << ns << std::endl;
 
+  /*
   if (ns != "/")
   {
     robot_frame_name = ns + "/" + robot_frame_name;
   }
+  */
 
   cout << "[trajectory_sampling_server::main] robot_frame_name: " << robot_frame_name << endl;
 
