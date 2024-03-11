@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 #from mobiman.mobiman_simulation.scripts.drl.mobiman_drl_training import print_array
-
+from collections import deque
 import rospy
 import rospkg
 
@@ -150,6 +150,41 @@ class PlotMobiman(object):
 
         return data_ep
     
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def plot_rewards(self):
+        main_path = os.path.join(self.mobiman_path, self.data_folder)
+        folders = sorted(os.listdir(main_path))[::-1]
+        files = deque()
+        folder_ = None
+        for folder in folders:
+            try:
+                log_csv = pd.read_csv(main_path + '/' + folder + '/' + 'training_log.csv', names=['key', 'value'])
+                folder_ = folder
+                break
+            except Exception as e:
+                print(e)
+        while True:
+            n_robot = log_csv.iloc[6]['value']
+            log_csv.iloc[14]['value']
+            for i in range(int(n_robot)):
+                files.append(f'{main_path}/{folder}/oar_data_training_jackalJaco_{i}.csv')
+            if pd.notna(log_csv.iloc[14]['value']):
+                folder = log_csv.iloc[14]['value'].replace('/','')
+                print(folder)
+                log_csv = pd.read_csv(main_path + '/' + folder + '/' + 'training_log.csv', names=['key', 'value'])
+            else:
+                break
+        main_df = None
+        while len(files) != 0:
+            pass
+        if main_df == None:
+
+        
+            
+
     '''
     DESCRIPTION: TODO...
     '''
@@ -449,7 +484,12 @@ if __name__ == '__main__':
     save_flag = rospy.get_param('save_flag')    
     
     data_folder = rospy.get_param('data_folder')
-    data_names = rospy.get_param('data_names')
+    try:
+        data_names = rospy.get_param('data_names')
+    except Exception as e:
+        data_names = []
+    
+    plot_rewards = rospy.get_param('plot_rewards')
 
     print("[mobiman_plot_oar::__main__] mobiman_path: " + str(mobiman_path))
     print("[mobiman_plot_oar::__main__] plot_path: " + str(plot_path))
@@ -471,24 +511,28 @@ if __name__ == '__main__':
                                data_folder=data_folder, # type: ignore
                                data_names=data_names) # type: ignore
 
-    for dn in data_names: # type: ignore
-        file_path = plot_mobiman.mobiman_path + dn
-        n_row = plot_mobiman.read_data_n_row(file_path)
-        n_col = plot_mobiman.read_data_n_col(file_path)
 
-        print("[mobiman_plot_oar::__main__] data_name: " + dn)
-        print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
-        print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
+    if plot_rewards:
+        plot_mobiman.plot_rewards()
+    else:
+        for dn in data_names: # type: ignore
+            file_path = plot_mobiman.mobiman_path + dn
+            n_row = plot_mobiman.read_data_n_row(file_path)
+            n_col = plot_mobiman.read_data_n_col(file_path)
 
-        #data_result = plot_mobiman.get_data_col(file_path, "result", "str")
-        #plot_mobiman.print_array(data_result)
+            print("[mobiman_plot_oar::__main__] data_name: " + dn)
+            print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
+            print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
 
-        #data_result_ep = plot_mobiman.get_data_col_episode(file_path, "result", "str")
-        #plot_mobiman.print_array(data_result_ep)
+            #data_result = plot_mobiman.get_data_col(file_path, "result", "str")
+            #plot_mobiman.print_array(data_result)
 
-        #get_param_value_from_log(log_path, param_name)
+            #data_result_ep = plot_mobiman.get_data_col_episode(file_path, "result", "str")
+            #plot_mobiman.print_array(data_result_ep)
 
-        plot_mobiman.plot_result(file_path, title="")
+            #get_param_value_from_log(log_path, param_name)
+
+            plot_mobiman.plot_result(file_path, title="")
 
     '''
     plot_path = rospy.get_param('data_path')

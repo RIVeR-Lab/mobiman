@@ -8,7 +8,8 @@ plot_window_episode: 20
 save_flag: True
 
 ### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
-data_folder: ""
-#data_folder: "dataset/drl/arena"
+# data_folder: ""
+data_folder: "dataset/drl/m4/mobiman_PPO_101k"
 
-data_names: ["dataset/drl/benchmark/oar_data_testing_jackalJaco_0_ocs2wb.csv"]
+# data_names: ["dataset/drl/benchmark/oar_data_testing_jackalJaco_0_ocs2wb.csv"]
+plot_rewards: True
