@@ -27,6 +27,20 @@ int main(int argc, char** argv)
   string traj_data_path, robot_frame_name;
   pnh.param<string>("/trajectory_data_path", traj_data_path, "");
   pnh.param<string>("/tss_robot_frame_name", robot_frame_name, "");
+  
+  /// Add namespace
+  string ns = nh.getNamespace();
+
+  cout << "[trajectory_sampling_server::main] ns: " << ns << endl;
+  //std::cout << "[" << interfaceName_ << "][" << ns <<  "][MobileManipulatorInterface::MobileManipulatorInterface] ns: " << ns << std::endl;
+
+  if (ns != "/")
+  {
+    robot_frame_name = ns + "/" + robot_frame_name;
+  }
+
+  cout << "[trajectory_sampling_server::main] robot_frame_name: " << robot_frame_name << endl;
+
   TrajectorySamplingUtility tsu(nh, robot_frame_name);
   double dt, ttime, tlen, tyaw, tpitch, min_lat_velo, max_lat_velo, max_yaw_velo, 
           sampling_x_min, sampling_x_max,
@@ -93,6 +107,7 @@ int main(int argc, char** argv)
         pnh.param<double>("/sampling_yaw_min", sampling_yaw_min, 0.0);
         pnh.param<double>("/sampling_yaw_max", sampling_yaw_max, 0.0);
         pnh.param<int>("/sampling_yaw_cnt", sampling_yaw_cnt, 0);
+        pnh.param<int>("/sample_start_index", sample_start_index, 0);
         
         cout << "[trajectory_sampling_server::main] sampling_x_min: " << sampling_x_min << endl;
         cout << "[trajectory_sampling_server::main] sampling_x_max: " << sampling_x_max << endl;
@@ -132,7 +147,7 @@ int main(int argc, char** argv)
         tsu.set_sampling_yaw_max(sampling_yaw_max);
         tsu.set_sampling_yaw_cnt(sampling_yaw_cnt);
 
-        tsu.construct_trajectory_data_by_geometry_cube();
+        tsu.construct_trajectory_data_by_geometry_cube(sample_start_index);
       }
       else
       {

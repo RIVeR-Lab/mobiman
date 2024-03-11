@@ -1,0 +1,14 @@
+trajectory_frame,/jackalJaco_0//jackalJaco_0/
+trajectory_data_path,
+trajectory_sampling_count,1650737696
+trajectory_time,6.92035e-310
+trajectory_length,4.66296e-310
+trajectory_generation_type,
+trajectory_yaw,6.92035e-310
+trajectory_pitch,4.66296e-310
+trajectory_yaw_sampling_count,32766
+trajectory_pitch_sampling_count,1977705085
+trajectory_yaw_sampling_type,
+trajectory_pitch_sampling_type,
+lateral_velocity_sampling_count,21974
+angular_velocity_sampling_count,-1181057776

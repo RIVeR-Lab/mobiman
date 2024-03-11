@@ -20,7 +20,10 @@
 
 // --OUTSOURCE LIBRARIES--
 #include <std_msgs/Float64MultiArray.h>
+#include <tf/transform_listener.h>
+#include <tf_conversions/tf_eigen.h>
 #include <tf/message_filter.h>
+#include <tf/transform_broadcaster.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <boost/filesystem.hpp>
 #include <ros/package.h>
@@ -293,7 +296,7 @@ class TrajectorySamplingUtility
     void construct_trajectory_data_by_geometry_cone(bool no_restriction=true);
 
     // DESCRIPTION: TODO...
-    void construct_trajectory_data_by_geometry_cube();
+    void construct_trajectory_data_by_geometry_cube(int sample_start_index=0);
 
     // DESCRIPTION: TODO...
     // x = [x(m), y(m), theta(rad), v(m/s), omega(rad/s)]
@@ -320,6 +323,12 @@ class TrajectorySamplingUtility
     void fill_trajectory_sampling_visu();
 
     // DESCRIPTION: TODO...
+    void publishFrame(string origin_frame_name, string frame_name, geometry_msgs::Pose frame_pose);
+
+    // DESCRIPTION: TODO...
+    void publishFrame(string origin_frame_name, vector<geometry_msgs::Pose> frame_pose);
+
+    // DESCRIPTION: TODO...
     void publish_trajectory_sampling();
 
     // DESCRIPTION: TODO...
@@ -332,6 +341,10 @@ class TrajectorySamplingUtility
     void save_trajectory_data();
 
   private:
+
+    tf::TransformBroadcaster br_;
+
+    string ns_;
 
     vector<vector<geometry_msgs::Point>> trajectory_data_;
     vector<geometry_msgs::Pose> sampling_data_pose_;

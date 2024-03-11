@@ -20,7 +20,15 @@
 
 TrajectorySamplingUtility::TrajectorySamplingUtility(NodeHandle& nh, string tframe)
 {
-  set_trajectory_frame(tframe);
+  ns_ = nh.getNamespace();
+
+  string tframe_tmp = tframe;
+  if (ns_ != "/")
+  {
+    tframe_tmp = ns_ + "/" + tframe_tmp;
+  }
+
+  set_trajectory_frame(tframe_tmp);
 
   trajectory_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectories", 10);
   trajectory_sampling_visu_pub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_sampling_points", 10);
@@ -32,8 +40,17 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh, vector<vec
                                                       string tframe, 
                                                       string tsdataset_path)
 {
+  ns_ = nh.getNamespace();
+
+  string tframe_tmp = tframe;
+  if (ns_ != "/")
+  {
+    tframe_tmp = ns_ + "/" + tframe_tmp;
+  }
+
+  set_trajectory_frame(tframe_tmp);
+
   set_trajectory_data(tdata);
-  set_trajectory_frame(tframe);
   set_trajectory_sampling_dataset_path(tsdataset_path);
   fill_trajectory_sampling_visu();
   save_trajectory_data();
@@ -57,7 +74,16 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
                                                       string tyaw_samp_type,
                                                       string tpitch_samp_type)
 {
-  set_trajectory_frame(tframe);
+  ns_ = nh.getNamespace();
+
+  string tframe_tmp = tframe;
+  if (ns_ != "/")
+  {
+    tframe_tmp = ns_ + "/" + tframe_tmp;
+  }
+
+  set_trajectory_frame(tframe_tmp);
+
   set_trajectory_generation_type("geometric");
   set_trajectory_length(tlen);
   set_trajectory_sampling_count(tsamp_cnt);
@@ -94,7 +120,16 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
                                                       string tyaw_samp_type,
                                                       string tpitch_samp_type)
 {
-  set_trajectory_frame(tframe);
+  ns_ = nh.getNamespace();
+
+  string tframe_tmp = tframe;
+  if (ns_ != "/")
+  {
+    tframe_tmp = ns_ + "/" + tframe_tmp;
+  }
+
+  set_trajectory_frame(tframe_tmp);
+
   set_trajectory_generation_type("kinematic");
   set_trajectory_length(tlen);
   set_trajectory_sampling_count(tsamp_cnt);
@@ -640,16 +675,157 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cone(bool 
   }
 }
 
-void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube()
+void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube(int sample_start_index)
 {
-  cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] START" << endl;
+  //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] START" << endl;
 
   clear_trajectory_data();
 
+  vector<double> samp_x;
+  vector<double> samp_y;
+  vector<double> samp_z;
+
   // Sample x, y, z ranges
-  vector<double> samp_x = sampleRange(sampling_x_min_, sampling_x_max_, sampling_x_cnt_);
-  vector<double> samp_y = sampleRange(sampling_y_min_, sampling_y_max_, sampling_y_cnt_);
-  vector<double> samp_z = sampleRange(sampling_z_min_, sampling_z_max_, sampling_z_cnt_);
+  if (sampling_x_min_ < 0 && sample_start_index > 0)
+  {
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] CUSTOM x" << endl;
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] sampling_x_cnt_: " << sampling_x_cnt_ << endl;
+
+    int sc;
+    if (sampling_x_cnt_ % 2 == 0)
+    {
+      //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] EVEN" << endl;
+      sc = 0.5 * sampling_x_cnt_;
+    }
+    else
+    {
+      //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] ODD" << endl;
+      sc = 0.5 * (sampling_x_cnt_-1);
+    }
+
+    
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] sc: " << sc << endl;
+    
+    
+    vector<double> samp_x_up = sampleRange(0.0, sampling_x_max_, sampling_x_cnt_-sc+1);
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_x_up.size(): " << samp_x_up.size() << endl;
+    print(samp_x_up);
+    for (size_t i = sample_start_index; i < samp_x_up.size(); i++)
+    {
+      //std::cout << i << std::endl;
+      samp_x.push_back(samp_x_up[i]);
+    }
+
+    vector<double> samp_x_down = sampleRange(sampling_x_min_, 0.0, sc+1);    
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_x_down.size(): " << samp_x_down.size() << endl;
+    print(samp_x_down);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] sample_start_index: " << sample_start_index << endl;
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] idx: " << samp_x_down.size()-1-sample_start_index << endl;
+
+    for (size_t i = 0; i < samp_x_down.size()-sample_start_index; i++)
+    {
+      //std::cout << i << std::endl;
+      samp_x.push_back(samp_x_down[i]);
+    }
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_x_up size: " << samp_x_up.size() << endl;
+    //print(samp_x_up);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_x_down size: " << samp_x_down.size() << endl;
+    //print(samp_x_down);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_x size: " << samp_x.size() << endl;
+    //print(samp_x);
+  }
+  else
+  {
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] REGULAR x" << endl;
+    samp_x = sampleRange(sampling_x_min_, sampling_x_max_, sampling_x_cnt_);
+  }
+
+  if (sampling_y_min_ < 0 && sample_start_index > 0)
+  {
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] CUSTOM y" << endl;
+
+    int sc;
+    if (sampling_y_cnt_ % 2 == 0)
+    {
+      sc = 0.5 * sampling_y_cnt_;
+    }
+    else
+    {
+      sc = 0.5 * (sampling_y_cnt_-1);
+    }
+
+    vector<double> samp_y_up = sampleRange(0.0, sampling_y_max_, sampling_y_cnt_-sc+1);
+    for (size_t i = sample_start_index; i < samp_y_up.size(); i++)
+    {
+      samp_y.push_back(samp_y_up[i]);
+    }
+    
+    vector<double> samp_y_down = sampleRange(sampling_y_min_, 0.0, sc+1);
+    for (size_t i = 0; i < samp_y_down.size()-sample_start_index; i++)
+    {
+      samp_y.push_back(samp_y_down[i]);
+    }
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_y_up size: " << samp_y_up.size() << endl;
+    //print(samp_y_up);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_y_down size: " << samp_y_down.size() << endl;
+    //print(samp_y_down);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_y size: " << samp_y.size() << endl;
+    //print(samp_y);
+  }
+  else
+  {
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] REGULAR y" << endl;
+    samp_y = sampleRange(sampling_y_min_, sampling_y_max_, sampling_y_cnt_);
+  }
+
+  if (sampling_z_min_ < 0 && sample_start_index > 0)
+  {
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] CUSTOM z" << endl;
+
+    int sc;
+    if (sampling_z_cnt_ % 2 == 0)
+    {
+      sc = 0.5 * sampling_z_cnt_;
+    }
+    else
+    {
+      sc = 0.5 * (sampling_z_cnt_-1);
+    }
+
+    vector<double> samp_z_up = sampleRange(0.0, sampling_z_max_, sampling_z_cnt_-sc+1);
+    for (size_t i = sample_start_index; i < samp_z_up.size(); i++)
+    {
+      samp_z.push_back(samp_z_up[i]);
+    }
+    
+    vector<double> samp_z_down = sampleRange(sampling_z_min_, 0.0, sc+1);
+    for (size_t i = 0; i < samp_z_down.size()-sample_start_index; i++)
+    {
+      samp_z.push_back(samp_z_down[i]);
+    }
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_z_up size: " << samp_z_up.size() << endl;
+    //print(samp_z_up);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_z_down size: " << samp_z_down.size() << endl;
+    //print(samp_z_down);
+
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_z size: " << samp_z.size() << endl;
+    //print(samp_z);
+  }
+  else
+  {
+    //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] REGULAR z" << endl;
+    samp_z = sampleRange(sampling_z_min_, sampling_z_max_, sampling_z_cnt_);
+  }
+
   vector<double> samp_roll = sampleRange(sampling_roll_min_, sampling_roll_max_, sampling_roll_cnt_);
   vector<double> samp_pitch = sampleRange(sampling_pitch_min_, sampling_pitch_max_, sampling_pitch_cnt_);
   vector<double> samp_yaw = sampleRange(sampling_yaw_min_, sampling_yaw_max_, sampling_yaw_cnt_);
@@ -670,6 +846,10 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube()
               po.position.x = samp_x[i];
               po.position.y = samp_y[j];
               po.position.z = samp_z[k];
+
+              //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] roll: " << samp_roll[r]*180/PI << endl;
+              //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] samp_pitch: " << samp_pitch[p]*180/PI << endl;
+              //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] yaw: " << samp_yaw[y]*180/PI << endl;
 
               tf2::Quaternion qu = convertRPY(samp_roll[r], samp_pitch[p], samp_yaw[y]);
 
@@ -1029,6 +1209,59 @@ void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
   }
 }
 
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void TrajectorySamplingUtility::publishFrame(string origin_frame_name, string frame_name, geometry_msgs::Pose frame_pose)
+{
+  //std::cout << "[TrajectorySamplingUtility::publishFrame] START" << std::endl;
+
+  static tf::TransformBroadcaster br;
+  tf::Transform tf_wrt_origin;
+
+  string frame_name_tmp = frame_name;
+  if (ns_ != "/")
+  {
+    frame_name_tmp = ns_ + "/" + frame_name_tmp;
+  }
+
+  tf_wrt_origin.setOrigin(tf::Vector3(frame_pose.position.x, frame_pose.position.y, frame_pose.position.z));
+  tf_wrt_origin.setRotation(tf::Quaternion(frame_pose.orientation.x, frame_pose.orientation.y, frame_pose.orientation.z, frame_pose.orientation.w));
+  br.sendTransform(tf::StampedTransform(tf_wrt_origin, ros::Time::now(), origin_frame_name, frame_name_tmp));
+
+  //std::cout << "[TrajectorySamplingUtility::publishFrame] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void TrajectorySamplingUtility::publishFrame(string origin_frame_name, vector<geometry_msgs::Pose> frame_pose_vec)
+{
+  //std::cout << "[TrajectorySamplingUtility::publishFrame] START" << std::endl;
+
+  //static tf::TransformBroadcaster br;
+  
+  for (size_t i = 0; i < frame_pose_vec.size(); i++)
+  {
+    string frame_name = "s_" + to_string(i);
+    if (ns_ != "/")
+    {
+      frame_name = ns_ + "/" + frame_name;
+    }
+
+    tf::Transform tf_wrt_origin;
+
+    tf_wrt_origin.setOrigin(tf::Vector3(frame_pose_vec[i].position.x, frame_pose_vec[i].position.y, frame_pose_vec[i].position.z));
+    tf_wrt_origin.setRotation(tf::Quaternion(frame_pose_vec[i].orientation.x, frame_pose_vec[i].orientation.y, frame_pose_vec[i].orientation.z, frame_pose_vec[i].orientation.w));
+    br_.sendTransform(tf::StampedTransform(tf_wrt_origin, ros::Time::now(), origin_frame_name, frame_name));
+  }
+
+  //std::cout << "[TrajectorySamplingUtility::publishFrame] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void TrajectorySamplingUtility::publish_trajectory_sampling()
 {
   for(int k = 0; k < trajectory_visu_.markers.size(); k++)
@@ -1059,6 +1292,18 @@ void TrajectorySamplingUtility::publish_trajectory_sampling()
     sampling_arrow_visu_.markers[i].header.stamp = ros::Time::now();
     sampling_arrow_visu_pub_.publish(sampling_arrow_visu_);
   }
+
+  //geometry_msgs::Pose base_link_pose;
+  //base_link_pose.position.x = 0.0;
+  //base_link_pose.position.y = 0.0;
+  //base_link_pose.position.z = 0.0;
+  //base_link_pose.orientation.x = 0.0;
+  //base_link_pose.orientation.y = 0.0;
+  //base_link_pose.orientation.z = 0.0;
+  //base_link_pose.orientation.w = 1.0;
+  //publishFrame(trajectory_frame_, "base_link", base_link_pose);
+
+  publishFrame(trajectory_frame_, sampling_data_pose_);
 }
 
 void TrajectorySamplingUtility::create_trajectory_data_path()
