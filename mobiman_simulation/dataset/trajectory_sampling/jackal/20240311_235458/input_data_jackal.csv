@@ -1,0 +1,14 @@
+ws_name,mobiman_simulation
+trajectory_name,jackal
+trajectory_data_path,dataset/trajectory_sampling/jackal/20240311_235458/
+trajectory_sampling_dataset_path,dataset/trajectory_sampling/jackal/
+trajectory_frame,jackalJaco_0/base_link
+trajectory_gen_type,kinematic
+geo_type,
+trajectory_time,1.5
+dt,0.01
+lateral_velocity_sampling_count,2
+angular_velocity_sampling_count,5
+robot_min_lat_velo,-1
+robot_max_lat_velo,1
+robot_max_yaw_velo,2

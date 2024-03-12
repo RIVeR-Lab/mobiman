@@ -1,7 +1,11 @@
 # AUTHOR: Neset Unver Akmandor (NUA)
 # E-MAIL: akmandor.n@northeastern.edu
 
+ws_name: "mobiman_simulation"
+trajectory_name: "jackalJaco"
+
 trajectory_data_path: ""
+flag_read_only: false
 
 trajectory_sampling_dataset_path: "dataset/trajectory_sampling/jackalJaco/"
 

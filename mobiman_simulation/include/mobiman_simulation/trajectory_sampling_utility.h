@@ -158,6 +158,12 @@ class TrajectorySamplingUtility
     visualization_msgs::MarkerArray get_trajectory_sampling_arrow_visu();
 
     // DESCRIPTION: TODO...
+    void set_workspace_name(std::string ws_name);
+
+    // DESCRIPTION: TODO...
+    void set_trajectory_name(std::string trajectory_name);
+
+    // DESCRIPTION: TODO...
     void set_trajectory_data(vector<vector<geometry_msgs::Point>> new_trajectory_data);
 
     // DESCRIPTION: TODO...
@@ -314,7 +320,13 @@ class TrajectorySamplingUtility
                                                        int sample_start_index=0);
 
     // DESCRIPTION: TODO...
+    void read_input_data(string tdata_path);
+
+    // DESCRIPTION: TODO...
     void read_trajectory_data(string tdata_path);
+
+    // DESCRIPTION: TODO...
+    void read_sampling_data(string tdata_path);
 
     // DESCRIPTION: TODO...
     void read_velocity_control_data(string tdata_path);
@@ -324,6 +336,9 @@ class TrajectorySamplingUtility
 
     // DESCRIPTION: TODO...
     void publishFrame(string origin_frame_name, string frame_name, geometry_msgs::Pose frame_pose);
+
+    // DESCRIPTION: TODO...
+    void publishFrame(string origin_frame_name, vector<vector<geometry_msgs::Point>> frame_trajectory_point_vec);
 
     // DESCRIPTION: TODO...
     void publishFrame(string origin_frame_name, vector<geometry_msgs::Pose> frame_pose);
@@ -346,6 +361,11 @@ class TrajectorySamplingUtility
 
     string ns_;
 
+    string ws_name_;
+    string ws_path_;
+
+    string trajectory_name_;
+
     vector<vector<geometry_msgs::Point>> trajectory_data_;
     vector<geometry_msgs::Pose> sampling_data_pose_;
     vector<vector<double>> velocity_control_data_;
@@ -355,7 +375,9 @@ class TrajectorySamplingUtility
     string trajectory_data_path_;
     string trajectory_frame_;
     string trajectory_generation_type_;
+    string geo_type_;
     
+    double dt_;
     double trajectory_time_;
     double trajectory_length_;
     double trajectory_yaw_;
@@ -367,6 +389,10 @@ class TrajectorySamplingUtility
     int trajectory_yaw_sampling_count_;                          // TODO: Review: number of tentacles along yaw direction, range: 1 <= tyaw_cnt, E Z+
     int trajectory_pitch_sampling_count_;                        // TODO: Review: number of tentacles along pitch direction, range: 1 <= tpitch_cnt, E Z+
     
+    double robot_min_lat_velo_; 
+    double robot_max_lat_velo_; 
+    double robot_max_yaw_velo_;
+
     string trajectory_yaw_sampling_type_;                        // TODO: Review: parameter to adjust yaw angle sampling type of tentacles    
     string trajectory_pitch_sampling_type_;                      // TODO: Review: parameter to adjust pitch angle sampling type of tentacles
     

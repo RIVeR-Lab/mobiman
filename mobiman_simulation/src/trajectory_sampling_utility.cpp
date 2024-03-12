@@ -1,4 +1,4 @@
-// LAST UPDATE: 2024.03.10
+// LAST UPDATE: 2024.03.11
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -20,10 +20,12 @@
 
 TrajectorySamplingUtility::TrajectorySamplingUtility(NodeHandle& nh, string tframe)
 {
-  ns_ = nh.getNamespace();
+  ns_ = nh.getNamespace().substr(1);
+
+  cout << "[TrajectorySamplingUtility::TrajectorySamplingUtility(2)] ns_: " << ns_ << endl;
 
   string tframe_tmp = tframe;
-  if (ns_ != "/")
+  if (ns_ != "")
   {
     tframe_tmp = ns_ + "/" + tframe_tmp;
   }
@@ -40,10 +42,12 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh, vector<vec
                                                       string tframe, 
                                                       string tsdataset_path)
 {
-  ns_ = nh.getNamespace();
+  ns_ = nh.getNamespace().substr(1);
+
+  cout << "[TrajectorySamplingUtility::TrajectorySamplingUtility(3)] ns_: " << ns_ << endl;
 
   string tframe_tmp = tframe;
-  if (ns_ != "/")
+  if (ns_ != "")
   {
     tframe_tmp = ns_ + "/" + tframe_tmp;
   }
@@ -74,10 +78,12 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
                                                       string tyaw_samp_type,
                                                       string tpitch_samp_type)
 {
-  ns_ = nh.getNamespace();
+  ns_ = nh.getNamespace().substr(1);
+
+  cout << "[TrajectorySamplingUtility::TrajectorySamplingUtility(11)] ns_: " << ns_ << endl;
 
   string tframe_tmp = tframe;
-  if (ns_ != "/")
+  if (ns_ != "")
   {
     tframe_tmp = ns_ + "/" + tframe_tmp;
   }
@@ -120,10 +126,12 @@ TrajectorySamplingUtility::TrajectorySamplingUtility( NodeHandle& nh,
                                                       string tyaw_samp_type,
                                                       string tpitch_samp_type)
 {
-  ns_ = nh.getNamespace();
+  ns_ = nh.getNamespace().substr(1);
+
+  cout << "[TrajectorySamplingUtility::TrajectorySamplingUtility(12)] ns_: " << ns_ << endl;
 
   string tframe_tmp = tframe;
-  if (ns_ != "/")
+  if (ns_ != "")
   {
     tframe_tmp = ns_ + "/" + tframe_tmp;
   }
@@ -269,6 +277,18 @@ visualization_msgs::MarkerArray TrajectorySamplingUtility::get_trajectory_visu()
 visualization_msgs::MarkerArray TrajectorySamplingUtility::get_trajectory_sampling_visu()
 {
   return trajectory_sampling_visu_;
+}
+
+void TrajectorySamplingUtility::set_workspace_name(std::string ws_name)
+{
+  ws_name_ = ws_name;
+
+  ws_path_ = ros::package::getPath(ws_name_) + "/";
+}
+
+void TrajectorySamplingUtility::set_trajectory_name(std::string trajectory_name)
+{
+  trajectory_name_ = trajectory_name;
 }
 
 void TrajectorySamplingUtility::set_trajectory_data(vector<vector<geometry_msgs::Point>> new_trajectory_data)
@@ -559,6 +579,8 @@ bool TrajectorySamplingUtility::isInsideTriangle(double x, double y, double edge
 
 void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cone(bool no_restriction)
 {
+  geo_type_ = "cone";
+
   clear_trajectory_data();
   trajectory_lrm_data_.clear();
 
@@ -679,7 +701,9 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube(int s
 {
   //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_geometry_cube] START" << endl;
 
-  clear_trajectory_data();
+  geo_type_ = "cube";
+
+  sampling_data_pose_.clear();
 
   vector<double> samp_x;
   vector<double> samp_y;
@@ -951,6 +975,10 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_simple_car_model(do
   //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_simple_car_model] START" << endl;
 
   flag_kinematic = true;
+  dt_ = dt;
+  robot_min_lat_velo_ = robot_min_lat_velo;
+  robot_max_lat_velo_ = robot_max_lat_velo;
+  robot_max_yaw_velo_ = robot_max_yaw_velo;
 
   clear_trajectory_data();
   trajectory_lrm_data_.clear();
@@ -961,10 +989,8 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_simple_car_model(do
     create_trajectory_data_path();
   }
 
-  string mobiman_path = ros::package::getPath("mobiman_simulation") + "/";
-
   ofstream velocity_control_data_stream;
-  velocity_control_data_stream.open(mobiman_path + trajectory_data_path_ + "velocity_control_data.csv");
+  velocity_control_data_stream.open(ws_path_ + trajectory_data_path_ + "velocity_control_data.csv");
   //velocity_control_data_stream << "lateral_velocity_samples[m/s],angular_velocity_samples[rad/s]\n";
 
   vector<double> lateral_velocity_samples = sampling_func(robot_min_lat_velo, robot_max_lat_velo, lateral_velocity_sampling_count_);
@@ -1014,15 +1040,39 @@ void TrajectorySamplingUtility::construct_trajectory_data_by_simple_car_model(do
   //cout << "[TrajectorySamplingUtility::construct_trajectory_data_by_simple_car_model] END" << endl;
 }
 
+void TrajectorySamplingUtility::read_input_data(string tdata_path)
+{
+  ifstream tdata_stream(ws_path_ + tdata_path + "input_data.csv");
+
+  string::size_type sz;
+  string line, spoint, sval;
+
+  if (tdata_stream.is_open())
+  {
+    int c = 0;
+    while ( getline(tdata_stream, line) )
+    {
+      stringstream s_line(line);
+
+      cout << "[trajectory_sampling_utility::read_input_data] line " << c << "-> " << line << endl;
+      c++;
+    }
+    tdata_stream.close();
+  }
+  else 
+  {
+    cout << "[trajectory_sampling_utility::read_input_data] Unable to open file!" << endl;
+  }
+}
+
 void TrajectorySamplingUtility::read_trajectory_data(string tdata_path)
 {
   clear_trajectory_data();
 
   string::size_type sz;
   string line, spoint, sval;
-  string mobiman_path = ros::package::getPath("mobiman_simulation") + "/";
 
-  ifstream tdata_stream(mobiman_path + tdata_path + "trajectory_data.csv");
+  ifstream tdata_stream(ws_path_ + tdata_path + "trajectory_data.csv");
 
   if (tdata_stream.is_open())
   {
@@ -1053,7 +1103,55 @@ void TrajectorySamplingUtility::read_trajectory_data(string tdata_path)
   }
   else 
   {
-    cout << "trajectory_sampling_utility::read_trajectory_data -> Unable to open file!" << endl;
+    cout << "[trajectory_sampling_utility::read_trajectory_data] ERROR: Unable to open file!" << endl;
+  }
+
+  fill_trajectory_sampling_visu();
+}
+
+void TrajectorySamplingUtility::read_sampling_data(string tdata_path)
+{
+  sampling_data_pose_.clear();
+
+  string::size_type sz;
+  string line, spoint, sval;
+
+  ifstream tdata_stream(ws_path_ + tdata_path + "sampling_data.csv");
+
+  if (tdata_stream.is_open())
+  {
+    while ( getline(tdata_stream, line) )
+    {
+      vector<geometry_msgs::Point> traj;
+      stringstream s_line(line);
+
+      getline(s_line, spoint, ',');
+      stringstream s_val(spoint);
+
+      vector<float> pv;
+      while( getline(s_val, sval, ' ') ) 
+      {
+        pv.push_back(stod(sval, &sz));    
+      }
+
+      geometry_msgs::Pose po;
+      po.position.x = pv[0];
+      po.position.y = pv[1];
+      po.position.z = pv[2];
+      
+      tf2::Quaternion quat = getQuaternionFromRPY(pv[3], pv[4], pv[5]);
+      
+      po.orientation.x = quat.x();
+      po.orientation.y = quat.y();
+      po.orientation.z = quat.z();
+      po.orientation.w = quat.w();
+      sampling_data_pose_.push_back(po);
+    }
+    tdata_stream.close();
+  }
+  else 
+  {
+    cout << "9trajectory_sampling_utility::read_sampling_data] ERROR: Unable to open file!" << endl;
   }
 
   fill_trajectory_sampling_visu();
@@ -1065,9 +1163,8 @@ void TrajectorySamplingUtility::read_velocity_control_data(string tdata_path)
 
   string::size_type sz;
   string line, spoint, sval;
-  string mobiman_path = ros::package::getPath("mobiman_simulation") + "/";
 
-  ifstream tdata_stream(mobiman_path + tdata_path + "velocity_control_data.csv");
+  ifstream tdata_stream(ws_path_ + tdata_path + "velocity_control_data.csv");
 
   if (tdata_stream.is_open())
   {
@@ -1086,13 +1183,18 @@ void TrajectorySamplingUtility::read_velocity_control_data(string tdata_path)
   }
   else 
   {
-    cout << "trajectory_sampling_utility::read_velocity_control_data -> Unable to open file!" << endl;
+    cout << "[trajectory_sampling_utility::read_velocity_control_data] ERROR: Unable to open file!" << endl;
   }
 }
 
 void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
 {
+  cout << "[trajectory_sampling_utility::fill_trajectory_sampling_visu] START" << endl;
+
   vector<vector<geometry_msgs::Point>> trajectory_data = trajectory_data_;
+
+  cout << "[trajectory_sampling_utility::fill_trajectory_sampling_visu] trajectory_data size: " << trajectory_data.size() << endl;
+  cout << "[trajectory_sampling_utility::fill_trajectory_sampling_visu] trajectory_frame_: " << trajectory_frame_ << endl;
 
   trajectory_visu_.markers.clear();
   trajectory_sampling_visu_.markers.clear();
@@ -1188,6 +1290,10 @@ void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
     trajectory_sampling_visu_.markers.push_back(trajectory_tsamp);
   }
 
+  cout << "[TrajectorySamplingUtility::fill_trajectory_sampling_visu] trajectory_sampling_arrow_visu_ size: " << trajectory_sampling_arrow_visu_.markers.size() << endl;
+  cout << "[TrajectorySamplingUtility::fill_trajectory_sampling_visu] trajectory_visu_ size: " << trajectory_visu_.markers.size() << endl;
+  cout << "[TrajectorySamplingUtility::fill_trajectory_sampling_visu] trajectory_sampling_visu_ size: " << trajectory_sampling_visu_.markers.size() << endl;
+
   // --------
 
   vector<geometry_msgs::Pose> sampling_data_pose = sampling_data_pose_;
@@ -1198,7 +1304,7 @@ void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
   for (size_t i = 0; i < sampling_data_pose.size(); i++)
   {
     visualization_msgs::Marker samp_arrow_visu;
-    samp_arrow_visu.ns = "sampling_data_" + to_string(i);
+    samp_arrow_visu.ns = "sp_" + to_string(i);
     samp_arrow_visu.id = i;
     samp_arrow_visu.header.frame_id = trajectory_frame_;
     samp_arrow_visu.type = visualization_msgs::Marker::ARROW;
@@ -1216,6 +1322,8 @@ void TrajectorySamplingUtility::fill_trajectory_sampling_visu()
 
     sampling_arrow_visu_.markers.push_back(samp_arrow_visu);
   }
+
+  cout << "[trajectory_sampling_utility::fill_trajectory_sampling_visu] END" << endl;
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -1229,7 +1337,7 @@ void TrajectorySamplingUtility::publishFrame(string origin_frame_name, string fr
   tf::Transform tf_wrt_origin;
 
   string frame_name_tmp = frame_name;
-  if (ns_ != "/")
+  if (ns_ != "")
   {
     frame_name_tmp = ns_ + "/" + frame_name_tmp;
   }
@@ -1237,6 +1345,52 @@ void TrajectorySamplingUtility::publishFrame(string origin_frame_name, string fr
   tf_wrt_origin.setOrigin(tf::Vector3(frame_pose.position.x, frame_pose.position.y, frame_pose.position.z));
   tf_wrt_origin.setRotation(tf::Quaternion(frame_pose.orientation.x, frame_pose.orientation.y, frame_pose.orientation.z, frame_pose.orientation.w));
   br.sendTransform(tf::StampedTransform(tf_wrt_origin, ros::Time::now(), origin_frame_name, frame_name_tmp));
+
+  //std::cout << "[TrajectorySamplingUtility::publishFrame] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+void TrajectorySamplingUtility::publishFrame(string origin_frame_name, vector<vector<geometry_msgs::Point>> frame_trajectory_point_vec)
+{
+  //std::cout << "[TrajectorySamplingUtility::publishFrame] START" << std::endl;
+
+  //static tf::TransformBroadcaster br;
+  
+  for (size_t i = 0; i < frame_trajectory_point_vec.size(); i++)
+  {
+    for (size_t j = 0; j < frame_trajectory_point_vec[i].size(); j++)
+    {
+      int idx =  i * frame_trajectory_point_vec[i].size() + j;
+      string frame_name = "tp_" + to_string(idx);
+      if (ns_ != "")
+      {
+        frame_name = ns_ + "/" + frame_name;
+      }
+
+      //std::cout << "[TrajectorySamplingUtility::publishFrame] frame_name: " << frame_name << std::endl;
+
+      double yaw = frame_trajectory_point_vec[i][j].z;
+      tf2::Quaternion quat = getQuaternionFromRPY(0.0, 0.0, yaw);
+
+      /*
+      std::cout << "[TrajectorySamplingUtility::publishFrame] i -> " << i << std::endl;
+      std::cout << "position: " << frame_pose_vec[i].position.x << ", " << frame_pose_vec[i].position.y << ", " << frame_pose_vec[i].position.z << std::endl;
+      std::cout << "orientation (rpy): " << roll*180/PI << ", " << pitch*180/PI << ", " << yaw*180/PI << std::endl;
+      std::cout << "orientation (quaternion): " << frame_pose_vec[i].orientation.x << ", " 
+                                  << frame_pose_vec[i].orientation.y << ", " 
+                                  << frame_pose_vec[i].orientation.z << ", " 
+                                  << frame_pose_vec[i].orientation.w << std::endl;
+      std::cout << "" << std::endl;
+      */
+
+      tf::Transform tf_wrt_origin;
+      tf_wrt_origin.setOrigin(tf::Vector3(frame_trajectory_point_vec[i][j].x, frame_trajectory_point_vec[i][j].y, 0.0));
+      tf_wrt_origin.setRotation(tf::Quaternion(quat.x(), quat.y(), quat.z(), quat.w()));
+      br_.sendTransform(tf::StampedTransform(tf_wrt_origin, ros::Time::now(), origin_frame_name, frame_name));
+    }
+  }
 
   //std::cout << "[TrajectorySamplingUtility::publishFrame] END" << std::endl;
 }
@@ -1253,7 +1407,7 @@ void TrajectorySamplingUtility::publishFrame(string origin_frame_name, vector<ge
   for (size_t i = 0; i < frame_pose_vec.size(); i++)
   {
     string frame_name = "s_" + to_string(i);
-    if (ns_ != "/")
+    if (ns_ != "")
     {
       frame_name = ns_ + "/" + frame_name;
     }
@@ -1327,21 +1481,28 @@ void TrajectorySamplingUtility::publish_trajectory_sampling()
   //base_link_pose.orientation.w = 1.0;
   //publishFrame(trajectory_frame_, "base_link", base_link_pose);
 
-  publishFrame(trajectory_frame_, sampling_data_pose_);
+  if (trajectory_data_.size() > 0)
+  {
+    publishFrame(trajectory_frame_, trajectory_data_);
+  }
+
+  if (sampling_data_pose_.size() > 0)
+  {
+    publishFrame(trajectory_frame_, sampling_data_pose_);
+  }
 }
 
 void TrajectorySamplingUtility::create_trajectory_data_path()
 {
   if (trajectory_sampling_dataset_path_ == "")
   {
-    cout << "TrajectorySamplingUtility::create_trajectory_data_path -> trajectory_sampling_dataset_path is not defined!" << endl;
+    cout << "[TrajectorySamplingUtility::create_trajectory_data_path] trajectory_sampling_dataset_path is not defined!" << endl;
   }
   else
   {
     string trajectory_data_tag = createFileName();
-    string mobiman_path = ros::package::getPath("mobiman_simulation") + "/";
     trajectory_data_path_ = trajectory_sampling_dataset_path_ + trajectory_data_tag + "/";
-    boost::filesystem::create_directories(mobiman_path + trajectory_data_path_);
+    boost::filesystem::create_directories(ws_path_ + trajectory_data_path_);
   }
 }
 
@@ -1352,24 +1513,67 @@ void TrajectorySamplingUtility::save_input_data()
     create_trajectory_data_path();
   }
 
-  string mobiman_path = ros::package::getPath("mobiman_simulation") + "/";
+  string input_data_path = ws_path_ + trajectory_data_path_ + "input_data_" + trajectory_name_ + ".csv";
+  std::cout << "[TrajectorySamplingUtility::save_input_data] input_data_path: " << input_data_path << std::endl;
 
   ofstream input_data_stream;
-  input_data_stream.open(mobiman_path + trajectory_data_path_ + "input_data.csv");
-  input_data_stream << "trajectory_frame" << "," << trajectory_frame_ << "\n";
+  input_data_stream.open(input_data_path);
+  input_data_stream << "ws_name" << "," << ws_name_ << "\n";
+  input_data_stream << "trajectory_name" << "," << trajectory_name_ << "\n";
   input_data_stream << "trajectory_data_path" << "," << trajectory_data_path_ << "\n";
-  input_data_stream << "trajectory_sampling_count" << "," << trajectory_sampling_count_ << "\n";
-  input_data_stream << "trajectory_time" << "," << trajectory_time_ << "\n";
-  input_data_stream << "trajectory_length" << "," << trajectory_length_ << "\n";
-  input_data_stream << "trajectory_generation_type" << "," << trajectory_generation_type_ << "\n";
-  input_data_stream << "trajectory_yaw" << "," << trajectory_yaw_ << "\n";
-  input_data_stream << "trajectory_pitch" << "," << trajectory_pitch_ << "\n";
-  input_data_stream << "trajectory_yaw_sampling_count" << "," << trajectory_yaw_sampling_count_ << "\n";
-  input_data_stream << "trajectory_pitch_sampling_count" << "," << trajectory_pitch_sampling_count_ << "\n";
-  input_data_stream << "trajectory_yaw_sampling_type" << "," << trajectory_yaw_sampling_type_ << "\n";
-  input_data_stream << "trajectory_pitch_sampling_type" << "," << trajectory_pitch_sampling_type_ << "\n";
-  input_data_stream << "lateral_velocity_sampling_count" << "," << lateral_velocity_sampling_count_ << "\n";
-  input_data_stream << "angular_velocity_sampling_count" << "," << angular_velocity_sampling_count_ << "\n";
+  input_data_stream << "trajectory_sampling_dataset_path" << "," << trajectory_sampling_dataset_path_ << "\n";
+  input_data_stream << "trajectory_frame" << "," << trajectory_frame_ << "\n";
+  input_data_stream << "trajectory_gen_type" << "," << trajectory_generation_type_ << "\n";
+  input_data_stream << "geo_type" << "," << geo_type_ << "\n";
+
+  if (trajectory_generation_type_ == "geometric")
+  {
+    if (geo_type_ == "cone")
+    {
+      // GEOMETRIC: CONE
+      input_data_stream << "trajectory_length" << "," << trajectory_length_ << "\n";
+      input_data_stream << "trajectory_yaw" << "," << trajectory_yaw_ << "\n";
+      input_data_stream << "trajectory_pitch" << "," << trajectory_pitch_ << "\n";
+      input_data_stream << "trajectory_yaw_sampling_count" << "," << trajectory_yaw_sampling_count_ << "\n";
+      input_data_stream << "trajectory_pitch_sampling_count" << "," << trajectory_pitch_sampling_count_ << "\n";
+      input_data_stream << "trajectory_yaw_sampling_type" << "," << trajectory_yaw_sampling_type_ << "\n";
+      input_data_stream << "trajectory_pitch_sampling_type" << "," << trajectory_pitch_sampling_type_ << "\n";
+      input_data_stream << "trajectory_sampling_count" << "," << trajectory_sampling_count_ << "\n";
+    }
+    else if (geo_type_ == "cube")
+    {
+      // GEOMETRIC: CUBE
+      input_data_stream << "sampling_x_min" << "," << sampling_x_min_ << "\n";
+      input_data_stream << "sampling_x_max" << "," << sampling_x_max_ << "\n";
+      input_data_stream << "sampling_x_cnt" << "," << sampling_x_cnt_ << "\n";
+      input_data_stream << "sampling_y_min" << "," << sampling_y_min_ << "\n";
+      input_data_stream << "sampling_y_max" << "," << sampling_y_max_ << "\n";
+      input_data_stream << "sampling_y_cnt" << "," << sampling_y_cnt_ << "\n";
+      input_data_stream << "sampling_z_min" << "," << sampling_z_min_ << "\n";
+      input_data_stream << "sampling_z_max" << "," << sampling_z_max_ << "\n";
+      input_data_stream << "sampling_z_cnt" << "," << sampling_z_cnt_ << "\n";
+      input_data_stream << "sampling_roll_min" << "," << sampling_roll_min_ << "\n";
+      input_data_stream << "sampling_roll_max" << "," << sampling_roll_max_ << "\n";
+      input_data_stream << "sampling_roll_cnt" << "," << sampling_roll_cnt_ << "\n";
+      input_data_stream << "sampling_pitch_min" << "," << sampling_pitch_min_ << "\n";
+      input_data_stream << "sampling_pitch_max" << "," << sampling_pitch_max_ << "\n";
+      input_data_stream << "sampling_pitch_cnt" << "," << sampling_pitch_cnt_ << "\n";
+      input_data_stream << "sampling_yaw_min" << "," << sampling_yaw_min_ << "\n";
+      input_data_stream << "sampling_yaw_max" << "," << sampling_yaw_max_ << "\n";
+      input_data_stream << "sampling_yaw_cnt" << "," << sampling_yaw_cnt_ << "\n";
+    }
+  }
+  else if (trajectory_generation_type_ == "kinematic")
+  {
+    // KINEMATIC
+    input_data_stream << "trajectory_time" << "," << trajectory_time_ << "\n";
+    input_data_stream << "dt" << "," << dt_ << "\n";
+    input_data_stream << "lateral_velocity_sampling_count" << "," << lateral_velocity_sampling_count_ << "\n";
+    input_data_stream << "angular_velocity_sampling_count" << "," << angular_velocity_sampling_count_ << "\n";
+    input_data_stream << "robot_min_lat_velo" << "," << robot_min_lat_velo_ << "\n";
+    input_data_stream << "robot_max_lat_velo" << "," << robot_max_lat_velo_ << "\n";
+    input_data_stream << "robot_max_yaw_velo" << "," << robot_max_yaw_velo_ << "\n";
+  }  
   
   input_data_stream.close();
 }
@@ -1381,20 +1585,39 @@ void TrajectorySamplingUtility::save_trajectory_data()
     create_trajectory_data_path();
   }
 
-  string mobiman_path = ros::package::getPath("mobiman_simulation") + "/";
-
-  ofstream trajectory_data_stream;
-  trajectory_data_stream.open(mobiman_path + trajectory_data_path_ + "trajectory_data_.csv");
-
-  for (int i = 0; i < trajectory_data_.size(); ++i)
+  if (trajectory_data_.size() > 0)
   {
-    for (int j = 0; j < trajectory_data_[i].size(); ++j)
+    ofstream trajectory_data_stream;
+    trajectory_data_stream.open(ws_path_ + trajectory_data_path_ + "trajectory_data.csv");
+
+    for (int i = 0; i < trajectory_data_.size(); ++i)
     {
-      trajectory_data_stream << to_string(trajectory_data_[i][j].x) + " " + to_string(trajectory_data_[i][j].y) + " " + to_string(trajectory_data_[i][j].z) + ",";
+      for (int j = 0; j < trajectory_data_[i].size(); ++j)
+      {
+        trajectory_data_stream << to_string(trajectory_data_[i][j].x) + " " + to_string(trajectory_data_[i][j].y) + " " + to_string(trajectory_data_[i][j].z) + ",";
+      }
+      trajectory_data_stream << "\n";
     }
-    trajectory_data_stream << "\n";
+    trajectory_data_stream.close();
   }
-  trajectory_data_stream.close();
+  
+  if (sampling_data_pose_.size() > 0)
+  {
+    ofstream data_stream;
+    data_stream.open(ws_path_ + trajectory_data_path_ + "sampling_data.csv", std::ios::app);
+
+    double roll, pitch, yaw;
+    for (int i = 0; i < sampling_data_pose_.size(); ++i)
+    {
+      tf2::Quaternion quat(sampling_data_pose_[i].orientation.x, sampling_data_pose_[i].orientation.y, sampling_data_pose_[i].orientation.z, sampling_data_pose_[i].orientation.w); 
+      getRPYFromQuaternion(quat, roll, pitch, yaw);
+      data_stream << to_string(sampling_data_pose_[i].position.x) + " " + to_string(sampling_data_pose_[i].position.y) + " " + to_string(sampling_data_pose_[i].position.z) + " " + 
+                     to_string(roll) + " " + to_string(pitch) + " " + to_string(yaw) + ",";
+
+      data_stream << "\n";
+    }
+    data_stream.close();
+  }
 
   save_input_data();
 }

@@ -1,4 +1,4 @@
-// LAST UPDATE: 2024.03.10
+// LAST UPDATE: 2024.03.11
 //
 // AUTHOR: Neset Unver Akmandor (NUA)
 //
@@ -23,24 +23,17 @@ int main(int argc, char** argv)
   // INITIALIZE TRANSFORM LISTENER
   tf::TransformListener* listener = new tf::TransformListener;
 
-  // INITIALIZE AND GENERATE TRAJECTORY SAMPLING
-  string traj_data_path, robot_frame_name;
+  // Get config parameters
+  string ws_name, traj_name, traj_data_path, robot_frame_name;
+  bool flag_read_only;
+  pnh.param<string>("/trajectory_name", traj_name, "");
+  pnh.param<string>("/ws_name", ws_name, "");
   pnh.param<string>("/trajectory_data_path", traj_data_path, "");
+  pnh.param<bool>("/flag_read_only", flag_read_only, true);
   pnh.param<string>("/tss_robot_frame_name", robot_frame_name, "");
-  
-  /// Add namespace
-  string ns = nh.getNamespace();
 
-  cout << "[trajectory_sampling_server::main] ns: " << ns << endl;
-  //std::cout << "[" << interfaceName_ << "][" << ns <<  "][MobileManipulatorInterface::MobileManipulatorInterface] ns: " << ns << std::endl;
-
-  /*
-  if (ns != "/")
-  {
-    robot_frame_name = ns + "/" + robot_frame_name;
-  }
-  */
-
+  cout << "[trajectory_sampling_server::main] trajectory_data_path: " << traj_data_path << endl;
+  cout << "[trajectory_sampling_server::main] flag_read_only: " << flag_read_only << endl;
   cout << "[trajectory_sampling_server::main] robot_frame_name: " << robot_frame_name << endl;
 
   TrajectorySamplingUtility tsu(nh, robot_frame_name);
@@ -56,9 +49,13 @@ int main(int argc, char** argv)
       sampling_roll_cnt, sampling_pitch_cnt, sampling_yaw_cnt;
   string traj_samp_dataset_path, trajectory_gen_type, geo_type;
 
-  if (traj_data_path != "")
+  tsu.set_workspace_name(ws_name);
+  tsu.set_trajectory_name(traj_name);
+
+  if (traj_data_path != "" && flag_read_only)
   {
     tsu.read_trajectory_data(traj_data_path);
+    tsu.read_sampling_data(traj_data_path);
     tsu.read_velocity_control_data(traj_data_path);
   }
   else
@@ -66,7 +63,9 @@ int main(int argc, char** argv)
     pnh.param<string>("/trajectory_sampling_dataset_path", traj_samp_dataset_path, "");
     pnh.param<string>("/trajectory_gen_type", trajectory_gen_type, "");
 
+    tsu.set_trajectory_data_path(traj_data_path);
     tsu.set_trajectory_sampling_dataset_path(traj_samp_dataset_path);
+    tsu.set_trajectory_generation_type(trajectory_gen_type);
 
     if (trajectory_gen_type == "geometric")
     {
@@ -194,7 +193,7 @@ int main(int argc, char** argv)
     tsu.save_trajectory_data();
   }
 
-  ros::Rate r(100);
+  //ros::Rate r(100);
   while(ros::ok)
   {
     tsu.publish_trajectory_sampling();
