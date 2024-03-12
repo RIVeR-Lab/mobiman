@@ -3,9 +3,11 @@
 
 <launch>
   <!-- CONFIGURATION OPTIONS
+    config_trajectory_sampling_dummy
     config_trajectory_sampling_jackal
     config_trajectory_sampling_jaco
     config_trajectory_sampling_jackalJaco
+    config_trajectory_sampling_copier
   -->
   <arg name="config_trajectory_sampling_server"  default="config_trajectory_sampling_jackal" />
   <arg name="robot_ns"            default="jackalJaco_0"/>

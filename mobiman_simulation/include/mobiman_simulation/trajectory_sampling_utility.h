@@ -320,13 +320,25 @@ class TrajectorySamplingUtility
                                                        int sample_start_index=0);
 
     // DESCRIPTION: TODO...
-    void read_input_data(string tdata_path);
+    void update_sampling_data_from_trajectory_data();
+
+    // DESCRIPTION: TODO...
+    void read_input_data(string tdata_path);    
+
+    // DESCRIPTION: TODO...
+    std::string read_input_data(string tdata_path, string data_name);
 
     // DESCRIPTION: TODO...
     void read_trajectory_data(string tdata_path);
 
     // DESCRIPTION: TODO...
+    void read_trajectory_data(string tdata_path, vector<vector<geometry_msgs::Point>>& trajectory_data);
+
+    // DESCRIPTION: TODO...
     void read_sampling_data(string tdata_path);
+
+    // DESCRIPTION: TODO...
+    void read_sampling_data(string tdata_path, vector<geometry_msgs::Pose>& sampling_data_pose);
 
     // DESCRIPTION: TODO...
     void read_velocity_control_data(string tdata_path);
@@ -353,7 +365,13 @@ class TrajectorySamplingUtility
     void save_input_data();
 
     // DESCRIPTION: TODO...
-    void save_trajectory_data();
+    void save_input_data(std::string data_field, std::string data);
+
+    // DESCRIPTION: TODO...
+    void save_trajectory_data(bool flag_append=true, bool flag_save_input=true);
+
+    // DESCRIPTION: TODO...
+    void copy_data(std::string copy_from, std::string copy_to, std::string copy_data_type, std::string copy_data_field);
 
   private:
 
@@ -420,8 +438,8 @@ class TrajectorySamplingUtility
     double sampling_yaw_max_;
     int sampling_yaw_cnt_;
 
-    bool flag_geometric = false;
-    bool flag_kinematic = false;
+    bool flag_geometric_ = false;
+    bool flag_kinematic_ = false;
 
     ros::Publisher trajectory_visu_pub_;
     ros::Publisher trajectory_sampling_visu_pub_;

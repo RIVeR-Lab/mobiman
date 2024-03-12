@@ -1,6 +1,6 @@
 ws_name,mobiman_simulation
 trajectory_name,jackal
-trajectory_data_path,dataset/trajectory_sampling/jackal/20240311_235458/
+trajectory_data_path,dataset/trajectory_sampling/jackal/20240312_153905/
 trajectory_sampling_dataset_path,dataset/trajectory_sampling/jackal/
 trajectory_frame,jackalJaco_0/base_link
 trajectory_gen_type,kinematic
