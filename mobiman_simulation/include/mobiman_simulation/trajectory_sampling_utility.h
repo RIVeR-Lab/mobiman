@@ -337,6 +337,8 @@ class TrajectorySamplingUtility
     // DESCRIPTION: TODO...
     void read_sampling_data(string tdata_path);
 
+    void read_sampling_data(std::vector<std::string>& tdata_path_multi);
+
     // DESCRIPTION: TODO...
     void read_sampling_data(string tdata_path, vector<geometry_msgs::Pose>& sampling_data_pose);
 

@@ -24,14 +24,17 @@ int main(int argc, char** argv)
   tf::TransformListener* listener = new tf::TransformListener;
 
   // Get config parameters
+  std::vector<std::string> traj_data_path_multi;
   string ws_name, copy_from, copy_to, copy_data_type, copy_data_field, traj_name, traj_data_path, robot_frame_name;
-  bool flag_copy, flag_read_only;
+  bool flag_save, flag_copy, flag_read_only;
   pnh.param<string>("/ws_name", ws_name, "");
+  pnh.param<bool>("/flag_save", flag_save, false);
   pnh.param<bool>("/flag_copy", flag_copy, false);
   pnh.param<string>("/copy_from", copy_from, "");
   pnh.param<string>("/copy_to", copy_to, "");
   pnh.param<string>("/copy_data_type", copy_data_type, "");
   pnh.param<string>("/copy_data_field", copy_data_field, "");
+  pnh.param<vector<string>>("/trajectory_data_path_multi", traj_data_path_multi, {""});
 
   TrajectorySamplingUtility tsu(nh);
   tsu.set_workspace_name(ws_name);
@@ -78,6 +81,12 @@ int main(int argc, char** argv)
       tsu.read_trajectory_data(traj_data_path);
       tsu.read_sampling_data(traj_data_path);
       tsu.read_velocity_control_data(traj_data_path);
+    }
+    else if (traj_data_path_multi.size() > 0 && flag_read_only)
+    {
+      //tsu.read_trajectory_data(traj_data_path_multi);
+      tsu.read_sampling_data(traj_data_path_multi);
+      //tsu.read_velocity_control_data(traj_data_path_multi);
     }
     else
     {
@@ -213,7 +222,11 @@ int main(int argc, char** argv)
       }
       
       tsu.fill_trajectory_sampling_visu();
-      tsu.save_trajectory_data();
+
+      if (flag_save)
+      {
+        tsu.save_trajectory_data();
+      }
     }
   }
 

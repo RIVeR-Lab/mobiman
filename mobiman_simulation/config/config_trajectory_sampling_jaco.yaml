@@ -2,6 +2,9 @@
 # E-MAIL: akmandor.n@northeastern.edu
 
 ws_name: "mobiman_simulation"
+
+flag_save: true
+
 trajectory_name: "jaco"
 
 trajectory_data_path: ""

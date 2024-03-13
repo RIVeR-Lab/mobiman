@@ -8,12 +8,13 @@
     config_trajectory_sampling_jaco
     config_trajectory_sampling_jackalJaco
     config_trajectory_sampling_copier
+    config_trajectory_sampling_multi_data
   -->
-  <arg name="config_trajectory_sampling_server"  default="config_trajectory_sampling_jackal" />
+  <arg name="config_trajectory_sampling_server"  default="config_trajectory_sampling_multi_data" />
   <arg name="robot_ns"            default="jackalJaco_0"/>
   <!--arg name="robot_ns"            default="/"/-->
   
-  <arg name="rviz_flag" default="true"/>
+  <arg name="rviz_flag" default="false"/>
   <arg name="rviz_config_path"    default="trajectory_sampling" />
 
   <!-- PUBLISH CONFIGURATION PARAMETERS -->

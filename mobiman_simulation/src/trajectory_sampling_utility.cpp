@@ -1790,6 +1790,66 @@ void TrajectorySamplingUtility::read_sampling_data(string tdata_path)
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+void TrajectorySamplingUtility::read_sampling_data(std::vector<std::string>& tdata_path_multi)
+{
+  std::cout << "[trajectory_sampling_utility::read_sampling_data] START" << std::endl;
+
+  sampling_data_pose_.clear();
+
+  string::size_type sz;
+  string line, spoint, sval;
+
+  for (size_t i = 0; i < tdata_path_multi.size(); i++)
+  {
+    std::string file_path = ws_path_ + tdata_path_multi[i] + "sampling_data.csv";
+    std::cout << "[trajectory_sampling_utility::read_sampling_data] file_path: " << file_path << std::endl;
+    ifstream tdata_stream(file_path);
+
+    if (tdata_stream.is_open())
+    {
+      while ( getline(tdata_stream, line) )
+      {
+        vector<geometry_msgs::Point> traj;
+        stringstream s_line(line);
+
+        getline(s_line, spoint, ',');
+        stringstream s_val(spoint);
+
+        vector<float> pv;
+        while( getline(s_val, sval, ' ') ) 
+        {
+          pv.push_back(stod(sval, &sz));    
+        }
+
+        geometry_msgs::Pose po;
+        po.position.x = pv[0];
+        po.position.y = pv[1];
+        po.position.z = pv[2];
+        
+        tf2::Quaternion quat = getQuaternionFromRPY(pv[3], pv[4], pv[5]);
+        
+        po.orientation.x = quat.x();
+        po.orientation.y = quat.y();
+        po.orientation.z = quat.z();
+        po.orientation.w = quat.w();
+        sampling_data_pose_.push_back(po);
+      }
+      tdata_stream.close();
+    }
+    else 
+    {
+      std::cout << "[trajectory_sampling_utility::read_sampling_data] ERROR: Unable to open file!" << std::endl;
+    }
+  }
+
+  fill_trajectory_sampling_visu();
+
+  std::cout << "[trajectory_sampling_utility::read_sampling_data] END" << std::endl;
+}
+
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 void TrajectorySamplingUtility::read_sampling_data(string tdata_path, vector<geometry_msgs::Pose>& sampling_data_pose)
 {
   std::cout << "[trajectory_sampling_utility::read_sampling_data(2)] START" << std::endl;

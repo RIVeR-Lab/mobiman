@@ -3,28 +3,32 @@
 
 ws_name: "mobiman_simulation"
 
-#flag_save: false
+flag_save: false
 
-flag_copy: true
-copy_from: "dataset/trajectory_sampling/jaco/20240311_205503/"
-copy_to: "dataset/trajectory_sampling/jackalJaco/20240312_143237/"
+#flag_copy: true
+#copy_from: "dataset/trajectory_sampling/jaco/20240311_205503/"
+#copy_to: "dataset/trajectory_sampling/jackalJaco/20240312_143237/"
 
 # trajectory_data
 # sampling_data_pose
-copy_data_type: "sampling_data_pose"
+#copy_data_type: "sampling_data_pose"
 
 # position
 # orientation
-copy_data_field: "orientation"
+#copy_data_field: "orientation"
+
+trajectory_data_path_multi: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
+                             "dataset/trajectory_sampling/jaco/20240311_205503/",
+                             "dataset/trajectory_sampling/jackalJaco/20240312_143237/"]
 
 #trajectory_name: "jaco"
 #trajectory_data_path: ""
 #trajectory_data_path: "dataset/trajectory_sampling/jaco/20240311_205503/"
-#flag_read_only: true
+flag_read_only: true
 
 #trajectory_sampling_dataset_path: "dataset/trajectory_sampling/jaco/"
 
-#tss_robot_frame_name: "base_link"
+tss_robot_frame_name: "base_link"
 
 # geometric
 # kinematic

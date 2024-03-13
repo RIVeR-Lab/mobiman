@@ -1,1 +1,7 @@
-copy_from,dataset/trajectory_sampling/jaco/20240311_205503/
+ws_name,mobiman_simulation
+trajectory_name,
+trajectory_data_path,
+trajectory_sampling_dataset_path,
+trajectory_frame,jackalJaco_0/base_link
+trajectory_gen_type,
+geo_type,
