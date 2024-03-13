@@ -358,7 +358,7 @@ class TrajectorySamplingUtility
     void publishFrame(string origin_frame_name, vector<geometry_msgs::Pose> frame_pose);
 
     // DESCRIPTION: TODO...
-    void publish_trajectory_sampling();
+    void publish_trajectory_sampling(bool flag_publish_frame=true);
 
     // DESCRIPTION: TODO...
     void create_trajectory_data_path();

@@ -26,9 +26,10 @@ int main(int argc, char** argv)
   // Get config parameters
   std::vector<std::string> traj_data_path_multi;
   string ws_name, copy_from, copy_to, copy_data_type, copy_data_field, traj_name, traj_data_path, robot_frame_name;
-  bool flag_save, flag_copy, flag_read_only;
+  bool flag_save, flag_publish_frame, flag_copy, flag_read_only;
   pnh.param<string>("/ws_name", ws_name, "");
   pnh.param<bool>("/flag_save", flag_save, false);
+  pnh.param<bool>("/flag_publish_frame", flag_publish_frame, false);
   pnh.param<bool>("/flag_copy", flag_copy, false);
   pnh.param<string>("/copy_from", copy_from, "");
   pnh.param<string>("/copy_to", copy_to, "");
@@ -233,7 +234,7 @@ int main(int argc, char** argv)
   //ros::Rate r(100);
   while(ros::ok)
   {
-    tsu.publish_trajectory_sampling();
+    tsu.publish_trajectory_sampling(flag_publish_frame);
   }
 
   ros::spin();

@@ -125,7 +125,7 @@ action_time_horizon: 3.0
 
 # 0: Discrete
 # 1: Continuous [model(1), target_type(1), target(6)]
-action_type: 0
+action_type: 1
 
 action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
                                        "dataset/trajectory_sampling/jaco/20240311_205503/",

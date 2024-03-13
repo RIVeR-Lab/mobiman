@@ -2189,7 +2189,7 @@ void TrajectorySamplingUtility::publishFrame(string origin_frame_name, vector<ge
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
-void TrajectorySamplingUtility::publish_trajectory_sampling()
+void TrajectorySamplingUtility::publish_trajectory_sampling(bool flag_publish_frame)
 {
   for(int k = 0; k < trajectory_visu_.markers.size(); k++)
   {
@@ -2237,7 +2237,7 @@ void TrajectorySamplingUtility::publish_trajectory_sampling()
   }
   */
 
-  if (sampling_data_pose_.size() > 0)
+  if (flag_publish_frame && sampling_data_pose_.size() > 0)
   {
     publishFrame(trajectory_frame_, sampling_data_pose_);
   }

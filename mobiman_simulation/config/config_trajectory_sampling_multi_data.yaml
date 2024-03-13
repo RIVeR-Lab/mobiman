@@ -4,6 +4,7 @@
 ws_name: "mobiman_simulation"
 
 flag_save: false
+flag_publish_frame: false
 
 #flag_copy: true
 #copy_from: "dataset/trajectory_sampling/jaco/20240311_205503/"
