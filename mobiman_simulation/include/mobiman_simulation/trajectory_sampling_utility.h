@@ -1,7 +1,7 @@
 #ifndef TRAJECTORY_SAMPLING_UTILITY_H
 #define TRAJECTORY_SAMPLING_UTILITY_H
 
-// LAST UPDATE: 2024.03.08
+// LAST UPDATE: 2024.03.10
 //
 // AUTHOR: Neset Unver Akmandor
 //
@@ -20,7 +20,10 @@
 
 // --OUTSOURCE LIBRARIES--
 #include <std_msgs/Float64MultiArray.h>
+#include <tf/transform_listener.h>
+#include <tf_conversions/tf_eigen.h>
 #include <tf/message_filter.h>
+#include <tf/transform_broadcaster.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <boost/filesystem.hpp>
 #include <ros/package.h>
@@ -153,6 +156,12 @@ class TrajectorySamplingUtility
 
     // DESCRIPTION: TODO...
     visualization_msgs::MarkerArray get_trajectory_sampling_arrow_visu();
+
+    // DESCRIPTION: TODO...
+    void set_workspace_name(std::string ws_name);
+
+    // DESCRIPTION: TODO...
+    void set_trajectory_name(std::string trajectory_name);
 
     // DESCRIPTION: TODO...
     void set_trajectory_data(vector<vector<geometry_msgs::Point>> new_trajectory_data);
@@ -293,7 +302,7 @@ class TrajectorySamplingUtility
     void construct_trajectory_data_by_geometry_cone(bool no_restriction=true);
 
     // DESCRIPTION: TODO...
-    void construct_trajectory_data_by_geometry_cube();
+    void construct_trajectory_data_by_geometry_cube(int sample_start_index=0);
 
     // DESCRIPTION: TODO...
     // x = [x(m), y(m), theta(rad), v(m/s), omega(rad/s)]
@@ -311,7 +320,27 @@ class TrajectorySamplingUtility
                                                        int sample_start_index=0);
 
     // DESCRIPTION: TODO...
+    void update_sampling_data_from_trajectory_data();
+
+    // DESCRIPTION: TODO...
+    void read_input_data(string tdata_path);    
+
+    // DESCRIPTION: TODO...
+    std::string read_input_data(string tdata_path, string data_name);
+
+    // DESCRIPTION: TODO...
     void read_trajectory_data(string tdata_path);
+
+    // DESCRIPTION: TODO...
+    void read_trajectory_data(string tdata_path, vector<vector<geometry_msgs::Point>>& trajectory_data);
+
+    // DESCRIPTION: TODO...
+    void read_sampling_data(string tdata_path);
+
+    void read_sampling_data(std::vector<std::string>& tdata_path_multi);
+
+    // DESCRIPTION: TODO...
+    void read_sampling_data(string tdata_path, vector<geometry_msgs::Pose>& sampling_data_pose);
 
     // DESCRIPTION: TODO...
     void read_velocity_control_data(string tdata_path);
@@ -320,7 +349,16 @@ class TrajectorySamplingUtility
     void fill_trajectory_sampling_visu();
 
     // DESCRIPTION: TODO...
-    void publish_trajectory_sampling();
+    void publishFrame(string origin_frame_name, string frame_name, geometry_msgs::Pose frame_pose);
+
+    // DESCRIPTION: TODO...
+    void publishFrame(string origin_frame_name, vector<vector<geometry_msgs::Point>> frame_trajectory_point_vec);
+
+    // DESCRIPTION: TODO...
+    void publishFrame(string origin_frame_name, vector<geometry_msgs::Pose> frame_pose);
+
+    // DESCRIPTION: TODO...
+    void publish_trajectory_sampling(bool flag_publish_frame=true);
 
     // DESCRIPTION: TODO...
     void create_trajectory_data_path();
@@ -329,9 +367,24 @@ class TrajectorySamplingUtility
     void save_input_data();
 
     // DESCRIPTION: TODO...
-    void save_trajectory_data();
+    void save_input_data(std::string data_field, std::string data);
+
+    // DESCRIPTION: TODO...
+    void save_trajectory_data(bool flag_append=true, bool flag_save_input=true);
+
+    // DESCRIPTION: TODO...
+    void copy_data(std::string copy_from, std::string copy_to, std::string copy_data_type, std::string copy_data_field);
 
   private:
+
+    tf::TransformBroadcaster br_;
+
+    string ns_;
+
+    string ws_name_;
+    string ws_path_;
+
+    string trajectory_name_;
 
     vector<vector<geometry_msgs::Point>> trajectory_data_;
     vector<geometry_msgs::Pose> sampling_data_pose_;
@@ -342,7 +395,9 @@ class TrajectorySamplingUtility
     string trajectory_data_path_;
     string trajectory_frame_;
     string trajectory_generation_type_;
+    string geo_type_;
     
+    double dt_;
     double trajectory_time_;
     double trajectory_length_;
     double trajectory_yaw_;
@@ -354,6 +409,10 @@ class TrajectorySamplingUtility
     int trajectory_yaw_sampling_count_;                          // TODO: Review: number of tentacles along yaw direction, range: 1 <= tyaw_cnt, E Z+
     int trajectory_pitch_sampling_count_;                        // TODO: Review: number of tentacles along pitch direction, range: 1 <= tpitch_cnt, E Z+
     
+    double robot_min_lat_velo_; 
+    double robot_max_lat_velo_; 
+    double robot_max_yaw_velo_;
+
     string trajectory_yaw_sampling_type_;                        // TODO: Review: parameter to adjust yaw angle sampling type of tentacles    
     string trajectory_pitch_sampling_type_;                      // TODO: Review: parameter to adjust pitch angle sampling type of tentacles
     
@@ -381,16 +440,18 @@ class TrajectorySamplingUtility
     double sampling_yaw_max_;
     int sampling_yaw_cnt_;
 
-    bool flag_geometric = false;
-    bool flag_kinematic = false;
+    bool flag_geometric_ = false;
+    bool flag_kinematic_ = false;
 
     ros::Publisher trajectory_visu_pub_;
     ros::Publisher trajectory_sampling_visu_pub_;
     ros::Publisher trajectory_sampling_arrow_visu_pub_;
+    ros::Publisher sampling_arrow_visu_pub_;
     
     visualization_msgs::MarkerArray trajectory_visu_;
     visualization_msgs::MarkerArray trajectory_sampling_visu_;
     visualization_msgs::MarkerArray trajectory_sampling_arrow_visu_;
+    visualization_msgs::MarkerArray sampling_arrow_visu_;
 
 }; // END of class TrajectorySamplingUtility
 

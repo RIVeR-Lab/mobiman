@@ -20,6 +20,7 @@
 
 #include <ros/package.h>
 #include <tf/tf.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 // --NAMESPACES--
 using namespace std;
@@ -46,12 +47,20 @@ double mean(std::vector<double> const& v, bool debug_flag=false)
 }
 
 // DESCRIPTION: TODO...Function to sample a range equidistantly by n points
-std::vector<double> sampleRange(double minVal, double maxVal, int n) 
+std::vector<double> sampleRange(double minVal, double maxVal, int n, bool minPriority=false) 
 {
   std::vector<double> sampledPoints;
   if (n < 2)
   {
-    sampledPoints.push_back(maxVal);
+    if (minPriority)
+    {
+      sampledPoints.push_back(minVal);
+    }
+    else
+    {
+      sampledPoints.push_back(maxVal);
+    }
+    
     return sampledPoints;
   }
 
@@ -455,12 +464,36 @@ void normalize(vector<double>& vals)
 }
 
 // DESCRIPTION: TODO...
-tf2::Quaternion convertRPY(double roll, double pitch, double yaw)
+tf2::Quaternion getQuaternionFromRPY(double roll, double pitch, double yaw)
 {
   // Convert RPY to Quaternion
   tf2::Quaternion quat;
   quat.setRPY(roll, pitch, yaw);
   return quat;
+}
+
+// DESCRIPTION: TODO...
+void getRPYFromQuaternion(tf2::Quaternion quat, double& roll, double& pitch, double& yaw)
+{
+  tf2::Matrix3x3 m(quat);
+  m.getRPY(roll, pitch, yaw);
+}
+
+// DESCRIPTION: TODO...
+void printLine(vector<string>& vec)
+{
+  int vsize = vec.size();
+  for(int i = 0; i < vsize; i++)
+  {
+    if(i == vsize-1)
+    {
+      cout << i << ") " << vec[i] << endl;;
+    }
+    else
+    {
+      cout << i << ") " << vec[i] << ", ";
+    }   
+  }
 }
 
 // DESCRIPTION: TODO...

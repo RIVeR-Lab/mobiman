@@ -5,7 +5,10 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /MarkerArray1/Namespaces1
+        - /MarkerArray1
+        - /MarkerArray2
+        - /MarkerArray3
+        - /MarkerArray4
       Splitter Ratio: 0.5
     Tree Height: 787
   - Class: rviz/Selection
@@ -58,6 +61,80 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        jackalJaco_0/base_link:
+          Value: true
+        jackalJaco_0/s_0:
+          Value: true
+        jackalJaco_0/s_1:
+          Value: true
+        jackalJaco_0/s_10:
+          Value: true
+        jackalJaco_0/s_11:
+          Value: true
+        jackalJaco_0/s_12:
+          Value: true
+        jackalJaco_0/s_13:
+          Value: true
+        jackalJaco_0/s_14:
+          Value: true
+        jackalJaco_0/s_15:
+          Value: true
+        jackalJaco_0/s_16:
+          Value: true
+        jackalJaco_0/s_17:
+          Value: true
+        jackalJaco_0/s_18:
+          Value: true
+        jackalJaco_0/s_19:
+          Value: true
+        jackalJaco_0/s_2:
+          Value: true
+        jackalJaco_0/s_20:
+          Value: true
+        jackalJaco_0/s_21:
+          Value: true
+        jackalJaco_0/s_22:
+          Value: true
+        jackalJaco_0/s_23:
+          Value: true
+        jackalJaco_0/s_24:
+          Value: true
+        jackalJaco_0/s_25:
+          Value: true
+        jackalJaco_0/s_26:
+          Value: true
+        jackalJaco_0/s_27:
+          Value: true
+        jackalJaco_0/s_28:
+          Value: true
+        jackalJaco_0/s_29:
+          Value: true
+        jackalJaco_0/s_3:
+          Value: true
+        jackalJaco_0/s_30:
+          Value: true
+        jackalJaco_0/s_31:
+          Value: true
+        jackalJaco_0/s_32:
+          Value: true
+        jackalJaco_0/s_33:
+          Value: true
+        jackalJaco_0/s_34:
+          Value: true
+        jackalJaco_0/s_35:
+          Value: true
+        jackalJaco_0/s_4:
+          Value: true
+        jackalJaco_0/s_5:
+          Value: true
+        jackalJaco_0/s_6:
+          Value: true
+        jackalJaco_0/s_7:
+          Value: true
+        jackalJaco_0/s_8:
+          Value: true
+        jackalJaco_0/s_9:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -65,148 +142,118 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        jackalJaco_0/base_link:
+          jackalJaco_0/s_0:
+            {}
+          jackalJaco_0/s_1:
+            {}
+          jackalJaco_0/s_10:
+            {}
+          jackalJaco_0/s_11:
+            {}
+          jackalJaco_0/s_12:
+            {}
+          jackalJaco_0/s_13:
+            {}
+          jackalJaco_0/s_14:
+            {}
+          jackalJaco_0/s_15:
+            {}
+          jackalJaco_0/s_16:
+            {}
+          jackalJaco_0/s_17:
+            {}
+          jackalJaco_0/s_18:
+            {}
+          jackalJaco_0/s_19:
+            {}
+          jackalJaco_0/s_2:
+            {}
+          jackalJaco_0/s_20:
+            {}
+          jackalJaco_0/s_21:
+            {}
+          jackalJaco_0/s_22:
+            {}
+          jackalJaco_0/s_23:
+            {}
+          jackalJaco_0/s_24:
+            {}
+          jackalJaco_0/s_25:
+            {}
+          jackalJaco_0/s_26:
+            {}
+          jackalJaco_0/s_27:
+            {}
+          jackalJaco_0/s_28:
+            {}
+          jackalJaco_0/s_29:
+            {}
+          jackalJaco_0/s_3:
+            {}
+          jackalJaco_0/s_30:
+            {}
+          jackalJaco_0/s_31:
+            {}
+          jackalJaco_0/s_32:
+            {}
+          jackalJaco_0/s_33:
+            {}
+          jackalJaco_0/s_34:
+            {}
+          jackalJaco_0/s_35:
+            {}
+          jackalJaco_0/s_4:
+            {}
+          jackalJaco_0/s_5:
+            {}
+          jackalJaco_0/s_6:
+            {}
+          jackalJaco_0/s_7:
+            {}
+          jackalJaco_0/s_8:
+            {}
+          jackalJaco_0/s_9:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /trajectory_sampling_points
+      Enabled: false
+      Marker Topic: /jackalJaco_0/sampling_data_arrows
       Name: MarkerArray
       Namespaces:
-        sp_0: true
-        sp_1: true
-        sp_10: true
-        sp_11: true
-        sp_12: true
-        sp_13: true
-        sp_14: true
-        sp_15: true
-        sp_16: true
-        sp_17: true
-        sp_18: true
-        sp_19: true
-        sp_2: true
-        sp_20: true
-        sp_21: true
-        sp_22: true
-        sp_23: true
-        sp_24: true
-        sp_25: true
-        sp_26: true
-        sp_27: true
-        sp_28: true
-        sp_29: true
-        sp_3: true
-        sp_4: true
-        sp_5: true
-        sp_6: true
-        sp_7: true
-        sp_8: true
-        sp_9: true
-      Queue Size: 1
+        {}
+      Queue Size: 100
+      Value: false
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /jackalJaco_0/trajectories
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /trajectory_sampling_arrows
+      Marker Topic: /jackalJaco_0/trajectory_sampling_arrows
       Name: MarkerArray
       Namespaces:
-        tsa_0: true
-        tsa_1: true
-        tsa_10: true
-        tsa_11: true
-        tsa_12: true
-        tsa_13: true
-        tsa_14: true
-        tsa_15: true
-        tsa_16: true
-        tsa_17: true
-        tsa_18: true
-        tsa_19: true
-        tsa_2: true
-        tsa_20: true
-        tsa_21: true
-        tsa_22: true
-        tsa_23: true
-        tsa_24: true
-        tsa_25: true
-        tsa_26: true
-        tsa_27: true
-        tsa_28: true
-        tsa_29: true
-        tsa_3: true
-        tsa_30: true
-        tsa_31: true
-        tsa_32: true
-        tsa_33: true
-        tsa_34: true
-        tsa_35: true
-        tsa_36: true
-        tsa_37: true
-        tsa_38: true
-        tsa_39: true
-        tsa_4: true
-        tsa_40: true
-        tsa_41: true
-        tsa_42: true
-        tsa_43: true
-        tsa_44: true
-        tsa_45: true
-        tsa_46: true
-        tsa_47: true
-        tsa_48: true
-        tsa_49: true
-        tsa_5: true
-        tsa_50: true
-        tsa_51: true
-        tsa_52: true
-        tsa_53: true
-        tsa_54: true
-        tsa_55: true
-        tsa_56: true
-        tsa_57: true
-        tsa_58: true
-        tsa_59: true
-        tsa_6: true
-        tsa_60: true
-        tsa_61: true
-        tsa_62: true
-        tsa_63: true
-        tsa_64: true
-        tsa_65: true
-        tsa_66: true
-        tsa_67: true
-        tsa_68: true
-        tsa_69: true
-        tsa_7: true
-        tsa_70: true
-        tsa_71: true
-        tsa_72: true
-        tsa_73: true
-        tsa_74: true
-        tsa_75: true
-        tsa_76: true
-        tsa_77: true
-        tsa_78: true
-        tsa_79: true
-        tsa_8: true
-        tsa_80: true
-        tsa_81: true
-        tsa_82: true
-        tsa_83: true
-        tsa_84: true
-        tsa_85: true
-        tsa_86: true
-        tsa_87: true
-        tsa_88: true
-        tsa_89: true
-        tsa_9: true
-      Queue Size: 1
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /jackalJaco_0/trajectory_sampling_points
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
     Background Color: 186; 189; 182
     Default Light: true
-    Fixed Frame: base_link
+    Fixed Frame: jackalJaco_0/base_link
     Frame Rate: 10000
   Name: root
   Tools:
@@ -230,7 +277,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.484955787658691
+      Distance: 2.6905019283294678
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -238,17 +285,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.3444842994213104
-        Y: 0.30065885186195374
-        Z: -0.09671156853437424
+        X: 0.15686985850334167
+        Y: 0.12622889876365662
+        Z: 0.25908222794532776
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3547965288162231
+      Pitch: 0.6747974157333374
       Target Frame: <Fixed Frame>
-      Yaw: 3.1511311531066895
+      Yaw: 3.0742878913879395
     Saved: ~
 Window Geometry:
   Displays:
@@ -256,7 +303,7 @@ Window Geometry:
   Height: 1043
   Hide Left Dock: false
   Hide Right Dock: true
-  QMainWindow State: 000000ff00000000fd00000004000000000000015600000350fc020000000efb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000350000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f000002b4fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003b000002b4000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000063fc0100000002fb0000000800540069006d0065010000000000000780000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000006240000035000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001f700000350fc020000000efb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000b0fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000350000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000208000001880000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000000000010000010f000002b4fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003b000002b4000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000078000000063fc0100000002fb0000000800540069006d0065010000000000000780000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000005830000035000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -266,5 +313,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1920
-  X: 3840
+  X: 0
   Y: 0

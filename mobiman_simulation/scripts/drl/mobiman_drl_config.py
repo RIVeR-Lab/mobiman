@@ -143,9 +143,18 @@ class Config():
 
         self.action_time_horizon = rospy.get_param("action_time_horizon", 0.0)
         self.action_type = rospy.get_param("action_type", 0)
-        self.n_action_model = rospy.get_param("n_action_model", 0.0)
-        self.n_action_constraint = rospy.get_param("n_action_constraint", 0.0)
-        self.n_action_target = rospy.get_param("n_action_target", 0.0)
+        self.action_discrete_trajectory_data_path = rospy.get_param('action_discrete_trajectory_data_path', [])
+
+        self.n_discrete_action = 3       # NUA NOTE: Adding "target is goal" cases for 3 modes 
+        for tp in self.action_discrete_trajectory_data_path: # type: ignore
+            filepath = self.ros_pkg_path + tp + "sampling_data.csv"
+            action_data = read_data(filepath)
+            self.n_discrete_action += len(action_data)
+            #print("[mobiman_drl_config::Config::__init__] action_data len: " + str(len(action_data)))
+
+        #self.n_action_model = rospy.get_param("n_action_model", 0.0)
+        #self.n_action_constraint = rospy.get_param("n_action_constraint", 0.0)
+        #self.n_action_target = rospy.get_param("n_action_target", 0.0)
 
         #self.ablation_mode = rospy.get_param("ablation_mode", 0.0)
         #self.last_step_distance_threshold = rospy.get_param("last_step_distance_threshold", 0.0)
@@ -172,11 +181,6 @@ class Config():
         self.fc_obs_shape = (-1, )
         self.cnn_obs_shape = (1,-1)
 
-        if self.action_type == 0:
-            self.n_action = self.n_action_model + pow(2, self.n_action_constraint) + self.n_action_target # type: ignore
-        else:
-            self.n_action = rospy.get_param("n_action", 0.0)
-
         ## Rewards
         self.reward_terminal_goal = rospy.get_param('reward_terminal_goal', 0.0)
         self.reward_terminal_out_of_boundary = rospy.get_param('reward_terminal_out_of_boundary', 0.0)
@@ -184,6 +188,7 @@ class Config():
         self.reward_terminal_rollover = rospy.get_param('reward_terminal_rollover', 0.0)
         self.reward_terminal_max_step = rospy.get_param('reward_terminal_max_step', 0.0)
         self.reward_step_dist2goal_scale = rospy.get_param('reward_step_dist2goal_scale', 0.0)
+        self.reward_step_dist2goal_dist_scale = rospy.get_param('reward_step_dist2goal_dist_scale', 0.0)
         self.reward_step_dist2goal_dist_threshold = rospy.get_param('reward_step_dist2goal_dist_threshold', 0.0)
         #self.reward_step_dist2goal_mu = rospy.get_param('reward_step_dist2goal_mu', 0.0)
         #self.reward_step_dist2goal_sigma = rospy.get_param('reward_step_dist2goal_sigma', 0.0)
@@ -265,9 +270,11 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] obs_joint_velo_max: " + str(self.obs_joint_velo_max))
             print("[mobiman_drl_config::Config::__init__] action_time_horizon: " + str(self.action_time_horizon))
             print("[mobiman_drl_config::Config::__init__] action_type: " + str(self.action_type))
-            print("[mobiman_drl_config::Config::__init__] n_action_model: " + str(self.n_action_model))
-            print("[mobiman_drl_config::Config::__init__] n_action_constraint: " + str(self.n_action_constraint))
-            print("[mobiman_drl_config::Config::__init__] n_action_target: " + str(self.n_action_target))
+            print("[mobiman_drl_config::Config::__init__] action_discrete_trajectory_data_path: " + str(self.action_discrete_trajectory_data_path))
+            print("[mobiman_drl_config::Config::__init__] n_discrete_action: " + str(self.n_discrete_action))
+            #print("[mobiman_drl_config::Config::__init__] n_action_model: " + str(self.n_action_model))
+            #print("[mobiman_drl_config::Config::__init__] n_action_constraint: " + str(self.n_action_constraint))
+            #print("[mobiman_drl_config::Config::__init__] n_action_target: " + str(self.n_action_target))
             #print("[mobiman_drl_config::Config::__init__] ablation_mode: " + str(self.ablation_mode))
             #print("[mobiman_drl_config::Config::__init__] last_step_distance_threshold: " + str(self.last_step_distance_threshold))
             #print("[mobiman_drl_config::Config::__init__] goal_distance_pos_threshold: " + str(self.goal_distance_pos_threshold))
@@ -290,13 +297,13 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] n_skip_obs_stack: " + str(self.n_skip_obs_stack))
             print("[mobiman_drl_config::Config::__init__] fc_obs_shape: " + str(self.fc_obs_shape))
             print("[mobiman_drl_config::Config::__init__] cnn_obs_shape: " + str(self.cnn_obs_shape))
-            print("[mobiman_drl_config::Config::__init__] n_action: " + str(self.n_action))
             print("[mobiman_drl_config::Config::__init__] reward_terminal_goal: " + str(self.reward_terminal_goal))
             print("[mobiman_drl_config::Config::__init__] reward_terminal_out_of_boundary: " + str(self.reward_terminal_out_of_boundary))
             print("[mobiman_drl_config::Config::__init__] reward_terminal_collision: " + str(self.reward_terminal_collision))
             print("[mobiman_drl_config::Config::__init__] reward_terminal_rollover: " + str(self.reward_terminal_rollover))
             print("[mobiman_drl_config::Config::__init__] reward_terminal_max_step: " + str(self.reward_terminal_max_step))
             print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_scale: " + str(self.reward_step_dist2goal_scale))
+            print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_dist_scale: " + str(self.reward_step_dist2goal_dist_scale))
             print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_dist_threshold: " + str(self.reward_step_dist2goal_dist_threshold))
             #print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_mu: " + str(self.reward_step_dist2goal_mu))
             #print("[mobiman_drl_config::Config::__init__] reward_step_dist2goal_sigma: " + str(self.reward_step_dist2goal_sigma))
@@ -376,9 +383,12 @@ class Config():
             log_data.append(["obs_joint_velo_max", self.obs_joint_velo_max])
             log_data.append(["action_time_horizon", self.action_time_horizon])
             log_data.append(["action_type", self.action_type])
-            log_data.append(["n_action_model", self.n_action_model])
-            log_data.append(["n_action_constraint", self.n_action_constraint])
-            log_data.append(["n_action_target", self.n_action_target])
+            for i, oname in enumerate(self.action_discrete_trajectory_data_path): # type: ignore
+                log_data.append(["action_discrete_trajectory_data_path" + str(i), oname])
+            log_data.append(["n_discrete_action", self.n_discrete_action])
+            #log_data.append(["n_action_model", self.n_action_model])
+            #log_data.append(["n_action_constraint", self.n_action_constraint])
+            #log_data.append(["n_action_target", self.n_action_target])
             #log_data.append(["ablation_mode", self.ablation_mode])
             #log_data.append(["last_step_distance_threshold", self.last_step_distance_threshold])
             #log_data.append(["goal_distance_pos_threshold", self.goal_distance_pos_threshold])
@@ -397,17 +407,17 @@ class Config():
             log_data.append(["ext_collision_range_max", self.ext_collision_range_max])
             #log_data.append(["rollover_pitch_threshold", self.rollover_pitch_threshold])
             #log_data.append(["rollover_roll_threshold", self.rollover_roll_threshold])
-            log_data.append(["n_obs_stack", self.n_obs_stack])
-            log_data.append(["n_skip_obs_stack", self.n_skip_obs_stack]) 
+            #log_data.append(["n_obs_stack", self.n_obs_stack])
+            #log_data.append(["n_skip_obs_stack", self.n_skip_obs_stack]) 
             log_data.append(["fc_obs_shape", self.fc_obs_shape])
             log_data.append(["cnn_obs_shape", self.cnn_obs_shape])
-            log_data.append(["n_action", self.n_action])
             log_data.append(["reward_terminal_goal", self.reward_terminal_goal])
             log_data.append(["reward_terminal_out_of_boundary", self.reward_terminal_out_of_boundary])
             log_data.append(["reward_terminal_collision", self.reward_terminal_collision])
             log_data.append(["reward_terminal_rollover", self.reward_terminal_rollover])
             log_data.append(["reward_terminal_max_step", self.reward_terminal_max_step])
             log_data.append(["reward_step_dist2goal_scale", self.reward_step_dist2goal_scale])
+            log_data.append(["reward_step_dist2goal_dist_scale", self.reward_step_dist2goal_dist_scale])
             log_data.append(["reward_step_dist2goal_dist_threshold", self.reward_step_dist2goal_dist_threshold])
             #log_data.append(["reward_step_dist2goal_mu", self.reward_step_dist2goal_mu])
             #log_data.append(["reward_step_dist2goal_sigma", self.reward_step_dist2goal_sigma])

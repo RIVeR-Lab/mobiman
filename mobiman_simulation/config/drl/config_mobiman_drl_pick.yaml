@@ -13,7 +13,7 @@ gazebo_robot_name: "mobiman"
 # ocs2wb
 drl_data_path: "dataset/drl/m4/"      # NUA NOTE: Saving directory
 initial_training_path: ""
-#initial_training_path: "oar_data_testing_jackalJaco_0_ocs2wb/"
+#initial_training_path: "20240312_224258_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -39,10 +39,10 @@ motion_planning_algorithm: "ocs2"
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action) (NUA NOTE: NOT FUNCTIONAL YET!)
 observation_space_type: "mobiman_FC"
 
-learning_rate: 0.0001         #PPO: 0.0001    #SAC: 0.00025 
-n_steps: 50                   #PPO: 100       #SAC: 100
-batch_size: 10                #PPO: 20        #SAC: 28
-ent_coef: 0.0002              #PPO: 0.0002    #SAC: 0.0002
+learning_rate: 0.0002         #PPO: 0.0001    #SAC: 0.00025 
+n_steps: 200                   #PPO: 100       #SAC: 100
+batch_size: 50                #PPO: 20        #SAC: 28
+ent_coef: 0.0001              #PPO: 0.0002    #SAC: 0.0002
 training_timesteps: 50000
 max_episode_steps: 20
 
@@ -124,11 +124,12 @@ err_threshold_ori_quat: 0.05
 action_time_horizon: 3.0
 
 # 0: Discrete
-# 1: Continuous
-action_type: 1
+# 1: Continuous [model(1), target_type(1), target(6)]
+action_type: 0
 
-# [model(1), target_type(1), target(6)]
-n_action: 8
+action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
+                                       "dataset/trajectory_sampling/jaco/20240313_202938/",
+                                       "dataset/trajectory_sampling/jackalJaco/20240312_143237/"]
 
 action_goal_range_min_x: -0.0               # wrt. goal frame
 action_goal_range_max_x: 0.0                # wrt. goal frame
@@ -154,6 +155,7 @@ reward_terminal_max_step: -50.0
 
 # Distance-to-goal
 reward_step_dist2goal_scale: 10.0
+reward_step_dist2goal_dist_scale: 0.2
 reward_step_dist2goal_dist_threshold: 1.0
 #reward_step_dist2goal_mu: 0.0
 #reward_step_dist2goal_sigma: 1.0
