@@ -150,11 +150,10 @@ class PlotMobiman(object):
 
         return data_ep
     
-
     '''
     DESCRIPTION: TODO...
     '''
-    def plot_rewards(self):
+    def generate_dataframe(self) -> pd.DataFrame:
         main_path = os.path.join(self.mobiman_path, self.data_folder)
         folders = sorted(os.listdir(main_path))[::-1]
         files = deque()
@@ -169,20 +168,54 @@ class PlotMobiman(object):
         while True:
             n_robot = log_csv.iloc[6]['value']
             log_csv.iloc[14]['value']
+            file = []
             for i in range(int(n_robot)):
-                files.append(f'{main_path}/{folder}/oar_data_training_jackalJaco_{i}.csv')
+                file.append(f'{main_path}/{folder}/oar_data_training_jackalJaco_{i}.csv')
+            files.append(file)
             if pd.notna(log_csv.iloc[14]['value']):
                 folder = log_csv.iloc[14]['value'].replace('/','')
-                print(folder)
+                # print(folder)
                 log_csv = pd.read_csv(main_path + '/' + folder + '/' + 'training_log.csv', names=['key', 'value'])
             else:
                 break
         main_df = None
         while len(files) != 0:
-            pass
-        if main_df == None:
+            csvs = files.pop()
+            dfs = []
+            for csv in csvs:
+                dfs.append(pd.read_csv(csv))
+            result = pd.concat(dfs).sort_index(kind='merge').reset_index(drop=True)
+            if not isinstance(main_df, pd.DataFrame):
+                main_df = result.copy()
+            else:
+                main_df = pd.concat([main_df, result], ignore_index=True)
+        return main_df
 
+    '''
+    DESCRIPTION: TODO...
+    '''
+
+
+    def plot_rewards(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
+        df = self.generate_dataframe()
+        clean_data = df[df['reward'].notna()]
+
+        window_size = 1500
+        clean_data['Reward'] = clean_data['reward'].apply(lambda x: float(x))
+        clean_data['Reward'] = clean_data['Reward'].round(4)
+        clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
+        clean_data['reward'].to_clipboard()
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
+        print(clean_data.info())
         
+        plt.plot(clean_data['cumulative_reward'].iloc[:])
+        plt.title(f'Rolling average of reward, window size {window_size}')
+        plt.xlabel("Steps")
+        plt.ylabel("Rewards")
+        plt.show()
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")    
             
 
     '''
