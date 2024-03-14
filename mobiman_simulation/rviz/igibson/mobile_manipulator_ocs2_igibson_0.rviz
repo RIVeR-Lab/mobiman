@@ -4,7 +4,7 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /TF1
+        - /TF1/Frames1
         - /MarkerArray17/Namespaces1
       Splitter Ratio: 0.5
     Tree Height: 547
@@ -97,23 +97,23 @@ Visualization Manager:
         jackalJaco_0/golazo:
           Value: false
         jackalJaco_0/grasp:
-          Value: true
+          Value: false
         jackalJaco_0/imu_link:
           Value: false
         jackalJaco_0/j2n6s300_end_effector:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_1:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_2:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_3:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_4:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_5:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_6:
-          Value: true
+          Value: false
         jackalJaco_0/j2n6s300_link_base:
           Value: false
         jackalJaco_0/jaco_base_link:
@@ -134,212 +134,8 @@ Visualization Manager:
           Value: false
         jackalJaco_0/red_cube:
           Value: false
-        jackalJaco_0/s_0:
-          Value: false
-        jackalJaco_0/s_1:
-          Value: false
-        jackalJaco_0/s_10:
-          Value: false
-        jackalJaco_0/s_100:
-          Value: false
-        jackalJaco_0/s_101:
-          Value: false
-        jackalJaco_0/s_11:
-          Value: false
-        jackalJaco_0/s_12:
-          Value: false
-        jackalJaco_0/s_13:
-          Value: false
-        jackalJaco_0/s_14:
-          Value: false
-        jackalJaco_0/s_15:
-          Value: false
-        jackalJaco_0/s_16:
-          Value: false
-        jackalJaco_0/s_17:
-          Value: false
-        jackalJaco_0/s_18:
-          Value: false
-        jackalJaco_0/s_19:
-          Value: false
-        jackalJaco_0/s_2:
-          Value: false
-        jackalJaco_0/s_20:
-          Value: false
-        jackalJaco_0/s_21:
-          Value: false
-        jackalJaco_0/s_22:
-          Value: false
-        jackalJaco_0/s_23:
-          Value: false
-        jackalJaco_0/s_24:
-          Value: false
-        jackalJaco_0/s_25:
-          Value: false
-        jackalJaco_0/s_26:
-          Value: false
-        jackalJaco_0/s_27:
-          Value: false
-        jackalJaco_0/s_28:
-          Value: false
-        jackalJaco_0/s_29:
-          Value: false
-        jackalJaco_0/s_3:
-          Value: false
-        jackalJaco_0/s_30:
-          Value: false
-        jackalJaco_0/s_31:
-          Value: false
-        jackalJaco_0/s_32:
-          Value: false
-        jackalJaco_0/s_33:
-          Value: false
-        jackalJaco_0/s_34:
-          Value: false
-        jackalJaco_0/s_35:
-          Value: false
-        jackalJaco_0/s_36:
-          Value: true
-        jackalJaco_0/s_37:
-          Value: false
-        jackalJaco_0/s_38:
-          Value: false
-        jackalJaco_0/s_39:
-          Value: false
-        jackalJaco_0/s_4:
-          Value: false
-        jackalJaco_0/s_40:
-          Value: false
-        jackalJaco_0/s_41:
-          Value: false
-        jackalJaco_0/s_42:
-          Value: false
-        jackalJaco_0/s_43:
-          Value: false
-        jackalJaco_0/s_44:
-          Value: false
-        jackalJaco_0/s_45:
-          Value: false
-        jackalJaco_0/s_46:
-          Value: false
-        jackalJaco_0/s_47:
-          Value: false
-        jackalJaco_0/s_48:
-          Value: false
-        jackalJaco_0/s_49:
-          Value: false
-        jackalJaco_0/s_5:
-          Value: false
-        jackalJaco_0/s_50:
-          Value: false
-        jackalJaco_0/s_51:
-          Value: false
-        jackalJaco_0/s_52:
-          Value: false
-        jackalJaco_0/s_53:
-          Value: false
-        jackalJaco_0/s_54:
-          Value: false
-        jackalJaco_0/s_55:
-          Value: false
-        jackalJaco_0/s_56:
-          Value: false
-        jackalJaco_0/s_57:
-          Value: false
-        jackalJaco_0/s_58:
-          Value: false
-        jackalJaco_0/s_59:
-          Value: false
-        jackalJaco_0/s_6:
-          Value: false
-        jackalJaco_0/s_60:
-          Value: false
-        jackalJaco_0/s_61:
-          Value: false
-        jackalJaco_0/s_62:
-          Value: false
-        jackalJaco_0/s_63:
-          Value: false
-        jackalJaco_0/s_64:
-          Value: false
-        jackalJaco_0/s_65:
-          Value: false
-        jackalJaco_0/s_66:
-          Value: false
-        jackalJaco_0/s_67:
-          Value: false
-        jackalJaco_0/s_68:
-          Value: false
-        jackalJaco_0/s_69:
-          Value: false
-        jackalJaco_0/s_7:
-          Value: false
-        jackalJaco_0/s_70:
-          Value: false
-        jackalJaco_0/s_71:
-          Value: false
-        jackalJaco_0/s_72:
-          Value: false
-        jackalJaco_0/s_73:
-          Value: false
-        jackalJaco_0/s_74:
-          Value: false
-        jackalJaco_0/s_75:
-          Value: false
-        jackalJaco_0/s_76:
-          Value: false
-        jackalJaco_0/s_77:
-          Value: false
-        jackalJaco_0/s_78:
-          Value: false
-        jackalJaco_0/s_79:
-          Value: false
-        jackalJaco_0/s_8:
-          Value: false
-        jackalJaco_0/s_80:
-          Value: false
-        jackalJaco_0/s_81:
-          Value: false
-        jackalJaco_0/s_82:
-          Value: false
-        jackalJaco_0/s_83:
-          Value: false
-        jackalJaco_0/s_84:
-          Value: false
-        jackalJaco_0/s_85:
-          Value: false
-        jackalJaco_0/s_86:
-          Value: false
-        jackalJaco_0/s_87:
-          Value: false
-        jackalJaco_0/s_88:
-          Value: false
-        jackalJaco_0/s_89:
-          Value: false
-        jackalJaco_0/s_9:
-          Value: false
-        jackalJaco_0/s_90:
-          Value: false
-        jackalJaco_0/s_91:
-          Value: false
-        jackalJaco_0/s_92:
-          Value: false
-        jackalJaco_0/s_93:
-          Value: false
-        jackalJaco_0/s_94:
-          Value: false
-        jackalJaco_0/s_95:
-          Value: false
-        jackalJaco_0/s_96:
-          Value: false
-        jackalJaco_0/s_97:
-          Value: false
-        jackalJaco_0/s_98:
-          Value: false
-        jackalJaco_0/s_99:
-          Value: false
         world:
-          Value: false
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -404,210 +200,6 @@ Visualization Manager:
                             jackalJaco_0/j2n6s300_link_6:
                               jackalJaco_0/j2n6s300_end_effector:
                                 {}
-              jackalJaco_0/s_0:
-                {}
-              jackalJaco_0/s_1:
-                {}
-              jackalJaco_0/s_10:
-                {}
-              jackalJaco_0/s_100:
-                {}
-              jackalJaco_0/s_101:
-                {}
-              jackalJaco_0/s_11:
-                {}
-              jackalJaco_0/s_12:
-                {}
-              jackalJaco_0/s_13:
-                {}
-              jackalJaco_0/s_14:
-                {}
-              jackalJaco_0/s_15:
-                {}
-              jackalJaco_0/s_16:
-                {}
-              jackalJaco_0/s_17:
-                {}
-              jackalJaco_0/s_18:
-                {}
-              jackalJaco_0/s_19:
-                {}
-              jackalJaco_0/s_2:
-                {}
-              jackalJaco_0/s_20:
-                {}
-              jackalJaco_0/s_21:
-                {}
-              jackalJaco_0/s_22:
-                {}
-              jackalJaco_0/s_23:
-                {}
-              jackalJaco_0/s_24:
-                {}
-              jackalJaco_0/s_25:
-                {}
-              jackalJaco_0/s_26:
-                {}
-              jackalJaco_0/s_27:
-                {}
-              jackalJaco_0/s_28:
-                {}
-              jackalJaco_0/s_29:
-                {}
-              jackalJaco_0/s_3:
-                {}
-              jackalJaco_0/s_30:
-                {}
-              jackalJaco_0/s_31:
-                {}
-              jackalJaco_0/s_32:
-                {}
-              jackalJaco_0/s_33:
-                {}
-              jackalJaco_0/s_34:
-                {}
-              jackalJaco_0/s_35:
-                {}
-              jackalJaco_0/s_36:
-                {}
-              jackalJaco_0/s_37:
-                {}
-              jackalJaco_0/s_38:
-                {}
-              jackalJaco_0/s_39:
-                {}
-              jackalJaco_0/s_4:
-                {}
-              jackalJaco_0/s_40:
-                {}
-              jackalJaco_0/s_41:
-                {}
-              jackalJaco_0/s_42:
-                {}
-              jackalJaco_0/s_43:
-                {}
-              jackalJaco_0/s_44:
-                {}
-              jackalJaco_0/s_45:
-                {}
-              jackalJaco_0/s_46:
-                {}
-              jackalJaco_0/s_47:
-                {}
-              jackalJaco_0/s_48:
-                {}
-              jackalJaco_0/s_49:
-                {}
-              jackalJaco_0/s_5:
-                {}
-              jackalJaco_0/s_50:
-                {}
-              jackalJaco_0/s_51:
-                {}
-              jackalJaco_0/s_52:
-                {}
-              jackalJaco_0/s_53:
-                {}
-              jackalJaco_0/s_54:
-                {}
-              jackalJaco_0/s_55:
-                {}
-              jackalJaco_0/s_56:
-                {}
-              jackalJaco_0/s_57:
-                {}
-              jackalJaco_0/s_58:
-                {}
-              jackalJaco_0/s_59:
-                {}
-              jackalJaco_0/s_6:
-                {}
-              jackalJaco_0/s_60:
-                {}
-              jackalJaco_0/s_61:
-                {}
-              jackalJaco_0/s_62:
-                {}
-              jackalJaco_0/s_63:
-                {}
-              jackalJaco_0/s_64:
-                {}
-              jackalJaco_0/s_65:
-                {}
-              jackalJaco_0/s_66:
-                {}
-              jackalJaco_0/s_67:
-                {}
-              jackalJaco_0/s_68:
-                {}
-              jackalJaco_0/s_69:
-                {}
-              jackalJaco_0/s_7:
-                {}
-              jackalJaco_0/s_70:
-                {}
-              jackalJaco_0/s_71:
-                {}
-              jackalJaco_0/s_72:
-                {}
-              jackalJaco_0/s_73:
-                {}
-              jackalJaco_0/s_74:
-                {}
-              jackalJaco_0/s_75:
-                {}
-              jackalJaco_0/s_76:
-                {}
-              jackalJaco_0/s_77:
-                {}
-              jackalJaco_0/s_78:
-                {}
-              jackalJaco_0/s_79:
-                {}
-              jackalJaco_0/s_8:
-                {}
-              jackalJaco_0/s_80:
-                {}
-              jackalJaco_0/s_81:
-                {}
-              jackalJaco_0/s_82:
-                {}
-              jackalJaco_0/s_83:
-                {}
-              jackalJaco_0/s_84:
-                {}
-              jackalJaco_0/s_85:
-                {}
-              jackalJaco_0/s_86:
-                {}
-              jackalJaco_0/s_87:
-                {}
-              jackalJaco_0/s_88:
-                {}
-              jackalJaco_0/s_89:
-                {}
-              jackalJaco_0/s_9:
-                {}
-              jackalJaco_0/s_90:
-                {}
-              jackalJaco_0/s_91:
-                {}
-              jackalJaco_0/s_92:
-                {}
-              jackalJaco_0/s_93:
-                {}
-              jackalJaco_0/s_94:
-                {}
-              jackalJaco_0/s_95:
-                {}
-              jackalJaco_0/s_96:
-                {}
-              jackalJaco_0/s_97:
-                {}
-              jackalJaco_0/s_98:
-                {}
-              jackalJaco_0/s_99:
-                {}
           jackalJaco_0/red_cube:
             {}
       Update Interval: 0
@@ -615,18 +207,166 @@ Visualization Manager:
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: false
+      Enabled: true
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        chassis_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        d435_cam1camera_bottom_screw_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_color_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_color_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_depth_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_depth_frame_gazebo:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_depth_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_left_ir_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_left_ir_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        d435_cam1camera_right_ir_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_cam1camera_right_ir_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_fender_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_right_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        j2n6s300_end_effector:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        j2n6s300_link_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_5:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_6:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        j2n6s300_link_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        jaco_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        mid_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        navsat_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_fender_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rear_right_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: jackalJaco_0/robot_description
       TF Prefix: jackalJaco_0
       Update Interval: 0
-      Value: false
+      Value: true
       Visual Enabled: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
@@ -896,108 +636,7 @@ Visualization Manager:
       Marker Topic: /jackalJaco_0/sampling_data_arrows
       Name: MarkerArray
       Namespaces:
-        sp_0: true
-        sp_1: false
-        sp_10: false
-        sp_100: false
-        sp_101: false
-        sp_11: false
-        sp_12: false
-        sp_13: false
-        sp_14: false
-        sp_15: false
-        sp_16: false
-        sp_17: false
-        sp_18: false
-        sp_19: false
-        sp_2: false
-        sp_20: false
-        sp_21: false
-        sp_22: false
-        sp_23: false
-        sp_24: false
-        sp_25: false
-        sp_26: false
-        sp_27: false
-        sp_28: false
-        sp_29: false
-        sp_3: false
-        sp_30: false
-        sp_31: false
-        sp_32: false
-        sp_33: false
-        sp_34: false
-        sp_35: false
-        sp_36: true
-        sp_37: false
-        sp_38: false
-        sp_39: false
-        sp_4: false
-        sp_40: false
-        sp_41: false
-        sp_42: false
-        sp_43: false
-        sp_44: false
-        sp_45: false
-        sp_46: false
-        sp_47: false
-        sp_48: false
-        sp_49: false
-        sp_5: false
-        sp_50: false
-        sp_51: false
-        sp_52: false
-        sp_53: false
-        sp_54: false
-        sp_55: false
-        sp_56: false
-        sp_57: false
-        sp_58: false
-        sp_59: false
-        sp_6: false
-        sp_60: false
-        sp_61: false
-        sp_62: false
-        sp_63: false
-        sp_64: false
-        sp_65: false
-        sp_66: false
-        sp_67: false
-        sp_68: false
-        sp_69: false
-        sp_7: false
-        sp_70: false
-        sp_71: false
-        sp_72: false
-        sp_73: false
-        sp_74: false
-        sp_75: false
-        sp_76: false
-        sp_77: false
-        sp_78: false
-        sp_79: false
-        sp_8: false
-        sp_80: false
-        sp_81: false
-        sp_82: false
-        sp_83: false
-        sp_84: false
-        sp_85: false
-        sp_86: false
-        sp_87: false
-        sp_88: false
-        sp_89: false
-        sp_9: false
-        sp_90: false
-        sp_91: false
-        sp_92: false
-        sp_93: false
-        sp_94: false
-        sp_95: false
-        sp_96: false
-        sp_97: false
-        sp_98: false
-        sp_99: false
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -1028,7 +667,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.8033982515335083
+      Distance: 4.092983722686768
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -1036,17 +675,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.6051777601242065
-        Y: 1.3006995916366577
-        Z: 0.7624847292900085
+        X: -0.4504120647907257
+        Y: -0.029106169939041138
+        Z: 0.6008950471878052
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5947964787483215
+      Pitch: 1.0197960138320923
       Target Frame: <Fixed Frame>
-      Yaw: 3.121206760406494
+      Yaw: 5.511230945587158
     Saved: ~
 Window Geometry:
   Displays:

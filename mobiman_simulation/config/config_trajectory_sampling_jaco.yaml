@@ -3,12 +3,13 @@
 
 ws_name: "mobiman_simulation"
 
-flag_save: true
+flag_save: false
+flag_publish_frame: true
 
 trajectory_name: "jaco"
 
-trajectory_data_path: ""
-#trajectory_data_path: "dataset/trajectory_sampling/jaco/20240311_205503/"
+#trajectory_data_path: ""
+trajectory_data_path: "dataset/trajectory_sampling/jaco/20240313_202938/"
 flag_read_only: true
 
 trajectory_sampling_dataset_path: "dataset/trajectory_sampling/jaco/"
@@ -47,7 +48,7 @@ sampling_z_cnt: 3
 
 sample_start_index: 1
 
-sampling_roll_min: 0.0                            # 90: 1.57079632679   45: 0.7854
+sampling_roll_min: 0.0                            # 90: 1.57079632679   45: 0.7854 135: 2.356192654  225: 3.926992654
 sampling_roll_max: 0.0                    # 180: 3.14159265359  
 sampling_roll_cnt: 1
 

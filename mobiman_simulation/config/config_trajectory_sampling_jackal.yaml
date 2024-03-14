@@ -3,13 +3,14 @@
 
 ws_name: "mobiman_simulation"
 
-flag_save: true
+flag_save: false
+flag_publish_frame: true
 
 trajectory_name: "jackal"
 
-trajectory_data_path: ""
-#trajectory_data_path: "dataset/trajectory_sampling/jackal/20240311_235458/"
-flag_read_only: false
+#trajectory_data_path: ""
+trajectory_data_path: "dataset/trajectory_sampling/jackal/20240312_153905/"
+flag_read_only: true
 
 trajectory_sampling_dataset_path: "dataset/trajectory_sampling/jackal/"
 

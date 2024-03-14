@@ -145,11 +145,11 @@ class Config():
         self.action_type = rospy.get_param("action_type", 0)
         self.action_discrete_trajectory_data_path = rospy.get_param('action_discrete_trajectory_data_path', [])
 
-        self.n_action = 1
+        self.n_discrete_action = 3       # NUA NOTE: Adding "target is goal" cases for 3 modes 
         for tp in self.action_discrete_trajectory_data_path: # type: ignore
             filepath = self.ros_pkg_path + tp + "sampling_data.csv"
             action_data = read_data(filepath)
-            self.n_action += len(action_data)
+            self.n_discrete_action += len(action_data)
             #print("[mobiman_drl_config::Config::__init__] action_data len: " + str(len(action_data)))
 
         #self.n_action_model = rospy.get_param("n_action_model", 0.0)
@@ -180,11 +180,6 @@ class Config():
 
         self.fc_obs_shape = (-1, )
         self.cnn_obs_shape = (1,-1)
-
-        #if self.action_type == 0:
-        #    self.n_action = self.n_action_model + pow(2, self.n_action_constraint) + self.n_action_target # type: ignore 
-        #else:
-        #    self.n_action = rospy.get_param("n_action", 0.0)
 
         ## Rewards
         self.reward_terminal_goal = rospy.get_param('reward_terminal_goal', 0.0)
@@ -276,7 +271,7 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] action_time_horizon: " + str(self.action_time_horizon))
             print("[mobiman_drl_config::Config::__init__] action_type: " + str(self.action_type))
             print("[mobiman_drl_config::Config::__init__] action_discrete_trajectory_data_path: " + str(self.action_discrete_trajectory_data_path))
-            print("[mobiman_drl_config::Config::__init__] n_action: " + str(self.n_action))
+            print("[mobiman_drl_config::Config::__init__] n_discrete_action: " + str(self.n_discrete_action))
             #print("[mobiman_drl_config::Config::__init__] n_action_model: " + str(self.n_action_model))
             #print("[mobiman_drl_config::Config::__init__] n_action_constraint: " + str(self.n_action_constraint))
             #print("[mobiman_drl_config::Config::__init__] n_action_target: " + str(self.n_action_target))
@@ -390,7 +385,7 @@ class Config():
             log_data.append(["action_type", self.action_type])
             for i, oname in enumerate(self.action_discrete_trajectory_data_path): # type: ignore
                 log_data.append(["action_discrete_trajectory_data_path" + str(i), oname])
-            log_data.append(["n_action", self.n_action])
+            log_data.append(["n_discrete_action", self.n_discrete_action])
             #log_data.append(["n_action_model", self.n_action_model])
             #log_data.append(["n_action_constraint", self.n_action_constraint])
             #log_data.append(["n_action_target", self.n_action_target])

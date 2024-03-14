@@ -3,10 +3,11 @@
 
 ws_name: "mobiman_simulation"
 
-#flag_save: false
+flag_save: true
+flag_publish_frame: true
 
 flag_copy: true
-copy_from: "dataset/trajectory_sampling/jaco/20240311_205503/"
+copy_from: "dataset/trajectory_sampling/jaco/20240313_202938/"
 copy_to: "dataset/trajectory_sampling/jackalJaco/20240312_143237/"
 
 # trajectory_data

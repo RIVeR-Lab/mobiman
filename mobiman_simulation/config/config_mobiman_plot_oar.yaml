@@ -11,4 +11,4 @@ save_flag: True
 data_folder: ""
 #data_folder: "dataset/drl/arena"
 
-data_names: ["dataset/drl/ocs2wb/oar_data_testing_jackalJaco_0_ocs2wb.csv"]
+data_names: ["dataset/drl/m4/20240312_224258_PPO_mobiman/oar_data_testing_jackalJaco_0_m4.csv"]

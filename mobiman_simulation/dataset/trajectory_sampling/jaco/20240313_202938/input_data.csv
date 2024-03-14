@@ -1,8 +1,8 @@
 ws_name,mobiman_simulation
 trajectory_name,jaco
-trajectory_data_path,dataset/trajectory_sampling/jaco/20240311_205503/
+trajectory_data_path,dataset/trajectory_sampling/jaco/20240313_202938/
 trajectory_sampling_dataset_path,dataset/trajectory_sampling/jaco/
-trajectory_frame,/jackalJaco_0/base_link
+trajectory_frame,jackalJaco_0/base_link
 trajectory_gen_type,geometric
 geo_type,cube
 sampling_x_min,-0.5

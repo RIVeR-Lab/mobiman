@@ -13,7 +13,7 @@ gazebo_robot_name: "mobiman"
 # ocs2wb
 drl_data_path: "dataset/drl/m4/"      # NUA NOTE: Saving directory
 initial_training_path: ""
-#initial_training_path: "20240312_000103_PPO_mobiman/"
+#initial_training_path: "20240312_224258_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -125,10 +125,10 @@ action_time_horizon: 3.0
 
 # 0: Discrete
 # 1: Continuous [model(1), target_type(1), target(6)]
-action_type: 1
+action_type: 0
 
 action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
-                                       "dataset/trajectory_sampling/jaco/20240311_205503/",
+                                       "dataset/trajectory_sampling/jaco/20240313_202938/",
                                        "dataset/trajectory_sampling/jackalJaco/20240312_143237/"]
 
 action_goal_range_min_x: -0.0               # wrt. goal frame
