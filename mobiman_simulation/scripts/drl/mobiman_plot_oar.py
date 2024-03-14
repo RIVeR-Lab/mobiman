@@ -201,7 +201,7 @@ class PlotMobiman(object):
         df = self.generate_dataframe()
         clean_data = df[df['reward'].notna()]
 
-        window_size = 1500
+        window_size = 5
         clean_data['Reward'] = clean_data['reward'].apply(lambda x: float(x))
         clean_data['Reward'] = clean_data['Reward'].round(4)
         clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
