@@ -49,7 +49,9 @@ class PlotMobiman(object):
                  plot_window_episode:int,
                  save_flag:bool,
                  data_folder:str,
-                 data_names=list):
+                 data_names=list,
+                 observation_sequence=int,
+                 action_sequence=int):
         print("[mobiman_plot_oar::PlotMobiman::__init__] START")
         
         self.mobiman_path = mobiman_path
@@ -61,7 +63,8 @@ class PlotMobiman(object):
         self.save_flag = save_flag
         self.data_folder = data_folder
         self.data_names = data_names
-
+        self.action_sequences = action_sequence
+        self.observation_sequences = observation_sequence
         #self.df = None
 
         '''
@@ -194,8 +197,147 @@ class PlotMobiman(object):
     '''
     DESCRIPTION: TODO...
     '''
+    def generate_dataframe_episodic(self) -> pd.DataFrame:
+        main_path = os.path.join(self.mobiman_path, self.data_folder)
+        folders = sorted(os.listdir(main_path))[::-1]
+        files = deque()
+        folder_ = None
+        for folder in folders:
+            try:
+                log_csv = pd.read_csv(main_path + '/' + folder + '/' + 'training_log.csv', names=['key', 'value'])
+                folder_ = folder
+                break
+            except Exception as e:
+                print(e)
+        while True:
+            n_robot = log_csv.iloc[6]['value']
+            log_csv.iloc[14]['value']
+            file = []
+            for i in range(int(n_robot)):
+                file.append(f'{main_path}/{folder}/oar_data_training_jackalJaco_{i}.csv')
+            files.append(file)
+            if pd.notna(log_csv.iloc[14]['value']):
+                folder = log_csv.iloc[14]['value'].replace('/','')
+                # print(folder)
+                log_csv = pd.read_csv(main_path + '/' + folder + '/' + 'training_log.csv', names=['key', 'value'])
+            else:
+                break
+        main_df = None
+        while len(files) != 0:
+            csvs = files.pop()
+            dfs = []
+            for csv in csvs:
+                dfs.append(pd.read_csv(csv))
+            counter = 0
+            dfs_len = [len(a) for a in dfs]
+            dfs_idx = [0 for _ in dfs]
+            while True:
+                # print(dfs_len, dfs_idx)
+                if dfs_len == dfs_idx:
+                    break
+                if dfs_len[counter] <= dfs_idx[counter]:
+                    counter = (counter + 1) % len(dfs)
+                    continue
+                # result = pd.concat(dfs).sort_index(kind='merge').reset_index(drop=True)
+                if not isinstance(main_df, pd.DataFrame):
+                    main_df = pd.DataFrame(columns=list(dfs[counter].columns))
+                    # main_df = main_df.append(dfs[counter].iloc[dfs_idx[counter]], ignore_index=True)
+                # else:
+                main_df = pd.concat([main_df, dfs[counter].iloc[dfs_idx[counter]]], ignore_index=True)
+                    # main_df = main_df.append(dfs[counter].iloc[dfs_idx[counter]], ignore_index=True)
+                dfs_idx[counter] += 1
+                if pd.isna(dfs[counter]['episode_index'].iloc[dfs_idx[counter] - 1]):
+                    counter = (counter + 1) % len(dfs)
+        print('maindf: ', main_df)
+        return main_df
 
 
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def plot_action(self):
+        df = self.generate_dataframe()
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] START")
+
+        columns = ['a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
+        columns_ = ['model_mode','self_collision_flag','target_pos_x', 'target_pos_y',
+                   'target_pos_z', 'target_pos_roll', 'target_pos_pitch', 'target_pos_yaw']
+        new_df = df.copy()
+        new_df['Action'] = new_df['action'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(' ') if a != ''])
+        new_df[columns] = pd.DataFrame(new_df['Action'].tolist(), index=new_df.index)
+        # self.df.dropna(inplace=True)
+        
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] action_sequences: " + str(self.action_sequences))
+        
+        if self.action_sequences == [-1]:
+            for i in range(0,8):
+                new_df[f'a{i}'].hist()
+                plt.title(f'Action {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                # plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_action_{i}.png')
+                # if self.plot_flag:
+                plt.show()
+                # plt.close()
+                
+        else:
+            for i in self.action_sequences:
+                new_df[f'a{i}'].hist()
+                plt.title(f'Action {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                # plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_action_{i}.png')
+                # if self.plot_flag:
+                plt.show()
+                # plt.close()
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] END")
+
+
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def plot_observations(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
+        df = self.generate_dataframe()
+        columns = [f'o{a}' for a in range(0,25)]
+        columns_ = columns
+        new_df = df.copy()
+        new_df['Observation'] = new_df['observation'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(',') if a != ''])
+        new_df[columns] = pd.DataFrame(new_df['Observation'].tolist(), index=new_df.index)
+        # self.df.dropna(inplace=True)
+        
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] observation_sequences: " + str(self.observation_sequences))
+
+        if self.observation_sequences == [-1]:
+            for i in range(0,74):
+                new_df[f'o{i}'].hist()
+                plt.title(f'Observation {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                # plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_observation_{i}.png')
+                # if self.plot_flag:
+                plt.show()
+                # plt.close()
+                
+        else:
+            for i in self.observation_sequences:
+                new_df[f'o{i}'].hist()
+                plt.title(f'Observation {columns_[i]} Histogram')
+                plt.xlabel(f'{columns_[i]}')
+                plt.ylabel('Count')
+                # plt.savefig(f'{self.plot_path}/{self.data_folder.split("/")[-2]}_observation_{i}.png')
+                # if self.plot_flag:
+                plt.show()
+                # plt.close()
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
+
+
+
+    '''
+    DESCRIPTION: TODO...
+    '''
     def plot_rewards(self):
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
         df = self.generate_dataframe()
@@ -513,7 +655,8 @@ if __name__ == '__main__':
     plot_title = rospy.get_param('plot_title')
     plot_window_timestep = rospy.get_param('plot_window_timestep')
     plot_window_episode = rospy.get_param('plot_window_episode')
-
+    observation_sequence = rospy.get_param('observation_sequence')
+    action_sequence = rospy.get_param('action_sequence')
     save_flag = rospy.get_param('save_flag')    
     
     data_folder = rospy.get_param('data_folder')
@@ -542,11 +685,15 @@ if __name__ == '__main__':
                                plot_window_episode=plot_window_episode, # type: ignore
                                save_flag=save_flag, # type: ignore
                                data_folder=data_folder, # type: ignore
-                               data_names=data_names) # type: ignore
+                               data_names=data_names,
+                               observation_sequence=observation_sequence,
+                               action_sequence=action_sequence) # type: ignore
 
 
     if plot_rewards:
-        plot_mobiman.plot_rewards()
+        # plot_mobiman.plot_rewards()
+        plot_mobiman.plot_action()
+        plot_mobiman.plot_observations()
     else:
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
