@@ -12,8 +12,8 @@ gazebo_robot_name: "mobiman"
 # m4
 # ocs2wb
 drl_data_path: "dataset/drl/m4/"      # NUA NOTE: Saving directory
-initial_training_path: ""
-#initial_training_path: "20240312_224258_PPO_mobiman/"
+#initial_training_path: ""
+initial_training_path: "20240314_190148_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -153,25 +153,22 @@ reward_terminal_collision: -100.0
 reward_terminal_rollover: -100.0
 reward_terminal_max_step: -50.0
 
-# Distance-to-goal
-reward_step_dist2goal_scale: 10.0
-reward_step_dist2goal_dist_scale: 0.2
-reward_step_dist2goal_dist_threshold: 1.0
-#reward_step_dist2goal_mu: 0.0
-#reward_step_dist2goal_sigma: 1.0
-
 # Model mode
 reward_step_mode0: -3.0     # Computational Cost: 3
 reward_step_mode1: -6.0    # Computational Cost: 6 
 reward_step_mode2: -9.0    # Computational Cost: 9
 
-# MPC result
-#reward_step_mpc_exit: -5
-#reward_step_target_reached: 3
-#reward_step_time_horizon_min: -10
-#reward_step_time_horizon_max: 0
+# Goal
+reward_step_dist2goal_scale: 10.0
+reward_step_dist2goal_dist_scale: 0.2
+reward_step_dist2goal_dist_threshold: 1.0
+
+# Target
+reward_step_target_scale: 10.0
+reward_step_target_intermediate_point_scale: 0.5
+reward_step_target_gamma: -4.0
 
 # Cost weights
-alpha_step_dist2goal: 1.0
 alpha_step_mode: 1.0
-#alpha_step_mpc_result: 1
+alpha_step_goal: 1.0
+alpha_step_target: 1.0
