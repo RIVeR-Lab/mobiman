@@ -9,17 +9,9 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
-<<<<<<< HEAD
-# m4
-# ocs2wb
-drl_data_path: "dataset/drl/m4/"      # NUA NOTE: Saving directory
-#initial_training_path: ""
-initial_training_path: "20240313_235543_PPO_mobiman/"
-=======
 drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
 #initial_training_path: ""
 initial_training_path: "20240316_000316_PPO_mobiman/"
->>>>>>> main
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
