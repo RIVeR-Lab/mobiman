@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-LAST UPDATE: 2023.10.02
+LAST UPDATE: 2024.03.14
 
 AUTHOR: Neset Unver Akmandor (NUA)
 
@@ -48,6 +48,28 @@ def plot_func(
     plt.savefig(save_path)
     plt.close()
 
+def plot_func_multi(   
+        data_x_multi, data_y_multi,
+        data_label_multi, data_color='r',
+        label_x='', label_y='', title='', 
+        save_path=''):
+    
+    print("len data_x_multi: " + str(len(data_x_multi)))
+    print("len data_y_multi: " + str(len(data_y_multi)))
+    print("len data_label_multi: " + str(len(data_label_multi)))
+
+    fig = plt.figure()
+    for i, dx in enumerate(data_x_multi):
+        plt.plot(dx, data_y_multi[i], label=data_label_multi[i])
+
+    plt.xlabel(label_x)
+    plt.ylabel(label_y)
+    plt.title(title)
+    plt.grid()
+    plt.legend()
+    plt.savefig(save_path)
+    plt.close()
+
 def plot_bar(   
         data_x, data_y,
         data_label='', data_color='r',
@@ -84,7 +106,13 @@ def linear_function(x_min, x_max, y_min, y_max, query_x, slope_sign=1):
                 return y_min
             else:
                 return y_max
-            
+
+'''
+DESCRIPTION: TODO...
+'''     
+def exponential_function(x, gamma):
+    return np.exp(gamma * x) # type: ignore
+
 '''
 DESCRIPTION: TODO...
 '''     
@@ -138,21 +166,7 @@ def reward_step_time_horizon_func(dt_action, action_time_horizon, reward_step_ti
 '''
 DESCRIPTION: TODO...
 '''
-if __name__ == '__main__':
-
-    print("[plot_functions::__main__] START")
-
-    rospy.init_node('plot_functions', anonymous=True, log_level=rospy.WARN)
-
-    ## Get variables
-    rospack = rospkg.RosPack()
-    mobiman_path = rospack.get_path('mobiman_simulation') + "/"
-    save_path_rel = rospy.get_param('save_path_rel', "")
-
-    save_path = mobiman_path + save_path_rel
-    isExist = os.path.exists(save_path)
-    if not isExist:
-        os.makedirs(save_path)
+def example_reward_shaping_v0(save_path):
 
     action_time_horizon = rospy.get_param("action_time_horizon", 0.0)
 
@@ -282,5 +296,56 @@ if __name__ == '__main__':
     plot_func(dt_action, reward_step_time_horizon, 
               label_x="dt_action [s]", label_y="reward_step_time_horizon", 
               title=title, save_path=save_path+extra_tag+'reward_step_time_horizon.png')
+
+def example_reward_shaping_v1(save_path):
+
+    print("[plot_functions::example_reward_shaping_v1] START")
+
+    print("[plot_functions::example_reward_shaping_v1] save_path: " + str(save_path))
+
+    gamma = np.linspace(-5.0, -2.0, 4)
+    n_data = 100
+    
+    reward_target_multi = []
+    diff_target_multi = []
+    label_y_multi = []
+    for i in range(gamma.size):
+        diff_target = np.linspace(0.0, 1.0, n_data)
+        reward_target = np.zeros(n_data)
+        for j in range(n_data):
+            reward_target[j] = exponential_function(diff_target[j], gamma[i])
+        
+        diff_target_multi.append(diff_target)
+        reward_target_multi.append(reward_target)
+        label_y_multi.append('gamma: ' + str(gamma[i]))
+
+    plot_func_multi(   
+        diff_target_multi, reward_target_multi,
+        data_label_multi=label_y_multi,
+        label_x='diff_target', label_y='reward_target', title='Target Reward Function', 
+        save_path=save_path+'reward_target_gamma.png')
+
+    print("[plot_functions::example_reward_shaping_v1] END")
+
+'''
+DESCRIPTION: TODO...
+'''
+if __name__ == '__main__':
+
+    print("[plot_functions::__main__] START")
+
+    rospy.init_node('plot_functions', anonymous=True, log_level=rospy.WARN)
+
+    ## Get variables
+    rospack = rospkg.RosPack()
+    mobiman_path = rospack.get_path('mobiman_simulation') + "/"
+    save_path_rel = rospy.get_param('save_path_rel', "")
+
+    save_path = mobiman_path + save_path_rel
+    isExist = os.path.exists(save_path)
+    if not isExist:
+        os.makedirs(save_path)
+
+    example_reward_shaping_v1(save_path)
 
     print("[plot_functions::__main__] END")

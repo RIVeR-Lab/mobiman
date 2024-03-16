@@ -9,11 +9,17 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
+<<<<<<< HEAD
 # m4
 # ocs2wb
 drl_data_path: "dataset/drl/m4/"      # NUA NOTE: Saving directory
 #initial_training_path: ""
 initial_training_path: "20240313_235543_PPO_mobiman/"
+=======
+drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
+#initial_training_path: ""
+initial_training_path: "20240316_000316_PPO_mobiman/"
+>>>>>>> main
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -94,7 +100,8 @@ odom_msg_name: "odom"
 arm_state_msg_name: "joint_states"
 base_control_msg_name: "mobile_base_controller/cmd_vel"
 arm_control_msg_name: "arm_controller/cmd_pos"
-target_msg_name: "target_visu"
+#target_msg_name: "target_visu"
+manual_target_msg_name: ""
 
 mpc_data_msg_name: "mpc_data"
 #mobiman_goal_obs_msg_name: "mobiman_goal_obs"
@@ -153,25 +160,24 @@ reward_terminal_collision: -100.0
 reward_terminal_rollover: -100.0
 reward_terminal_max_step: -50.0
 
-# Distance-to-goal
-reward_step_dist2goal_scale: 10.0
-reward_step_dist2goal_dist_scale: 0.2
-reward_step_dist2goal_dist_threshold: 1.0
-#reward_step_dist2goal_mu: 0.0
-#reward_step_dist2goal_sigma: 1.0
-
 # Model mode
 reward_step_mode0: -3.0     # Computational Cost: 3
 reward_step_mode1: -6.0    # Computational Cost: 6 
 reward_step_mode2: -9.0    # Computational Cost: 9
 
-# MPC result
-#reward_step_mpc_exit: -5
-#reward_step_target_reached: 3
-#reward_step_time_horizon_min: -10
-#reward_step_time_horizon_max: 0
+# Goal
+reward_step_goal_scale: 5.0
+reward_step_goal_dist_scale: 0.1
+reward_step_goal_dist_threshold: 1.0
+
+# Target
+reward_step_target_scale: 5.0
+reward_step_target_intermediate_point_scale: 0.5
+reward_step_target_gamma: -3.0
+reward_step_target_com_scale: 5.0
+reward_step_target_com_threshold: 0.07
 
 # Cost weights
-alpha_step_dist2goal: 1.0
 alpha_step_mode: 1.0
-#alpha_step_mpc_result: 1
+alpha_step_goal: 1.0
+alpha_step_target: 1.0

@@ -31,10 +31,10 @@ reward_step_mode1: -3.0
 reward_step_mode2: -4.5
 
 # MPC result
-reward_step_mpc_exit: -5
-reward_step_target_reached: 3
-reward_step_time_horizon_min: -10
-reward_step_time_horizon_max: 0
+#reward_step_mpc_exit: -5
+#reward_step_target_reached: 3
+#reward_step_time_horizon_min: -10
+#reward_step_time_horizon_max: 0
 
 # Cost weights
 alpha_step_target2goal: 1
