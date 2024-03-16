@@ -1,5 +1,5 @@
 ## Parameters
-plot_path: ""
+plot_path: "dataset/drl/m4/latest_training"
 plot_flag: True
 plot_title: "ocs2wb_timeHorizon3"
 plot_window_timestep: 20

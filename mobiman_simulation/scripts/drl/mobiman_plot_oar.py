@@ -28,6 +28,7 @@ import matplotlib.pyplot as plt
 from collections import deque
 import rospy
 import rospkg
+from toolz import interleave
 
 #from stable_baselines3.common.results_plotter import ts2xy
 #from stable_baselines3.common.monitor import load_results
@@ -194,6 +195,28 @@ class PlotMobiman(object):
                 main_df = pd.concat([main_df, result], ignore_index=True)
         return main_df
 
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def split_df_by_nan(self, df, by_row : str = "episode_index"):
+        sub_dfs = []
+        start_idx = None
+    
+        for idx, row in df.iterrows():
+            if pd.isna(row[by_row]):
+                if start_idx is not None:
+                    sub_dfs.append(df.iloc[start_idx:idx+1])
+                    start_idx = None
+            else:
+                if start_idx is None:
+                    start_idx = idx
+    
+        if start_idx is not None:
+            sub_dfs.append(df.iloc[start_idx:])
+    
+        return sub_dfs
+
     '''
     DESCRIPTION: TODO...
     '''
@@ -227,28 +250,13 @@ class PlotMobiman(object):
             csvs = files.pop()
             dfs = []
             for csv in csvs:
-                dfs.append(pd.read_csv(csv))
-            counter = 0
-            dfs_len = [len(a) for a in dfs]
-            dfs_idx = [0 for _ in dfs]
-            while True:
-                # print(dfs_len, dfs_idx)
-                if dfs_len == dfs_idx:
-                    break
-                if dfs_len[counter] <= dfs_idx[counter]:
-                    counter = (counter + 1) % len(dfs)
-                    continue
-                # result = pd.concat(dfs).sort_index(kind='merge').reset_index(drop=True)
-                if not isinstance(main_df, pd.DataFrame):
-                    main_df = pd.DataFrame(columns=list(dfs[counter].columns))
-                    # main_df = main_df.append(dfs[counter].iloc[dfs_idx[counter]], ignore_index=True)
-                # else:
-                main_df = pd.concat([main_df, dfs[counter].iloc[dfs_idx[counter]]], ignore_index=True)
-                    # main_df = main_df.append(dfs[counter].iloc[dfs_idx[counter]], ignore_index=True)
-                dfs_idx[counter] += 1
-                if pd.isna(dfs[counter]['episode_index'].iloc[dfs_idx[counter] - 1]):
-                    counter = (counter + 1) % len(dfs)
-        print('maindf: ', main_df)
+                dfs.append(self.split_df_by_nan(pd.read_csv(csv)))
+            result = pd.concat(interleave(dfs), ignore_index=True)
+            if not isinstance(main_df, pd.DataFrame):
+                main_df = result.copy()
+            else:
+                main_df = pd.concat([main_df, result], ignore_index=True)
+        print(len(main_df))
         return main_df
 
 
@@ -358,6 +366,47 @@ class PlotMobiman(object):
         plt.show()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")    
+    
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def plot_rewards_episodic(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
+        df = self.generate_dataframe_episodic()
+        
+        # clean_df['rewards'] = 
+        nan_indices = df.index[df['reward'].isnull()].tolist()
+        result = []
+        start = 0
+        for end in nan_indices:
+            interval_sum = df['reward'][start:end].sum()
+            result.append(interval_sum)
+            start = end + 1
+
+        # Check if there's any remaining data after the last NaN
+        if start < len(df):
+            interval_sum = df['reward'][start:].sum()
+            result.append(interval_sum)
+
+        clean_df = pd.DataFrame({'reward':result})
+        # clean_df.plot()
+
+        clean_data = clean_df.dropna()
+        window_size = 100
+        clean_data['Reward'] = clean_data['reward'].apply(lambda x: float(x))
+        clean_data['Reward'] = clean_data['Reward'].round(4)
+        clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
+        
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
+        print(clean_data.info())
+        
+        plt.plot(clean_data['cumulative_reward'].iloc[:])
+        plt.title(f'Rolling average of reward, window size {window_size}')
+        plt.xlabel("Steps")
+        plt.ylabel("Rewards")
+        plt.show()
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")
             
 
     '''
@@ -691,9 +740,10 @@ if __name__ == '__main__':
 
 
     if plot_rewards:
+        plot_mobiman.plot_rewards_episodic()
         plot_mobiman.plot_rewards()
-        plot_mobiman.plot_action()
-        plot_mobiman.plot_observations()
+        # plot_mobiman.plot_action()
+        # plot_mobiman.plot_observations()
     else:
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
