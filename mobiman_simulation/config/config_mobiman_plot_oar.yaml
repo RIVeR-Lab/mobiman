@@ -1,14 +1,32 @@
 ## Parameters
-plot_path: ""
-plot_flag: True
+### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
+data_folder: ""
+#data_folder: "dataset/drl/benchmark/"
+data_names: ["dataset/drl/benchmark/20240316_001454_PPO_mobiman/oar_data_training_jackalJaco_0.csv"]
+
 plot_title: "ocs2wb_timeHorizon3"
 plot_window_timestep: 20
 plot_window_episode: 20
 
 save_flag: True
+save_folder: "dataset/drl/benchmark/"
 
-### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
-data_folder: ""
-#data_folder: "dataset/drl/arena"
+plot_result_flag: False
+plot_reward_flag: True
+plot_action_hist_flag: False
+plot_observation_hist_flag: False
 
-data_names: ["dataset/drl/m4/20240312_224258_PPO_mobiman/oar_data_testing_jackalJaco_0_m4.csv"]
+## Actions:
+# Discrete (105): mode0_target (30) + mode1_target (36) + mode2_target (36) + mode0_goal (1) + mode1_goal (1) + mode2_goal (1)
+# Continuous (8): model_mode (1) + target_type (1) + target_x (1) + target_y (1) + target_z (1) + target_roll (1) + target_pitch (1) + target_yaw (1)
+action_index: [0]
+
+## Observations (25):
+# 0, 1, 2: goal_wrt_robot_x, goal_wrt_robot_y, goal_wrt_robot_z
+# 3, 4, 5: obj1_wrt_robot_x, obj1_wrt_robot_y, obj1_wrt_robot_z
+# 6, 7, 8: obj2_wrt_robot_x, obj2_wrt_robot_y, obj2_wrt_robot_z
+# 9, 10: self_col_distance1, self_col_distance2
+# 11, 12: robot_base_velo_lat, robot_base_velo_ang
+# 13, ..., 18: arm_state_pos_1, ..., arm_state_pos_6
+# 19, ..., 25: arm_state_velo_1, ..., arm_state_velo_6
+observation_index: [0]
