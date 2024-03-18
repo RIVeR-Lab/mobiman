@@ -129,6 +129,7 @@ class Config():
         self.occgrid_occ_max = rospy.get_param('occgrid_occ_max', False)
 
         ## Algorithm
+        self.ablation_mode = rospy.get_param('ablation_mode', "")
         self.observation_space_type = rospy.get_param('observation_space_type', "")
 
         self.err_threshold_pos = rospy.get_param("err_threshold_pos", 0.0)
@@ -205,6 +206,7 @@ class Config():
 
         ### Testing
         self.testing_benchmark_name = rospy.get_param('testing_benchmark_name', "")
+        self.testing_mode = rospy.get_param('testing_mode', "")
         self.n_testing_eval_episodes = rospy.get_param('n_testing_eval_episodes', 0)
 
         ## Write all parameters
@@ -258,6 +260,7 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] occgrid_normalize_flag: " + str(self.occgrid_normalize_flag))
             print("[mobiman_drl_config::Config::__init__] occgrid_occ_min: " + str(self.occgrid_occ_min))
             print("[mobiman_drl_config::Config::__init__] occgrid_occ_max: " + str(self.occgrid_occ_max))
+            print("[mobiman_drl_config::Config::__init__] ablation_mode: " + str(self.ablation_mode))
             print("[mobiman_drl_config::Config::__init__] observation_space_type: " + str(self.observation_space_type))
             print("[mobiman_drl_config::Config::__init__] err_threshold_pos: " + str(self.err_threshold_pos))
             print("[mobiman_drl_config::Config::__init__] err_threshold_ori_yaw: " + str(self.err_threshold_ori_yaw))
@@ -317,6 +320,7 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] alpha_step_goal: " + str(self.alpha_step_goal))
             print("[mobiman_drl_config::Config::__init__] alpha_step_target: " + str(self.alpha_step_target))
             print("[mobiman_drl_config::Config::__init__] testing_benchmark_name: " + str(self.testing_benchmark_name))
+            print("[mobiman_drl_config::Config::__init__] testing_mode: " + str(self.testing_mode))
             print("[mobiman_drl_config::Config::__init__] n_testing_eval_episodes: " + str(self.n_testing_eval_episodes))
 
         if self.log_file:
@@ -371,6 +375,7 @@ class Config():
             log_data.append(["occgrid_normalize_flag", self.occgrid_normalize_flag])
             log_data.append(["occgrid_occ_min", self.occgrid_occ_min])
             log_data.append(["occgrid_occ_max", self.occgrid_occ_max])
+            log_data.append(["ablation_mode", self.ablation_mode])
             log_data.append(["observation_space_type", self.observation_space_type])
             log_data.append(["err_threshold_pos", self.err_threshold_pos])
             log_data.append(["err_threshold_ori_yaw", self.err_threshold_ori_yaw])

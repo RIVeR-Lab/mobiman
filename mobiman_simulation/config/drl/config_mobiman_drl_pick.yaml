@@ -9,18 +9,22 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
-drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
-#initial_training_path: ""
-initial_training_path: "20240316_000316_PPO_mobiman/"
+drl_data_path: "dataset/drl/arena/ocs2wb/"      # NUA NOTE: Saving directory
+initial_training_path: ""
+#initial_training_path: "20240316_000316_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
 
 #testing_log_name: "testing_log"
-# m4
+# re4mpc
 # ocs2wb
-testing_benchmark_name: "m4"
-n_testing_eval_episodes: 1
+testing_benchmark_name: "ocs2wb"
+
+## 0: Full case
+## 1: Far goal case
+testing_mode: 1
+n_testing_eval_episodes: 3
 
 ### DRL-Training Parameters
 
@@ -31,6 +35,10 @@ n_testing_eval_episodes: 1
 # A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
 rl_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
+
+## 0: Regular case
+## 1: No target reward
+ablation_mode: 0
 
 # Options: ### NUA TODO: UPDATE! 
 # mobiman_FC             -> FC(occupancy_set + target + prev_action)
