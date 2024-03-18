@@ -9,7 +9,7 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
-drl_data_path: "dataset/drl/arena/ocs2wb/"      # NUA NOTE: Saving directory
+drl_data_path: "dataset/drl/ocs2wb/test2/"      # NUA NOTE: Saving directory
 initial_training_path: ""
 #initial_training_path: "20240316_000316_PPO_mobiman/"
 training_log_name: "training_log"
@@ -24,7 +24,7 @@ testing_benchmark_name: "ocs2wb"
 ## 0: Full case
 ## 1: Far goal case
 testing_mode: 1
-n_testing_eval_episodes: 3
+n_testing_eval_episodes: 1
 
 ### DRL-Training Parameters
 
@@ -33,6 +33,7 @@ n_testing_eval_episodes: 3
 # SAC
 # DDPG
 # A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
+# DQN   (NUA NOTE: NOT FUNCTIONAL YET!)
 rl_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
 
@@ -132,7 +133,7 @@ action_time_horizon: 3.0
 
 # 0: Discrete
 # 1: Continuous [model(1), target_type(1), target(6)]
-action_type: 1
+action_type: 0
 
 action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
                                        "dataset/trajectory_sampling/jaco/20240313_202938/",
@@ -166,8 +167,8 @@ reward_step_mode1: -6.0    # Computational Cost: 6
 reward_step_mode2: -9.0    # Computational Cost: 9
 
 # Goal
-reward_step_goal_scale: 5.0
-reward_step_goal_dist_scale: 0.1
+reward_step_goal_scale: 10.0
+reward_step_goal_dist_scale: 0.2
 reward_step_goal_dist_threshold: 1.0
 
 # Target
