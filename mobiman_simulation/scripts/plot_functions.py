@@ -110,8 +110,12 @@ def linear_function(x_min, x_max, y_min, y_max, query_x, slope_sign=1):
 '''
 DESCRIPTION: TODO...
 '''     
-def exponential_function(x, gamma):
-    return np.exp(gamma * x) # type: ignore
+def exponential_function(x, gamma, exp_factor=0):
+    alpha = 1
+    if exp_factor > 0:
+        alpha = 1 / (np.exp(exp_factor))
+    return alpha * np.exp(gamma * x) # type: ignore
+
 
 '''
 DESCRIPTION: TODO...
@@ -303,6 +307,7 @@ def example_reward_shaping_v1(save_path):
 
     print("[plot_functions::example_reward_shaping_v1] save_path: " + str(save_path))
 
+    alpha = 1
     gamma = np.linspace(-5.0, -2.0, 4)
     n_data = 100
     
@@ -313,7 +318,7 @@ def example_reward_shaping_v1(save_path):
         diff_target = np.linspace(0.0, 1.0, n_data)
         reward_target = np.zeros(n_data)
         for j in range(n_data):
-            reward_target[j] = exponential_function(diff_target[j], gamma[i])
+            reward_target[j] = alpha * exponential_function(diff_target[j], gamma[i])
         
         diff_target_multi.append(diff_target)
         reward_target_multi.append(reward_target)
@@ -322,10 +327,41 @@ def example_reward_shaping_v1(save_path):
     plot_func_multi(   
         diff_target_multi, reward_target_multi,
         data_label_multi=label_y_multi,
-        label_x='diff_target', label_y='reward_target', title='Target Reward Function', 
-        save_path=save_path+'reward_target_gamma.png')
+        label_x='diff_T_R1', label_y='reward_step_target', title='Target Step Reward Function\n(alpha = ' + str(alpha) + ')', 
+        save_path=save_path+'reward_step_target_gamma.png')
 
     print("[plot_functions::example_reward_shaping_v1] END")
+
+def example_reward_shaping_v2(save_path):
+
+    print("[plot_functions::example_reward_shaping_v2] START")
+
+    print("[plot_functions::example_reward_shaping_v2] save_path: " + str(save_path))
+
+    alpha = -1
+    gamma = np.linspace(2.0, 5.0, 4)
+    n_data = 100
+
+    reward_target_multi = []
+    diff_target_multi = []
+    label_y_multi = []
+    for i in range(gamma.size):
+        diff_target = np.linspace(0.0, 1.0, n_data)
+        reward_target = np.zeros(n_data)
+        for j in range(n_data):
+            reward_target[j] = alpha * exponential_function(diff_target[j], gamma[i], exp_factor=gamma[i])
+        
+        diff_target_multi.append(diff_target)
+        reward_target_multi.append(reward_target)
+        label_y_multi.append('gamma: ' + str(gamma[i]))
+
+    plot_func_multi(   
+        diff_target_multi, reward_target_multi,
+        data_label_multi=label_y_multi,
+        label_x='diff_G_R1', label_y='penalty_step_target', title='Target Step Penalty Function\n(alpha = ' + str(alpha) + ')', 
+        save_path=save_path+'reward_step_penalty_gamma.png')
+
+    print("[plot_functions::example_reward_shaping_v2] END")
 
 '''
 DESCRIPTION: TODO...
@@ -347,5 +383,6 @@ if __name__ == '__main__':
         os.makedirs(save_path)
 
     example_reward_shaping_v1(save_path)
+    example_reward_shaping_v2(save_path)
 
     print("[plot_functions::__main__] END")

@@ -9,7 +9,7 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
-drl_data_path: "dataset/drl/ocs2wb/test2/"      # NUA NOTE: Saving directory
+drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
 initial_training_path: ""
 #initial_training_path: "20240316_000316_PPO_mobiman/"
 training_log_name: "training_log"
@@ -19,7 +19,7 @@ training_log_name: "training_log"
 #testing_log_name: "testing_log"
 # re4mpc
 # ocs2wb
-testing_benchmark_name: "ocs2wb"
+testing_benchmark_name: "re4mpc"
 
 ## 0: Full case
 ## 1: Far goal case
@@ -33,7 +33,7 @@ n_testing_eval_episodes: 1
 # SAC
 # DDPG
 # A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
-# DQN   (NUA NOTE: NOT FUNCTIONAL YET!)
+# DQN
 rl_algorithm: "PPO"
 motion_planning_algorithm: "ocs2"
 
@@ -46,10 +46,10 @@ ablation_mode: 0
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action) (NUA NOTE: NOT FUNCTIONAL YET!)
 observation_space_type: "mobiman_FC"
 
-learning_rate: 0.0002         #PPO: 0.0001    #SAC: 0.00025 
-n_steps: 200                   #PPO: 100       #SAC: 100
-batch_size: 50                #PPO: 20        #SAC: 28
-ent_coef: 0.0001              #PPO: 0.0002    #SAC: 0.0002
+learning_rate: 0.0002         #PPO: 0.0002    #SAC: 0.00025 
+n_steps: 200                   #PPO: 200       #SAC: 100
+batch_size: 50                #PPO: 50        #SAC: 28
+ent_coef: 0.0001              #PPO: 0.0001    #SAC: 0.0002
 training_timesteps: 50000
 max_episode_steps: 20
 
