@@ -46,17 +46,19 @@ roslaunch mobiman_simulation mobiman_framework.launch 2> >(grep -v TF_REPEATED_D
 Note: grep command added to avoid stream of warnings as depicted in [here](https://github.com/ms-iot/ROSOnWindows/issues/279).
 
 ## Run (DRL mode):
-1. Set configurations in [config_mobiman_framework](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework.yaml)
-  - Set parameter "sim: gazebo" for simulation in Gazebo
-  - Set parameter "sim: igibson" for simulation in iGibson
+1. Set framework configurations:
+  - (NUA: NEEDS TO BE REVIWED!) Set parameter "sim: gazebo" for simulation in Gazebo and edit configurations in [config_mobiman_framework_gazebo](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework_gazebo.yaml)
+  - Set parameter "sim: igibson" for simulation in iGibson and edit configurations in [config_mobiman_framework_igibson](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework_igibson.yaml)
 
-2. Launch mobiman framework from the ROS workspace:
+2. Set drl configurations in [config_mobiman_drl_pick](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/drl/config_mobiman_drl_pick.yaml)
+
+3. Launch mobiman framework from the ROS workspace:
 ```
 # Do not forget to source: source devel/setup.bash
 roslaunch mobiman_simulation mobiman_framework.launch
 ```
 
-3. Run the training script (python) from the igibson ros scripts folder (such as /home/akmandor/projects/iGibson/igibson/examples/ros/igibson-ros/scripts):
+4. Run the training script (python) from the igibson ros scripts folder (such as /home/akmandor/projects/iGibson/igibson/examples/ros/igibson-ros/scripts):
 ```
 # Do not forget to source: source ~/ros_workspaces/igibson_ws/devel/setup.bash
 python stable_baselines3_ros_jackalJaco.py
