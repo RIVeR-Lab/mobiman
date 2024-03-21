@@ -11,7 +11,7 @@ gazebo_robot_name: "mobiman"
 
 drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
 initial_training_path: ""
-#initial_training_path: "20240319_111051_DQN_mobiman/"
+#initial_training_path: "20240320_112830_DQN_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -23,7 +23,7 @@ testing_benchmark_name: "re4mpc"
 
 ## 0: Full case
 ## 1: Far goal case
-testing_mode: 1
+testing_mode: 0
 n_testing_eval_episodes: 1
 
 ### DRL-Training Parameters
@@ -168,8 +168,8 @@ reward_step_mode2: -9.0    # Computational Cost: 9
 
 # Goal
 reward_step_goal_scale: 10.0
-reward_step_goal_dist_threshold_m1: 1.0
-reward_step_goal_dist_threshold_m2: 1.5
+reward_step_goal_dist_threshold_mode1: 0.5
+reward_step_goal_dist_threshold_mode2: 1.0
 
 # Target
 reward_step_target_scale: 5.0
