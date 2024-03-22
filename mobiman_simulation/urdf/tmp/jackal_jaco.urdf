@@ -478,7 +478,8 @@
   <joint name="jaco_to_jackal" type="fixed">
     <parent link="base_link"/>
     <child link="jaco_base_link"/>
-    <origin rpy="0 0 0" xyz="0 0 0.2"/>
+    <!-- Transform are derived from two refelector method -->
+    <origin rpy="0 0 0" xyz="0.022 -0.078 0.015"/>
   </joint>
   <!--xacro:gazebo_config robot_namespace="${prefix}"/-->
   <link name="j2n6s300_link_base">
