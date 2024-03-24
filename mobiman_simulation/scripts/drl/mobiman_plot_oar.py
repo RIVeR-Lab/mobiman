@@ -398,12 +398,17 @@ class PlotMobiman(object):
         window_size = 100
         clean_data['Reward'] = clean_data['reward'].apply(lambda x: float(x))
         clean_data['Reward'] = clean_data['Reward'].round(4)
+        print("MEAN: ",len(clean_data['Reward'].rolling(window=window_size).mean()))
+        print("STD: ",len(clean_data['Reward'].rolling(window=window_size).std()))
         clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
+        clean_data['std_reward'] = clean_data['Reward'].rolling(window=window_size).std()
         
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
         print(clean_data.info())
         
         plt.plot(clean_data['cumulative_reward'].iloc[:])
+        plt.fill_between(clean_data['cumulative_reward'].iloc[:], clean_data['cumulative_reward'].iloc[:]-clean_data['std_reward'].iloc[:],
+                         clean_data['cumulative_reward'].iloc[:]+clean_data['std_reward'].iloc[:], facecolor='blue', alpha=0.5)
         plt.title(f'Rolling average of reward, window size {window_size}')
         plt.xlabel("Steps")
         plt.ylabel("Rewards")
@@ -599,14 +604,14 @@ if __name__ == '__main__':
     if plot_result_flag:
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
-            n_row = plot_mobiman.read_data_n_row(file_path)
-            n_col = plot_mobiman.read_data_n_col(file_path)
+            # n_row = plot_mobiman.read_data_n_row(file_path)
+            # n_col = plot_mobiman.read_data_n_col(file_path)
 
             print("[mobiman_plot_oar::__main__] data_name: " + dn)
-            print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
-            print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
+            # print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
+            # print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
 
-            plot_mobiman.plot_result(file_path, title="")
+            plot_mobiman.plot_rewards_episodic()
 
     if plot_reward_flag:
         

@@ -1,7 +1,7 @@
 ## Parameters
 ### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
-data_folder: ""
-#data_folder: "dataset/drl/benchmark/"
+# data_folder: ""
+data_folder: "dataset/drl/re4mpc_disc_ppo_rewMG/before_reward_update"
 data_names: ["dataset/drl/training/20240320_112830_DQN_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
 
 plot_title: "re4mpc_dqn_19000"
