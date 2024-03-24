@@ -2,17 +2,17 @@
 ### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
 data_folder: ""
 #data_folder: "dataset/drl/benchmark/"
-data_names: ["dataset/drl/benchmark/20240316_001454_PPO_mobiman/oar_data_training_jackalJaco_0.csv"]
+data_names: ["dataset/drl/training/20240320_112830_DQN_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
 
-plot_title: "ocs2wb_timeHorizon3"
+plot_title: "re4mpc_dqn_19000"
 plot_window_timestep: 20
 plot_window_episode: 20
 
 save_flag: True
-save_folder: "dataset/drl/benchmark/"
+save_folder: ""
 
-plot_result_flag: False
-plot_reward_flag: True
+plot_result_flag: True
+plot_reward_flag: False
 plot_action_hist_flag: False
 plot_observation_hist_flag: False
 

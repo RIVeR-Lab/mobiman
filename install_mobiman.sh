@@ -105,6 +105,7 @@ rosdep install --from-paths src --ignore-src -r -y
 # 3.4 Install Python dependencies (required for tentabot drl).
 pip install stable-baselines3[extra]
 pip install gymnasium
+pip install squaternion
 
 # 3.5 Set catkin configuration:
 catkin config --extend /opt/ros/noetic
