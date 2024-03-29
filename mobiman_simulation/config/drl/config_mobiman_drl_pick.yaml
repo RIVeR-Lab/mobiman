@@ -10,8 +10,8 @@ gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
 drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
-#initial_training_path: ""
-initial_training_path: "20240320_224435_DQN_mobiman/"
+initial_training_path: ""
+#initial_training_path: "20240322_184004_PPO_mobiman/"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -27,14 +27,6 @@ testing_mode: 1
 n_testing_eval_episodes: 1
 
 ### DRL-Training Parameters
-
-## Algorithm:
-# PPO
-# SAC
-# DDPG
-# A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
-# DQN
-rl_algorithm: "DQN"
 motion_planning_algorithm: "ocs2"
 
 ## 0: Regular case
@@ -46,14 +38,40 @@ ablation_mode: 0
 # mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action) (NUA NOTE: NOT FUNCTIONAL YET!)
 observation_space_type: "mobiman_FC"
 
-learning_rate: 0.0002         #PPO: 0.0002    #SAC: 0.00025 
-n_steps: 200                   #PPO: 200       #SAC: 100
-batch_size: 50                #PPO: 50        #SAC: 28
-ent_coef: 0.0001              #PPO: 0.0001    #SAC: 0.0002
-training_timesteps: 50000
 max_episode_steps: 20
 
-training_checkpoint_freq: 50 #1000
+## RL Algorithm:
+# PPO
+# SAC
+# DDPG
+# A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
+# DQN
+rl_algorithm: "SAC"
+
+## PPO
+#learning_rate: 0.0002
+#n_steps: 100
+#batch_size: 5
+#ent_coef: 0.0001
+
+## SAC
+learning_rate: 0.0003
+learning_starts: 100
+buffer_size: 500
+batch_size: 128 
+train_freq: 1
+ent_coef: "auto"
+
+## DQN
+#learning_rate: 0.0002
+#buffer_size: 5000
+#learning_starts: 500
+#batch_size: 250
+#train_freq: 5
+#target_update_interval: 500
+
+training_timesteps: 50000
+training_checkpoint_freq: 50
 
 plot_title: "Learning Curve"
 plot_moving_average_window_size_timesteps: 5
@@ -133,7 +151,7 @@ action_time_horizon: 3.0
 
 # 0: Discrete
 # 1: Continuous [model(1), target_type(1), target(6)]
-action_type: 0
+action_type: 1
 
 action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
                                        "dataset/trajectory_sampling/jaco/20240313_202938/",
