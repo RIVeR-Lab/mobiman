@@ -402,16 +402,23 @@ class PlotMobiman(object):
         print("STD: ",len(clean_data['Reward'].rolling(window=window_size).std()))
         clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
         clean_data['std_reward'] = clean_data['Reward'].rolling(window=window_size).std()
-        
+        x = np.arange(len(clean_data))
+        upper_bound = clean_data['cumulative_reward'] + clean_data['std_reward']
+        lower_bound = clean_data['cumulative_reward'] - clean_data['std_reward']
+
+
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
         print(clean_data.info())
         
-        plt.plot(clean_data['cumulative_reward'].iloc[:])
-        plt.fill_between(clean_data['cumulative_reward'].iloc[:], clean_data['cumulative_reward'].iloc[:]-clean_data['std_reward'].iloc[:],
-                         clean_data['cumulative_reward'].iloc[:]+clean_data['std_reward'].iloc[:], facecolor='blue', alpha=0.5)
+        plt.plot(x, clean_data['cumulative_reward'], label='reward')
+        # plt.fill_between(x, clean_data['cumulative_reward'].iloc[:]-clean_data['std_reward'].iloc[:],
+        #                  clean_data['cumulative_reward'].iloc[:]+clean_data['std_reward'].iloc[:], facecolor='blue', alpha=0.5)
+        plt.fill_between(x, lower_bound, upper_bound, color='blue', alpha=0.3, label='reward ± Variance')
         plt.title(f'Rolling average of reward, window size {window_size}')
         plt.xlabel("Steps")
         plt.ylabel("Rewards")
+        plt.legend()
+
         plt.show()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")
