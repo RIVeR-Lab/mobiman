@@ -28,6 +28,7 @@ import matplotlib.pyplot as plt
 from collections import deque
 import rospy
 import rospkg
+from toolz import interleave
 
 #from stable_baselines3.common.results_plotter import ts2xy
 #from stable_baselines3.common.monitor import load_results
@@ -155,7 +156,7 @@ class PlotMobiman(object):
 
         print("[mobiman_plot_oar::PlotMobiman::get_data_col_episode] END")
         return data_ep
-
+    
     '''
     DESCRIPTION: TODO...
     '''
@@ -197,6 +198,28 @@ class PlotMobiman(object):
                 main_df = pd.concat([main_df, result], ignore_index=True)
         return main_df
 
+
+    '''
+    DESCRIPTION: TODO...
+    '''
+    def split_df_by_nan(self, df, by_row : str = "episode_index"):
+        sub_dfs = []
+        start_idx = None
+    
+        for idx, row in df.iterrows():
+            if pd.isna(row[by_row]):
+                if start_idx is not None:
+                    sub_dfs.append(df.iloc[start_idx:idx+1])
+                    start_idx = None
+            else:
+                if start_idx is None:
+                    start_idx = idx
+    
+        if start_idx is not None:
+            sub_dfs.append(df.iloc[start_idx:])
+    
+        return sub_dfs
+
     '''
     DESCRIPTION: TODO...
     '''
@@ -230,92 +253,15 @@ class PlotMobiman(object):
             csvs = files.pop()
             dfs = []
             for csv in csvs:
-                dfs.append(pd.read_csv(csv))
-            counter = 0
-            dfs_len = [len(a) for a in dfs]
-            dfs_idx = [0 for _ in dfs]
-            while True:
-                # print(dfs_len, dfs_idx)
-                if dfs_len == dfs_idx:
-                    break
-                if dfs_len[counter] <= dfs_idx[counter]:
-                    counter = (counter + 1) % len(dfs)
-                    continue
-                # result = pd.concat(dfs).sort_index(kind='merge').reset_index(drop=True)
-                if not isinstance(main_df, pd.DataFrame):
-                    main_df = pd.DataFrame(columns=list(dfs[counter].columns))
-                    # main_df = main_df.append(dfs[counter].iloc[dfs_idx[counter]], ignore_index=True)
-                # else:
-                main_df = pd.concat([main_df, dfs[counter].iloc[dfs_idx[counter]]], ignore_index=True)
-                    # main_df = main_df.append(dfs[counter].iloc[dfs_idx[counter]], ignore_index=True)
-                dfs_idx[counter] += 1
-                if pd.isna(dfs[counter]['episode_index'].iloc[dfs_idx[counter] - 1]):
-                    counter = (counter + 1) % len(dfs)
-        print('maindf: ', main_df)
+                dfs.append(self.split_df_by_nan(pd.read_csv(csv)))
+            result = pd.concat(interleave(dfs), ignore_index=True)
+            if not isinstance(main_df, pd.DataFrame):
+                main_df = result.copy()
+            else:
+                main_df = pd.concat([main_df, result], ignore_index=True)
+        print(len(main_df))
         return main_df
 
-    def plot_func(self,
-        data_x, data_y,
-        limit_min=None, limit_max=None, 
-        data_label='', data_color='r',
-        label_x='', label_y='', title='', 
-        save_path=''):
-    
-        fig = plt.figure()
-        plt.plot(data_x, data_y, color=data_color, label=data_label)
-
-        if limit_min is not None:
-            plt.axhline(limit_min, color='k', linewidth=2, linestyle="--")
-
-        if limit_max is not None:
-            plt.axhline(limit_max, color='k', linewidth=2, linestyle="--")
-
-        plt.xlabel(label_x)
-        plt.ylabel(label_y)
-        plt.title(title)
-        plt.grid()
-        plt.legend()
-        plt.savefig(save_path)
-        plt.close()
-
-    def plot_func_multi(self, 
-            data_x_multi, data_y_multi,
-            data_label_multi, data_color='r',
-            label_x='', label_y='', title='', 
-            save_path=''):
-        
-        print("len data_x_multi: " + str(len(data_x_multi)))
-        print("len data_y_multi: " + str(len(data_y_multi)))
-        print("len data_label_multi: " + str(len(data_label_multi)))
-
-        fig = plt.figure()
-        for i, dx in enumerate(data_x_multi):
-            plt.plot(dx, data_y_multi[i], label=data_label_multi[i])
-
-        plt.xlabel(label_x)
-        plt.ylabel(label_y)
-        plt.title(title)
-        plt.grid()
-        plt.legend()
-        plt.savefig(save_path)
-        plt.close()
-
-    def plot_bar(self,
-            data_x, data_y,
-            data_label='', data_color='r',
-            label_x='', label_y='', title='', 
-            save_path=''):
-        
-        fig = plt.figure()
-        plt.bar(data_x, data_y, color=data_color, label=data_label)
-
-        plt.xlabel(label_x)
-        plt.ylabel(label_y)
-        plt.title(title)
-        plt.grid()
-        plt.legend()
-        plt.savefig(save_path)
-        plt.close()
 
     '''
     DESCRIPTION: NUA TODO: Update!
@@ -325,16 +271,16 @@ class PlotMobiman(object):
         print("[mobiman_plot_oar::PlotMobiman::plot_action] START")
 
         columns = ['a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
-        columns_ = ['model_mode','target_type','target_x', 'target_y',
-                   'target_z', 'target_roll', 'target_pitch', 'target_yaw']
+        columns_ = ['model_mode','self_collision_flag','target_pos_x', 'target_pos_y',
+                   'target_pos_z', 'target_pos_roll', 'target_pos_pitch', 'target_pos_yaw']
         new_df = df.copy()
         new_df['Action'] = new_df['action'].apply(lambda x : [float(a) for a in x[1:-1].replace('\n', '').split(' ') if a != ''])
         new_df[columns] = pd.DataFrame(new_df['Action'].tolist(), index=new_df.index)
         # self.df.dropna(inplace=True)
         
-        print("[mobiman_plot_oar::PlotMobiman::plot_action] action_index: " + str(self.action_index))
+        print("[mobiman_plot_oar::PlotMobiman::plot_action] action_sequences: " + str(self.action_sequences))
         
-        if self.action_index == [-1]:
+        if self.action_sequences == [-1]:
             for i in range(0,8):
                 new_df[f'a{i}'].hist()
                 plt.title(f'Action {columns_[i]} Histogram')
@@ -346,7 +292,7 @@ class PlotMobiman(object):
                 # plt.close()
                 
         else:
-            for i in self.action_index:
+            for i in self.action_sequences:
                 new_df[f'a{i}'].hist()
                 plt.title(f'Action {columns_[i]} Histogram')
                 plt.xlabel(f'{columns_[i]}')
@@ -357,6 +303,7 @@ class PlotMobiman(object):
                 # plt.close()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_action] END")
+
 
     '''
     DESCRIPTION: NUA TODO: Update!
@@ -371,9 +318,9 @@ class PlotMobiman(object):
         new_df[columns] = pd.DataFrame(new_df['Observation'].tolist(), index=new_df.index)
         # self.df.dropna(inplace=True)
         
-        print("[mobiman_plot_oar::PlotMobiman::plot_observations] observation_index: " + str(self.observation_index))
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] observation_sequences: " + str(self.observation_sequences))
 
-        if self.observation_index == [-1]:
+        if self.observation_sequences == [-1]:
             for i in range(0,74):
                 new_df[f'o{i}'].hist()
                 plt.title(f'Observation {columns_[i]} Histogram')
@@ -385,7 +332,7 @@ class PlotMobiman(object):
                 # plt.close()
                 
         else:
-            for i in self.observation_index:
+            for i in self.observation_sequences:
                 new_df[f'o{i}'].hist()
                 plt.title(f'Observation {columns_[i]} Histogram')
                 plt.xlabel(f'{columns_[i]}')
@@ -397,11 +344,13 @@ class PlotMobiman(object):
 
         print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
 
+
+
     '''
     DESCRIPTION: TODO...
     '''
-    def plot_reward(self):
-        print("[mobiman_plot_oar::PlotMobiman::plot_reward] START")
+    def plot_rewards(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
         df = self.generate_dataframe()
         clean_data = df[df['reward'].notna()]
 
@@ -410,7 +359,7 @@ class PlotMobiman(object):
         clean_data['Reward'] = clean_data['Reward'].round(4)
         clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
         clean_data['reward'].to_clipboard()
-        print("[mobiman_plot_oar::PlotMobiman::plot_reward] clean_data.info: ")
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
         print(clean_data.info())
         
         plt.plot(clean_data['cumulative_reward'].iloc[:])
@@ -419,7 +368,61 @@ class PlotMobiman(object):
         plt.ylabel("Rewards")
         plt.show()
 
-        print("[mobiman_plot_oar::PlotMobiman::plot_reward] END")
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")    
+    
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def plot_rewards_episodic(self):
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
+        df = self.generate_dataframe_episodic()
+        
+        # clean_df['rewards'] = 
+        nan_indices = df.index[df['reward'].isnull()].tolist()
+        result = []
+        start = 0
+        for end in nan_indices:
+            interval_sum = df['reward'][start:end].sum()
+            result.append(interval_sum)
+            start = end + 1
+
+        # Check if there's any remaining data after the last NaN
+        if start < len(df):
+            interval_sum = df['reward'][start:].sum()
+            result.append(interval_sum)
+
+        clean_df = pd.DataFrame({'reward':result})
+        # clean_df.plot()
+
+        clean_data = clean_df.dropna()
+        window_size = 100
+        clean_data['Reward'] = clean_data['reward'].apply(lambda x: float(x))
+        clean_data['Reward'] = clean_data['Reward'].round(4)
+        print("MEAN: ",len(clean_data['Reward'].rolling(window=window_size).mean()))
+        print("STD: ",len(clean_data['Reward'].rolling(window=window_size).std()))
+        clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
+        clean_data['std_reward'] = clean_data['Reward'].rolling(window=window_size).std()
+        x = np.arange(len(clean_data))
+        upper_bound = clean_data['cumulative_reward'] + clean_data['std_reward']
+        lower_bound = clean_data['cumulative_reward'] - clean_data['std_reward']
+
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
+        print(clean_data.info())
+        
+        plt.plot(x, clean_data['cumulative_reward'], label='reward')
+        # plt.fill_between(x, clean_data['cumulative_reward'].iloc[:]-clean_data['std_reward'].iloc[:],
+        #                  clean_data['cumulative_reward'].iloc[:]+clean_data['std_reward'].iloc[:], facecolor='blue', alpha=0.5)
+        plt.fill_between(x, lower_bound, upper_bound, color='blue', alpha=0.3, label='reward ± Variance')
+        plt.title(f'Rolling average of reward, window size {window_size}')
+        plt.xlabel("Steps")
+        plt.ylabel("Rewards")
+        plt.legend()
+
+        plt.show()
+
+        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")
+            
 
     '''
     DESCRIPTION: TODO...
@@ -608,14 +611,14 @@ if __name__ == '__main__':
     if plot_result_flag:
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
-            n_row = plot_mobiman.read_data_n_row(file_path)
-            n_col = plot_mobiman.read_data_n_col(file_path)
+            # n_row = plot_mobiman.read_data_n_row(file_path)
+            # n_col = plot_mobiman.read_data_n_col(file_path)
 
             print("[mobiman_plot_oar::__main__] data_name: " + dn)
-            print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
-            print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
+            # print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
+            # print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
 
-            plot_mobiman.plot_result(file_path, title="")
+            plot_mobiman.plot_rewards_episodic()
 
     if plot_reward_flag:
         
