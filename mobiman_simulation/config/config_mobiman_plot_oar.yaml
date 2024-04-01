@@ -1,8 +1,14 @@
 ## Parameters
 ### NUA TODO: For multi-data plotting. The testing oar data needs to be linked with testing log!!!
 # data_folder: ""
-data_folder: "dataset/drl/re4mpc_disc_ppo_rewMG/before_reward_update"
-data_names: ["dataset/drl/training/20240320_112830_DQN_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
+# data_folder: "dataset/drl/abilation/re4mpc_disc_ppo_rewMG/before_reward_update"
+data_folder: ["dataset/drl/normal/re4mpc_cont_ppo_rewMGT",
+              "dataset/drl/normal/re4mpc_cont_sac_rewMGT",
+              "dataset/drl/normal/re4mpc_disc_dqn_rewMGT",
+              "dataset/drl/abilation/re4mpc_cont_ppo_rewMG",
+              "dataset/drl/abilation/re4mpc_disc_dqn_rewMG",]
+# data_names: ["dataset/drl/normal/good/20240320_224435_DQN_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
+data_names: ["dataset/drl/normal/re4mpc_cont_ppo_rewMGT/20240322_133717_PPO_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
 
 plot_title: "re4mpc_dqn_19000"
 plot_window_timestep: 20
@@ -11,10 +17,11 @@ plot_window_episode: 20
 save_flag: True
 save_folder: ""
 
-plot_result_flag: True
+plot_result_flag: False
 plot_reward_flag: False
 plot_action_hist_flag: False
 plot_observation_hist_flag: False
+plot_test_hist: True
 
 ## Actions:
 # Discrete (105): mode0_target (30) + mode1_target (36) + mode2_target (36) + mode0_goal (1) + mode1_goal (1) + mode2_goal (1)
