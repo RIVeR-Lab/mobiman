@@ -37,12 +37,13 @@
       green_cube
       blue_cube
       conveyor_belt
-      actor
+      actor_0
+      actor_1
     custom_flag = false
       bin_4_dropping_task
   -->
   <arg name="custom_flag" value="true"/>
-  <arg name="object_name" value="conveyor_belt"/>
+  <arg name="object_name" value="actor_1"/>
 
   <group if="$(eval arg('custom_flag') == true)">
     <!-- Load the URDF into the ROS Parameter Server -->

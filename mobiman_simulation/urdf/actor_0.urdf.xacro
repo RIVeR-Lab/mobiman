@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot name="actor_gazebo" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="PI" value="3.1415926535897931" />
+
+    <xacro:include filename="$(find mobiman_simulation)/urdf/package.urdf.xacro"/>
+
+    <xacro:package 
+        prefix="actor" 
+        color="White"
+        mass="70.0"
+        box_size_x="0.2" 
+        box_size_y="0.2" 
+        box_size_z="1.0" >
+    </xacro:package>
+
+</robot>

@@ -9,8 +9,8 @@
         prefix="actor" 
         color="White"
         mass="70.0"
-        box_size_x="0.2" 
-        box_size_y="0.2" 
+        box_size_x="0.3" 
+        box_size_y="0.3" 
         box_size_z="1.5" >
     </xacro:package>
 

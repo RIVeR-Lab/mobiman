@@ -8,10 +8,11 @@
 # green_cube
 # blue_cube
 # conveyor_belt
-# actor
+# actor_0
+# actor_1
 # bin_4_dropping_task
 
-obj_name: "conveyor_belt"
+obj_name: "actor_1"
 world_frame_name: "world"
 
 data_dir: "models/point_cloud/"
