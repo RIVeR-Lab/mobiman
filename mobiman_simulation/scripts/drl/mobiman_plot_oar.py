@@ -29,7 +29,7 @@ from collections import deque
 import rospy
 import rospkg
 from toolz import interleave
-
+from matplotlib.ticker import PercentFormatter
 #from stable_baselines3.common.results_plotter import ts2xy
 #from stable_baselines3.common.monitor import load_results
 
@@ -615,17 +615,28 @@ class PlotMobiman(object):
             if len(events) == 0:
                 return
             try:
-                if isinstance(eval(events[-1]), int):
+                # print()
+                print(events[-1][-1])
+                if isinstance(eval(events[-1][-1]), int):
                     events = [eval(item) for sublist in events for item in sublist]
-                    plt.hist(events)
+                    plt.hist(events, weights=np.ones(len(events)) / len(events))
+                    plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
                     plt.show()
             except Exception as e:
                 events = [item for sublist in events for item in sublist]
                 action_hist = []
                 for x in events:
                     actions = [float(a) for a in x[1:-1].replace('\n', '').split(' ') if a != '']
-                    action_hist.append(actions[0])
-                plt.hist(action_hist)
+                    if actions[0] < 0.3:
+                        action_hist.append(1)
+                    elif 0.3 <actions[0] <= 0.6:
+                        action_hist.append(2)
+                    else:
+                        action_hist.append(3)
+                fig, ax = plt.subplots(figsize=(10, 8))
+                _ = ax.hist(action_hist, weights=np.ones(len(action_hist)) / len(action_hist))
+                ax.set_xticks(np.arange(1,4))
+                plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
                 plt.show()
 
 '''
