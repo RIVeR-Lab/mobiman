@@ -205,6 +205,7 @@ class Config():
         self.alpha_step_target = rospy.get_param('alpha_step_target', 0.0)
 
         ### Testing
+        self.initial_training_model_name = rospy.get_param('initial_training_model_name', "")
         self.testing_benchmark_name = rospy.get_param('testing_benchmark_name', "")
         self.testing_mode = rospy.get_param('testing_mode', "")
         self.n_testing_eval_episodes = rospy.get_param('n_testing_eval_episodes', 0)
@@ -319,6 +320,7 @@ class Config():
             print("[mobiman_drl_config::Config::__init__] alpha_step_mode: " + str(self.alpha_step_mode))
             print("[mobiman_drl_config::Config::__init__] alpha_step_goal: " + str(self.alpha_step_goal))
             print("[mobiman_drl_config::Config::__init__] alpha_step_target: " + str(self.alpha_step_target))
+            print("[mobiman_drl_config::Config::__init__] initial_training_model_name: " + str(self.initial_training_model_name))
             print("[mobiman_drl_config::Config::__init__] testing_benchmark_name: " + str(self.testing_benchmark_name))
             print("[mobiman_drl_config::Config::__init__] testing_mode: " + str(self.testing_mode))
             print("[mobiman_drl_config::Config::__init__] n_testing_eval_episodes: " + str(self.n_testing_eval_episodes))
