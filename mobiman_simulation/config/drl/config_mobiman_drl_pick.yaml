@@ -12,7 +12,7 @@ gazebo_robot_name: "mobiman"
 # dataset/drl/training/
 # dataset/drl/arena/
 drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
-data_save_freq: 100     # timesteps
+data_save_freq: 50     # timesteps
 
 initial_training_path: ""
 #initial_training_path: "20240325_121817_DQN_mobiman/"
@@ -61,10 +61,10 @@ max_episode_steps: 20
 rl_algorithm: "PPO"
 
 ## PPO
-learning_rate: 0.0003
+learning_rate: 0.0002
 n_steps: 100
-batch_size: 50
-ent_coef: 0.001
+batch_size: 5
+ent_coef: 0.0001
 
 ## SAC
 #learning_rate: 0.0003
@@ -83,7 +83,7 @@ ent_coef: 0.001
 #train_freq: 5
 #target_update_interval: 500
 
-training_timesteps: 200
+training_timesteps: 50000
 training_checkpoint_freq: 50
 
 plot_title: "Learning Curve"
