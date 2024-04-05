@@ -9,11 +9,14 @@ ros_pkg_name: "mobiman_simulation"
 gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
-drl_data_path: "dataset/drl/arena/"      # NUA NOTE: Saving directory
+# dataset/drl/training/
+# dataset/drl/arena/
+drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
+data_save_freq: 100     # timesteps
 
-#initial_training_path: ""
+initial_training_path: ""
 #initial_training_path: "20240325_121817_DQN_mobiman/"
-initial_training_path: "re4mpc_cont_ppo_rewMG_100k/"
+#initial_training_path: "re4mpc_cont_ppo_rewMG_100k/"
 
 initial_training_model_name: "trained_model_40000_steps"
 training_log_name: "training_log"
@@ -80,7 +83,7 @@ ent_coef: 0.001
 #train_freq: 5
 #target_update_interval: 500
 
-training_timesteps: 50000
+training_timesteps: 200
 training_checkpoint_freq: 50
 
 plot_title: "Learning Curve"
@@ -92,7 +95,9 @@ plot_moving_average_window_size_episodes: 1
 # JackalJaco_mobiman_drl-v0
 task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"   # (NUA NOTE: GAZEBO ONLY AND NOT FUNCTIONAL YET!)
 
-world_name: "conveyor"
+# conveyor
+# conveyor_and_actors
+world_name: "conveyor_and_actors"
 
 #### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- START
 world_range_x_min: -2.0               # wrt. world frame
@@ -123,7 +128,13 @@ robot_frame_name: "base_link"
 arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j2n6s300_joint_4", "j2n6s300_joint_5", "j2n6s300_joint_6"]
 ee_frame_name: "j2n6s300_end_effector"
 goal_frame_name: "grasp"
-occupancy_frame_names: ["conveyor_belt", "red_cube"]
+
+# conveyor_belt
+# red_cube
+# actor_0
+# actor_1
+#occupancy_frame_names: ["conveyor_belt", "red_cube"]
+occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
 
 odom_msg_name: "odom"
 arm_state_msg_name: "joint_states"

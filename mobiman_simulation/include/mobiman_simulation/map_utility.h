@@ -903,8 +903,8 @@ class MapUtility
     std::string obj_name_red_cube_ = "red_cube";
     std::string obj_name_green_cube_ = "green_cube";
     std::string obj_name_blue_cube_ = "blue_cube";
-    std::string obj_name_actor0_ = "actor0";
-    std::string obj_name_actor1_ = "actor1";
+    std::string obj_name_actor0_ = "actor_0";
+    std::string obj_name_actor1_ = "actor_1";
     std::string obj_name_bin_ = "bin_4_dropping_task";
 
     std::string pc2_msg_name_conveyor_ = "pc2_scan_conveyor";

@@ -3594,11 +3594,13 @@ void MapUtility::updateModelPc2Scan()
       //cout << "[MapUtility::updateModelPc2Scan] tf_name_tmp: " << tf_name_tmp << std::endl;
 
       // NUA TODO: Try to fix this by finding a way to generalize for multiple objects with the same namespace!
+      /*
       if ( tf_name_tmp == "actor" && (gz_model_name_tmp == "0" || gz_model_name_tmp == "1") )
       {
         tf_name_tmp += gz_model_name_tmp;
         gz_model_name_tmp = tf_name_tmp;
       }
+      */
 
       if (gz_model_name_tmp == tf_name_tmp)
       {

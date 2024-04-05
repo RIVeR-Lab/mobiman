@@ -68,6 +68,7 @@ class Config():
 
         ### Training
         self.ros_pkg_name = rospy.get_param('ros_pkg_name', "")
+        self.data_save_freq = rospy.get_param('data_save_freq', "")
         self.world_name = rospy.get_param('world_name', "")
         self.world_range_x_min = rospy.get_param('world_range_x_min', 0.0)
         self.world_range_x_max = rospy.get_param('world_range_x_max', 0.0)
@@ -219,6 +220,7 @@ class Config():
         '''
 
         if self.flag_print_info:
+            print("[mobiman_drl_config::Config::__init__] data_save_freq: " + str(self.data_save_freq))
             print("[mobiman_drl_config::Config::__init__] world_name: " + str(self.world_name))
             print("[mobiman_drl_config::Config::__init__] world_range_x_min: " + str(self.world_range_x_min))
             print("[mobiman_drl_config::Config::__init__] world_range_x_max: " + str(self.world_range_x_max))
@@ -328,6 +330,7 @@ class Config():
         if self.log_file:
 
             log_data = []
+            log_data.append(["data_save_freq", self.data_save_freq])
             log_data.append(["world_name", self.world_name])
             log_data.append(["world_range_x_min", self.world_range_x_min])
             log_data.append(["world_range_x_max", self.world_range_x_max])
