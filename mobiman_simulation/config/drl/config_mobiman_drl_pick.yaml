@@ -11,12 +11,13 @@ gazebo_robot_name: "mobiman"
 
 # dataset/drl/training/
 # dataset/drl/arena/
-drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
-data_save_freq: 50     # timesteps
+# dataset/drl/arena/
+drl_data_path: "dataset/drl/arena/"      # NUA NOTE: Saving directory
+data_save_freq: 1     # training: # of timesteps, testing: end of episodes
 
-initial_training_path: ""
+#initial_training_path: ""
 #initial_training_path: "20240325_121817_DQN_mobiman/"
-#initial_training_path: "re4mpc_cont_ppo_rewMG_100k/"
+initial_training_path: "re4mpc_disc_dqn_rewMG_100k/"
 
 initial_training_model_name: "trained_model_40000_steps"
 training_log_name: "training_log"
@@ -31,7 +32,7 @@ training_log_name: "training_log"
 # re4mpc_cont_ppo_rewMG
 # re4mpc_cont_sac_rewMG
 # re4mpc_disc_dqn_rewMG
-testing_benchmark_name: "re4mpc_cont_ppo_rewMGT"
+testing_benchmark_name: "re4mpc_disc_dqn_rewMG"
 
 ## 0: Full case
 ## 1: Far goal case
@@ -43,7 +44,7 @@ motion_planning_algorithm: "ocs2"
 
 ## 0: Regular case
 ## 1: No target reward
-ablation_mode: 0
+ablation_mode: 1
 
 # Options: ### NUA TODO: UPDATE! 
 # mobiman_FC             -> FC(occupancy_set + target + prev_action)
@@ -58,13 +59,13 @@ max_episode_steps: 20
 # DDPG
 # A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
 # DQN
-rl_algorithm: "PPO"
+rl_algorithm: "DQN"
 
 ## PPO
-learning_rate: 0.0002
-n_steps: 100
-batch_size: 5
-ent_coef: 0.0001
+#learning_rate: 0.0002
+#n_steps: 100
+#batch_size: 5
+#ent_coef: 0.0001
 
 ## SAC
 #learning_rate: 0.0003
@@ -76,12 +77,12 @@ ent_coef: 0.0001
 #ent_coef: "auto"
 
 ## DQN
-#learning_rate: 0.0002
-#buffer_size: 5000
-#learning_starts: 500
-#batch_size: 250
-#train_freq: 5
-#target_update_interval: 500
+learning_rate: 0.0002
+buffer_size: 5000
+learning_starts: 500
+batch_size: 250
+train_freq: 5
+target_update_interval: 500
 
 training_timesteps: 50000
 training_checkpoint_freq: 50
@@ -97,7 +98,7 @@ task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"   # (NUA NOTE: GAZ
 
 # conveyor
 # conveyor_and_actors
-world_name: "conveyor_and_actors"
+world_name: "conveyor"
 
 #### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- START
 world_range_x_min: -2.0               # wrt. world frame
@@ -133,8 +134,8 @@ goal_frame_name: "grasp"
 # red_cube
 # actor_0
 # actor_1
-#occupancy_frame_names: ["conveyor_belt", "red_cube"]
-occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
+occupancy_frame_names: ["conveyor_belt", "red_cube"]
+#occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
 
 odom_msg_name: "odom"
 arm_state_msg_name: "joint_states"
@@ -172,7 +173,7 @@ action_time_horizon: 3.0
 
 # 0: Discrete
 # 1: Continuous [model(1), target_type(1), target(6)]
-action_type: 1
+action_type: 0
 
 action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
                                        "dataset/trajectory_sampling/jaco/20240313_202938/",

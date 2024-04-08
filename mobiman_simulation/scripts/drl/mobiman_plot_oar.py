@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 '''
-LAST UPDATE: 2024.03.16
+LAST UPDATE: 2024.04.05
 
 AUTHOR:	Sarvesh Prajapati (SP)
         Neset Unver Akmandor (NUA)	
@@ -618,7 +618,7 @@ if __name__ == '__main__':
             # print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
             # print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
 
-            plot_mobiman.plot_rewards_episodic()
+            plot_mobiman.plot_result(file_path)
 
     if plot_reward_flag:
         
