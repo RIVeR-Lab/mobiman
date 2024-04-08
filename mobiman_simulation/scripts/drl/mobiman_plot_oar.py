@@ -648,19 +648,49 @@ class PlotMobiman(object):
             reader = csv.reader(csvfile, delimiter=',')
             data = np.array(next(reader))
             
-            data_keys = list(data[0])
+            data_keys = list(data)
 
             print("[mobiman_plot_oar::PlotMobiman::get_data_col] data_keys len: " + str(len(data_keys)))
             print(data_keys)
 
-            idx = data_keys.index(col_name)
+            idx_result = data_keys.index("result")
+            idx_testing_index = data_keys.index("testing_index")
+            idx_testing_eval_index = data_keys.index("testing_eval_index")
 
-            print("[mobiman_plot_oar::get_testing_result] data:")
-            print(data)
+            n_testing_eval = 5          ### NUA TODO: Read from the log file!
+            result_eval_goal = np.zeros(n_testing_eval)
+            result_eval_oob = np.zeros(n_testing_eval)
+            result_eval_collision = np.zeros(n_testing_eval)
+            result_eval_rollover = np.zeros(n_testing_eval)
+            result_eval_max_step = np.zeros(n_testing_eval)
 
-            #for row in reader:
-            #    data_row = np.array(row)
-            #    data = np.vstack((data, data_row))
+            n_ep = 0
+            for row in reader:
+                eval_idx = row[idx_testing_eval_index] - 1
+
+                if row[idx_result] == "goal":
+                    n_time_goal += 1
+                    n_ep += 1
+
+                elif row[idx_result] == "out_of_boundary":
+                    n_time_out_of_boundary += 1
+                    n_ep += 1
+
+                elif row[idx_result] == "collision":
+                    n_time_collision += 1
+                    n_ep += 1
+
+                elif row[idx_result] == "rollover":
+                    n_time_rollover += 1
+                    n_ep += 1
+
+                elif row[idx_result] == "max_step" :
+                    n_time_max_step += 1
+                    n_ep += 1
+
+                
+                result_eval[eval_idx] = np.array(row)
+                data = np.vstack((data, data_row))
 
     '''
     DESCRIPTION: NUA TODO: Update!
