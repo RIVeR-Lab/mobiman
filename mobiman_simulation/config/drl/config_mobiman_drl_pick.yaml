@@ -15,9 +15,9 @@ gazebo_robot_name: "mobiman"
 drl_data_path: "dataset/drl/arena/"      # NUA NOTE: Saving directory
 data_save_freq: 1     # training: # of timesteps, testing: end of episodes
 
-#initial_training_path: ""
-#initial_training_path: "20240325_121817_DQN_mobiman/"
-initial_training_path: "re4mpc_disc_dqn_rewMG_100k/"
+initial_training_path: ""
+initial_training_path: "20240325_121817_DQN_mobiman/"
+#initial_training_path: "re4mpc_disc_dqn_rewMG_100k/"
 
 initial_training_model_name: "trained_model_40000_steps"
 training_log_name: "training_log"
