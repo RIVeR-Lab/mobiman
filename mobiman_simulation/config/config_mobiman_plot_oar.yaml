@@ -12,8 +12,7 @@
 #              "dataset/drl/re4mpc/re4mpc_disc_dqn_rewMG"]
 
 ### NUA NOTE: RESULT PLOT
-data_folder: ["dataset/drl/arena/ocs2wb/",
-              dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/,
+data_folder: [dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/,
               dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data/]
 #data_folder: ["dataset/drl/arena/ocs2wb",
 #              "dataset/drl/arena/re4mpc_cont_ppo_rewMGT_100k/testing_data",
@@ -25,12 +24,12 @@ data_folder: ["dataset/drl/arena/ocs2wb/",
 
 #data_names: ["dataset/drl/arena/re4mpc_cont_ppo_rewMGT_100k/testing_data/oar_data_testing_re4mpc_cont_ppo_rewMGT_trained_model_100000_steps.csv"]
 #data_names: ["dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data/oar_data_testing_re4mpc_cont_sac_rewMGT_trained_model_100000_steps.csv"]
-data_names: ["dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/oar_data_testing_re4mpc_cont_sac_rewMG_trained_model_100000_steps.csv"]
+data_names: ["dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/oar_data_testing_re4mpc_cont_sac_rewMG_trained_model_80000_steps.csv"]
 
 # data_names: ["dataset/drl/normal/re4mpc_cont_ppo_rewMGT/20240322_133717_PPO_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
 
-plot_title: "Epsiodic Rewards"
-#plot_title: "re4mpc_disc_dqn_rewMG_80k"
+#plot_title: "Epsiodic Rewards"
+plot_title: "re4mpc_cont_sac_rewMG_80k"
 
 plot_window_timestep: 20
 plot_window_episode: 20
@@ -38,7 +37,12 @@ plot_window_episode: 20
 save_flag: True
 save_folder: "dataset/drl/arena/"
 
-plot_result_flag: True
+plot_result_pie_flag: False
+plot_result_arena_flag: True
+
+plot_analysis_model_mode_flag: False
+plot_analysis_target_type_flag: False
+
 plot_reward_flag: False
 plot_action_hist_flag: False
 plot_observation_hist_flag: False

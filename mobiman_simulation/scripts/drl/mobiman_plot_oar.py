@@ -1087,16 +1087,22 @@ class PlotMobiman(object):
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
-    def get_testing_analysis_target_type_arena(self, folder_name):
+    def get_testing_analysis_target_type_arena(self, data_names):
 
-        if "ppo" in filename:
-            method_name = "re4mpc-PPO"
+        for i, dn in data_names:
 
-        elif "sac" in filename:
-            method_name = "re4mpc-SAC"
+            self.get_testing_analysis_target_type(dn)
 
-        elif "dqn" in filename:
-            method_name = "re4mpc-DQN"
+            '''
+            if "ppo" in filename:
+                method_name = "re4mpc-PPO"
+
+            elif "sac" in filename:
+                method_name = "re4mpc-SAC"
+
+            elif "dqn" in filename:
+                method_name = "re4mpc-DQN"
+            '''
 
         plt.figure()
 
@@ -1140,7 +1146,11 @@ if __name__ == '__main__':
     save_flag = rospy.get_param('save_flag') 
     save_folder = rospy.get_param('save_folder') 
 
-    plot_result_flag = rospy.get_param('plot_result_flag')
+    plot_result_pie_flag = rospy.get_param('plot_result_pie_flag')
+    plot_result_arena_flag = rospy.get_param('plot_result_arena_flag')
+    plot_analysis_model_mode_flag = rospy.get_param('plot_analysis_model_mode_flag')
+    plot_analysis_target_type_flag = rospy.get_param('plot_analysis_target_type_flag')
+
     plot_reward_flag = rospy.get_param('plot_reward_flag')
     plot_action_hist_flag = rospy.get_param('plot_action_hist_flag')
     plot_observation_hist_flag = rospy.get_param('plot_observation_hist_flag')
@@ -1159,7 +1169,10 @@ if __name__ == '__main__':
     print("[mobiman_plot_oar::__main__] plot_window_episode: " + str(plot_window_episode))
     print("[mobiman_plot_oar::__main__] save_flag: " + str(save_flag))
     print("[mobiman_plot_oar::__main__] save_folder: " + str(save_folder))
-    print("[mobiman_plot_oar::__main__] plot_result_flag: " + str(plot_result_flag))
+    print("[mobiman_plot_oar::__main__] plot_result_pie_flag: " + str(plot_result_pie_flag))
+    print("[mobiman_plot_oar::__main__] plot_result_arena_flag: " + str(plot_result_arena_flag))
+    print("[mobiman_plot_oar::__main__] plot_analysis_model_mode_flag: " + str(plot_analysis_model_mode_flag))
+    print("[mobiman_plot_oar::__main__] plot_analysis_target_type_flag: " + str(plot_analysis_target_type_flag))
     print("[mobiman_plot_oar::__main__] plot_reward_flag: " + str(plot_reward_flag))
     print("[mobiman_plot_oar::__main__] plot_action_hist_flag: " + str(plot_action_hist_flag))
     print("[mobiman_plot_oar::__main__] plot_observation_hist_flag: " + str(plot_observation_hist_flag))
@@ -1180,25 +1193,24 @@ if __name__ == '__main__':
                                observation_index=observation_index, # type: ignore
                                action_index=action_index) # type: ignore
 
-    if plot_result_flag:
-
-        #plot_mobiman.get_testing_result_arena(data_folder)
-
+    if plot_result_pie_flag:
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
-            # n_row = plot_mobiman.read_data_n_row(file_path)
-            # n_col = plot_mobiman.read_data_n_col(file_path)
+            print("[mobiman_plot_oar::__main__] data_name: " + dn)
+            plot_mobiman.plot_result(file_path)
+
+    if plot_result_arena_flag:
+        plot_mobiman.get_testing_result_arena(data_folder)
+
+    if plot_analysis_model_mode_flag:
+        for dn in data_names: # type: ignore
+            file_path = plot_mobiman.mobiman_path + dn
 
             print("[mobiman_plot_oar::__main__] data_name: " + dn)
-            # print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
-            # print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
-
-            #plot_mobiman.plot_result(file_path)
             plot_mobiman.get_testing_analysis_model_mode(file_path)
 
-            plot_mobiman.get_testing_analysis_target_type(file_path)
-
-
+    if plot_analysis_target_type_flag:
+        plot_mobiman.get_testing_analysis_target_type_arena(data_names)
 
     if plot_reward_flag:
         
