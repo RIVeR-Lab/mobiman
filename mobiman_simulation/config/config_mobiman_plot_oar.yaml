@@ -35,10 +35,11 @@ plot_window_timestep: 20
 plot_window_episode: 20
 
 save_flag: True
-save_folder: "dataset/drl/arena/"
+save_folder: ""
+#save_folder: "/home/akmandor/ros_workspaces/igibson_ws/src/mobiman/mobiman_simulation/dataset/drl/arena/"
 
-plot_result_pie_flag: False
-plot_result_arena_flag: True
+plot_result_pie_flag: True
+plot_result_arena_flag: False
 
 plot_analysis_model_mode_flag: False
 plot_analysis_target_type_flag: False

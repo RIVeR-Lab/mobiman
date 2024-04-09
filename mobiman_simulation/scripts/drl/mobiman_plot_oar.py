@@ -509,13 +509,13 @@ class PlotMobiman(object):
             if self.save_folder:
                 file_folder = file.split("/")
                 filename = file_folder[-1]
-                plt.savefig(self.save_folder + filename + "_result.png")
+                save_path = self.save_folder + "plot_pie_" + filename + "_result.png"
             else:
                 file_folder = file.split("/")
                 filename = file_folder[-1]
                 file_folder = '/'.join(file_folder[:-1])
                 save_path = file_folder + "/plot_pie_" + filename + "_result.png"
-            
+
             print("[mobiman_plot_oar::PlotMobiman::plot_result] Saving to " + str(save_path) + "!")
             plt.savefig(save_path)
 
