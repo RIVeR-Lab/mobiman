@@ -17,10 +17,14 @@ NUA TODO:
 - 
 '''
 
+from cProfile import label
 import os
 import sys
 import time
 import csv
+from turtle import color, st
+from cv2 import mean
+from matplotlib.markers import MarkerStyle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -30,6 +34,8 @@ import rospy
 import rospkg
 from toolz import interleave
 from matplotlib.ticker import PercentFormatter
+import matplotlib.lines as mlines
+
 #from stable_baselines3.common.results_plotter import ts2xy
 #from stable_baselines3.common.monitor import load_results
 
@@ -211,7 +217,6 @@ class PlotMobiman(object):
                 main_df = pd.concat([main_df, result], ignore_index=True)
         return main_df # type: ignore
 
-
     '''
     DESCRIPTION: TODO...
     '''
@@ -286,7 +291,6 @@ class PlotMobiman(object):
         print(len(main_df)) # type: ignore
         return main_df # type: ignore
 
-
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
@@ -328,7 +332,6 @@ class PlotMobiman(object):
 
         print("[mobiman_plot_oar::PlotMobiman::plot_action] END")
 
-
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
@@ -367,8 +370,6 @@ class PlotMobiman(object):
                 # plt.close()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
-
-
 
     '''
     DESCRIPTION: TODO...
@@ -650,11 +651,11 @@ class PlotMobiman(object):
             
             data_keys = list(data)
 
-            print("[mobiman_plot_oar::PlotMobiman::get_data_col] data_keys len: " + str(len(data_keys)))
-            print(data_keys)
+            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] filename: " + str(filename))
+            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] data_keys len: " + str(len(data_keys)))
+            #print(data_keys)
 
             idx_result = data_keys.index("result")
-            idx_testing_index = data_keys.index("testing_index")
             idx_testing_eval_index = data_keys.index("testing_eval_index")
 
             n_testing_eval = 5          ### NUA TODO: Read from the log file!
@@ -664,41 +665,69 @@ class PlotMobiman(object):
             result_eval_rollover = np.zeros(n_testing_eval)
             result_eval_max_step = np.zeros(n_testing_eval)
 
-            n_ep = 0
+            result_total_goal = []
+            result_total_oob = []
+            result_total_collision = []
+            result_total_rollover = []
+            result_total_max_step = []
+
+            eval_flag = False
             for row in reader:
-                eval_idx = row[idx_testing_eval_index] - 1
-
-                if row[idx_result] == "goal":
-                    n_time_goal += 1
-                    n_ep += 1
-
-                elif row[idx_result] == "out_of_boundary":
-                    n_time_out_of_boundary += 1
-                    n_ep += 1
-
-                elif row[idx_result] == "collision":
-                    n_time_collision += 1
-                    n_ep += 1
-
-                elif row[idx_result] == "rollover":
-                    n_time_rollover += 1
-                    n_ep += 1
-
-                elif row[idx_result] == "max_step" :
-                    n_time_max_step += 1
-                    n_ep += 1
-
+                if row[idx_result] == "[]" and eval_flag:
+                    result_total_goal.append(np.mean(result_eval_goal))
+                    result_total_oob.append(np.mean(result_eval_oob))
+                    result_total_collision.append(np.mean(result_eval_collision))
+                    result_total_rollover.append(np.mean(result_eval_rollover))
+                    result_total_max_step.append(np.mean(result_eval_max_step))
+                    
+                    result_eval_goal = np.zeros(n_testing_eval)
+                    result_eval_oob = np.zeros(n_testing_eval)
+                    result_eval_collision = np.zeros(n_testing_eval)
+                    result_eval_rollover = np.zeros(n_testing_eval)
+                    result_eval_max_step = np.zeros(n_testing_eval)
+                    eval_flag = False
                 
-                result_eval[eval_idx] = np.array(row)
-                data = np.vstack((data, data_row))
+                else:
+                    if row[idx_result] != "[]":
+                        eval_idx = int(float(row[idx_testing_eval_index])) - 1 # type: ignore
+
+                        if row[idx_result] == "goal":
+                            result_eval_goal[eval_idx] += 1
+
+                        elif row[idx_result] == "out_of_boundary":
+                            result_eval_oob[eval_idx] += 1
+
+                        elif row[idx_result] == "collision":
+                            result_eval_oob[eval_idx] += 1
+
+                        elif row[idx_result] == "rollover":
+                            result_eval_oob[eval_idx] += 1
+
+                        elif row[idx_result] == "max_step" :
+                            result_eval_oob[eval_idx] += 1
+
+                        if eval_idx == n_testing_eval-1:
+                            eval_flag = True
+
+            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] result_total_goal: " + str(result_total_goal))
+            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] result_total_goal len: " + str(len(result_total_goal)))
+            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] result_total_goal mean: " + str(np.mean(result_total_goal)))
+            #print("")
+            #print("")
+            #print("")
+
+            return result_total_goal, result_total_oob, result_total_collision, result_total_rollover, result_total_max_step
 
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
     def get_testing_result_arena(self, folder_names):
 
+        plt.figure()
+        data_x = ["20k", "40k", "60k", "80k", "100k"]
+
         for i, fn in enumerate(folder_names): # type: ignore
-            print("[mobiman_plot_oar::get_testing_result_arena] fn: " + str(fn))
+            #print("[mobiman_plot_oar::get_testing_result_arena] fn: " + str(fn))
 
             prefix = "oar_data"
             files = os.listdir(self.mobiman_path + fn)
@@ -706,10 +735,389 @@ class PlotMobiman(object):
             # Filter files that start with the given prefix
             oar_data_files = [file for file in files if file.startswith(prefix)]
 
-            print("[mobiman_plot_oar::get_testing_result_arena] filtered_files: " + str(oar_data_files))
+            #print("[mobiman_plot_oar::get_testing_result_arena] filtered_files: " + str(oar_data_files))
 
+            if "ocs2wb" in fn:
+                goal_avg = np.ones(5)
+                data_label = "ocs2wb"
+            else:
+                goal_avg = np.zeros(5)
+
+            print("fn: " + str(fn))
             for oar_data in oar_data_files:
-                self.get_testing_result(self.mobiman_path + fn + "/" + oar_data)
+                result_total_goal, result_total_oob, result_total_collision, result_total_rollover, result_total_max_step = self.get_testing_result(self.mobiman_path + fn + oar_data)
+
+                if "ocs2wb" in oar_data:
+                    goal_avg *= np.mean(result_total_goal)
+                else:
+                    if "20000" in oar_data:
+                        idx = 0
+                    elif "40000" in oar_data:
+                        idx = 1
+                    elif "60000" in oar_data:
+                        idx = 2
+                    elif "80000" in oar_data:
+                        idx = 3
+                    elif "100000" in oar_data:
+                        idx = 4
+                    
+                    goal_avg[idx] = np.mean(result_total_goal)
+
+                    if "ppo" in oar_data:
+                        if "rewMGT" in oar_data:
+                            data_label = "re4mpc-PPO"
+                        else:
+                            data_label = "re4mpc-PPO w/o Target reward"
+                    elif "sac" in oar_data:
+                        if "rewMGT" in oar_data:
+                            data_label = "re4mpc-SAC"
+                        else:
+                            data_label = "re4mpc-SAC w/o Target reward"
+                    elif "dqn" in oar_data:
+                        if "rewMGT" in oar_data:
+                            data_label = "re4mpc-DQN"
+                        else:
+                            data_label = "re4mpc-DQN w/o Target reward"
+
+                    #print("oar_data: " + str(oar_data))
+                    #print("idx: " + str(idx))
+            
+            #print("goal_avg: " + str(goal_avg))        
+            plt.plot(data_x, goal_avg, label=data_label)
+
+        plt.title("Success Rate wrt. Training Time")
+        plt.xlabel("Training Timesteps")
+        plt.ylabel("Rate of Reaching Goal")
+        plt.legend()
+        plt.grid()
+        plt.show()
+
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def string_to_array(self, input_str, delim):
+
+        input_str = input_str[1:-1]
+
+        #print("input_str")
+        #print(input_str)
+
+        input_array_split = input_str.split(delim)
+
+        #print("input_array_split")
+        #print(input_array_split)
+
+        cleaned_arr = []
+        for s in input_array_split:
+            if s != '':
+                cleaned_arr.append(float(s))
+
+        #print("cleaned_arr")
+        #print(cleaned_arr)
+
+        return cleaned_arr
+
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def get_testing_analysis_model_mode(self, filename):
+        
+        with open(filename, newline='') as csvfile: # type: ignore
+            reader = csv.reader(csvfile, delimiter=',')
+            data = np.array(next(reader))
+            
+            data_keys = list(data)
+
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] filename: " + str(filename))
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] data_keys len: " + str(len(data_keys)))
+            print(data_keys)
+
+            idx_result = data_keys.index("result")
+            idx_action = data_keys.index("action")
+            idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
+            idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
+            idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
+
+            plt.figure()
+            robot_pos_traj_x = []
+            robot_pos_traj_y = []
+            mode_color_traj = []
+            mode_color_traj = []
+
+            n_mode0 = 0
+            n_mode1 = 0
+            n_mode2 = 0
+            n_mode0_goal_tmp = 0
+            n_mode1_goal_tmp = 0
+            n_mode2_goal_tmp = 0
+            n_mode0_goal = 0
+            n_mode1_goal = 0
+            n_mode2_goal = 0
+
+            end_flag = False
+            c = 0
+            for row in reader:
+                if row[idx_result] != "[]":
+
+                    #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] c: " + str(c))
+
+                    action = self.string_to_array(row[idx_action], " ")
+
+                    #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] action: ")
+                    #print(action)
+
+                    robot_pos_wrt_world = self.string_to_array(row[idx_robot_pos_wrt_world], ",")
+
+                    robot_pos_traj_x.append(robot_pos_wrt_world[0]) # type: ignore
+                    robot_pos_traj_y.append(robot_pos_wrt_world[1]) # type: ignore
+
+                    
+                    #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] action: ")
+                    #print(action)
+
+                    #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] robot_pos_wrt_world: ")
+                    #print(robot_pos_wrt_world)
+                    #print("")
+
+                    if action[0] <= 0.3: # type: ignore
+                        mode_color_traj.append("green")
+                        n_mode0 += 1
+                        n_mode0_goal_tmp += 1
+
+                    elif action[0] > 0.6: # type: ignore
+                        mode_color_traj.append("magenta")
+                        n_mode2 += 1
+                        n_mode2_goal_tmp += 1
+                    
+                    else:
+                        mode_color_traj.append("blue")
+                        n_mode1 += 1
+                        n_mode1_goal_tmp += 1
+
+                    if row[idx_result] == "goal":
+                        end_flag = True
+                        n_mode0_goal += n_mode0_goal_tmp
+                        n_mode1_goal += n_mode1_goal_tmp
+                        n_mode2_goal += n_mode2_goal_tmp
+
+                    elif row[idx_result] == "time_horizon":
+                        end_flag = False
+
+                    else:
+                        end_flag = True
+                        mode_color_traj_tmp = mode_color_traj
+                        for i, mc in enumerate(mode_color_traj_tmp):
+                            mode_color_traj[i] = "gray"
+
+                if end_flag:
+                    
+                    for j, x in enumerate(robot_pos_traj_x): # type: ignore
+                        if j+1 <= (len(robot_pos_traj_x)-1):
+                            #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] j: " + str(j))
+                            #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] j+1: " + str(j+1))
+                            #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] len(robot_pos_traj_x)-1: " + str((len(robot_pos_traj_x)-1)))
+                            x_pos = [robot_pos_traj_x[j], robot_pos_traj_x[j+1]]
+                            y_pos = [robot_pos_traj_y[j], robot_pos_traj_y[j+1]]
+                            plt.plot(x_pos, y_pos, color=mode_color_traj[j], ls='-', marker='o')
+                        else:
+                            plt.plot(robot_pos_traj_x[j], robot_pos_traj_y[j], color=mode_color_traj[j], ls='-', marker='o')
+                    
+                    robot_pos_traj_x = []
+                    robot_pos_traj_y = []
+                    mode_color_traj = []
+                    n_mode0_goal_tmp = 0
+                    n_mode1_goal_tmp = 0
+                    n_mode2_goal_tmp = 0
+                    end_flag = False
+
+                c += 1
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0: " + str(n_mode0))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1: " + str(n_mode1))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2: " + str(n_mode2))
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0_goal: " + str(n_mode0_goal))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1_goal: " + str(n_mode1_goal))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2_goal: " + str(n_mode2_goal))
+
+        tot = n_mode0 + n_mode1 + n_mode2
+        tot_goal = n_mode0_goal + n_mode1_goal + n_mode2_goal
+
+        perc_mode0 = round(100 * n_mode0 / tot, 2)
+        perc_mode1 = round(100 * n_mode1 / tot, 2)
+        perc_mode2 = round(100 * n_mode2 / tot, 2)
+
+        perc_mode0_goal = round(100 * n_mode0_goal / tot_goal, 2)
+        perc_mode1_goal = round(100 * n_mode1_goal / tot_goal, 2)
+        perc_mode2_goal = round(100 * n_mode2_goal / tot_goal, 2)
+
+        label_mode0 = mlines.Line2D([], [], color='green', marker='o', ls='-', label='Base: ' + str(perc_mode0_goal) + "%")
+        label_mode1 = mlines.Line2D([], [], color='blue', marker='o', ls='-', label='Arm: ' + str(perc_mode1_goal) + "%")
+        label_mode2 = mlines.Line2D([], [], color='magenta', marker='o', ls='-', label='Whole-body: ' + str(perc_mode2_goal) + "%")
+        plt.legend(handles=[label_mode0, label_mode1, label_mode2])
+
+        if "ppo" in filename:
+            method_name = "re4mpc-PPO"
+
+        elif "sac" in filename:
+            method_name = "re4mpc-SAC"
+
+        elif "dqn" in filename:
+            method_name = "re4mpc-DQN"
+
+        plt.title("Model Mode Map: " + str(method_name))
+        plt.xlabel("x-axis")
+        plt.ylabel("y_axis")
+        #plt.legend()
+        plt.grid()
+        plt.show()
+
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def get_testing_analysis_target_type(self, filename):
+        
+        #### NUA TODO: LEFT HEREEEEE, GET HISTOGRAM OF HOW MANY TIMES TARGET MODE IS SELECTED, COMPARE WRT SUCCESS RATE. 
+        # ADD OBSTACLES AND GOAL IN MODEL MODE PLOT. ALSO ENABLE MULTI PLOTS WRT MODEL MODES FOR BETTER VISUALIZATION
+
+        with open(filename, newline='') as csvfile: # type: ignore
+            reader = csv.reader(csvfile, delimiter=',')
+            data = np.array(next(reader))
+            
+            data_keys = list(data)
+
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] filename: " + str(filename))
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] data_keys len: " + str(len(data_keys)))
+            print(data_keys)
+
+            idx_result = data_keys.index("result")
+            idx_action = data_keys.index("action")
+            #idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
+            idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
+            #idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
+
+            goal_pos_traj_x = []
+            goal_pos_traj_y = []
+            mode_color_traj = []
+            mode_color_traj = []
+
+            goal_dist_when_target = []
+
+            n_mode0 = 0
+            n_mode1 = 0
+            n_mode2 = 0
+            n_mode0_goal_tmp = 0
+            n_mode1_goal_tmp = 0
+            n_mode2_goal_tmp = 0
+            n_mode0_goal = 0
+            n_mode1_goal = 0
+            n_mode2_goal = 0
+
+            n_target = 0
+            n_goal = 0
+            n_target_tmp = 0
+            n_goal_tmp = 0
+            n_target_success = 0
+            n_goal_success = 0
+
+            for row in reader:
+                if row[idx_result] != "[]":
+
+                    #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] c: " + str(c))
+
+                    action = self.string_to_array(row[idx_action], " ")
+
+                    #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] action: ")
+                    #print(action)
+
+                    goal_pos_wrt_world = self.string_to_array(row[idx_goal_pos_wrt_world], ",")
+
+                    goal_pos_traj_x.append(robot_pos_wrt_world[0]) # type: ignore
+                    goal_pos_traj_y.append(robot_pos_wrt_world[1]) # type: ignore
+
+                    ### MODEL MODE
+                    if action[0] <= 0.3: # type: ignore
+                        mode_color_traj.append("green")
+                        n_mode0 += 1
+                        n_mode0_goal_tmp += 1
+
+                    elif action[0] > 0.6: # type: ignore
+                        mode_color_traj.append("magenta")
+                        n_mode2 += 1
+                        n_mode2_goal_tmp += 1
+                    
+                    else:
+                        mode_color_traj.append("blue")
+                        n_mode1 += 1
+                        n_mode1_goal_tmp += 1
+
+                    ### TARGET TYPE
+                    if action[1] <= 0.5: # type: ignore
+                        n_target += 1
+                        n_target_tmp += 1
+                    else:
+                        n_goal_tmp += 1
+
+                    if row[idx_result] == "goal":
+                        end_flag = True
+                        n_mode0_goal += n_mode0_goal_tmp
+                        n_mode1_goal += n_mode1_goal_tmp
+                        n_mode2_goal += n_mode2_goal_tmp
+
+                        n_target_success += n_target_tmp
+                        n_goal_success += n_goal_tmp
+
+                    elif row[idx_result] == "time_horizon":
+                        end_flag = False
+
+                    else:
+                        end_flag = True
+                        mode_color_traj_tmp = mode_color_traj
+                        for i, mc in enumerate(mode_color_traj_tmp):
+                            mode_color_traj[i] = "gray"
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_target: " + str(n_target))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_goal: " + str(n_goal))
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_target_success: " + str(n_target_success))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_goal_success: " + str(n_goal_success))
+
+        
+
+    '''
+    DESCRIPTION: NUA TODO: Update!
+    '''
+    def get_testing_analysis_target_type_arena(self, folder_name):
+
+        if "ppo" in filename:
+            method_name = "re4mpc-PPO"
+
+        elif "sac" in filename:
+            method_name = "re4mpc-SAC"
+
+        elif "dqn" in filename:
+            method_name = "re4mpc-DQN"
+
+        plt.figure()
+
+        methods = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
+        y_pos = np.arange(len(people))
+
+        fig, ax = plt.subplots()
+        ax.barh(y_pos, performance, xerr=error, align='center')
+        ax.set_yticks(y_pos, labels=people)
+        ax.invert_yaxis()  # labels read top-to-bottom
+        ax.set_xlabel('Performance')
+        ax.set_title('How fast do you want to go today?')
+
+        plt.title("Model Mode Map: " + str(method_name))
+        plt.xlabel("Model mode Percentage")
+        plt.ylabel("Methods")
+        #plt.legend()
+        plt.grid()
+        plt.show()
+
+
 
 '''
 DESCRIPTION: NUA TODO: Update!
@@ -774,7 +1182,7 @@ if __name__ == '__main__':
 
     if plot_result_flag:
 
-        plot_mobiman.get_testing_result_arena(data_folder)
+        #plot_mobiman.get_testing_result_arena(data_folder)
 
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
@@ -786,6 +1194,11 @@ if __name__ == '__main__':
             # print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
 
             #plot_mobiman.plot_result(file_path)
+            plot_mobiman.get_testing_analysis_model_mode(file_path)
+
+            plot_mobiman.get_testing_analysis_target_type(file_path)
+
+
 
     if plot_reward_flag:
         
