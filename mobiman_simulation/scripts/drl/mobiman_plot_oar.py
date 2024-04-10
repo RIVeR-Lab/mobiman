@@ -24,6 +24,7 @@ import time
 import csv
 from turtle import color, st
 from cv2 import mean
+import math
 from matplotlib.markers import MarkerStyle
 import numpy as np
 import pandas as pd
@@ -834,9 +835,9 @@ class PlotMobiman(object):
 
             idx_result = data_keys.index("result")
             idx_action = data_keys.index("action")
-            idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
+            #idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
             idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
-            idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
+            #idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
 
             plt.figure()
             robot_pos_traj_x = []
@@ -866,7 +867,7 @@ class PlotMobiman(object):
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] action: ")
                     #print(action)
 
-                    robot_pos_wrt_world = self.string_to_array(row[idx_robot_pos_wrt_world], ",")
+                    goal_pos_wrt_world = self.string_to_array(row[idx_goal_pos_wrt_world], ",")
 
                     robot_pos_traj_x.append(robot_pos_wrt_world[0]) # type: ignore
                     robot_pos_traj_y.append(robot_pos_wrt_world[1]) # type: ignore
@@ -973,6 +974,12 @@ class PlotMobiman(object):
         plt.show()
 
     '''
+    DESCRIPTION: TODO...
+    '''
+    def get_euclidean_distance_2D(self, p1, p2={"x":0.0, "y":0.0}):
+        return math.sqrt((p1["x"] - p2["x"])**2 + (p1["y"] - p2["y"])**2)
+
+    '''
     DESCRIPTION: NUA TODO: Update!
     '''
     def get_testing_analysis_target_type(self, filename):
@@ -992,15 +999,12 @@ class PlotMobiman(object):
 
             idx_result = data_keys.index("result")
             idx_action = data_keys.index("action")
+            idx_observation = data_keys.index("observation")
             #idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
-            idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
+            #idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
             #idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
 
-            goal_pos_traj_x = []
-            goal_pos_traj_y = []
             mode_color_traj = []
-            mode_color_traj = []
-
             goal_dist_when_target = []
 
             n_mode0 = 0
@@ -1022,18 +1026,13 @@ class PlotMobiman(object):
 
             for row in reader:
                 if row[idx_result] != "[]":
-
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] c: " + str(c))
 
                     action = self.string_to_array(row[idx_action], " ")
+                    observation = self.string_to_array(row[idx_observation], ",")
 
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] action: ")
                     #print(action)
-
-                    goal_pos_wrt_world = self.string_to_array(row[idx_goal_pos_wrt_world], ",")
-
-                    goal_pos_traj_x.append(robot_pos_wrt_world[0]) # type: ignore
-                    goal_pos_traj_y.append(robot_pos_wrt_world[1]) # type: ignore
 
                     ### MODEL MODE
                     if action[0] <= 0.3: # type: ignore
@@ -1055,7 +1054,11 @@ class PlotMobiman(object):
                     if action[1] <= 0.5: # type: ignore
                         n_target += 1
                         n_target_tmp += 1
+
+                        goal_dist = self.get_euclidean_distance_2D({"x":observation[0], "y":observation[1]})
+                        goal_dist_when_target.append(goal_dist)
                     else:
+                        n_goal += 1
                         n_goal_tmp += 1
 
                     if row[idx_result] == "goal":
@@ -1067,6 +1070,13 @@ class PlotMobiman(object):
                         n_target_success += n_target_tmp
                         n_goal_success += n_goal_tmp
 
+                        mode_color_traj = []
+                        n_mode0_goal_tmp = 0
+                        n_mode1_goal_tmp = 0
+                        n_mode2_goal_tmp = 0
+                        n_target_tmp = 0
+                        n_goal_tmp = 0
+
                     elif row[idx_result] == "time_horizon":
                         end_flag = False
 
@@ -1076,38 +1086,86 @@ class PlotMobiman(object):
                         for i, mc in enumerate(mode_color_traj_tmp):
                             mode_color_traj[i] = "gray"
 
+                        mode_color_traj = []
+                        n_mode0_goal_tmp = 0
+                        n_mode1_goal_tmp = 0
+                        n_mode2_goal_tmp = 0
+                        n_target_tmp = 0
+                        n_goal_tmp = 0
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0: " + str(n_mode0))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1: " + str(n_mode1))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2: " + str(n_mode2))
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0_goal: " + str(n_mode0_goal))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1_goal: " + str(n_mode1_goal))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2_goal: " + str(n_mode2_goal))
+
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_target: " + str(n_target))
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_goal: " + str(n_goal))
 
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_target_success: " + str(n_target_success))
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_goal_success: " + str(n_goal_success))
 
-        
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] goal_dist_when_target len: " + str(len(goal_dist_when_target)))
+
+        return n_mode0, n_mode1, n_mode2, n_mode0_goal, n_mode1_goal, n_mode2_goal, n_target, n_goal, n_target_success, n_goal_success, goal_dist_when_target
 
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
     def get_testing_analysis_target_type_arena(self, data_names):
 
-        for i, dn in data_names:
-
-            self.get_testing_analysis_target_type(dn)
-
-            '''
-            if "ppo" in filename:
-                method_name = "re4mpc-PPO"
-
-            elif "sac" in filename:
-                method_name = "re4mpc-SAC"
-
-            elif "dqn" in filename:
-                method_name = "re4mpc-DQN"
-            '''
+        n_bin = 50
+        data_label = []
+        data_hist_goal_dist = []
 
         plt.figure()
 
-        methods = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
-        y_pos = np.arange(len(people))
+        for dn in data_names:
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type_arena] dn: " + str(dn))
+            n_mode0, n_mode1, n_mode2, n_mode0_goal, n_mode1_goal, n_mode2_goal, n_target, n_goal, n_target_success, n_goal_success, goal_dist_when_target = self.get_testing_analysis_target_type(self.mobiman_path + dn)
+
+            hist_goal_dist_when_target = np.histogram(goal_dist_when_target, n_bin)
+
+            data_hist_goal_dist.append(hist_goal_dist_when_target)
+
+            if "ppo" in dn:
+                if "rewMGT" in dn:
+                    data_label.append("re4mpc-PPO")
+                else:
+                    data_label.append("re4mpc-PPO w/o Target reward")
+            elif "sac" in dn:
+                if "rewMGT" in dn:
+                    data_label.append("re4mpc-SAC")
+                else:
+                    data_label.append("re4mpc-SAC w/o Target reward")
+            elif "dqn" in dn:
+                if "rewMGT" in dn:
+                    data_label.append("re4mpc-DQN")
+                else:
+                    data_label.append("re4mpc-DQN w/o Target reward")
+
+            plt.hist(hist_goal_dist_when_target, 'auto', alpha=0.5, label=data_label)
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type_arena] data_label len: " + str(len(data_label)))
+        print(data_label)
+
+        
+
+        print("hist_goal_dist_when_target data:")
+        print(hist_goal_dist_when_target[0])
+
+        print("hist_goal_dist_when_target bins:")
+        print(hist_goal_dist_when_target[0])
+
+        
+
+        for i, dlab in enumerate(data_label):
+            plt.hist(data_hist_goal_dist[i], 'auto', alpha=0.5, label=dlab)
+
+        '''
+        y_pos = np.arange(len(data_label))
 
         fig, ax = plt.subplots()
         ax.barh(y_pos, performance, xerr=error, align='center')
@@ -1115,11 +1173,12 @@ class PlotMobiman(object):
         ax.invert_yaxis()  # labels read top-to-bottom
         ax.set_xlabel('Performance')
         ax.set_title('How fast do you want to go today?')
+        '''
 
-        plt.title("Model Mode Map: " + str(method_name))
-        plt.xlabel("Model mode Percentage")
-        plt.ylabel("Methods")
-        #plt.legend()
+        plt.title("Histogram of goal distance when Target Mode")
+        plt.xlabel("Distance to Goal")
+        plt.ylabel("Target Mode Count")
+        plt.legend()
         plt.grid()
         plt.show()
 
