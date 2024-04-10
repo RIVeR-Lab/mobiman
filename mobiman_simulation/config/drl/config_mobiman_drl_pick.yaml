@@ -40,7 +40,7 @@ testing_benchmark_name: "re4mpc_cont_ppo_rewMGT"
 ## 1: Far goal case
 ## 2: Full case with 2 agents but not on the way
 ## 3: With 2 agents
-testing_mode: 3
+testing_mode: 0
 n_testing_eval_episodes: 1
 
 ### DRL-Training Parameters

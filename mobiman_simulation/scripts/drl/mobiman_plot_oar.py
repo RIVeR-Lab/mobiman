@@ -1093,6 +1093,7 @@ class PlotMobiman(object):
                         n_target_tmp = 0
                         n_goal_tmp = 0
 
+        '''
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0: " + str(n_mode0))
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1: " + str(n_mode1))
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2: " + str(n_mode2))
@@ -1108,6 +1109,7 @@ class PlotMobiman(object):
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_goal_success: " + str(n_goal_success))
 
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] goal_dist_when_target len: " + str(len(goal_dist_when_target)))
+        '''
 
         return n_mode0, n_mode1, n_mode2, n_mode0_goal, n_mode1_goal, n_mode2_goal, n_target, n_goal, n_target_success, n_goal_success, goal_dist_when_target
 
@@ -1118,17 +1120,30 @@ class PlotMobiman(object):
 
         n_bin = 50
         data_label = []
-        data_hist_goal_dist = []
+        data_target_perc = []
+        data_target_perc_success = []
+        #data_hist_goal_dist = []
+        #data_bin_goal_dist = []
 
-        plt.figure()
+        plt.figure(0)
 
         for dn in data_names:
             print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type_arena] dn: " + str(dn))
             n_mode0, n_mode1, n_mode2, n_mode0_goal, n_mode1_goal, n_mode2_goal, n_target, n_goal, n_target_success, n_goal_success, goal_dist_when_target = self.get_testing_analysis_target_type(self.mobiman_path + dn)
 
-            hist_goal_dist_when_target = np.histogram(goal_dist_when_target, n_bin)
+            target_perc = 100 * n_target / (n_target+n_goal)
+            target_perc_success = 100 * n_target_success / (n_target_success+n_goal_success)
 
-            data_hist_goal_dist.append(hist_goal_dist_when_target)
+            data_target_perc.append(target_perc)
+            data_target_perc_success.append(target_perc_success)
+
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] target_perc: " + str(target_perc))
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] target_perc_success: " + str(target_perc_success))
+
+            hist, bin_edges = np.histogram(goal_dist_when_target, n_bin)
+
+            #data_hist_goal_dist.append(hist)
+            #data_bin_goal_dist.append(bin_edges)
 
             if "ppo" in dn:
                 if "rewMGT" in dn:
@@ -1145,39 +1160,40 @@ class PlotMobiman(object):
                     data_label.append("re4mpc-DQN")
                 else:
                     data_label.append("re4mpc-DQN w/o Target reward")
-
-            plt.hist(hist_goal_dist_when_target, 'auto', alpha=0.5, label=data_label)
+            
+            plt.hist(bin_edges[:-1], bin_edges, weights=hist, alpha=0.3, label=data_label[-1]) # type: ignore
 
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type_arena] data_label len: " + str(len(data_label)))
         print(data_label)
 
-        
+        #print("data_hist_goal_dist  len: " + str(len(data_hist_goal_dist)))
+        #print(data_hist_goal_dist[0])
 
-        print("hist_goal_dist_when_target data:")
-        print(hist_goal_dist_when_target[0])
+        #print("data_bin_goal_dist len: " + str(len(data_bin_goal_dist)))
+        #print(data_bin_goal_dist[0])
 
-        print("hist_goal_dist_when_target bins:")
-        print(hist_goal_dist_when_target[0])
-
-        
-
-        for i, dlab in enumerate(data_label):
-            plt.hist(data_hist_goal_dist[i], 'auto', alpha=0.5, label=dlab)
-
-        '''
-        y_pos = np.arange(len(data_label))
-
-        fig, ax = plt.subplots()
-        ax.barh(y_pos, performance, xerr=error, align='center')
-        ax.set_yticks(y_pos, labels=people)
-        ax.invert_yaxis()  # labels read top-to-bottom
-        ax.set_xlabel('Performance')
-        ax.set_title('How fast do you want to go today?')
-        '''
+        #for i, dlab in enumerate(data_label):
+        #    plt.hist(data_hist_goal_dist[i], 'auto', alpha=0.5, label=dlab)
 
         plt.title("Histogram of goal distance when Target Mode")
         plt.xlabel("Distance to Goal")
         plt.ylabel("Target Mode Count")
+        plt.legend()
+        plt.grid()
+        plt.show()
+
+        fig, ax = plt.subplots(1)
+        y_pos = np.arange(len(data_label))
+
+        ax.barh(y_pos, data_target_perc, align='center')
+        ax.set_yticks(y_pos, labels=data_label)
+        ax.invert_yaxis()  # labels read top-to-bottom
+        ax.set_xlabel('Percentage of Target Mode when the result is success')
+        ax.set_title('Target Reward Effect on Target Mode Percentage')
+
+        #plt.title("Histogram of goal distance when Target Mode")
+        #plt.xlabel("Distance to Goal")
+        #plt.ylabel("Target Mode Count")
         plt.legend()
         plt.grid()
         plt.show()

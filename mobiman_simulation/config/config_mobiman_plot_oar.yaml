@@ -4,16 +4,21 @@
 # data_folder: "dataset/drl/abilation/re4mpc_disc_ppo_rewMG/before_reward_update"
 
 ### NUA NOTE: REWARD PLOT
-#data_folder: ["dataset/drl/re4mpc/re4mpc_cont_ppo_rewMGT",
-#              "dataset/drl/re4mpc/re4mpc_cont_sac_rewMGT",
-#              "dataset/drl/re4mpc/re4mpc_disc_dqn_rewMGT",
-#              "dataset/drl/re4mpc/re4mpc_cont_ppo_rewMG",
-#              "dataset/drl/re4mpc/re4mpc_cont_sac_rewMG",
-#              "dataset/drl/re4mpc/re4mpc_disc_dqn_rewMG"]
+data_folder: ["dataset/drl/re4mpc/re4mpc_cont_ppo_rewMGT",
+              "dataset/drl/re4mpc/re4mpc_cont_sac_rewMGT",
+              "dataset/drl/re4mpc/re4mpc_disc_dqn_rewMGT",
+              "dataset/drl/re4mpc/re4mpc_cont_ppo_rewMG",
+              "dataset/drl/re4mpc/re4mpc_cont_sac_rewMG",
+              "dataset/drl/re4mpc/re4mpc_disc_dqn_rewMG"]
+
+#data_folder: [dataset/drl/re4mpc/re4mpc_cont_ppo_rewMGT_wAgents/,
+#              dataset/drl/re4mpc/re4mpc_disc_dqn_rewMGT_wAgents/]
 
 ### NUA NOTE: RESULT PLOT
-data_folder: [dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/,
-              dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data/]
+#data_folder: ["dataset/drl/arena/ocs2wb/",
+#              "dataset/drl/arena/re4mpc_cont_ppo_rewMGT_100k/testing_data/",
+#              "dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/",
+#              "dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data/"]
 #data_folder: ["dataset/drl/arena/ocs2wb",
 #              "dataset/drl/arena/re4mpc_cont_ppo_rewMGT_100k/testing_data",
 #              "dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data",
@@ -24,8 +29,13 @@ data_folder: [dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/,
 
 #data_names: ["dataset/drl/arena/re4mpc_cont_ppo_rewMGT_100k/testing_data/oar_data_testing_re4mpc_cont_ppo_rewMGT_trained_model_100000_steps.csv"]
 #data_names: ["dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data/oar_data_testing_re4mpc_cont_sac_rewMGT_trained_model_100000_steps.csv"]
+
+#data_names: ["dataset/drl/arena/re4mpc_cont_ppo_rewMGT_100k/testing_data/oar_data_testing_re4mpc_cont_ppo_rewMGT_trained_model_100000_steps.csv",
+#             "dataset/drl/arena/re4mpc_cont_ppo_rewMG_100k/testing_data/oar_data_testing_re4mpc_cont_ppo_rewMG_trained_model_100000_steps.csv"]
 data_names: ["dataset/drl/arena/re4mpc_cont_sac_rewMGT_100k/testing_data/oar_data_testing_re4mpc_cont_sac_rewMGT_trained_model_100000_steps.csv",
              "dataset/drl/arena/re4mpc_cont_sac_rewMG_100k/testing_data/oar_data_testing_re4mpc_cont_sac_rewMG_trained_model_100000_steps.csv"]
+#data_names: ["dataset/drl/arena/re4mpc_disc_dqn_rewMGT_100k/testing_data/oar_data_testing_re4mpc_disc_dqn_rewMGT_trained_model_100000_steps.csv",
+#             "dataset/drl/arena/re4mpc_disc_dqn_rewMG_100k/testing_data/oar_data_testing_re4mpc_disc_dqn_rewMG_trained_model_100000_steps.csv"]
 
 # data_names: ["dataset/drl/normal/re4mpc_cont_ppo_rewMGT/20240322_133717_PPO_mobiman/oar_data_testing_jackalJaco_0_re4mpc.csv"]
 
@@ -43,9 +53,9 @@ plot_result_pie_flag: False
 plot_result_arena_flag: False
 
 plot_analysis_model_mode_flag: False
-plot_analysis_target_type_flag: True
+plot_analysis_target_type_flag: False
 
-plot_reward_flag: False
+plot_reward_flag: True
 plot_action_hist_flag: False
 plot_observation_hist_flag: False
 
