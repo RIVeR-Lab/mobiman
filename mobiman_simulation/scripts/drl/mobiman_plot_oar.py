@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 '''
-LAST UPDATE: 2024.04.08
+LAST UPDATE: 2024.04.10
 
 AUTHOR:	Sarvesh Prajapati (SP)
         Neset Unver Akmandor (NUA)	
@@ -29,6 +29,7 @@ from matplotlib.markers import MarkerStyle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 #from mobiman.mobiman_simulation.scripts.drl.mobiman_drl_training import print_array
 from collections import deque
 import rospy
@@ -370,36 +371,12 @@ class PlotMobiman(object):
                 plt.show()
                 # plt.close()
 
-        print("[mobiman_plot_oar::PlotMobiman::plot_observations] END")
-
-    '''
-    DESCRIPTION: TODO...
-    '''
-    def plot_rewards(self):
-        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
-        df = self.generate_dataframe()
-        clean_data = df[df['reward'].notna()]
-
-        window_size = 100
-        clean_data['Reward'] = clean_data['reward'].apply(lambda x: float(x))
-        clean_data['Reward'] = clean_data['Reward'].round(4)
-        clean_data['cumulative_reward'] = clean_data['Reward'].rolling(window=window_size).mean()
-        clean_data['reward'].to_clipboard()
-        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] clean_data.info: ")
-        print(clean_data.info())
-        
-        plt.plot(clean_data['cumulative_reward'].iloc[:])
-        plt.title(f'Rolling average of reward, window size {window_size}')
-        plt.xlabel("Steps")
-        plt.ylabel("Rewards")
-        plt.show()
-
-        print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")    
+        print("[mobiman_plot_oar::PlotMobiman::plot_observations] END") 
     
     '''
     DESCRIPTION: NUA TODO: Update!
     '''
-    def plot_rewards_episodic(self, color='red', legend='PPO', plot=True, trim=True, trim_len=-1):
+    def plot_reward_episodic(self, color='red', legend='PPO', plot=True, trim=True, trim_len=-1):
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] START")
         df = self.generate_dataframe_episodic()
         
@@ -454,102 +431,6 @@ class PlotMobiman(object):
             plt.show()
 
         print("[mobiman_plot_oar::PlotMobiman::plot_rewards] END")
-            
-
-    '''
-    DESCRIPTION: TODO...
-    '''
-    def plot_result(self, file, title=""):
-        data_result_ep = self.get_data_col_episode(file, "result", "str")
-        
-        n_time_goal = 0
-        n_time_out_of_boundary = 0
-        n_time_collision = 0
-        n_time_rollover = 0
-        n_time_max_step = 0
-
-        for res_ep in data_result_ep:
-            if "goal" in res_ep:
-                n_time_goal += 1
-
-            elif "out_of_boundary" in res_ep:
-                n_time_out_of_boundary += 1
-
-            elif "collision" in res_ep:
-                n_time_collision += 1
-
-            elif "rollover" in res_ep:
-                n_time_rollover += 1
-
-            elif "max_step" in res_ep:
-                n_time_max_step += 1
-
-        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_goal: " + str(n_time_goal))
-        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_out_of_boundary: " + str(n_time_out_of_boundary))
-        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_collision: " + str(n_time_collision))
-        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_rollover: " + str(n_time_rollover))
-        #print("[mobiman_plot_oar::PlotMobiman::plot_result] n_time_max_step: " + str(n_time_max_step))
-
-        y = np.array([n_time_goal, n_time_out_of_boundary, n_time_collision, n_time_rollover, n_time_max_step])
-        labels = ["Goal", "Out_of_boundary", "Collision", "Rollover", "Max_step"]
-        colors = ['green', 'magenta', 'red', 'orange', 'blue']
-        explode = [0.2, 0, 0, 0, 0]
-
-        plt.figure()
-        plt.pie(y, colors=colors, labels=labels, explode=explode, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.3)
-        #plt.legend()
-
-        if self.plot_title:
-            plot_title = self.plot_title + title
-        else:
-            plot_title = title
-        plt.title(plot_title)
-        #plt.show()
-
-        if self.save_flag:
-            if self.save_folder:
-                file_folder = file.split("/")
-                filename = file_folder[-1]
-                save_path = self.save_folder + "plot_pie_" + filename + "_result.png"
-            else:
-                file_folder = file.split("/")
-                filename = file_folder[-1]
-                file_folder = '/'.join(file_folder[:-1])
-                save_path = file_folder + "/plot_pie_" + filename + "_result.png"
-
-            print("[mobiman_plot_oar::PlotMobiman::plot_result] Saving to " + str(save_path) + "!")
-            plt.savefig(save_path)
-
-    '''
-    DESCRIPTION: TODO...
-    '''
-    def plot_reward_episode(self, file, title=""):
-        print("[mobiman_plot_oar::PlotMobiman::plot_reward_episode] START")
-        
-        data_reward_ep = self.get_data_col_episode(file, "reward", ep_end_token="")
-
-        n_data = len(data_reward_ep)
-        ep_index = range(n_data)
-        #ep_total = np.linspace(0, n_data, n_data) # type: ignore
-        rew_ep_total = []
-        for i, rew_ep in enumerate(data_reward_ep):
-            #print(str(i) + " -> " + str(len(rew_ep)))
-            rew_ep_total.append(sum(rew_ep))
-
-        file_folder = file.split("/")
-        filename = file_folder[-1]
-        file_folder = '/'.join(file_folder[:-1])
-        save_path = file_folder + "/" + filename + "_reward_episode.png"
-
-        print("[mobiman_plot_oar::PlotMobiman::plot_reward_episode] save_path: " + str(save_path))
-
-        self.plot_func( # type: ignore
-            ep_index, rew_ep_total,
-            data_label='', data_color='k',
-            label_x='ep_index', label_y='rew_ep_total', title='Reward (Episode)', 
-            save_path=save_path)
-
-        print("[mobiman_plot_oar::PlotMobiman::plot_reward_episode] END")
 
     '''
     DESCRIPTION: TODO...
@@ -652,8 +533,8 @@ class PlotMobiman(object):
             
             data_keys = list(data)
 
-            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] filename: " + str(filename))
-            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] data_keys len: " + str(len(data_keys)))
+            #print("[mobiman_plot_oar::PlotMobiman::get_testing_result] filename: " + str(filename))
+            #print("[mobiman_plot_oar::PlotMobiman::get_testing_result] data_keys len: " + str(len(data_keys)))
             #print(data_keys)
 
             idx_result = data_keys.index("result")
@@ -699,20 +580,58 @@ class PlotMobiman(object):
                             result_eval_oob[eval_idx] += 1
 
                         elif row[idx_result] == "collision":
-                            result_eval_oob[eval_idx] += 1
+                            result_eval_collision[eval_idx] += 1
 
                         elif row[idx_result] == "rollover":
-                            result_eval_oob[eval_idx] += 1
+                            result_eval_rollover[eval_idx] += 1
 
                         elif row[idx_result] == "max_step" :
-                            result_eval_oob[eval_idx] += 1
+                            result_eval_max_step[eval_idx] += 1
 
                         if eval_idx == n_testing_eval-1:
                             eval_flag = True
 
-            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] result_total_goal: " + str(result_total_goal))
-            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] result_total_goal len: " + str(len(result_total_goal)))
-            #print("[mobiman_plot_oar::PlotMobiman::get_data_col] result_total_goal mean: " + str(np.mean(result_total_goal)))
+        if self.save_flag:
+            n_time_goal = np.mean(result_total_goal)
+            n_time_out_of_boundary = np.mean(result_total_oob)
+            n_time_collision = np.mean(result_total_collision)
+            n_time_rollover = np.mean(result_total_rollover)
+            n_time_max_step = np.mean(result_total_max_step)
+
+            y = np.array([n_time_goal, n_time_out_of_boundary, n_time_collision, n_time_rollover, n_time_max_step])
+            labels = ["Goal", "Out_of_boundary", "Collision", "Rollover", "Max_step"]
+            colors = ['green', 'magenta', 'red', 'orange', 'blue']
+            explode = [0.2, 0, 0, 0, 0]
+
+            plt.figure()
+            plt.pie(y, colors=colors, labels=labels, explode=explode, autopct='%1.0f%%', pctdistance=1.1, labeldistance=1.3)
+            #plt.legend()
+
+            plot_title = ""
+            if self.plot_title:
+                plot_title = self.plot_title
+          
+            plt.title(plot_title)
+            #plt.show()
+
+            #if self.save_folder:
+            #    file_folder = filename.split("/")
+            #    fn = file_folder[-1]
+            #    save_path = self.save_folder + "plot_pie_" + fn + "_result.png"
+            #else:
+
+            file_folder = filename.split("/")
+            fn = file_folder[-1]
+            file_folder = '/'.join(file_folder[:-1])
+            save_path = file_folder + "/plot_pie_" + fn + "_result.png"
+
+            #print("[mobiman_plot_oar::PlotMobiman::get_testing_result] Saving to " + str(save_path) + "!")
+            plt.savefig(save_path)
+            plt.close()
+
+            #print("[mobiman_plot_oar::PlotMobiman::get_testing_result] result_total_goal: " + str(result_total_goal))
+            #print("[mobiman_plot_oar::PlotMobiman::get_testing_result] result_total_goal len: " + str(len(result_total_goal)))
+            #print("[mobiman_plot_oar::PlotMobiman::get_testing_result] result_total_goal mean: " + str(np.mean(result_total_goal)))
             #print("")
             #print("")
             #print("")
@@ -746,7 +665,7 @@ class PlotMobiman(object):
 
             print("fn: " + str(fn))
             for oar_data in oar_data_files:
-                result_total_goal, result_total_oob, result_total_collision, result_total_rollover, result_total_max_step = self.get_testing_result(self.mobiman_path + fn + oar_data)
+                result_total_goal, result_total_oob, result_total_collision, result_total_rollover, result_total_max_step = self.get_testing_result(self.mobiman_path + fn + oar_data) # type: ignore
 
                 if "ocs2wb" in oar_data:
                     goal_avg *= np.mean(result_total_goal)
@@ -784,14 +703,25 @@ class PlotMobiman(object):
                     #print("idx: " + str(idx))
             
             #print("goal_avg: " + str(goal_avg))        
-            plt.plot(data_x, goal_avg, label=data_label)
+            plt.plot(data_x, goal_avg, label=data_label, ls='-', marker='o')
 
         plt.title("Success Rate wrt. Training Time")
         plt.xlabel("Training Timesteps")
         plt.ylabel("Rate of Reaching Goal")
         plt.legend()
         plt.grid()
-        plt.show()
+        #plt.show()
+
+        if self.save_flag:
+            if self.save_folder:
+                save_path = self.save_folder + "testing_result_arena.png"
+            else:
+                file_folder = self.mobiman_path + "dataset/drl/arena/"
+                save_path = file_folder + "testing_result_arena.png"
+
+            plt.savefig(save_path)
+        
+        plt.close()
 
     '''
     DESCRIPTION: NUA TODO: Update!
@@ -835,11 +765,10 @@ class PlotMobiman(object):
 
             idx_result = data_keys.index("result")
             idx_action = data_keys.index("action")
-            #idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
+            idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
             idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
-            #idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
+            idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
 
-            plt.figure()
             robot_pos_traj_x = []
             robot_pos_traj_y = []
             mode_color_traj = []
@@ -857,6 +786,13 @@ class PlotMobiman(object):
 
             end_flag = False
             c = 0
+
+            plt.figure()
+            fig, ax = plt.subplots(sharex=True, sharey=True)
+            rect = patches.Rectangle((-1.0, 1.825), 2, 0.35, linewidth=5, edgecolor='k', facecolor='orange')
+            ax.add_patch(rect)
+            ax.annotate("CONVEYOR BELT", (-0.55, 1.9))
+
             for row in reader:
                 if row[idx_result] != "[]":
 
@@ -867,12 +803,10 @@ class PlotMobiman(object):
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] action: ")
                     #print(action)
 
-                    goal_pos_wrt_world = self.string_to_array(row[idx_goal_pos_wrt_world], ",")
-
+                    robot_pos_wrt_world = self.string_to_array(row[idx_robot_pos_wrt_world], ",")
                     robot_pos_traj_x.append(robot_pos_wrt_world[0]) # type: ignore
                     robot_pos_traj_y.append(robot_pos_wrt_world[1]) # type: ignore
 
-                    
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] action: ")
                     #print(action)
 
@@ -955,23 +889,46 @@ class PlotMobiman(object):
         label_mode0 = mlines.Line2D([], [], color='green', marker='o', ls='-', label='Base: ' + str(perc_mode0_goal) + "%")
         label_mode1 = mlines.Line2D([], [], color='blue', marker='o', ls='-', label='Arm: ' + str(perc_mode1_goal) + "%")
         label_mode2 = mlines.Line2D([], [], color='magenta', marker='o', ls='-', label='Whole-body: ' + str(perc_mode2_goal) + "%")
-        plt.legend(handles=[label_mode0, label_mode1, label_mode2])
+        plt.legend(handles=[label_mode0, label_mode1, label_mode2], loc='lower left')
 
         if "ppo" in filename:
-            method_name = "re4mpc-PPO"
-
+            if "rewMGT" in filename:
+                data_label = "re4mpc-PPO"
+            else:
+                data_label = "re4mpc-PPO w/o Target reward"
         elif "sac" in filename:
-            method_name = "re4mpc-SAC"
-
+            if "rewMGT" in filename:
+                data_label = "re4mpc-SAC"
+            else:
+                data_label = "re4mpc-SAC w/o Target reward"
         elif "dqn" in filename:
-            method_name = "re4mpc-DQN"
+            if "rewMGT" in filename:
+                data_label = "re4mpc-DQN"
+            else:
+                data_label = "re4mpc-DQN w/o Target reward"
 
-        plt.title("Model Mode Map: " + str(method_name))
-        plt.xlabel("x-axis")
-        plt.ylabel("y_axis")
+        plt.title("Model Mode Map: " + str(data_label))
+        plt.xlabel("x-axis [m]")
+        plt.ylabel("y_axis [m]")
         #plt.legend()
         plt.grid()
-        plt.show()
+        #plt.show()
+
+        if self.save_flag:
+            if self.save_folder:
+                save_path = self.save_folder + "/testing_model_mode.png"
+            else:
+                file_folder = filename.split("/")
+                file_folder = '/'.join(file_folder[:-1])
+                save_path = file_folder + "/testing_model_mode.png"
+
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] Saving to " + str(save_path) + "!")
+            #print("DEBUG_INF")
+            #while 1:
+            #    continue
+
+            plt.savefig(save_path)
+        plt.close()
 
     '''
     DESCRIPTION: TODO...
@@ -1000,7 +957,7 @@ class PlotMobiman(object):
             idx_result = data_keys.index("result")
             idx_action = data_keys.index("action")
             idx_observation = data_keys.index("observation")
-            #idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
+            idx_robot_pos_wrt_world = data_keys.index("robot_pos_wrt_world")
             #idx_goal_pos_wrt_world = data_keys.index("goal_pos_wrt_world")
             #idx_obs_pos_wrt_world = data_keys.index("obs_pos_wrt_world")
 
@@ -1024,12 +981,22 @@ class PlotMobiman(object):
             n_target_success = 0
             n_goal_success = 0
 
+            plt.figure()
+            fig, ax = plt.subplots(sharex=True, sharey=True)
+            rect = patches.Rectangle((-1.0, 1.85), 2, 0.35, linewidth=5, edgecolor='k', facecolor='orange')
+            ax.add_patch(rect)
+            ax.annotate("CONVEYOR BELT", (-0.55, 1.9))
+
             for row in reader:
                 if row[idx_result] != "[]":
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] c: " + str(c))
 
                     action = self.string_to_array(row[idx_action], " ")
                     observation = self.string_to_array(row[idx_observation], ",")
+
+                    robot_pos_wrt_world = self.string_to_array(row[idx_robot_pos_wrt_world], ",")
+                    #robot_pos_traj_x.append(robot_pos_wrt_world[0]) # type: ignore
+                    #robot_pos_traj_y.append(robot_pos_wrt_world[1]) # type: ignore
 
                     #print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] action: ")
                     #print(action)
@@ -1055,11 +1022,15 @@ class PlotMobiman(object):
                         n_target += 1
                         n_target_tmp += 1
 
+                        plt.plot(robot_pos_wrt_world[0], robot_pos_wrt_world[1], color='b', ls='-', marker='o')
+
                         goal_dist = self.get_euclidean_distance_2D({"x":observation[0], "y":observation[1]})
                         goal_dist_when_target.append(goal_dist)
                     else:
                         n_goal += 1
                         n_goal_tmp += 1
+
+                        plt.plot(robot_pos_wrt_world[0], robot_pos_wrt_world[1], color='r', ls='-', marker='o')
 
                     if row[idx_result] == "goal":
                         end_flag = True
@@ -1093,14 +1064,66 @@ class PlotMobiman(object):
                         n_target_tmp = 0
                         n_goal_tmp = 0
 
-        '''
-        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0: " + str(n_mode0))
-        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1: " + str(n_mode1))
-        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2: " + str(n_mode2))
+        tot = n_target + n_goal
+        tot_success = n_target_success + n_goal_success
 
-        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode0_goal: " + str(n_mode0_goal))
-        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode1_goal: " + str(n_mode1_goal))
-        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] n_mode2_goal: " + str(n_mode2_goal))
+        perc_target = round(100 * n_target / tot, 2)
+        perc_goal = round(100 * n_goal / tot, 2)
+
+        perc_target_success = round(100 * n_target_success / tot_success, 2)
+        perc_goal_success = round(100 * n_goal_success / tot_success, 2)
+
+        label_target = mlines.Line2D([], [], color='blue', marker='o', ls='-', label='Sub-Goal: ' + str(perc_target_success) + "%")
+        label_goal = mlines.Line2D([], [], color='red', marker='o', ls='-', label='Goal: ' + str(perc_goal_success) + "%")
+        plt.legend(handles=[label_target, label_goal])
+
+        if "ppo" in filename:
+            if "rewMGT" in filename:
+                data_label = "re4mpc-PPO"
+            else:
+                data_label = "re4mpc-PPO w/o Target reward"
+        elif "sac" in filename:
+            if "rewMGT" in filename:
+                data_label = "re4mpc-SAC"
+            else:
+                data_label = "re4mpc-SAC w/o Target reward"
+        elif "dqn" in filename:
+            if "rewMGT" in filename:
+                data_label = "re4mpc-DQN"
+            else:
+                data_label = "re4mpc-DQN w/o Target reward"
+
+        plt.title("Target Type Map: " + str(data_label))
+        plt.xlabel("x-axis [m]")
+        plt.ylabel("y_axis [m]")
+        #plt.legend()
+        plt.grid()
+        #plt.show()
+
+        if self.save_flag:
+            if self.save_folder:
+                save_path = self.save_folder + "/testing_target_type.png"
+            else:
+                file_folder = filename.split("/")
+                file_folder = '/'.join(file_folder[:-1])
+                save_path = file_folder + "/testing_target_type.png"
+
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] Saving to " + str(save_path) + "!")
+            #print("DEBUG_INF")
+            #while 1:
+            #    continue
+
+            plt.savefig(save_path)
+        plt.close()
+
+        '''
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_mode0: " + str(n_mode0))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_mode1: " + str(n_mode1))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_mode2: " + str(n_mode2))
+
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_mode0_goal: " + str(n_mode0_goal))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_mode1_goal: " + str(n_mode1_goal))
+        print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_mode2_goal: " + str(n_mode2_goal))
 
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_target: " + str(n_target))
         print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type] n_goal: " + str(n_goal))
@@ -1137,8 +1160,8 @@ class PlotMobiman(object):
             data_target_perc.append(target_perc)
             data_target_perc_success.append(target_perc_success)
 
-            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] target_perc: " + str(target_perc))
-            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_model_mode] target_perc_success: " + str(target_perc_success))
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type_arena] target_perc: " + str(target_perc))
+            print("[mobiman_plot_oar::PlotMobiman::get_testing_analysis_target_type_arena] target_perc_success: " + str(target_perc_success))
 
             hist, bin_edges = np.histogram(goal_dist_when_target, n_bin)
 
@@ -1197,8 +1220,6 @@ class PlotMobiman(object):
         plt.legend()
         plt.grid()
         plt.show()
-
-
 
 '''
 DESCRIPTION: NUA TODO: Update!
@@ -1272,7 +1293,7 @@ if __name__ == '__main__':
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
             print("[mobiman_plot_oar::__main__] data_name: " + dn)
-            plot_mobiman.plot_result(file_path)
+            plot_mobiman.get_testing_result(file_path)
 
     if plot_result_arena_flag:
         plot_mobiman.get_testing_result_arena(data_folder)
@@ -1280,43 +1301,32 @@ if __name__ == '__main__':
     if plot_analysis_model_mode_flag:
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
-
             print("[mobiman_plot_oar::__main__] data_name: " + dn)
             plot_mobiman.get_testing_analysis_model_mode(file_path)
 
     if plot_analysis_target_type_flag:
-        plot_mobiman.get_testing_analysis_target_type_arena(data_names)
-
-    if plot_reward_flag:
-        
-        for i, data in enumerate(data_folder): # type: ignore
-            plot_mobiman = PlotMobiman(mobiman_path=mobiman_path,
-                                data_folder=data, # type: ignore
-                                data_names=data_names, # type: ignore
-                                plot_title=plot_title, # type: ignore
-                                plot_window_timestep=plot_window_timestep, # type: ignore
-                                plot_window_episode=plot_window_episode, # type: ignore
-                                save_flag=save_flag, # type: ignore
-                                save_folder=save_folder, # type: ignore               
-                                observation_index=observation_index, # type: ignore
-                                action_index=action_index) # type: ignore
-            plot_mobiman.plot_rewards_episodic(plot=False, color=colors[i], legend=data.split('/')[-1]) # type: ignore
-        plt.legend(loc='upper left')
-        plt.show()
-
-        '''
         for dn in data_names: # type: ignore
             file_path = plot_mobiman.mobiman_path + dn
-            n_row = plot_mobiman.read_data_n_row(file_path)
-            n_col = plot_mobiman.read_data_n_col(file_path)
-
             print("[mobiman_plot_oar::__main__] data_name: " + dn)
-            print("[mobiman_plot_oar::__main__] n_row: " + str(n_row))
-            print("[mobiman_plot_oar::__main__] n_col: " + str(n_col))
+            plot_mobiman.get_testing_analysis_target_type(file_path)
+        
+        #plot_mobiman.get_testing_analysis_target_type_arena(data_names)
 
-            plot_mobiman.plot_reward_episode(file_path, title="")
-            #plot_mobiman.plot_reward()
-        '''
+    if plot_reward_flag:
+        for i, data in enumerate(data_folder): # type: ignore
+            plot_mobiman = PlotMobiman(mobiman_path=mobiman_path,
+                                       data_folder=data, # type: ignore
+                                       data_names=data_names, # type: ignore
+                                       plot_title=plot_title, # type: ignore
+                                       plot_window_timestep=plot_window_timestep, # type: ignore
+                                       plot_window_episode=plot_window_episode, # type: ignore
+                                       save_flag=save_flag, # type: ignore
+                                       save_folder=save_folder, # type: ignore               
+                                       observation_index=observation_index, # type: ignore
+                                       action_index=action_index) # type: ignore
+            plot_mobiman.plot_reward_episodic(plot=False, color=colors[i], legend=data.split('/')[-1]) # type: ignore
+        plt.legend(loc='upper left')
+        plt.show()
 
     if plot_action_hist_flag:
         plot_mobiman.plot_action()
@@ -1325,7 +1335,6 @@ if __name__ == '__main__':
         plot_mobiman.plot_observations()   
 
     if plot_test_hist_flag:
-    # for dn in data_names:
         plot_mobiman = PlotMobiman(mobiman_path=mobiman_path,
                         data_folder="", # type: ignore
                         data_names=data_names, # type: ignore
