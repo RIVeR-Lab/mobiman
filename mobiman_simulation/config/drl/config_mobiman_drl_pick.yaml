@@ -12,14 +12,14 @@ gazebo_robot_name: "mobiman"
 # dataset/drl/training/
 # dataset/drl/arena/
 # dataset/drl/arena/
-drl_data_path: "dataset/drl/arena/"      # NUA NOTE: Saving directory
+drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
 data_save_freq: 50     # training: # of timesteps, testing: end of episodes
 
 #initial_training_path: ""
-#initial_training_path: "20240409_003030_DQN_mobiman/"
-initial_training_path: "re4mpc_cont_ppo_rewMGT_100k/"
+initial_training_path: "20240409_225431_SAC_mobiman/"
+#initial_training_path: "re4mpc_cont_sac_rewMGT_wAgents_300k/"
 
-initial_training_model_name: "trained_model_80000_steps"
+initial_training_model_name: "trained_model_300000_steps"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -33,15 +33,16 @@ training_log_name: "training_log"
 # re4mpc_cont_sac_rewMG
 # re4mpc_disc_dqn_rewMG
 # re4mpc_cont_ppo_rewMGT_wAgents
+# re4mpc_cont_sac_rewMGT_wAgents
 # re4mpc_disc_dqn_rewMGT_wAgents
-testing_benchmark_name: "re4mpc_cont_ppo_rewMGT"
+testing_benchmark_name: "re4mpc_cont_sac_rewMGT_wAgents"
 
 ## 0: Full case
 ## 1: Far goal case
 ## 2: Full case with 2 agents but not on the way
 ## 3: With 2 agents
-testing_mode: 0
-n_testing_eval_episodes: 1
+testing_mode: 3
+n_testing_eval_episodes: 5
 
 ### DRL-Training Parameters
 motion_planning_algorithm: "ocs2"
@@ -63,22 +64,22 @@ max_episode_steps: 20
 # DDPG
 # A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
 # DQN
-rl_algorithm: "PPO"
+rl_algorithm: "SAC"
 
 ## PPO
-learning_rate: 0.0002
-n_steps: 100
-batch_size: 5
-ent_coef: 0.0001
+#learning_rate: 0.0002
+#n_steps: 100
+#batch_size: 5
+#ent_coef: 0.0001
 
 ## SAC
-#learning_rate: 0.0003
-#learning_starts: 200
-#buffer_size: 1000
-#batch_size: 250 
-#train_freq: 1
-#gradient_steps: 1
-#ent_coef: "auto"
+learning_rate: 0.0003
+learning_starts: 200
+buffer_size: 1000
+batch_size: 250 
+train_freq: 1
+gradient_steps: 1
+ent_coef: "auto"
 
 ## DQN
 #learning_rate: 0.0002
@@ -115,7 +116,7 @@ world_range_z_max: 2.0                # wrt. world frame
 init_robot_pos_range_x_min: -1.8      # wrt. world frame
 init_robot_pos_range_x_max: 1.8       # wrt. world frame
 init_robot_pos_range_y_min: -1.8      # wrt. world frame
-init_robot_pos_range_y_max: 1.0       # wrt. world frame
+init_robot_pos_range_y_max: -0.5       # wrt. world frame
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
 
@@ -126,10 +127,10 @@ goal_range_max_y: 0.0                 # wrt. conveyor frame
 goal_range_min_z: 0.6                 # wrt. world frame
 goal_range_max_z: 0.7                 # wrt. world frame
 
-init_agent_pos_range_x_min: -1.8      # wrt. world frame
-init_agent_pos_range_x_max: 1.8       # wrt. world frame
-init_agent_pos_range_y_min: -1.8      # wrt. world frame
-init_agent_pos_range_y_max: 1.0       # wrt. world frame
+init_agent_pos_range_x_min: -1.5      # wrt. world frame
+init_agent_pos_range_x_max: 1.5       # wrt. world frame
+init_agent_pos_range_y_min: -0.5      # wrt. world frame
+init_agent_pos_range_y_max: 0.5       # wrt. world frame
 #### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- END
 
 ## Data and Sensors
@@ -143,8 +144,8 @@ goal_frame_name: "grasp"
 # red_cube
 # actor_0
 # actor_1
-occupancy_frame_names: ["conveyor_belt", "red_cube"]
-#occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
+#occupancy_frame_names: ["conveyor_belt", "red_cube"]
+occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
 
 odom_msg_name: "odom"
 arm_state_msg_name: "joint_states"
