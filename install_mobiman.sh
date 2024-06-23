@@ -25,9 +25,6 @@ git clone --recurse-submodules https://github.com/rokokoo/conveyor_demo.git
 # 3.1.4 gazebo_ros_link_attacher
 git clone git@github.com:pal-robotics/gazebo_ros_link_attacher.git
 
-# 3.1.5 robot_collision_checking
-git clone git@github.com:mazrk7/robot_collision_checking.git
-
 # 3.2 Install edited ROS packages (checkout to the specified branch is required).
 
 # 3.2.1 ocs2
@@ -42,13 +39,19 @@ cd pinocchio/
 git checkout noetic-akmandor
 cd ..
 
-# 3.2.3 jackal
+# 3.2.3 robot_collision_checking
+git clone git@github.com:RIVeR-Lab/robot_collision_checking.git
+cd robot_collision_checking/
+git checkout noetic-devel
+cd ..
+
+# 3.2.4 jackal
 git clone git@github.com:RIVeR-Lab/jackal.git
 cd jackal/
 git checkout noetic-akmandor
 cd ..
 
-# 3.2.4 universal_robot
+# 3.2.5 universal_robot
 git clone git@github.com:RIVeR-Lab/universal_robot.git
 cd universal_robot/
 git checkout noetic-akmandor
