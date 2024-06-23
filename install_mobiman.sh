@@ -63,8 +63,8 @@ cd ..
 # 3.2.6 pedsim_ros
 git clone git@github.com:RIVeR-Lab/pedsim_ros.git
 cd pedsim_ros
-git submodule update --init --recursive
 git checkout noetic-akmandor
+git submodule update --init --recursive
 cd ..
 
 # 3.2.7 kinova-ROS
