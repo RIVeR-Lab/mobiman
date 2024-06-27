@@ -15,11 +15,12 @@ gazebo_robot_name: "mobiman"
 drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
 data_save_freq: 50     # training: # of timesteps, testing: end of episodes
 
-#initial_training_path: ""
-initial_training_path: "20240409_225431_SAC_mobiman/"
+initial_training_path: ""
+#initial_training_path: "re4mpc_cont_sac_rewMGT/"
+#initial_training_path: "20240409_225431_SAC_mobiman/"
 #initial_training_path: "re4mpc_cont_sac_rewMGT_wAgents_300k/"
 
-initial_training_model_name: "trained_model_300000_steps"
+initial_training_model_name: "trained_model_100000_steps"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -35,14 +36,14 @@ training_log_name: "training_log"
 # re4mpc_cont_ppo_rewMGT_wAgents
 # re4mpc_cont_sac_rewMGT_wAgents
 # re4mpc_disc_dqn_rewMGT_wAgents
-testing_benchmark_name: "re4mpc_cont_sac_rewMGT_wAgents"
+testing_benchmark_name: "re4mpc_cont_sac_rewMGT"
 
 ## 0: Full case
 ## 1: Far goal case
 ## 2: Full case with 2 agents but not on the way
 ## 3: With 2 agents
-testing_mode: 3
-n_testing_eval_episodes: 5
+testing_mode: 1
+n_testing_eval_episodes: 1
 
 ### DRL-Training Parameters
 motion_planning_algorithm: "ocs2"
@@ -144,8 +145,8 @@ goal_frame_name: "grasp"
 # red_cube
 # actor_0
 # actor_1
-#occupancy_frame_names: ["conveyor_belt", "red_cube"]
-occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
+occupancy_frame_names: ["conveyor_belt", "red_cube"]
+#occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
 
 odom_msg_name: "odom"
 arm_state_msg_name: "joint_states"

@@ -15,7 +15,8 @@ gz_model_msg_name: "model_states"
 ## "actor_0"
 ## "actor_1"
 ## "bin_4_dropping_task"
-name_pkgs_ign: ["conveyor_belt","red_cube","actor_0","actor_1"] 
+#name_pkgs_ign: ["conveyor_belt","red_cube","actor_0","actor_1"] 
+name_pkgs_ign: ["conveyor_belt","red_cube"] 
 name_pkgs_man: [] 
 
 ### Options: NUA TODO: TEST AGAIN!
