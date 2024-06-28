@@ -1,0 +1,235 @@
+#### DRL Parameters
+
+flag_print_info: False
+
+igibson_config_file: "igibson_jackal_jaco"
+
+### Common Parameters for Training and Testing
+ros_pkg_name: "mobiman_simulation"
+gazebo_robot_name: "mobiman"
+#drl_mode: "training"
+
+# dataset/drl/training/
+# dataset/drl/arena/
+# dataset/drl/arena/
+drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
+data_save_freq: 50     # training: # of timesteps, testing: end of episodes
+
+initial_training_path: ""
+#initial_training_path: "re4mpc_cont_sac_rewMGT/"
+#initial_training_path: "20240409_225431_SAC_mobiman/"
+#initial_training_path: "re4mpc_cont_sac_rewMGT_wAgents_300k/"
+
+initial_training_model_name: "trained_model_100000_steps"
+training_log_name: "training_log"
+
+### DRL-Testing Parameters
+
+#testing_log_name: "testing_log"
+# ocs2wb
+# re4mpc_cont_ppo_rewMGT
+# re4mpc_cont_sac_rewMGT
+# re4mpc_disc_dqn_rewMGT
+# re4mpc_cont_ppo_rewMG
+# re4mpc_cont_sac_rewMG
+# re4mpc_disc_dqn_rewMG
+# re4mpc_cont_ppo_rewMGT_wAgents
+# re4mpc_cont_sac_rewMGT_wAgents
+# re4mpc_disc_dqn_rewMGT_wAgents
+testing_benchmark_name: "re4mpc_cont_sac_rewMGT"
+
+## 0: Full case
+## 1: Far goal case
+## 2: Full case with 2 agents but not on the way
+## 3: With 2 agents
+testing_mode: 1
+n_testing_eval_episodes: 1
+
+### DRL-Training Parameters
+motion_planning_algorithm: "ocs2"
+
+## 0: Regular case
+## 1: No target reward
+ablation_mode: 0
+
+# Options: ### NUA TODO: UPDATE! 
+# mobiman_FC             -> FC(occupancy_set + target + prev_action)
+# mobiman_2DCNN_FC       -> 2DCNN(Channel: 1, Height: occupancy_set, Width: time) + FC(CNN_output + target + prev_action) (NUA NOTE: NOT FUNCTIONAL YET!)
+observation_space_type: "mobiman_FC"
+
+max_episode_steps: 20
+
+## RL Algorithm:
+# PPO
+# SAC
+# DDPG
+# A2C   (NUA NOTE: NOT FUNCTIONAL YET!)
+# DQN
+rl_algorithm: "SAC"
+
+## PPO
+#learning_rate: 0.0002
+#n_steps: 100
+#batch_size: 5
+#ent_coef: 0.0001
+
+## SAC
+learning_rate: 0.0003
+learning_starts: 200
+buffer_size: 1000
+batch_size: 250 
+train_freq: 1
+gradient_steps: 1
+ent_coef: "auto"
+
+## DQN
+#learning_rate: 0.0002
+#buffer_size: 5000
+#learning_starts: 500
+#batch_size: 250
+#train_freq: 5
+#target_update_interval: 500
+
+training_timesteps: 50000
+training_checkpoint_freq: 50
+
+plot_title: "Learning Curve"
+plot_moving_average_window_size_timesteps: 5
+plot_moving_average_window_size_episodes: 1
+
+## Task:
+# Options: 
+# JackalJaco_mobiman_drl-v0
+task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"   # (NUA NOTE: GAZEBO ONLY AND NOT FUNCTIONAL YET!)
+
+# conveyor
+# conveyor_and_actors
+world_name: "conveyor_and_actors"
+
+#### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- START
+world_range_x_min: -2.0               # wrt. world frame
+world_range_x_max: 2.0                # wrt. world frame
+world_range_y_min: -2.0               # wrt. world frame
+world_range_y_max: 2.0                # wrt. world frame
+world_range_z_min: 0.0                # wrt. world frame
+world_range_z_max: 2.0                # wrt. world frame
+
+init_robot_pos_range_x_min: -1.8      # wrt. world frame
+init_robot_pos_range_x_max: 1.8       # wrt. world frame
+init_robot_pos_range_y_min: -1.8      # wrt. world frame
+init_robot_pos_range_y_max: -0.5       # wrt. world frame
+#init_robot_pos_range_z_min: 0.0
+#init_robot_pos_range_z_max: 2.0
+
+goal_range_min_x: -0.8                # wrt. conveyor frame
+goal_range_max_x: 0.8                 # wrt. conveyor frame
+goal_range_min_y: -0.15               # wrt. conveyor frame
+goal_range_max_y: 0.0                 # wrt. conveyor frame
+goal_range_min_z: 0.6                 # wrt. world frame
+goal_range_max_z: 0.7                 # wrt. world frame
+
+init_agent_pos_range_x_min: -1.5      # wrt. world frame
+init_agent_pos_range_x_max: 1.5       # wrt. world frame
+init_agent_pos_range_y_min: -0.5      # wrt. world frame
+init_agent_pos_range_y_max: 0.5       # wrt. world frame
+#### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- END
+
+## Data and Sensors
+world_frame_name: "world"
+robot_frame_name: "base_link"
+arm_joint_names: ["j2n6s300_joint_1", "j2n6s300_joint_2", "j2n6s300_joint_3", "j2n6s300_joint_4", "j2n6s300_joint_5", "j2n6s300_joint_6"]
+ee_frame_name: "j2n6s300_end_effector"
+goal_frame_name: "grasp"
+
+# conveyor_belt
+# red_cube
+# actor_0
+# actor_1
+occupancy_frame_names: ["conveyor_belt", "red_cube"]
+#occupancy_frame_names: ["conveyor_belt", "red_cube", "actor_0", "actor_1"]
+
+odom_msg_name: "odom"
+arm_state_msg_name: "joint_states"
+base_control_msg_name: "mobile_base_controller/cmd_vel"
+arm_control_msg_name: "arm_controller/cmd_pos"
+#target_msg_name: "target_visu"
+manual_target_msg_name: ""
+
+mpc_data_msg_name: "mpc_data"
+#mobiman_goal_obs_msg_name: "mobiman_goal_obs"
+#mobiman_occupancy_obs_msg_name: "mobiman_occupancy_obs"
+selfcoldistance_msg_name: "self_collision_distances"
+
+self_collision_range_min: 0.0
+self_collision_range_max: 1.0
+
+#n_obs_stack: 1
+#n_skip_obs_stack: 1
+
+## Algorithm: mobiman-DRL Parameters
+obs_base_velo_lat_min: -2.0
+obs_base_velo_lat_max: 2.0
+obs_base_velo_ang_min: -5.0
+obs_base_velo_ang_max: 5.0
+
+obs_joint_velo_min: -20.0
+obs_joint_velo_max: 20.0
+
+err_threshold_pos: 0.05
+err_threshold_ori_yaw: 0.05
+err_threshold_ori_quat: 0.05
+
+# Action time horizon [s]
+action_time_horizon: 3.0
+
+# 0: Discrete
+# 1: Continuous [model(1), target_type(1), target(6)]
+action_type: 1
+
+action_discrete_trajectory_data_path: ["dataset/trajectory_sampling/jackal/20240312_153905/", 
+                                       "dataset/trajectory_sampling/jaco/20240313_202938/",
+                                       "dataset/trajectory_sampling/jackalJaco/20240312_143237/"]
+
+action_goal_range_min_x: -0.0               # wrt. goal frame
+action_goal_range_max_x: 0.0                # wrt. goal frame
+action_goal_range_min_y: -0.0               # wrt. goal frame
+action_goal_range_max_y: 0.0                # wrt. goal frame
+action_goal_range_min_z: -0.0               # wrt. goal frame
+action_goal_range_max_z: 0.0                # wrt. goal frame
+
+action_target_range_min_x: -1.0             # wrt. world frame
+action_target_range_max_x: 1.0              # wrt. world frame
+action_target_range_min_y: -1.0             # wrt. world frame
+action_target_range_max_y: 1.0              # wrt. world frame
+action_target_range_min_z: 0.0              # wrt. world frame
+action_target_range_max_z: 1.0              # wrt. world frame
+
+## Reward Function:
+# Terminal:
+reward_terminal_goal: 100.0
+reward_terminal_out_of_boundary: -100.0
+reward_terminal_collision: -100.0
+reward_terminal_rollover: -100.0
+reward_terminal_max_step: -50.0
+
+# Model mode
+reward_step_mode0: -3.0     # Computational Cost: 3
+reward_step_mode1: -6.0    # Computational Cost: 6 
+reward_step_mode2: -9.0    # Computational Cost: 9
+
+# Goal
+reward_step_goal_scale: 10.0
+reward_step_goal_dist_threshold_mode1: 0.5
+reward_step_goal_dist_threshold_mode2: 1.0
+
+# Target
+reward_step_target_scale: 5.0
+reward_step_target_intermediate_point_scale: 0.5
+reward_step_target_gamma: -3.0
+reward_step_target_com_scale: 5.0
+reward_step_target_com_threshold: 0.07
+
+# Cost weights
+alpha_step_mode: 1.0
+alpha_step_goal: 1.0
+alpha_step_target: 1.0
