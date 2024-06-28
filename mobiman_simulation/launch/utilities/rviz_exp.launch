@@ -1,0 +1,18 @@
+<launch>
+  <!--
+    debug
+    exp_jackal_jaco
+  -->
+
+  <arg name="rviz_config_path"    default="exp_jackal_jaco" />
+  <arg name="robot_ns"            default="/"/>
+  
+  <group ns="$(arg robot_ns)">
+    <node name="rviz" 
+          pkg="rviz" 
+          type="rviz" 
+          args="-d $(find mobiman_simulation)/rviz/$(arg rviz_config_path).rviz" 
+          required="true" />
+  </group>
+
+</launch>
