@@ -175,7 +175,7 @@ if __name__=="__main__":
         if sim == "gazebo":
 
             # Launch Gazebo
-            sim_launch_path = mobiman_launch_path + "utilities/drl.launch"
+            sim_launch_path = mobiman_launch_path + "utilities/gazebo.launch"
             sim_args = [sim_launch_path,
                         'sim:=' + str(sim),
                         'flag_gazebo:=' + str(flag_gazebo),
