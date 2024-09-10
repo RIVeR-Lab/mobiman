@@ -37,7 +37,7 @@ if __name__=="__main__":
     mobiman_launch_path = mobiman_path + "launch/"
     config_mobiman_framework = rospy.get_param('config_mobiman_framework', "")
 
-    print("[mobiman_framework_launch:: __main__ ] config_mobiman_framework: " + str(config_mobiman_framework))
+    print("[mobiman_framework_launch::__main__] config_mobiman_framework: " + str(config_mobiman_framework))
 
     load_config_file(mobiman_path + "config/" + config_mobiman_framework)
 
@@ -100,61 +100,61 @@ if __name__=="__main__":
     config_mobiman_drl = rospy.get_param('config_mobiman_drl', "")
     load_config_file(mobiman_path + "config/" + config_mobiman_drl + ".yaml")
 
-    print("[mobiman_framework_launch:: __main__ ] General Parameters ---------- START")
-    print("[mobiman_framework_launch:: __main__ ] Simulator:")
-    print("[mobiman_framework_launch:: __main__ ] flag_sim: " + str(flag_sim))
-    print("[mobiman_framework_launch:: __main__ ] sim: " + str(sim))
-    print("[mobiman_framework_launch:: __main__ ] flag_gazebo: " + str(flag_gazebo))
-    print("[mobiman_framework_launch:: __main__ ] flag_robot: " + str(flag_robot))
-    print("[mobiman_framework_launch:: __main__ ] flag_conveyor: " + str(flag_conveyor))
-    print("[mobiman_framework_launch:: __main__ ] flag_pedsim: " + str(flag_pedsim))
-    print("[mobiman_framework_launch:: __main__ ] flag_moveit: " + str(flag_moveit))
-    print("[mobiman_framework_launch:: __main__ ] flag_drl: " + str(flag_drl))
-    print("[mobiman_framework_launch:: __main__ ] flag_igibson: " + str(flag_igibson))
+    print("[mobiman_framework_launch::__main__] General Parameters ---------- START")
+    print("[mobiman_framework_launch::__main__] Simulator:")
+    print("[mobiman_framework_launch::__main__] flag_sim: " + str(flag_sim))
+    print("[mobiman_framework_launch::__main__] sim: " + str(sim))
+    print("[mobiman_framework_launch::__main__] flag_gazebo: " + str(flag_gazebo))
+    print("[mobiman_framework_launch::__main__] flag_robot: " + str(flag_robot))
+    print("[mobiman_framework_launch::__main__] flag_conveyor: " + str(flag_conveyor))
+    print("[mobiman_framework_launch::__main__] flag_pedsim: " + str(flag_pedsim))
+    print("[mobiman_framework_launch::__main__] flag_moveit: " + str(flag_moveit))
+    print("[mobiman_framework_launch::__main__] flag_drl: " + str(flag_drl))
+    print("[mobiman_framework_launch::__main__] flag_igibson: " + str(flag_igibson))
 
-    print("[mobiman_framework_launch:: __main__ ] Rviz:")
-    print("[mobiman_framework_launch:: __main__ ] flag_rviz: " + str(flag_rviz))
+    print("[mobiman_framework_launch::__main__] Rviz:")
+    print("[mobiman_framework_launch::__main__] flag_rviz: " + str(flag_rviz))
 
-    print("[mobiman_framework_launch:: __main__ ] Map Server:")
-    print("[mobiman_framework_launch:: __main__ ] flag_map_server: " + str(flag_map_server))
-    print("[mobiman_framework_launch:: __main__ ] config_map_server: " + str(config_map_server))
-    print("[mobiman_framework_launch:: __main__ ] world_frame_name: " + str(world_frame_name))  
+    print("[mobiman_framework_launch::__main__] Map Server:")
+    print("[mobiman_framework_launch::__main__] flag_map_server: " + str(flag_map_server))
+    print("[mobiman_framework_launch::__main__] config_map_server: " + str(config_map_server))
+    print("[mobiman_framework_launch::__main__] world_frame_name: " + str(world_frame_name))  
 
-    print("[mobiman_framework_launch:: __main__ ] Robot:")
-    print("[mobiman_framework_launch:: __main__ ] robot_name: " + str(robot_name))
-    print("[mobiman_framework_launch:: __main__ ] n_robot: " + str(n_robot))
-    print("[mobiman_framework_launch:: __main__ ] robot_frame_name: " + str(robot_frame_name))
-    print("[mobiman_framework_launch:: __main__ ] urdf_path: " + str(urdf_path))
-    print("[mobiman_framework_launch:: __main__ ] urdf_path_ocs2: " + str(urdf_path_ocs2))
-    print("[mobiman_framework_launch:: __main__ ] lib_path: " + str(lib_path))
-    print("[mobiman_framework_launch:: __main__ ] collision_points_config_path: " + str(collision_points_config_path))
+    print("[mobiman_framework_launch::__main__] Robot:")
+    print("[mobiman_framework_launch::__main__] robot_name: " + str(robot_name))
+    print("[mobiman_framework_launch::__main__] n_robot: " + str(n_robot))
+    print("[mobiman_framework_launch::__main__] robot_frame_name: " + str(robot_frame_name))
+    print("[mobiman_framework_launch::__main__] urdf_path: " + str(urdf_path))
+    print("[mobiman_framework_launch::__main__] urdf_path_ocs2: " + str(urdf_path_ocs2))
+    print("[mobiman_framework_launch::__main__] lib_path: " + str(lib_path))
+    print("[mobiman_framework_launch::__main__] collision_points_config_path: " + str(collision_points_config_path))
 
-    print("[mobiman_framework_launch:: __main__ ] Goal Server:")
-    print("[mobiman_framework_launch:: __main__ ] flag_goal_server: " + str(flag_goal_server))
-    print("[mobiman_framework_launch:: __main__ ] config_goal_server: " + str(config_goal_server))
+    print("[mobiman_framework_launch::__main__] Goal Server:")
+    print("[mobiman_framework_launch::__main__] flag_goal_server: " + str(flag_goal_server))
+    print("[mobiman_framework_launch::__main__] config_goal_server: " + str(config_goal_server))
 
-    print("[mobiman_framework_launch:: __main__ ] Observation Server:")
-    print("[mobiman_framework_launch:: __main__ ] flag_observation_server: " + str(flag_observation_server))
-    print("[mobiman_framework_launch:: __main__ ] config_observation_server: " + str(config_observation_server))
+    print("[mobiman_framework_launch::__main__] Observation Server:")
+    print("[mobiman_framework_launch::__main__] flag_observation_server: " + str(flag_observation_server))
+    print("[mobiman_framework_launch::__main__] config_observation_server: " + str(config_observation_server))
 
-    print("[mobiman_framework_launch:: __main__ ] Distance Server:")
-    print("[mobiman_framework_launch:: __main__ ] flag_distance_server: " + str(flag_distance_server))
-    print("[mobiman_framework_launch:: __main__ ] config_distance_server: " + str(config_distance_server))
+    print("[mobiman_framework_launch::__main__] Distance Server:")
+    print("[mobiman_framework_launch::__main__] flag_distance_server: " + str(flag_distance_server))
+    print("[mobiman_framework_launch::__main__] config_distance_server: " + str(config_distance_server))
 
-    print("[mobiman_framework_launch:: __main__ ] Mobiman:")
-    print("[mobiman_framework_launch:: __main__ ] flag_mobiman_mpc: " + str(flag_mobiman_mpc))
-    print("[mobiman_framework_launch:: __main__ ] flag_mobiman_mrt: " + str(flag_mobiman_mrt))
-    print("[mobiman_framework_launch:: __main__ ] task_config_path: " + str(task_config_path))
-    print("[mobiman_framework_launch:: __main__ ] config_mobiman_drl: " + str(config_mobiman_drl))
+    print("[mobiman_framework_launch::__main__] Mobiman:")
+    print("[mobiman_framework_launch::__main__] flag_mobiman_mpc: " + str(flag_mobiman_mpc))
+    print("[mobiman_framework_launch::__main__] flag_mobiman_mrt: " + str(flag_mobiman_mrt))
+    print("[mobiman_framework_launch::__main__] task_config_path: " + str(task_config_path))
+    print("[mobiman_framework_launch::__main__] config_mobiman_drl: " + str(config_mobiman_drl))
 
-    print("[mobiman_framework_launch:: __main__ ] General Parameters ---------- END")
+    print("[mobiman_framework_launch::__main__] General Parameters ---------- END")
     print("")
 
     ## Set Namespace
     robot_ns_vec = []
     robot_base_frame_name_vec = []
 
-    print("[mobiman_framework_launch:: __main__ ] robot_ns_vec:")
+    print("[mobiman_framework_launch::__main__] robot_ns_vec:")
     for i in range(n_robot): # type: ignore
         ns_tmp = robot_name + "_" + str(i) # type: ignore
         robot_ns_vec.append(ns_tmp)
@@ -163,10 +163,10 @@ if __name__=="__main__":
         # Update frame names
         robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
 
-    print("[mobiman_framework_launch:: __main__ ] robot_base_frame_name_vec:")
+    print("[mobiman_framework_launch::__main__] robot_base_frame_name_vec:")
     print(robot_base_frame_name_vec)
 
-    #print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
+    #print("[mobiman_framework_launch::__main__] DEBUG_INF")
     #while 1:
     #    continue
 
@@ -188,7 +188,7 @@ if __name__=="__main__":
             sim_obj = roslaunch.parent.ROSLaunchParent(uuid, sim_launch) # type: ignore
             sim_obj.start()
 
-            print("[mobiman_framework_launch:: __main__ ] Launched simulation in Gazebo!")
+            print("[mobiman_framework_launch::__main__] Launched simulation in Gazebo!")
 
         elif sim == "igibson":
 
@@ -210,19 +210,19 @@ if __name__=="__main__":
             tfBuffer = tf2_ros.Buffer() # type: ignore
             listener = tf2_ros.TransformListener(tfBuffer) # type: ignore
             robot_frame_name = robot_base_frame_name_vec[0]
-            print("[mobiman_framework_launch:: __main__ ] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...") # type: ignore
+            print("[mobiman_framework_launch::__main__] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...") # type: ignore
             trans = None
             while (not rospy.is_shutdown()) and (not trans):
                 try:
                     trans = tfBuffer.lookup_transform(world_frame_name, robot_frame_name, rospy.Time(0))
                 except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as ex: # type: ignore
-                    #rospy.logwarn("[mobiman_framework_launch:: __main__ ] ERROR: " + str(ex))
+                    #rospy.logwarn("[mobiman_framework_launch::__main__] ERROR: " + str(ex))
                     rospy.sleep(1.0)   
 
-            print("[mobiman_framework_launch:: __main__ ] Launched simulation in iGibson!")
+            print("[mobiman_framework_launch::__main__] Launched simulation in iGibson!")
         
         else:
-            print("[mobiman_framework_launch:: __main__ ] Empty or wrong simulator name! sim: " + str(sim))
+            print("[mobiman_framework_launch::__main__] Empty or wrong simulator name! sim: " + str(sim))
 
     ## Launch Rviz
     if flag_rviz:
@@ -241,16 +241,16 @@ if __name__=="__main__":
             rviz_path = mobiman_launch_path + "utilities/rviz.launch"
             rviz_args = [rviz_path,
                          'robot_ns:=/',
-                         'rviz_config_path:=' + str(rviz_config_path) + '_0']  
+                         'rviz_config_path:=' + str(rviz_config_path)]  
 
             rviz_launch = [ (roslaunch.rlutil.resolve_launch_arguments(rviz_args)[0], rviz_args[1:]) ] # type: ignore
             rviz = roslaunch.parent.ROSLaunchParent(uuid, rviz_launch) # type: ignore
             rviz.start()      
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Rviz!")
+        print("[mobiman_framework_launch::__main__] Launched Rviz!")
         rospy.sleep(1)
 
-    #print("[mobiman_framework_launch:: __main__ ] DEBUG_INF")
+    #print("[mobiman_framework_launch::__main__] DEBUG_INF")
     #while 1:
     #    continue
 
@@ -277,7 +277,7 @@ if __name__=="__main__":
             map_server = roslaunch.parent.ROSLaunchParent(uuid, map_server_launch) # type: ignore
             map_server.start()  
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Map Server!")
+        print("[mobiman_framework_launch::__main__] Launched Map Server!")
         rospy.sleep(1) 
 
     ### NUA TODO: Change the name as goal server!
@@ -306,7 +306,7 @@ if __name__=="__main__":
             goal_server = roslaunch.parent.ROSLaunchParent(uuid, goal_server_launch) # type: ignore
             goal_server.start()
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Goal Server!")
+        print("[mobiman_framework_launch::__main__] Launched Goal Server!")
         rospy.sleep(1)
 
     ## Launch observation server 
@@ -340,7 +340,7 @@ if __name__=="__main__":
             observation_server = roslaunch.parent.ROSLaunchParent(uuid, observation_server_launch) # type: ignore
             observation_server.start()
 
-        print("[mobiman_framework_launch:: __main__ ] Launched observation Server!")
+        print("[mobiman_framework_launch::__main__] Launched observation Server!")
         rospy.sleep(5)
 
     ## Launch distance server 
@@ -374,7 +374,7 @@ if __name__=="__main__":
             distance_server = roslaunch.parent.ROSLaunchParent(uuid, distance_server_launch) # type: ignore
             distance_server.start()
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Distance Server!")
+        print("[mobiman_framework_launch::__main__] Launched Distance Server!")
         rospy.sleep(5)
 
     ## Launch mobiman 
@@ -395,11 +395,11 @@ if __name__=="__main__":
                 mobiman_mpc.start()
 
                 '''
-                print("[mobiman_framework_launch:: __main__ ] robot_ns: " + str(rns))
-                print("[mobiman_framework_launch:: __main__ ] task_config_path: " + str(task_config_path))
-                print("[mobiman_framework_launch:: __main__ ] urdf_path: " + str(urdf_path_ocs2))
-                print("[mobiman_framework_launch:: __main__ ] lib_path: " + str(lib_path))
-                print("[mobiman_framework_launch:: __main__ ] collision_points_config_path: " + str(collision_points_config_path))
+                print("[mobiman_framework_launch::__main__] robot_ns: " + str(rns))
+                print("[mobiman_framework_launch::__main__] task_config_path: " + str(task_config_path))
+                print("[mobiman_framework_launch::__main__] urdf_path: " + str(urdf_path_ocs2))
+                print("[mobiman_framework_launch::__main__] lib_path: " + str(lib_path))
+                print("[mobiman_framework_launch::__main__] collision_points_config_path: " + str(collision_points_config_path))
                 '''
         else:
             mobiman_mpc_path = mobiman_launch_path + "utilities/ocs2_m4_mpc.launch"
@@ -415,7 +415,7 @@ if __name__=="__main__":
             mobiman_mpc = roslaunch.parent.ROSLaunchParent(uuid, mobiman_mpc_launch) # type: ignore
             mobiman_mpc.start()
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Mobiman MPC!")
+        print("[mobiman_framework_launch::__main__] Launched Mobiman MPC!")
         rospy.sleep(5)
 
     if flag_mobiman_mrt:
@@ -435,11 +435,11 @@ if __name__=="__main__":
                 mobiman_mrt.start()
 
                 '''
-                print("[mobiman_framework_launch:: __main__ ] robot_ns: " + str(rns))
-                print("[mobiman_framework_launch:: __main__ ] task_config_path: " + str(task_config_path))
-                print("[mobiman_framework_launch:: __main__ ] urdf_path: " + str(urdf_path_ocs2))
-                print("[mobiman_framework_launch:: __main__ ] lib_path: " + str(lib_path))
-                print("[mobiman_framework_launch:: __main__ ] collision_points_config_path: " + str(collision_points_config_path))
+                print("[mobiman_framework_launch::__main__] robot_ns: " + str(rns))
+                print("[mobiman_framework_launch::__main__] task_config_path: " + str(task_config_path))
+                print("[mobiman_framework_launch::__main__] urdf_path: " + str(urdf_path_ocs2))
+                print("[mobiman_framework_launch::__main__] lib_path: " + str(lib_path))
+                print("[mobiman_framework_launch::__main__] collision_points_config_path: " + str(collision_points_config_path))
                 '''
         else:            
             mobiman_mrt_path = mobiman_launch_path + "utilities/ocs2_m4_mrt.launch"
@@ -454,7 +454,7 @@ if __name__=="__main__":
             mobiman_mrt = roslaunch.parent.ROSLaunchParent(uuid, mobiman_mrt_launch) # type: ignore
             mobiman_mrt.start()
 
-        print("[mobiman_framework_launch:: __main__ ] Launched Mobiman MRT!")
+        print("[mobiman_framework_launch::__main__] Launched Mobiman MRT!")
         #rospy.sleep(1)
 
     while (not rospy.is_shutdown()):

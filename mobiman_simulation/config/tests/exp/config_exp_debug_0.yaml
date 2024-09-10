@@ -5,11 +5,11 @@ flag_sim: false
 
 # gazebo
 # igibson
-sim: "igibson"
+sim: "gazebo"
 
-flag_gazebo: false
-flag_robot: false
-flag_conveyor: false
+flag_gazebo: true
+flag_robot: true
+flag_conveyor: true
 flag_bin: false
 flag_pedsim: false
 flag_moveit: false
@@ -20,18 +20,20 @@ flag_rviz: false
 
 # gazebo/mobile_manipulator_ocs2_gazebo
 # igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "igibson/mobile_manipulator_ocs2_igibson"
+# exp_jackal_jaco
+rviz_config_path: "exp_jackal_jaco"
 
 ### Map Server:
 flag_map_server: true
 
 # config_map_server_gazebo
 # config_map_server_igibson
-config_map_server: "config_map_server_igibson"
+# config_map_server_exp
+config_map_server: "config_map_server_exp"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 2
+n_robot: 0
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!
@@ -59,8 +61,9 @@ flag_mobiman_mrt: false
 task_config_path: config/task/task_jackalJaco_igibson.info
 
 # config_mobiman_drl_pick
+# config_mobiman_drl_pick_exp
 # config_mobiman_drl_place
-config_mobiman_drl: "drl/config_mobiman_drl_pick"
+config_mobiman_drl: "drl/config_mobiman_drl_pick_exp"
 
 ### DRL:
-flag_drl: true
+flag_drl: false

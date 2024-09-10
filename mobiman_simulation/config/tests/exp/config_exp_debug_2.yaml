@@ -5,33 +5,35 @@ flag_sim: false
 
 # gazebo
 # igibson
-sim: "igibson"
+sim: "gazebo"
 
-flag_gazebo: false
-flag_robot: false
-flag_conveyor: false
+flag_gazebo: true
+flag_robot: true
+flag_conveyor: true
 flag_bin: false
 flag_pedsim: false
 flag_moveit: false
 flag_igibson: false
 
 ### Rviz:
-flag_rviz: true
+flag_rviz: false
 
 # gazebo/mobile_manipulator_ocs2_gazebo
 # igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "igibson/mobile_manipulator_ocs2_igibson"
+# exp_jackal_jaco
+rviz_config_path: "exp_jackal_jaco"
 
 ### Map Server:
 flag_map_server: false
 
 # config_map_server_gazebo
 # config_map_server_igibson
-config_map_server: "config_map_server_igibson"
+# config_map_server_exp
+config_map_server: "config_map_server_exp"
 
 ### Robot:
 robot_name: "jackalJaco"
-n_robot: 2
+n_robot: 0
 robot_frame_name: "base_link"
 urdf_path: "urdf/jackal_jaco.urdf"
 urdf_path_ocs2: "urdf/jackal_fixedWheel_jaco_fixedFinger.urdf"    ## NUA NOTE: DEPRECATE THIS!
@@ -43,8 +45,8 @@ flag_goal_server: false
 config_goal_server: "config_goal_server"
 
 ### Observation Server:
-flag_observation_server: false
-config_observation_server: "config_observation_server"
+#flag_observation_server: false
+#config_observation_server: "config_observation_server"
 
 ### Distance Server:
 flag_distance_server: false

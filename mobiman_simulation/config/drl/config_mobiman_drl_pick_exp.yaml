@@ -1,6 +1,6 @@
 #### DRL Parameters
 
-flag_print_info: False
+flag_print_info: True
 
 igibson_config_file: "igibson_jackal_jaco"
 

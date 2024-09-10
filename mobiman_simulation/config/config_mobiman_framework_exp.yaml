@@ -16,18 +16,20 @@ flag_moveit: false
 flag_igibson: false
 
 ### Rviz:
-flag_rviz: false
+flag_rviz: true
 
 # gazebo/mobile_manipulator_ocs2_gazebo
 # igibson/mobile_manipulator_ocs2_igibson
-rviz_config_path: "igibson/mobile_manipulator_ocs2_igibson"
+# exp_jackal_jaco
+rviz_config_path: "exp_jackal_jaco"
 
 ### Map Server:
 flag_map_server: false
 
 # config_map_server_gazebo
 # config_map_server_igibson
-config_map_server: "config_map_server_igibson"
+# config_map_server_exp
+config_map_server: "config_map_server_exp"
 
 ### Robot:
 robot_name: "jackalJaco"
@@ -60,7 +62,7 @@ task_config_path: config/task/task_jackalJaco_igibson.info
 
 # config_mobiman_drl_pick
 # config_mobiman_drl_place
-config_mobiman_drl: "drl/config_mobiman_drl_pick"
+config_mobiman_drl: "drl/config_mobiman_drl_pick_exp"
 
 ### DRL:
-flag_drl: true
+flag_drl: false
