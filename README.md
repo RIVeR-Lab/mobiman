@@ -41,31 +41,41 @@ rosdep install --from-paths src --ignore-src -r -y
 
      1. Launch mobiman framework:
      ```
+     # Do not forget to source: source devel/setup.bash
      roslaunch mobiman_simulation mobiman_framework.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
      ```
 
-     2. Launch the simulation:
+     2. Run the (python) simulation script:
      ```
+     # Do not forget to source: source devel/setup.bash
      python src/igibson-ros/scripts/mobiman_jackalJaco.py
      ```
 
 Note: grep command added to avoid stream of warnings as depicted in [here](https://github.com/ms-iot/ROSOnWindows/issues/279).
 
 ## Run (DRL mode):
-1. Set framework configurations:
-  - (NUA: NEEDS TO BE REVIWED!) Set parameter "sim: gazebo" for simulation in Gazebo and edit configurations in [config_mobiman_framework_gazebo](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework_gazebo.yaml)
-  - Set parameter "sim: igibson" for simulation in iGibson and edit configurations in [config_mobiman_framework_igibson](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/config_mobiman_framework_igibson.yaml)
+1. Set configurations in [mobiman_framework.launch](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/launch/mobiman_framework.launch)
+     1. Set parameter "config_mobiman_framework":
+        - iGibson example: "config_mobiman_framework_igibson_drl"
 
 2. Set drl configurations in [config_mobiman_drl_pick](https://github.com/RIVeR-Lab/mobiman/blob/main/mobiman_simulation/config/drl/config_mobiman_drl_pick.yaml)
 
-3. Launch mobiman framework from the ROS workspace:
-```
-# Do not forget to source: source devel/setup.bash
-roslaunch mobiman_simulation mobiman_framework.launch
-```
+3. In seperate terminals in ROS workspace:
 
-4. Run the training script (python) from the igibson ros scripts folder (such as /home/akmandor/projects/iGibson/igibson/examples/ros/igibson-ros/scripts):
-```
-# Do not forget to source: source ~/ros_workspaces/igibson_ws/devel/setup.bash
-python stable_baselines3_ros_jackalJaco.py
-```
+     1. Launch mobiman framework:
+     ```
+     # Do not forget to source: source devel/setup.bash
+     roslaunch mobiman_simulation mobiman_framework.launch 2> >(grep -v TF_REPEATED_DATA buffer_core)
+     ```
+
+     2. Run the (python) training/testing script:
+          1. Training:
+          ```
+          # Do not forget to source: source devel/setup.bash
+          python src/igibson-ros/scripts/drl_training_sb3_mobiman_jackalJaco.py
+          ```
+          2. Testing:
+          ```
+          # Do not forget to source: source devel/setup.bash
+          python src/igibson-ros/scripts/drl_testing_sb3_mobiman_jackalJaco.py
+          ```
