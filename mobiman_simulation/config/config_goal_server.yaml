@@ -10,7 +10,7 @@ gs_drop_frame_name: "drop"
 
 target_names: ["red_cube"]
 
-grasp_offset_pos: [0.0, 0.2, 0.0]
+grasp_offset_pos: [0.0, -0.2, 0.0]
 
 grasp_offset_ori: [1.0, 0.0, 0.0,
                    0.0, 0.0, 1.0,

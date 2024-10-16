@@ -163,6 +163,9 @@ if __name__=="__main__":
         # Update frame names
         robot_base_frame_name_vec.append(ns_tmp +  "/" + str(robot_frame_name))
 
+    print("[mobiman_framework_launch::__main__] robot_ns_vec:")
+    print(robot_ns_vec)
+
     print("[mobiman_framework_launch::__main__] robot_base_frame_name_vec:")
     print(robot_base_frame_name_vec)
 
@@ -191,11 +194,18 @@ if __name__=="__main__":
             print("[mobiman_framework_launch::__main__] Launched simulation in Gazebo!")
 
         elif sim == "igibson":
+            print("[mobiman_framework_launch::__main__] sim: " + sim)
 
             # Launch iGibson
             sim_launch_path = igibson_path + "launch/mobiman_jackal_jaco.launch"
+        
+            print("[mobiman_framework_launch::__main__] robot_ns_vec:")
+            print(robot_ns_vec)
 
             for i, rns in enumerate(robot_ns_vec):
+
+                print("[mobiman_framework_launch::__main__] sim_launch_path: " + sim_launch_path)
+
                 sim_args = [sim_launch_path,
                             'robot_ns:=' + str(rns),
                             'urdf_path:=' + str(urdf_path),
@@ -205,11 +215,14 @@ if __name__=="__main__":
                 sim_launch = [ (roslaunch.rlutil.resolve_launch_arguments(sim_args)[0], sim_args[1:]) ] # type: ignore
                 sim = roslaunch.parent.ROSLaunchParent(uuid, sim_launch) # type: ignore
                 sim.start()
-
+                
             ## Wait for simulation to be ready!
             tfBuffer = tf2_ros.Buffer() # type: ignore
             listener = tf2_ros.TransformListener(tfBuffer) # type: ignore
-            robot_frame_name = robot_base_frame_name_vec[0]
+
+            robot_frame_name = ""
+            if robot_base_frame_name_vec:
+                robot_frame_name = robot_base_frame_name_vec[0]
             print("[mobiman_framework_launch::__main__] Waiting the transform between " + world_frame_name + " and " + robot_frame_name + "...") # type: ignore
             trans = None
             while (not rospy.is_shutdown()) and (not trans):

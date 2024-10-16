@@ -64,4 +64,4 @@ task_config_path: config/task/task_jackalJaco_igibson.info
 config_mobiman_drl: "drl/config_mobiman_drl_pick"
 
 ### DRL:
-flag_drl: false
+flag_drl: true

@@ -1,15 +1,9 @@
 <launch>
   <!--
-    config_mobiman_framework_gazebo
-    config_mobiman_framework_igibson
-    config_mobiman_framework_exp
-
-    config_mobiman_framework_igibson_debug_mpc
-    config_mobiman_framework_igibson_debug_mrt
-
-    exp_mobiman_framework_igibson
+    config_mobiman_framework_igibson_manual
+    config_mobiman_framework_igibson_drl
   -->
-  <arg name="config_mobiman_framework"    default="config_mobiman_framework_exp.yaml"/>
+  <arg name="config_mobiman_framework"    default="examples/config_mobiman_framework_igibson_drl.yaml"/>
   <arg name="exp" default="false"/>
   
   <param name="config_mobiman_framework"  value="$(arg config_mobiman_framework)" />

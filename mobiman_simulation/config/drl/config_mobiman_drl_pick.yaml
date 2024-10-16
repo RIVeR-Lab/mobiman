@@ -20,7 +20,8 @@ initial_training_path: ""
 #initial_training_path: "20240409_225431_SAC_mobiman/"
 #initial_training_path: "re4mpc_cont_sac_rewMGT_wAgents_300k/"
 
-initial_training_model_name: "trained_model_100000_steps"
+initial_training_model_name: ""
+#initial_training_model_name: "trained_model_100000_steps"
 training_log_name: "training_log"
 
 ### DRL-Testing Parameters
@@ -36,7 +37,9 @@ training_log_name: "training_log"
 # re4mpc_cont_ppo_rewMGT_wAgents
 # re4mpc_cont_sac_rewMGT_wAgents
 # re4mpc_disc_dqn_rewMGT_wAgents
-testing_benchmark_name: "re4mpc_cont_sac_rewMGT"
+#testing_benchmark_name: "re4mpc_cont_sac_rewMGT"
+testing_benchmark_name: ""
+
 
 ## 0: Full case
 ## 1: Far goal case
