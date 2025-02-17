@@ -13,8 +13,12 @@ target_names: ["red_cube"]
 grasp_offset_pos: [0.0, -0.2, 0.0]
 
 grasp_offset_ori: [1.0, 0.0, 0.0,
-                   0.0, 0.0, 1.0,
-                   0.0, -1.0, 0.0]
+                   0.0, 0.0, -1.0,
+                   0.0, 1.0, 0.0]
+
+# grasp_offset_ori: [1.0, 0.0, 0.0,
+#                    0.0, 1.0, 0.0,
+#                    0.0, 0.0, 1.0]
 
 dummy_goal_pos_x: 0.0
 dummy_goal_pos_y: 0.0

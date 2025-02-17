@@ -10,9 +10,9 @@ gazebo_robot_name: "mobiman"
 #drl_mode: "training"
 
 # dataset/drl/training/
+# dataset/drl/testing/
 # dataset/drl/arena/
-# dataset/drl/arena/
-drl_data_path: "dataset/drl/training/"      # NUA NOTE: Saving directory
+drl_data_path: "dataset/drl/testing/"      # NUA NOTE: Saving directory
 data_save_freq: 50     # training: # of timesteps, testing: end of episodes
 
 initial_training_path: ""
@@ -21,8 +21,8 @@ initial_training_path: ""
 #initial_training_path: "re4mpc_cont_sac_rewMGT_wAgents_300k/"
 
 initial_training_model_name: ""
-#initial_training_model_name: "trained_model_100000_steps"
-training_log_name: "training_log"
+# initial_training_model_name: "trained_model_100000_steps"
+# training_log_name: "training_log"
 
 ### DRL-Testing Parameters
 
@@ -38,14 +38,17 @@ training_log_name: "training_log"
 # re4mpc_cont_sac_rewMGT_wAgents
 # re4mpc_disc_dqn_rewMGT_wAgents
 #testing_benchmark_name: "re4mpc_cont_sac_rewMGT"
-testing_benchmark_name: ""
+testing_benchmark_name: "ocs2wb"
 
 
 ## 0: Full case
 ## 1: Far goal case
 ## 2: Full case with 2 agents but not on the way
 ## 3: With 2 agents
-testing_mode: 1
+## 4: Mode 0 MPC computation time
+## 5: Mode 1 MPC computation time
+## 6: Mode 2 MPC computation time
+testing_mode: 6
 n_testing_eval_episodes: 1
 
 ### DRL-Training Parameters
@@ -107,7 +110,7 @@ task_and_robot_environment_name: "JackalJaco_mobiman_drl-v00"   # (NUA NOTE: GAZ
 
 # conveyor
 # conveyor_and_actors
-world_name: "conveyor_and_actors"
+world_name: "conveyor"
 
 #### NUA TODO: SET THEM IN PYTHON SCRIPT! ---------------- START
 world_range_x_min: -2.0               # wrt. world frame
