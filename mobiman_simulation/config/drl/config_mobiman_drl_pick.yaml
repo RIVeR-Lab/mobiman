@@ -127,10 +127,15 @@ init_robot_pos_range_y_max: -0.5       # wrt. world frame
 #init_robot_pos_range_z_min: 0.0
 #init_robot_pos_range_z_max: 2.0
 
+
 goal_range_min_x: -0.8                # wrt. conveyor frame
 goal_range_max_x: 0.8                 # wrt. conveyor frame
+################################################################## NUA TODO: RESET AFTER MPC COMPUTATION
+# goal_range_min_y: -1.0               # wrt. conveyor frame
+# goal_range_max_y: -1.0                 # wrt. conveyor frame
 goal_range_min_y: -0.15               # wrt. conveyor frame
 goal_range_max_y: 0.0                 # wrt. conveyor frame
+################################################################## NUA TODO: RESET AFTER MPC COMPUTATION
 goal_range_min_z: 0.6                 # wrt. world frame
 goal_range_max_z: 0.7                 # wrt. world frame
 
@@ -181,9 +186,13 @@ obs_base_velo_ang_max: 5.0
 obs_joint_velo_min: -20.0
 obs_joint_velo_max: 20.0
 
-err_threshold_pos: 0.05
-err_threshold_ori_yaw: 0.05
-err_threshold_ori_quat: 0.05
+err_threshold_pos: 0.1
+err_threshold_ori_yaw: 0.1
+err_threshold_ori_quat: 0.1
+
+# err_threshold_pos: 0.05
+# err_threshold_ori_yaw: 0.05
+# err_threshold_ori_quat: 0.05
 
 # Action time horizon [s]
 action_time_horizon: 3.0
