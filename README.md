@@ -1,4 +1,15 @@
 # Re4MPC: Reactive Nonlinear MPC for Multi-model Motion Planning via Deep Reinforcement Learning
+## Pick-and-Place
+![teaser](videos/mobiman_pick_and_place_x3.gif) 
+
+## Manual Target
+![teaser](videos/mobiman_manual_x5.gif) 
+
+## Training
+![teaser](videos/mobiman_training_x10.gif) 
+
+## Testing
+![teaser](videos/mobiman_testing_x10.gif)
 
 ## 1. Citation
 ```
